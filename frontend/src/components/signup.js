@@ -5,7 +5,7 @@ export class Signup extends Component{
     render(){
         return(
             <>
-       <div className="signup-form">
+       <div className="signup-form ">
   <form action="/examples/actions/confirmation.php" method="post">
     <h3 className='fs-3 fw-semibold'>Hi! Welcome in FundGator</h3>
     <p className="hint-text">

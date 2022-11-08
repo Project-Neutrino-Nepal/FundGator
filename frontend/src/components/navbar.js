@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from 'react-router-dom'
 import '../css/nav-search.css'
 
 class Navbar extends React.Component {
@@ -7,9 +8,9 @@ class Navbar extends React.Component {
       <>
         <nav className="navbar navbar-expand-lg bg-dark navbar-dark ">
           <div className="container-fluid ms-4 me-4">
-            <a className="navbar-brand" href="#">
+            <Link className="navbar-brand" to="">
               FundGator
-            </a>
+            </Link>
             <button
               className="navbar-toggler"
               type="button"
@@ -27,9 +28,9 @@ class Navbar extends React.Component {
             >
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="#">
+                  <Link className="nav-link active" aria-current="page" to="#">
                     Explore
-                  </a>
+                  </Link>
                 </li>
               </ul>
               <form className="d-flex" role="search">
@@ -51,24 +52,24 @@ class Navbar extends React.Component {
               
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
               <li className="nav-item me-2">
-                  <a className="nav-link active" aria-current="page" href="#">
+                  <Link className="nav-link active" aria-current="page" to="#">
                     Raise funding 
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item me-2">
-                  <a className="nav-link active" aria-current="page" href="#">
+                  <Link className="nav-link active" aria-current="page" to="#">
                     FAQ 
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item border-start ms-2">
-                  <a className="nav-link active ms-2" aria-current="page" href="#">
+                  <Link className="nav-link active ms-2" aria-current="page" to="#">
                     Login
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="#">
+                  <Link className="nav-link active" aria-current="page" to="signup">
                     Sign up
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
