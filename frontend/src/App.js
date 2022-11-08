@@ -1,24 +1,20 @@
 import logo from './logo.svg';
 import './App.css';
+import Navbar from './components/navbar.js'
+import {Signup} from './components/signup';
+import { BrowserRouter, Routes,Route } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Practice test
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   <BrowserRouter>
+<Navbar/>
+<Routes>
+  <Route path='/signup' element={<Signup/>}></Route>
+</Routes>
+{/* <Signup/> */}
+
+   </BrowserRouter>
+   
   );
 }
 
