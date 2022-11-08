@@ -1,7 +1,7 @@
 import React from "react";
 import '../css/nav-search.css'
 
-export class Navbar extends React.Component {
+class Navbar extends React.Component {
   render() {
     return (
       <>
@@ -78,3 +78,4 @@ export class Navbar extends React.Component {
     );
   }
 }
+export default Navbar
