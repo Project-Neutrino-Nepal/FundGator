@@ -7,7 +7,7 @@ export class Signup extends Component{
             <>
        <div className="signup-form">
   <form action="/examples/actions/confirmation.php" method="post">
-    <h2>Create an Account</h2>
+    <h3 className='fs-3 fw-semibold'>Hi! Welcome in FundGator</h3>
     <p className="hint-text">
       Sign up with your social media account or email address
     </p>
@@ -59,7 +59,7 @@ export class Signup extends Component{
         required="required"
       />
     </div>
-    <div className="form-group text-center p-1 ">
+    <div className="form-group text-center  ">
       <button
         type="submit"
         className="btn btn-success btn-lg  btn-block signup-btn w-50 "
