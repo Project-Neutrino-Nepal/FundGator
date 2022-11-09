@@ -1,15 +1,18 @@
-import React, { Component } from 'react'
+import React from 'react'
+import { Link } from 'react-router-dom'
+
 import '../css/signup.css'
 
-export class Signup extends Component{
-    render(){
+export function Signin()
+
+    {
         return(
-            <>
+            <>        
        <div className="signup-form ">
-  <form action="/examples/actions/confirmation.php" method="post">
+  <form action="" method="">
     <h3 className='fs-3 fw-semibold'>Hi! Welcome in FundGator</h3>
     <p className="hint-text">
-      Sign up with your social media account or email address
+      Get Login with your social media account or email address
     </p>
     <div className="social-btn text-center">
       <a href="#" className="btn btn-primary btn-lg">
@@ -22,15 +25,6 @@ export class Signup extends Component{
     </div>
     <div className="or-seperator">
       <b>or</b>
-    </div>
-    <div className="form-group">
-      <input
-        type="text"
-        className="form-control input-lg"
-        name="username"
-        placeholder="Username"
-        required="required"
-      />
     </div>
     <div className="form-group">
       <input
@@ -51,25 +45,18 @@ export class Signup extends Component{
       />
     </div>
     <div className="form-group">
-      <input
-        type="password"
-        className="form-control input-lg"
-        name="confirm_password"
-        placeholder="Confirm Password"
-        required="required"
-      />
     </div>
     <div className="form-group text-center  ">
       <button
         type="submit"
-        className="btn btn-success btn-lg  btn-block signup-btn w-50 "
-      >
-        Sign Up
-      </button>
+        className="btn btn-success btn-lg  btn-block signup-btn w-75 ">
+        Sign Up 
+      </button> <br />
+      <h5 className='btn btn-border-0 mt-2 text-info  '>Forgot password?</h5>
     </div>
   </form>
   <div className="text-center">
-    Already have an account? <a href="#">Login here</a>
+    New to FundGator? <Link to="/signup">SingUp here</Link>
   </div>
 </div>
 
@@ -77,5 +64,5 @@ export class Signup extends Component{
         )
             
         
-    }
+    
 }
