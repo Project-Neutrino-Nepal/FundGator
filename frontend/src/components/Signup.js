@@ -1,13 +1,11 @@
 import axios from "axios";
-import { useState } from "react";
-import "../css/signup.css";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../css/signup.css";
 
 const Signup = () => {
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +22,7 @@ const Signup = () => {
     };
 
     if (password !== confirmpassword) {
-      alert("Password and Confirm Password must be same");
+      toast.error("Password does not match");
       return;
     }
 
@@ -33,14 +31,13 @@ const Signup = () => {
         .post("http://localhost:5000/users/api/register", data)
         .then((res) => {
           if (res.data.success === true) {
-            console.log(res);
-            alert("User Registered Successfully!\n Check your email for verification\n And then login");
+            toast.success(res.data.message);
           } else {
-            alert("User Registration failed");
+            toast.error(res.data.message);
           }
         });
     } catch (err) {
-        alert(err);
+      toast.error(err.message);
     }
   };
 
