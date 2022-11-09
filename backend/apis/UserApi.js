@@ -95,4 +95,48 @@ router.get("/verify-now/:verificationCode", async (req, res) => {
   }
 });
 
+
+
+
+//for login if user is verified
+router.post("/api/login", async (req, res) => {
+  try {
+    let { email, password } = req.body;
+    let user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Credent",
+      });
+    }
+    if (!user.verified) {
+      return res.status(400).json({
+        success: false,
+        message: "Please verify your email address.",
+      });
+    }
+    let isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Credentials.",
+      });
+    }
+    let token = await user.generateJWT();
+    return res.status(200).json({
+      success: true,
+      message: "Login Successful.",
+      token,
+      user: user.getUserInfo(),
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+
 module.exports = router;
