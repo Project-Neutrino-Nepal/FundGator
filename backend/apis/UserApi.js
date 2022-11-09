@@ -27,15 +27,8 @@ router.post(
   // Validator,
   async (req, res) => {
     try {
-      let { username, email } = req.body;
-      // Check if the username is taken or not
-      let user = await User.findOne({ username });
-      if (user) {
-        return res.status(400).json({
-          success: false,
-          message: "Username is already taken.",
-        });
-      }
+      let { email } = req.body;
+      
       // Check if the user exists with that email
       user = await User.findOne({ email });
       if (user) {
@@ -53,7 +46,7 @@ router.post(
       // Send the email to the user with a varification link
       let html = `
         <div>
-            <h1>Hello, ${user.username}</h1>
+            <h1>Hello, ${user.name}</h1>
             <p>Please click the following link to verify your account</p>
             <a href="${DOMAIN}users/verify-now/${user.verificationCode}">Verify Now</a>
         </div>

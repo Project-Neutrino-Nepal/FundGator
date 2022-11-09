@@ -2,7 +2,6 @@
 const { check } = require("express-validator");
 
 const name = check("name", "Name is required.").not().isEmpty();
-const username = check("username", "Username is required.").not().isEmpty();
 const email = check("email", "Please provide a valid email address").isEmail();
 const password = check(
   "password",
@@ -11,6 +10,6 @@ const password = check(
   min: 6,
 });
 
-module.exports =  RegisterValidations = [password, name, username, email];
+module.exports =  RegisterValidations = [password, name, email];
 module.exports =  AuthenticateValidations = [username, password];
 module.exports =  ResetPassword = [email];
