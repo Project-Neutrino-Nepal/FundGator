@@ -67,12 +67,7 @@ router.post(
   }
 );
 
-/**
- * @description To verify a new user's account via email
- * @api /users/verify-now/:verificationCode
- * @access PUBLIC <Only Via email>
- * @type GET
- */
+
 
 
 
@@ -118,60 +113,12 @@ router.post("/api/login", async (req, res) => {
 });
 
 
-
-// router.post("/api/login", async (req, res) => {
-//   try {
-//     let { email, password } = req.body;
-//     let user = await User.findOne({ email });
-//     if (!user) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Invalid Credentials.",
-//       });
-//     }
-//     let isMatch = await user.comparePassword(password);
-//     if (!isMatch) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Invalid Credentials.",
-//       });
-//     }
-//     let token = await user.generateJWT();
-//     return res.status(200).json({
-//       success: true,
-//       message: "Login Successful.",
-//       token,
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     return res.status(500).json({
-//       success: false,
-//       message: "An error occurred.",
-//     });
-//   }
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/**
+ * @description To verify a new user's account via email
+ * @api /users/verify-now/:verificationCode
+ * @access PUBLIC <Only Via email>
+ * @type GET
+ */
 
 router.get("/verify-now/:verificationCode", async (req, res) => {
   try {
