@@ -2,17 +2,11 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
 const { randomBytes } = require("crypto");
-// const { join } = require("path");
-const  DOMAIN  = require("../constants/index");
+const { join } = require("path");
+// const DOMAIN = require("../constants/index") || "http://127.0.0.1:5000/";
 const sendMail = require("../functions/email-sender");
-// const { userAuth } = require("../middlewares/auth-guard");
-// const { uploadEventImage: uploader } = require("../middlewares/uploader");
-// const Validator = require("../middlewares/validator-middleware");
-// const {
-//   AuthenticateValidations,
-//   RegisterValidations,
-//   ResetPassword,
-// } = require("../validators/user-validators");
+const DOMAIN = "http://127.0.0.1:5000/";
+
 
 /**
  * @description To create a new User Account
@@ -28,7 +22,7 @@ router.post(
   async (req, res) => {
     try {
       let { email } = req.body;
-      
+
       // Check if the user exists with that email
       user = await User.findOne({ email });
       if (user) {
@@ -43,12 +37,13 @@ router.post(
         verificationCode: randomBytes(20).toString("hex"),
       });
       await user.save();
+      const link = `${DOMAIN}users/verify-now/${user.verificationCode}`;
       // Send the email to the user with a varification link
       let html = `
         <div>
             <h1>Hello, ${user.name}</h1>
             <p>Please click the following link to verify your account</p>
-            <a href="${DOMAIN}users/verify-now/${user.verificationCode}">Verify Now</a>
+            <a href="${link}">Verify Now</a>
         </div>
     `;
       await sendMail(
@@ -73,37 +68,31 @@ router.post(
 );
 
 /**
- * @description To create a new User Account
- * @api /users/api/register
- * @access Public
- * @type POST
+ * @description To verify a new user's account via email
+ * @api /users/verify-now/:verificationCode
+ * @access PUBLIC <Only Via email>
+ * @type GET
  */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+router.get("/verify-now/:verificationCode", async (req, res) => {
+  try {
+    let { verificationCode } = req.params;
+    let user = await User.findOne({ verificationCode });
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized access. Invalid verification code.",
+      });
+    }
+    user.verified = true;
+    user.verificationCode = undefined;
+    await user.save();
+    return res.sendFile(
+      join(__dirname, "../templates/verification-success.html")
+    );
+  } catch (err) {
+    console.log("ERR", err.message);
+    return res.sendFile(join(__dirname, "../templates/errors.html"));
+  }
+});
 
 module.exports = router;
