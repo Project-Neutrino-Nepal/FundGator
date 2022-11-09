@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
 import "../css/signup.css";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
 
