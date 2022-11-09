@@ -1,14 +1,24 @@
 // requirements for express application
 const express = require("express");
 require("dotenv").config();
+require("./Database/conf");
+const cors = require("cors");
+const json = require("body-parser").json;
 
+const userRouter = require("./apis/UserApi");
+
+
+// Initialize express application
 const app = express();
 
-require("./Database/conf");
-const userRouter = require("./routes/registerRoute");
+// Apply Application Middlewares
+app.use(cors());
+app.use(json());
+// app.use(express.static(join(__dirname, "./uploads")));
 
-app.use(express.json());
-app.use(userRouter);
+// Inject Sub router and apis
+app.use("/users", userRouter);
+
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`listening on port ${port}!`));
