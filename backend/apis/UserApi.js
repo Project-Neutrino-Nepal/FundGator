@@ -79,4 +79,38 @@ router.post(
   }
 );
 
+/**
+ * @description To create a new User Account
+ * @api /users/api/register
+ * @access Public
+ * @type POST
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = router;

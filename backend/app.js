@@ -7,8 +7,6 @@ const json = require("body-parser").json;
 
 const userRouter = require("./apis/UserApi");
 
-// Import passport middleware
-require("./middlewares/passport-middleware");
 
 // Initialize express application
 const app = express();
@@ -16,7 +14,6 @@ const app = express();
 // Apply Application Middlewares
 app.use(cors());
 app.use(json());
-// app.use(passport.initialize());
 // app.use(express.static(join(__dirname, "./uploads")));
 
 // Inject Sub router and apis
