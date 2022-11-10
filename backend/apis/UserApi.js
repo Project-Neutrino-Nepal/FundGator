@@ -7,7 +7,6 @@ const { join } = require("path");
 const sendMail = require("../functions/email-sender");
 const DOMAIN = "http://127.0.0.1:5000/";
 
-
 /**
  * @description To create a new User Account
  * @api /users/api/register
@@ -67,12 +66,13 @@ router.post(
   }
 );
 
+/**
+ * @description To login a User
+ * @api /users/api/login
+ * @access PUBLIC
+ * @type POST
+ */
 
-
-
-
-
-//for login if user is verified
 router.post("/api/login", async (req, res) => {
   try {
     let { email, password } = req.body;
@@ -80,15 +80,15 @@ router.post("/api/login", async (req, res) => {
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: "Invalid Credent",
+        message: "Invalid Credentials",
       });
     }
-    // if (!user.verified) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "Please verify your email address.",
-    //   });
-    // }
+    if (!user.verified) {
+      return res.status(400).json({
+        success: false,
+        message: "Please verify your email address.",
+      });
+    }
     let isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(400).json({
@@ -111,7 +111,6 @@ router.post("/api/login", async (req, res) => {
     });
   }
 });
-
 
 /**
  * @description To verify a new user's account via email
