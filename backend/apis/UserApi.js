@@ -7,7 +7,6 @@ const { join } = require("path");
 const sendMail = require("../functions/email-sender");
 const DOMAIN = "http://127.0.0.1:5000/";
 
-
 /**
  * @description To create a new User Account
  * @api /users/api/register
@@ -106,7 +105,13 @@ router.post("/api/login", async (req, res) => {
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: "Invalid Credent",
+        message: "Invalid Credentials",
+      });
+    }
+    if (!user.verified) {
+      return res.status(400).json({
+        success: false,
+        message: "Please verify your email address.",
       });
     }
     if (!user.verified) {
