@@ -1,3 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap');
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+}
+:root{
+ 
+  --arial-font: Arial, Helvetica, sans-serif;
+  --h-color : #1B1F2E;
+  --p-color:#525252;
+  --l-p-color:#6C757D;
+  --primary-color:#2A85FF;
+  --dm-font:'DM Sans', sans-serif;
+
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.d-none{
+  display: none;
+}
+button{
+  cursor: pointer;
+}
+
 .App {
   text-align: center;
 }
