@@ -52,7 +52,7 @@ export function Signin()
         className="btn btn-success btn-lg  btn-block signup-btn w-75 ">
         Sign Up 
       </button> <br />
-      <h5 className='btn btn-border-0 mt-2 text-info  '>Forgot password?</h5>
+      <h6 className='btn btn-border-0 mt-2 text-info fs-6 '>Forgot password?</h6>
     </div>
   </form>
   <div className="text-center">
