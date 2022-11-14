@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
+const Profile = require("../models/profileModel");
 const { randomBytes } = require("crypto");
 const { join } = require("path");
 // const DOMAIN = require("../constants/index") || "http://127.0.0.1:5000/";
@@ -51,11 +52,29 @@ router.post(
         "Please verify Your Account.",
         html
       );
+      // create profile for the user
+      const profile = new Profile({
+        user: user._id,
+        email: user.email,
+        name: user.name,
+      });
+      await profile.save();
+      res.status(200).json({
+        success: true,
+        message: "User Registered Successfully. Please verify your account.",
+      });
+    
       return res.status(201).json({
+        
         success: true,
         message:
           "Hurray! your account is created please verify your email address.",
       });
+      // then create profile for the user
+
+      
+     
+   
     } catch (err) {
       console.log(err);
       return res.status(500).json({
