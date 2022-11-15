@@ -1,12 +1,10 @@
 const compare = require("bcryptjs").compare;
-const  hash = require("bcryptjs").hash;
+const hash = require("bcryptjs").hash;
 const { randomBytes } = require("crypto");
 const { sign } = require("jsonwebtoken");
 const { pick } = require("lodash");
 const { model, Schema } = require("mongoose");
-const  SECRET  = require("../constants/index");
-
-
+const SECRET = require("../constants/index");
 
 const UserSchema = new Schema(
   {
@@ -52,7 +50,6 @@ UserSchema.pre("save", async function (next) {
 UserSchema.methods.comparePassword = async function (password) {
   return await compare(password, this.password);
 };
-const SECRET = "1234567890";
 
 UserSchema.methods.generateJWT = async function () {
   let payload = {
