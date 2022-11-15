@@ -89,6 +89,7 @@ router.post("/api/login", async (req, res) => {
         message: "Please verify your email address.",
       });
     }
+
     let isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(400).json({
