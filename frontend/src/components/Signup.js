@@ -45,7 +45,7 @@ const Signup = () => {
     <>
       <ToastContainer />
       <div className="signup-form ">
-        <form action="" method="">
+        <form action="" method="" id="registerForm">
           <h3 className="fs-3 fw-semibold">Hi! Welcome in FundGator</h3>
           <p className="hint-text">
             Sign up with your social media account or email address
@@ -66,6 +66,7 @@ const Signup = () => {
             <input
               type="text"
               className="form-control input-lg"
+              id="name"
               name="name"
               placeholder="name"
               required="required"
@@ -76,6 +77,7 @@ const Signup = () => {
             <input
               type="email"
               className="form-control input-lg"
+              id="email"
               name="email"
               placeholder="Email Address"
               required="required"
@@ -86,6 +88,7 @@ const Signup = () => {
             <input
               type="password"
               className="form-control input-lg"
+              id="password"
               name="password"
               placeholder="Password"
               required="required"
@@ -96,6 +99,7 @@ const Signup = () => {
             <input
               type="password"
               className="form-control input-lg"
+              id="confirmpassword"
               name="confirm_password"
               placeholder="Confirm Password"
               required="required"
@@ -106,6 +110,7 @@ const Signup = () => {
             <button
               type="submit"
               className="btn btn-success btn-lg  btn-block signup-btn w-50 "
+              id="registerBtn"
               onClick={handleSubmit}
             >
               Sign Up

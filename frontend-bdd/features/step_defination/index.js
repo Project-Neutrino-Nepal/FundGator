@@ -9,12 +9,12 @@ Given("Test registration functionality", { timeout: 30000 }, async function () {
   await driver.findElement(By.id("firstName")).sendKeys("test");
   await driver.findElement(By.id("email")).sendKeys("test1@gmail.com");
   await driver.findElement(By.id("password")).sendKeys("test1234");
-  await driver.findElement(By.id("verifyPassword")).sendKeys("test1234");
+  await driver.findElement(By.id("confirmpassword")).sendKeys("test1234");
   await driver.sleep(delay);
   await driver.findElement(By.id("registerBtn")).click();
 
-  await driver.wait(until.elementLocated(By.id("loginForm")), 30000);
-  expect(await driver.wait(until.elementLocated(By.id("loginForm"))));
+  await driver.wait(until.elementLocated(By.id("registerForm")), 30000);
+  expect(await driver.wait(until.elementLocated(By.id("registerForm"))));
   // await driver.quit();
 });
 
@@ -26,8 +26,8 @@ Given("Test login functionality", { timeout: 30000 }, async function () {
   await driver.sleep(delay);
   await driver.findElement(By.id("loginBtn")).click();
 
-  await driver.wait(until.elementLocated(By.id("registerForm")), 30000);
-  expect(await driver.wait(until.elementLocated(By.id("registerForm"))));
+  await driver.wait(until.elementLocated(By.id("loginForm")), 30000);
+  expect(await driver.wait(until.elementLocated(By.id("loginForm"))));
   // await driver.quit();
 });
 
