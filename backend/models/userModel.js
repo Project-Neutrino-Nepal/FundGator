@@ -4,7 +4,7 @@ const { randomBytes } = require("crypto");
 const { sign } = require("jsonwebtoken");
 const { pick } = require("lodash");
 const { model, Schema } = require("mongoose");
-//const { SECRET } = require("../constants/index");
+const  SECRET  = require("../constants/index");
 
 
 
