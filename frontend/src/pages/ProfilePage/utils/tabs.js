@@ -1,5 +1,5 @@
 const tabs = [
-  { id: 1, text: "portfolio" },
+  { id: 1, text: "Portfolio" },
   { id: 2, text: "Cash" },
   { id: 3, text: "Bank & Cards" },
   { id: 4, text: "Tax Documents" },

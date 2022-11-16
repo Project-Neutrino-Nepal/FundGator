@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Wrapper from "./wrapper/ProfilePage";
 import tabs from "./utils/tabs";
 import { RiArrowDropDownLine } from "react-icons/ri";
@@ -11,6 +11,8 @@ import {
   TaxDocument,
   Watchlist,
 } from "./component";
+
+import { Link, useParams } from "react-router-dom";
 const ProfilePage = () => {
   const options = {
     dropdown: false,
@@ -19,13 +21,33 @@ const ProfilePage = () => {
   };
   const [activeindex, setActive] = useState(1);
   const [dropdown, setDropdown] = useState(false);
-  const [tab, setTab] = useState("tax document");
-  const tablist = tabs.filter((item) => item.text !== tab);
   const closedropdown = (text, index) => {
     setActive(index);
-    setTab(text);
     setDropdown(false);
   };
+
+  const editprofile = () => {
+    setActive(6);
+  };
+
+  const { id } = useParams();
+  useEffect(() => {
+    if (id === "Portoflio") {
+      setActive(1);
+    } else if (id === "Cash") {
+      setActive(2);
+    } else if (id === "BankCards") {
+      setActive(3);
+    } else if (id === "TaxDocuments") {
+      setActive(4);
+    } else if (id === "Watchlist") {
+      setActive(5);
+    } else if (id === "Settings") {
+      setActive(6);
+    } else if (id === "Notifications") {
+      setActive(7);
+    }
+  }, []);
   return (
     <Wrapper>
       <section className="infocontainer">
@@ -36,7 +58,7 @@ const ProfilePage = () => {
           />
           <div className="info">
             <h5>John Doe</h5>
-            <p>Edit Profile</p>
+            <p onClick={editprofile}>Edit Profile</p>
           </div>
         </div>
 
@@ -60,28 +82,30 @@ const ProfilePage = () => {
         <div className={dropdown ? "tab-container2 active" : "tab-container2"}>
           {tabs.map((item, index) => {
             return (
-              <span
+              <Link
+               to={`/profile/${item.text}`}
                 className={activeindex === item.id ? "tabs active" : "tabs"}
                 key={item.id}
                 onClick={() => closedropdown(item.text, item.id)}
               >
                 {item.text}
-              </span>
+              </Link>
             );
           })}
         </div>
       </section>
 
       <section className={dropdown ? "tab-container active" : "tab-container"}>
-        {tablist.map((item, index) => {
+        {tabs.map((item, index) => {
           return (
-            <span
-              className={activeindex === index ? "tabs active" : "tabs"}
+            <Link
+              to={`/profile/${item.text}`}
+              className={activeindex === item.id ? "d-none" : "tabs"}
               key={item.id}
               onClick={() => closedropdown(item.text, item.id)}
             >
               {item.text}
-            </span>
+            </Link>
           );
         })}
       </section>

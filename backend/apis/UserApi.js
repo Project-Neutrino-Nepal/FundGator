@@ -7,6 +7,7 @@ const { join } = require("path");
 // const DOMAIN = require("../constants/index") || "http://127.0.0.1:5000/";
 const sendMail = require("../functions/email-sender");
 const DOMAIN = "http://127.0.0.1:5000/";
+const RegisterValidations = require("../validators/user-validators");
 
 /**
  * @description To create a new User Account
@@ -15,72 +16,60 @@ const DOMAIN = "http://127.0.0.1:5000/";
  * @type POST
  */
 
-router.post(
-  "/api/register",
-  // RegisterValidations,
-  // Validator,
-  async (req, res) => {
-    try {
-      let { email } = req.body;
+router.post("/api/register", RegisterValidations, async (req, res) => {
+  try {
+    let { email } = req.body;
 
-      // Check if the user exists with that email
-      user = await User.findOne({ email });
-      if (user) {
-        return res.status(400).json({
-          success: false,
-          message:
-            "Email is already registered. Did you forget the password. Try resetting it.",
-        });
-      }
-      user = new User({
-        ...req.body,
-        verificationCode: randomBytes(20).toString("hex"),
+    // Check if the user exists with that email
+    user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Email is already registered. Did you forget the password. Try resetting it.",
       });
-      await user.save();
-      const link = `${DOMAIN}users/verify-now/${user.verificationCode}`;
-      // Send the email to the user with a varification link
-      let html = `
+    }
+    user = new User({
+      ...req.body,
+      verificationCode: randomBytes(20).toString("hex"),
+    });
+    await user.save();
+    const link = `${DOMAIN}users/verify-now/${user.verificationCode}`;
+    // Send the email to the user with a varification link
+    let html = `
         <div>
             <h1>Hello, ${user.name}</h1>
             <p>Please click the following link to verify your account</p>
             <a href="${link}">Verify Now</a>
         </div>
     `;
-      await sendMail(
-        user.email,
-        "Verify Account",
-        "Please verify Your Account.",
-        html
-      );
-      // create profile for the user
-      const profile = new Profile({
-        user: user._id,
-        email: user.email,
-        name: user.name,
-      });
-      await profile.save();
-      
-    
-      return res.status(201).json({
-        
-        success: true,
-        message:
-          "Hurray! your account is created please verify your email address.",
-      });
-      // then create profile for the user
+    await sendMail(
+      user.email,
+      "Verify Account",
+      "Please verify Your Account.",
+      html
+    );
+    // create profile for the user
+    const profile = new Profile({
+      user: user._id,
+      email: user.email,
+      name: user.name,
+    });
+    await profile.save();
 
-      
-     
-   
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({
-        success: false,
-        message: "An error occurred.",
-      });
-    }
+    return res.status(201).json({
+      success: true,
+      message:
+        "Hurray! your account is created please verify your email address.",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
   }
-);
+});
 
 /**
  * @description To login a User
@@ -89,25 +78,24 @@ router.post(
  * @type POST
  */
 
-router.post("/api/login", async (req, res) => {
+router.post("/api/login", LoginValidations, async (req, res) => {
   try {
     let { email, password } = req.body;
     let user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
-        message: "Invalid Credentials",
+        message: "Invalid Credentials.",
       });
     }
-    if (!user.verified) {
-      return res.status(400).json({
+    if (user.verified != true) {
+      return res.status(401).json({
         success: false,
-        message: "Please verify your email address.",
+        message: "Unauthorized access. Please verify your account.",
       });
     }
-    let isMatch = await user.comparePassword(password);
-    if (!isMatch) {
-      return res.status(400).json({
+    if (!(await user.comparePassword(password))) {
+      return res.status(401).json({
         success: false,
         message: "Invalid Credentials.",
       });
@@ -115,12 +103,11 @@ router.post("/api/login", async (req, res) => {
     let token = await user.generateJWT();
     return res.status(200).json({
       success: true,
-      message: "Login Successful.",
-      token,
       user: user.getUserInfo(),
+      token: `Bearer ${token}`,
+      message: "Hurray! You are now logged in.",
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({
       success: false,
       message: "An error occurred.",
@@ -156,42 +143,6 @@ router.get("/verify-now/:verificationCode", async (req, res) => {
     return res.sendFile(join(__dirname, "../templates/errors.html"));
   }
 });
-
-router.put("/api/test/:id",  async (req, res) => {
-  try {
-      let { name
-          , email
-          , phone,
-          address 
-      } = req.body;
-      const profile = await Profile.findById(req.params._id);
-      if (!profile) {
-          return res.status(400).json({
-              success: false,
-              message: "User not found.",
-          });
-      }
-      profile.name = name;
-      profile.email = email;
-      profile.phone = phone;
-      profile.address = address;
-      await user.save();
-      return res.status(200).json({
-          success: true,
-          message: "Profile updated successfully.",
-      });
-  } catch (err) {
-      console.log(err);
-      return res.status(500).json({
-          success: false,
-          message: "An error occurred.",
-      });
-      
-         
-  }
-});
-
-
 
 
 

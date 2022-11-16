@@ -6,7 +6,8 @@ const Wrapper = styled.div`
   height: 100vh;
 
   position: relative;
-
+  background-color: white;
+  overflow: hidden;
   .infocontainer {
     background-color: #f7f8fb;
     .userinfo {
@@ -31,6 +32,7 @@ const Wrapper = styled.div`
           font-weight: 600;
           letter-spacing: 2px;
           text-transform: uppercase;
+          cursor: pointer;
         }
       }
     }
@@ -69,6 +71,8 @@ const Wrapper = styled.div`
       cursor: pointer;
       text-transform: capitalize;
       text-align: center;
+      text-decoration: none;
+      color: var(--h-color);
 
       &.active {
         color: var(--primary-color);
@@ -106,6 +110,8 @@ const Wrapper = styled.div`
           cursor: pointer;
           text-transform: capitalize;
           letter-spacing: 2px;
+          text-decoration: none;
+          color: var(--h-color);
 
           &.active {
             color: var(--primary-color);
