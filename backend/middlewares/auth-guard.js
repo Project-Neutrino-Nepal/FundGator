@@ -1,8 +1,10 @@
 const passport = require("passport");
+const { SECRET: secretOrKey } = require("../constants/index");
 
-userAuth = passport.authenticate("jwt", {
+
+const userAuth = passport.authenticate(secretOrKey, {
   session: false,
-  failureRedirect: "users/api/login",
+  failureRedirect: "/users/api/login",
 });
 
 module.exports = userAuth;

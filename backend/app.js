@@ -21,6 +21,7 @@ app.use(passport.initialize());
 // Inject Sub router and apis
 app.use("/users", userRouter);
 app.use("/company", companyRouter);
+app.use("/profile", profileRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`listening on port ${port}!`));

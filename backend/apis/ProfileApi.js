@@ -2,8 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
-const userAuth = require("../middleware/userAuth");
-
+const userAuth = require("../middlewares/auth-guard");
 /**
  * @description To Edit a Investor's Profile
  * @api /users/api/edit-profile
