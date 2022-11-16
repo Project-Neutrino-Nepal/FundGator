@@ -52,7 +52,7 @@ export function Signin() {
     <>
       <ToastContainer />
       <div className="signup-form ">
-        <form action="" method="">
+        <form action="" method="" id="loginForm">
           <h3 className="fs-3 fw-semibold">Hi! Welcome in FundGator</h3>
           <p className="hint-text">
             Get Login with your social media account or email address
@@ -73,6 +73,7 @@ export function Signin() {
             <input
               type="email"
               className="form-control input-lg"
+              id="email"
               name="email"
               placeholder="Email Address"
               required="required"
@@ -83,6 +84,7 @@ export function Signin() {
             <input
               type="password"
               className="form-control input-lg"
+              id="password"
               name="password"
               placeholder="Password"
               required="required"
@@ -94,9 +96,9 @@ export function Signin() {
             <button
               type="submit"
               className="btn btn-success btn-lg  btn-block signup-btn w-75 "
-              onClick={LoginUser} 
+              id="loginBtn"
+              onClick={LoginUser}
             >
-
               Sign In
             </button>
             <br />
