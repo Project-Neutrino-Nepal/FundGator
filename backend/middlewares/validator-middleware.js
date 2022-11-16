@@ -1,4 +1,3 @@
-// import { validationResult } from "express-validator";
 const { validationResult } = require("express-validator");
 
 const validationMiddleware = (req, res, next) => {

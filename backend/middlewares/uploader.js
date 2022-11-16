@@ -1,4 +1,3 @@
-// import multer from "multer";
 const multer = require("multer");
 
 const filename = (req, file, next) => {
