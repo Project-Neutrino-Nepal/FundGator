@@ -10,8 +10,8 @@ const router = express.Router();
 const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
 
-//profile edit
-router.put("/api/edit-profile/:id",  async (req, res) => {
+//profile edit 
+router.put("/api/edit-profile/:id", async (req, res) => {
     try {
         let {   name
             ,   email,
