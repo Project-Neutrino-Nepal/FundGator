@@ -6,6 +6,7 @@ const cors = require("cors");
 const json = require("body-parser").json;
 
 const userRouter = require("./apis/UserApi");
+const profileRouter = require("./apis/ProfileApi");
 
 
 // Initialize express application
@@ -18,6 +19,8 @@ app.use(json());
 
 // Inject Sub router and apis
 app.use("/users", userRouter);
+app.use("/profile", profileRouter);
+
 
 const port = process.env.PORT || 5000;
 

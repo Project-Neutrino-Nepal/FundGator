@@ -59,10 +59,7 @@ router.post(
         name: user.name,
       });
       await profile.save();
-      res.status(200).json({
-        success: true,
-        message: "User Registered Successfully. Please verify your account.",
-      });
+      
     
       return res.status(201).json({
         
@@ -159,5 +156,44 @@ router.get("/verify-now/:verificationCode", async (req, res) => {
     return res.sendFile(join(__dirname, "../templates/errors.html"));
   }
 });
+
+router.put("/api/test/:id",  async (req, res) => {
+  try {
+      let { name
+          , email
+          , phone,
+          address 
+      } = req.body;
+      const profile = await Profile.findById(req.params._id);
+      if (!profile) {
+          return res.status(400).json({
+              success: false,
+              message: "User not found.",
+          });
+      }
+      profile.name = name;
+      profile.email = email;
+      profile.phone = phone;
+      profile.address = address;
+      await user.save();
+      return res.status(200).json({
+          success: true,
+          message: "Profile updated successfully.",
+      });
+  } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+          success: false,
+          message: "An error occurred.",
+      });
+      
+         
+  }
+});
+//
+//
+//
+
+
 
 module.exports = router;
