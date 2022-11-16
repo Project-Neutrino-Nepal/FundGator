@@ -1,7 +1,6 @@
 // models for company data
+const { model, Schema } = require("mongoose");
 
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 
 const CompanySchema = new Schema(
   {
@@ -70,4 +69,4 @@ const CompanySchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("company", CompanySchema);
+module.exports = model("company", CompanySchema);
