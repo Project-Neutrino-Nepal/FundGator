@@ -57,7 +57,7 @@ class Navbar extends React.Component {
                   </Link>
                 </li>
                 <li className="nav-item me-2">
-                  <Link className="nav-link active" aria-current="page" to="#">
+                  <Link className="nav-link active" aria-current="page" to="homepage">
                     FAQ 
                   </Link>
                 </li>
