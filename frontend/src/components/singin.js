@@ -10,8 +10,6 @@ export function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  
-
   // form submit
 
   const LoginUser = async (e) => {
@@ -52,20 +50,23 @@ export function Signin() {
     <>
       <ToastContainer />
       <div className="signup-form ">
-        <form action="" method="" id="loginForm">
+        <form action="" method="">
           <h3 className="fs-3 fw-semibold">Hi! Welcome in FundGator</h3>
           <p className="hint-text">
             Get Login with your social media account or email address
           </p>
-          <div className="social-btn text-center d-flex flex-wrap align-item-center">
-            <div><a href="#" className="btn btn-primary btn-lg">
-              <i className="fa fa-linkedin" /> LinkedIn
-            </a></div>
-            
-            <div><a href="#" className="btn btn-danger btn-lg">
-              <i className="fa fa-google" /> Google
-            </a></div>
-            
+          <div className="d-flex justify-content-center flex-wrap  social-btn text-center">
+            <div>
+              <a href="#" className="btn btn-primary btn-lg ms-2 me-2">
+                <i className="fa fa-linkedin" /> LinkedIn
+              </a>
+            </div>
+            <div>
+              {" "}
+              <a href="#" className="btn btn-danger btn-lg ms-2 me-2">
+                <i className="fa fa-google" /> Google
+              </a>
+            </div>
           </div>
           <div className="or-seperator">
             <b>or</b>
@@ -74,7 +75,6 @@ export function Signin() {
             <input
               type="email"
               className="form-control input-lg"
-              id="email"
               name="email"
               placeholder="Email Address"
               required="required"
@@ -85,7 +85,6 @@ export function Signin() {
             <input
               type="password"
               className="form-control input-lg"
-              id="password"
               name="password"
               placeholder="Password"
               required="required"
@@ -97,15 +96,14 @@ export function Signin() {
             <button
               type="submit"
               className="btn btn-success btn-lg  btn-block signup-btn w-75 "
-              id="loginBtn"
               onClick={LoginUser}
             >
               Sign In
             </button>
             <br />
-            <h5 className="btn btn-border-0 mt-2 text-info  ">
+            <p className="btn btn-border-0 mt-2 text-primary fw-light ">
               Forgot password?
-            </h5>
+            </p>
           </div>
         </form>
         <div className="text-center">
