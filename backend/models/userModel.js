@@ -52,7 +52,7 @@ UserSchema.pre("save", async function (next) {
 UserSchema.methods.comparePassword = async function (password) {
   return await compare(password, this.password);
 };
-// const SECRET = "1234567890";
+const SECRET = "1234567890";
 
 UserSchema.methods.generateJWT = async function () {
   let payload = {
