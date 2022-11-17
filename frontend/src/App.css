@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap');
-
+/* 
 *,
 *::before,
 *::after {
@@ -18,14 +18,9 @@
   --primary-color:#2A85FF;
   --dm-font:'DM Sans', sans-serif;
 
-}
+} */
 
-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
+/* 
 .d-none{
   display: none;
 }
@@ -37,16 +32,8 @@ button{
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
+
 
 .App-header {
   background-color: #282c34;
@@ -70,4 +57,4 @@ button{
   to {
     transform: rotate(360deg);
   }
-}
+} */
