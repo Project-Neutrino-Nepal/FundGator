@@ -1,9 +1,18 @@
 import React from 'react'
-
+import cashimg from "../../../assets/image/cash.png"
+import Wrapper from '../wrapper/Portfolio'
 const Cash = () => {
   return (
-    <div>Cash</div>
-  )
+    <Wrapper>
+      <img src={cashimg} alt="" className="fileimg" />
+      <p className='heading'>You don't have any Wefunder Cash yet</p>
+      <p className='desc'>You can deposit from a wire transfer or a linked account</p>
+      <div className="buttons">
+        <button>ADD New Bank Account</button>
+        <button className='btn-cash'>Make Wire Transfer</button>
+      </div>
+    </Wrapper>
+  );
 }
 
 export default Cash

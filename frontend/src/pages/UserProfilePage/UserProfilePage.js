@@ -12,7 +12,7 @@ const UserProfilePage = () => {
         />
         <h2>name</h2>
 
-        <Link to="/profile/Portfolio" className="btn-edit">
+        <Link to="/Welcome" className="btn-edit">
           edit profile
         </Link>
 

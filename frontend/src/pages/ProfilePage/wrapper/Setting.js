@@ -5,6 +5,10 @@ const Wrapper = styled.div`
     display: none;
   }
 
+  .margin-block {
+    margin-block: 15px;
+  }
+
   .hover {
     cursor: pointer;
     padding: 2% 1%;
@@ -17,9 +21,8 @@ const Wrapper = styled.div`
   .right-container {
     margin-inline: 2%;
 
-    .userinput + .userinput{
+    .userinput + .userinput {
       margin-top: 5px;
-      
     }
     & > .account {
       & > h1 {
@@ -40,6 +43,31 @@ const Wrapper = styled.div`
         text-align: end;
         & > span {
           color: red;
+        }
+      }
+    }
+
+    & > .publicprofile {
+      & > .privacy {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        & > h6 {
+          text-transform: capitalize;
+          padding: 0;
+          margin: 0;
+          color: var(--p-color);
+          font-size: 16px;
+        }
+        & > .check {
+          & > .content {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            & > span {
+              white-space: nowrap;
+            }
+          }
         }
       }
     }
