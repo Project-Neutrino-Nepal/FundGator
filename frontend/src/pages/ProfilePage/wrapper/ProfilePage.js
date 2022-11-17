@@ -3,11 +3,13 @@ import styled from "styled-components";
 const Wrapper = styled.div`
   font-family: var(--dm-font);
 
-  height: 100vh;
+  height: max-content;
+  min-height: 100vh;
 
   position: relative;
   background-color: white;
   overflow: hidden;
+
   .infocontainer {
     background-color: #f7f8fb;
     .userinfo {
