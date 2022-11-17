@@ -57,14 +57,15 @@ export function Signin() {
           <p className="hint-text">
             Get Login with your social media account or email address
           </p>
-          <div className="social-btn text-center">
-            <a href="#" className="btn btn-primary btn-lg">
+          <div className="social-btn text-center d-flex flex-wrap align-item-center">
+            <div><a href="#" className="btn btn-primary btn-lg">
               <i className="fa fa-linkedin" /> LinkedIn
-            </a>
-
-            <a href="#" className="btn btn-danger btn-lg">
+            </a></div>
+            
+            <div><a href="#" className="btn btn-danger btn-lg">
               <i className="fa fa-google" /> Google
-            </a>
+            </a></div>
+            
           </div>
           <div className="or-seperator">
             <b>or</b>
