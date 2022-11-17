@@ -1,9 +1,16 @@
 //using the path of User Model
-const User = require('../models/registerModel');
+const User = require('../models/userModel');
+//using the path of app.js
+const app = require('../app');
+//using the path of supertest
+//const request = require('supertest');
+//using the path of mongoose
 const mongoose =  require('mongoose');
 
 
-const url = "mongodb+srv://Tulsi:qwerty12345@cluster0.bcsf13g.mongodb.net/?retryWrites=true&w=majority";
+
+//const url = "mongodb+srv://Tulsi:qwerty12345@cluster0.bcsf13g.mongodb.net/?retryWrites=true&w=majority";
+const url = "mongodb+srv://milan361:iZEK0AAW2n6p4ilc@cluster0.uanmf.mongodb.net/FundGator?retryWrites=true&w=majority";
 
 
 beforeAll(async () => {
@@ -28,6 +35,7 @@ describe('User Schema test For inserting', () => {
      });
      });
     })
+
 
 
 
