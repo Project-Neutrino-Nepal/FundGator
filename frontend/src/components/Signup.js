@@ -50,14 +50,20 @@ const Signup = () => {
           <p className="hint-text">
             Sign up with your social media account or email address
           </p>
-          <div className="social-btn text-center">
-            <a href="#" className="btn btn-primary btn-lg">
+          <div className="d-flex justify-content-center flex-wrap  social-btn text-center">
+            <div>
+               <a href="#" className="btn btn-primary btn-lg ms-2 me-2">
               <i className="fa fa-linkedin" /> LinkedIn
             </a>
-
-            <a href="#" className="btn btn-danger btn-lg">
+            </div>
+            <div> <a href="#" className="btn btn-danger btn-lg ms-2 me-2">
               <i className="fa fa-google" /> Google
             </a>
+            </div>
+
+           
+
+            
           </div>
           <div className="or-seperator">
             <b>or</b>
