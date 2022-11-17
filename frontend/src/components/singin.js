@@ -30,7 +30,7 @@ export function Signin() {
             var token = res.data.token;
             console.log(token);
             localStorage.setItem("token", token);
-            window.location.replace("/");
+            window.location.replace("Homepage");
           }
           setEmail("");
           setPassword("");
