@@ -47,7 +47,7 @@ router.put("/api/update-profile", userAuth, async (req, res) => {
 
 /**
  * @description To get authenticated user's profile
- * @api /users/api/my-profile
+ * @api /profile/api/my-profile
  * @access PRIVATE
  * @type GET
  */

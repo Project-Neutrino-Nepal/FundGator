@@ -1,19 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../css/nav-search.css";
-import UserInput from "../pages/ProfilePage/component/smallcomponent/UserInput";
 
 function Navbar() {
-
-
-const logout = async(e)=>{
-  localStorage.clear()
-  sessionStorage.clear()  
-  window.location.replace("signin");
-
-}
-
-
+  const logout = async (e) => {
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.assign("/signin");
+  };
 
   if (localStorage.getItem("token") === null) {
     return (
