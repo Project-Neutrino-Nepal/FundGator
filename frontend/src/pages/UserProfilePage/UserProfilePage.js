@@ -25,7 +25,7 @@ const UserProfilePage = () => {
         <h1>interested in..</h1>
         <p>artifical intelligence</p>
 
-        <h1>i am using Wefunder for </h1>
+        <h1>i am using FundGator for </h1>
         <p>Raise Money</p>
       </div>
     </Wrapper>

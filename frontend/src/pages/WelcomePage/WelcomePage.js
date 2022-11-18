@@ -1,14 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import LabelInput from "./component/LabelInput";
 import Wrapper from "./wrapper/WelcomePage";
 
 const WelcomePage = () => {
+  const [legalname, setLegalName] = useState("");
+
+    const handleSubmit = event => {
+      console.log('handleSubmit ran');
+      event.preventDefault(); // 👈️ prevent page refresh
+  
+      // 👇️ access input values here
+      // console.log(legalname);
+  
+      // 👇️ clear all input values in the form
+      // setFirstName('');
+      // setLastName('');
+    };
+
   return (
     <Wrapper>
       <div className="welcome">
+        <form onSubmit={handleSubmit}>
         <h2 className="heading">Investor Information</h2>
         <p>To invest online, federal law requires that we collect some info</p>
-        <LabelInput name={"Legal Name"} placeholder={"Enter Your Legal Name"} />
+        <h1>{legalname}</h1>
+        <LabelInput name={"Legal Name"} placeholder={"Enter Your Legal Name"} value={legalname} onChange={event => setLegalName(event.target.value)} />
         <LabelInput name={"Country"} placeholder={"Enter Your Country"} />
         <LabelInput name={"Address"} placeholder={"Enter Your Address"} />
 
@@ -36,6 +52,7 @@ const WelcomePage = () => {
           </div>
           <button className="btn-continue">SAVE & CONTINUE</button>
         </section>
+        </form>
       </div>
     </Wrapper>
   );

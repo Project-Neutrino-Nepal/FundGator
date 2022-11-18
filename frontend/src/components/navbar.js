@@ -6,7 +6,7 @@ class Navbar extends React.Component {
   render() {
     return (
       <>
-        <nav className="navbar navbar-expand-lg bg-dark navbar-dark ">
+        <nav className="navbar navbar-expand-lg bg-dark navbar-dark fixed-top ">
           <div className="container-fluid ms-4 me-4">
             <Link className="navbar-brand" to="">
               FundGator
@@ -52,12 +52,12 @@ class Navbar extends React.Component {
               
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
               <li className="nav-item me-2">
-                  <Link className="nav-link active" aria-current="page" to="#">
+                  <Link className="nav-link active" aria-current="page" to="comProfile">
                     Raise funding 
                   </Link>
                 </li>
                 <li className="nav-item me-2">
-                  <Link className="nav-link active" aria-current="page" to="#">
+                  <Link className="nav-link active" aria-current="page" to="overview">
                     FAQ 
                   </Link>
                 </li>
