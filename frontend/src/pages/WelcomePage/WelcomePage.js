@@ -28,15 +28,6 @@ const WelcomePage = () => {
       skills: skills,
     };
 
-    console.log(
-      data.address,
-      data.bio,
-      data.country,
-      data.legalName,
-      data.skills,
-      data.website + "I am data"
-    );
-
     axios
       .put("http://localhost:5000/profile/api/update-profile", data, config)
       .then((response) => {
@@ -130,9 +121,11 @@ const WelcomePage = () => {
                 />
               </div>
             </div>
-            <button className="btn-continue"
-            id="updateButton"
-             onClick={UpdateProfiles}>
+            <button
+              className="btn-continue"
+              id="updateButton"
+              onClick={UpdateProfiles}
+            >
               SAVE & CONTINUE
             </button>
           </section>

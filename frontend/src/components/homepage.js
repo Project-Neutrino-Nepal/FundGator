@@ -8,7 +8,7 @@ const Homepage = () => {
     <>
     {/* <div className="d-flex flex-wrap"> */}
       <div
-        className="  p-3 text-white bg-dark mt-5  col-3 position-fixed"
+        className="  p-3 text-white bg-dark mt-5 col-3 position-fixed"
       id="sidebar-width">
         <div className="dropdown">
           <a
