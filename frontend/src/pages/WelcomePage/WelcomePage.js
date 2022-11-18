@@ -1,16 +1,91 @@
-import React from "react";
-import LabelInput from "./component/LabelInput";
+import axios from "axios";
+import React, { useState } from "react";
 import Wrapper from "./wrapper/WelcomePage";
+import LabelInput from "./component/LabelInput";
 
 const WelcomePage = () => {
+  const [legalName, setLegalName] = useState("");
+  const [country, setCountry] = useState("");
+  const [address, setAddress] = useState("");
+  const [bio, setBio] = useState("");
+  const [website, setWebsite] = useState("");
+  const [skills, setSkills] = useState("");
+
+  const UpdateProfiles = (e) => {
+    e.preventDefault();
+
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    };
+
+    const data = {
+      legalName: legalName,
+      country: country,
+      address: address,
+      bio: bio,
+      website: website,
+      skills: skills,
+    };
+
+    console.log(
+      data.address,
+      data.bio,
+      data.country,
+      data.legalName,
+      data.skills,
+      data.website + "I am data"
+    );
+
+    axios
+      .put("http://localhost:5000/profile/api/update-profile", data, config)
+      .then((response) => {
+        alert("Profile Updated");
+        // window.location.replace("/profile");
+        console.log(response.dataPost);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   return (
     <Wrapper>
       <div className="welcome">
         <h2 className="heading">Investor Information</h2>
         <p>To invest online, federal law requires that we collect some info</p>
-        <LabelInput name={"Legal Name"} placeholder={"Enter Your Legal Name"} />
-        <LabelInput name={"Country"} placeholder={"Enter Your Country"} />
-        <LabelInput name={"Address"} placeholder={"Enter Your Address"} />
+        <div className="inputs">
+          <label> LegalName:&nbsp;&nbsp;&nbsp;</label>
+          <input
+            type="text"
+            placeholder="Enter Your Legal Name"
+            value={legalName}
+            onChange={(e) => {
+              setLegalName(e.target.value);
+            }}
+          />
+          <br />
+          <label> Country:&nbsp;&nbsp;&nbsp;</label>
+          <input
+            type="text"
+            placeholder="Enter Your Country"
+            value={country}
+            onChange={(e) => {
+              setCountry(e.target.value);
+            }}
+          />
+          <br />
+          <label> Address:&nbsp;&nbsp;&nbsp;</label>
+          <input
+            type="text"
+            placeholder="Enter Your Address"
+            value={address}
+            onChange={(e) => {
+              setAddress(e.target.value);
+            }}
+          />
+        </div>
 
         <p>To invest online, federal law requires that we collect some info</p>
         <button className="btn-increase">INCREASE MY $2,200 LIMIT</button>
@@ -29,12 +104,26 @@ const WelcomePage = () => {
                 cols="30"
                 rows="10"
                 placeholder="Bio"
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
               ></textarea>
-              <input type="text" placeholder="personal weslite" />
-              <input type="text" placeholder="add skills" />
+              <input
+                type="text"
+                placeholder="personal weslite"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="add skills"
+                value={skills}
+                onChange={(e) => setSkills(e.target.value)}
+              />
             </div>
           </div>
-          <button className="btn-continue">SAVE & CONTINUE</button>
+          <button className="btn-continue" onClick={UpdateProfiles}>
+            SAVE & CONTINUE
+          </button>
         </section>
       </div>
     </Wrapper>
