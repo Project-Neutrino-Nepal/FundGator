@@ -102,7 +102,7 @@ const logout = async(e)=>{
       <>
         <nav className="navbar navbar-expand-lg bg-dark navbar-dark fixed-top ">
           <div className="container-fluid ms-4 me-4">
-            <Link className="navbar-brand" to="">
+            <Link className="navbar-brand" to="Homepage">
               FundGator
             </Link>
             <button
