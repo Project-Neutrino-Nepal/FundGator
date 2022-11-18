@@ -1,11 +1,10 @@
 const passport = require("passport");
 const { SECRET: secretOrKey } = require("../constants/index");
-const DOMAIN = "http://127.0.0.1:5000/";
+const DOMAIN = "http://127.0.0.1:3000/";
 
-
-const userAuth = passport.authenticate(secretOrKey, {
+const userAuth = passport.authenticate("jwt", {
   session: false,
-  failureRedirect: "http://127.0.0.1:3000/login",
+  failureRedirect: DOMAIN + "login",
 });
 
 module.exports = userAuth;

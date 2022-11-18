@@ -30,7 +30,7 @@ export function Signin() {
             var token = res.data.token;
             console.log(token);
             localStorage.setItem("token", token);
-            window.location.replace("Homepage");
+            window.location.replace("welcome");
           }
           setEmail("");
           setPassword("");
@@ -50,7 +50,7 @@ export function Signin() {
     <>
       <ToastContainer />
       <div className="signup-form ">
-        <form action="" method="">
+        <form id="loginForm" >
           <h3 className="fs-3 fw-semibold">Hi! Welcome in FundGator</h3>
           <p className="hint-text">
             Get Login with your social media account or email address
@@ -77,6 +77,7 @@ export function Signin() {
               className="form-control input-lg"
               name="email"
               placeholder="Email Address"
+              id="email"
               required="required"
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -87,6 +88,7 @@ export function Signin() {
               className="form-control input-lg"
               name="password"
               placeholder="Password"
+              id="password"
               required="required"
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -96,6 +98,7 @@ export function Signin() {
             <button
               type="submit"
               className="btn btn-success btn-lg  btn-block signup-btn w-75 "
+              id="loginBtn"
               onClick={LoginUser}
             >
               Sign In

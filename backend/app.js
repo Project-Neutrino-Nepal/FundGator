@@ -9,6 +9,9 @@ const userRouter = require("./apis/UserApi");
 const profileRouter = require("./apis/ProfileApi");
 const companyRouter = require("./apis/CompanyApi");
 
+// Import passport middleware
+require("./middlewares/passport-middleware");
+
 // Initialize express application
 const app = express();
 

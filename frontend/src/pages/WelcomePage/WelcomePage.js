@@ -1,59 +1,99 @@
+import axios from "axios";
 import React, { useState } from "react";
-import LabelInput from "./component/LabelInput";
 import Wrapper from "./wrapper/WelcomePage";
+import LabelInput from "./component/LabelInput";
 
 const WelcomePage = () => {
-  const [legalname, setLegalName] = useState("");
+  const [legalName, setLegalName] = useState("");
+  const [country, setCountry] = useState("");
+  const [address, setAddress] = useState("");
+  const [bio, setBio] = useState("");
+  const [website, setWebsite] = useState("");
+  const [skills, setSkills] = useState("");
 
-    const handleSubmit = event => {
-      console.log('handleSubmit ran');
-      event.preventDefault(); // 👈️ prevent page refresh
-  
-      // 👇️ access input values here
-      // console.log(legalname);
-  
-      // 👇️ clear all input values in the form
-      // setFirstName('');
-      // setLastName('');
+  const UpdateProfiles = (e) => {
+    e.preventDefault();
+
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
     };
+
+    const data = {
+      legal_name: legalName,
+      country: country,
+      address: address,
+      bio: bio,
+      website: website,
+      skills: skills,
+    };
+
+    axios
+      .put("http://localhost:5000/profile/api/update-profile", data, config)
+      .then((response) => {
+        alert("Profile Updated");
+        window.location.replace("/profile/Settings");
+        console.log(response.dataPost);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   return (
     <Wrapper>
       <div className="welcome">
-        <form onSubmit={handleSubmit}>
         <h2 className="heading">Investor Information</h2>
         <p>To invest online, federal law requires that we collect some info</p>
-        <h1>{legalname}</h1>
-        <LabelInput name={"Legal Name"} placeholder={"Enter Your Legal Name"} value={legalname} onChange={event => setLegalName(event.target.value)} />
+        <LabelInput name={"Legal Name"} placeholder={"Enter Your Legal Name"} />
         <LabelInput name={"Country"} placeholder={"Enter Your Country"} />
         <LabelInput name={"Address"} placeholder={"Enter Your Address"} />
 
-        <p>To invest online, federal law requires that we collect some info</p>
-        <button className="btn-increase">INCREASE MY $2,200 LIMIT</button>
-        <section className="public">
-          <h4 className="heading">Public Infomration</h4>
-          <p>show founders </p>
-          <div className="information">
-            <img
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=464&q=80"
-              alt=""
-            />
-            <div className="inputs">
-              <textarea
-                name=""
-                id="area"
-                cols="30"
-                rows="10"
-                placeholder="Bio"
-              ></textarea>
-              <input type="text" placeholder="personal weslite" />
-              <input type="text" placeholder="add skills" />
+          <p>
+            To invest online, federal law requires that we collect some info
+          </p>
+          <button className="btn-increase">INCREASE MY $2,200 LIMIT</button>
+          <section className="public">
+            <h4 className="heading">Public Infomration</h4>
+            <p>show founders </p>
+            <div className="information">
+              <img
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=464&q=80"
+                alt=""
+              />
+              <div className="inputs">
+                <textarea
+                  name=""
+                  id="bio"
+                  cols="30"
+                  rows="10"
+                  placeholder="Bio"
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                ></textarea>
+                <input
+                  type="text"
+                  placeholder="personal weslite"
+                  id="website"
+                  value={website}
+                  onChange={(e) => setWebsite(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="add skills"
+                  id="skills"
+                  value={skills}
+                  onChange={(e) => setSkills(e.target.value)}
+                />
+              </div>
             </div>
+            </section>
           </div>
           <button className="btn-continue">SAVE & CONTINUE</button>
-        </section>
-        </form>
-      </div>
+       
+        
+    
     </Wrapper>
   );
 };

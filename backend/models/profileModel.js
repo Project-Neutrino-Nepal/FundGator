@@ -8,11 +8,13 @@ const ProfileSchema = new Schema(
     },
     email: {
       type: String,
-      //required: true,
     },
     name: {
       type: String,
       required: true,
+    },
+    legal_name: {
+      type: String,
     },
     avatar: {
       type: String,
@@ -20,7 +22,10 @@ const ProfileSchema = new Schema(
     phone: {
       type: String,
     },
-    nationality: {
+    country: {
+      type: String,
+    },
+    website: {
       type: String,
     },
     tax_ID_No: {
@@ -55,4 +60,5 @@ const ProfileSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = model("profile", ProfileSchema);
+const Profile = model("profile", ProfileSchema);
+module.exports   = Profile;
