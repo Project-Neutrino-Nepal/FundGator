@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
 import Wrapper from "./wrapper/WelcomePage";
-import LabelInput from "./component/LabelInput";
 
 const WelcomePage = () => {
   const [legalName, setLegalName] = useState("");
@@ -33,7 +32,7 @@ const WelcomePage = () => {
       .put("http://localhost:5000/profile/api/update-profile", data, config)
       .then((response) => {
         alert("Profile Updated");
-        window.location.replace("/profile/Settings");
+        window.location.assign("/Homepage")
         console.log(response.dataPost);
       })
       .catch((e) => {
@@ -43,12 +42,46 @@ const WelcomePage = () => {
 
   return (
     <Wrapper>
-      <div className="welcome">
-        <h2 className="heading">Investor Information</h2>
-        <p>To invest online, federal law requires that we collect some info</p>
-        <LabelInput name={"Legal Name"} placeholder={"Enter Your Legal Name"} />
-        <LabelInput name={"Country"} placeholder={"Enter Your Country"} />
-        <LabelInput name={"Address"} placeholder={"Enter Your Address"} />
+      <form id="profileUpdate">
+        <div className="welcome">
+          <h2 className="heading">Investor Information</h2>
+          <p>
+            To invest online, federal law requires that we collect some info
+          </p>
+          <div className="inputs">
+            <label> LegalName:&nbsp;&nbsp;&nbsp;</label>
+            <input
+              type="text"
+              placeholder="Enter Your Legal Name"
+              id="legalName"
+              value={legalName}
+              onChange={(e) => {
+                setLegalName(e.target.value);
+              }}
+            />
+            <br />
+            <label> Country:&nbsp;&nbsp;&nbsp;</label>
+            <input
+              type="text"
+              placeholder="Enter Your Country"
+              id="country"
+              value={country}
+              onChange={(e) => {
+                setCountry(e.target.value);
+              }}
+            />
+            <br />
+            <label> Address:&nbsp;&nbsp;&nbsp;</label>
+            <input
+              type="text"
+              placeholder="Enter Your Address"
+              id="address"
+              value={address}
+              onChange={(e) => {
+                setAddress(e.target.value);
+              }}
+            />
+          </div>
 
           <p>
             To invest online, federal law requires that we collect some info
@@ -88,12 +121,16 @@ const WelcomePage = () => {
                 />
               </div>
             </div>
-            </section>
-          </div>
-          <button className="btn-continue">SAVE & CONTINUE</button>
-       
-        
-    
+            <button
+              className="btn-continue"
+              id="updateButton"
+              onClick={UpdateProfiles}
+            >
+              SAVE & CONTINUE
+            </button>
+          </section>
+        </div>
+      </form>
     </Wrapper>
   );
 };
