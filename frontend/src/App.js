@@ -7,9 +7,7 @@ import { Signin } from './components/singin';
 import {LandingPage,ProfilePage,UserProfilePage,WelcomePage,ExplorePage} from "./pages"
 import Homepage from "./components/homepage"
 import ComProfile from './components/company/company_profile';
-import Overview from './components/company/overview';
-import Update from './components/company/updates';
-import Question from './components/company/question';
+
 
 
 function App() {
@@ -26,9 +24,6 @@ function App() {
         <Route path="/homepage" element={<Homepage />}></Route>
         <Route path="/explore" element={<ExplorePage />}></Route>
         <Route path="/comProfile" element={<ComProfile/>}></Route>
-        <Route path="/overview" element={<Overview/>}></Route>
-        <Route path="/update" element={<Update/>}></Route>
-        <Route path="questions" element={<Question />}></Route>
       </Routes>
     </BrowserRouter>
   );

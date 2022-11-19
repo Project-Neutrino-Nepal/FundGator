@@ -4,7 +4,7 @@ import flag from "../../assets/image/flag.svg";
 const People = () => {
   return (
     <>
-      <div className="container mt-5 card col-7 ">
+      <div className="container mt-5 card  ">
         <div className="row ">
           <div className="card mb-5 mt-3" style={{ width: "100%" }}>
             <div

@@ -3,7 +3,7 @@ import React from "react";
 const Overview = () => {
   return (
     <>
-      <div className="container mt-5 card col-7 ">
+      <div className="container mt-5 card ">
         <div className="row ">
           <div className="card mb-5 mt-3" style={{ width: '100%' }}>
             <h4 className="mt-4 fw-semibold">Highlights</h4> <br></br>
