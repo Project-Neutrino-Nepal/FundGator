@@ -23,7 +23,7 @@ const Homepage = () => {
               alt=""
               width={65}
               height={65}
-              className="rounded-circle me-2"
+              className="rounded-circle me-2 mt-5"
             />
             <strong> Ram</strong>
           </a>

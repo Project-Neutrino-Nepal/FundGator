@@ -29,7 +29,6 @@ router.put("/api/update-profile", userAuth, async (req, res) => {
       },
       { new: true }
     );
-    console.log(updatedProfile + "updated profile");
 
     res.status(200).json({
       success: true,
