@@ -8,6 +8,7 @@ const { join } = require("path");
 const sendMail = require("../functions/email-sender");
 const DOMAIN = "http://127.0.0.1:5000/";
 const RegisterValidations = require("../validators/user-validators");
+const validator = require("../middlewares/validator-middleware");
 
 /**
  * @description To create a new User Account
@@ -16,60 +17,65 @@ const RegisterValidations = require("../validators/user-validators");
  * @type POST
  */
 
-router.post("/api/register", RegisterValidations, async (req, res) => {
-  try {
-    let { email } = req.body;
+router.post(
+  "/api/register",
+  RegisterValidations,
+  validator,
+  async (req, res) => {
+    try {
+      let { email } = req.body;
 
-    // Check if the user exists with that email
-    user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({
-        success: false,
-        message:
-          "Email is already registered. Did you forget the password. Try resetting it.",
+      // Check if the user exists with that email
+      user = await User.findOne({ email });
+      if (user) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Email is already registered. Did you forget the password. Try resetting it.",
+        });
+      }
+      user = new User({
+        ...req.body,
+        verificationCode: randomBytes(20).toString("hex"),
       });
-    }
-    user = new User({
-      ...req.body,
-      verificationCode: randomBytes(20).toString("hex"),
-    });
-    await user.save();
-    const link = `${DOMAIN}users/verify-now/${user.verificationCode}`;
-    // Send the email to the user with a varification link
-    let html = `
+      await user.save();
+      const link = `${DOMAIN}users/verify-now/${user.verificationCode}`;
+      // Send the email to the user with a varification link
+      let html = `
         <div>
             <h1>Hello, ${user.name}</h1>
             <p>Please click the following link to verify your account</p>
             <a href="${link}">Verify Now</a>
         </div>
     `;
-    await sendMail(
-      user.email,
-      "Verify Account",
-      "Please verify Your Account.",
-      html
-    );
-    // create profile for the user
-    const profile = new Profile({
-      user: user._id,
-      email: user.email,
-      name: user.name,
-    });
-    await profile.save();
+      await sendMail(
+        user.email,
+        "Verify Account",
+        "Please verify Your Account.",
+        html
+      );
+      // create profile for the user
+      const profile = new Profile({
+        user: user._id,
+        email: user.email,
+        name: user.name,
+      });
+      await profile.save();
 
-    return res.status(201).json({
-      success: true,
-      message:
-        "Hurray! your account is created please verify your email address.",
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred.",
-    });
+      return res.status(201).json({
+        success: true,
+        message:
+          "Hurray! your account is created please verify your email address.",
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred.",
+      });
+    }
   }
-});
+);
 
 /**
  * @description To login a User
@@ -78,7 +84,7 @@ router.post("/api/register", RegisterValidations, async (req, res) => {
  * @type POST
  */
 
-router.post("/api/login", LoginValidations, async (req, res) => {
+router.post("/api/login", LoginValidations, validator, async (req, res) => {
   try {
     let { email, password } = req.body;
     let user = await User.findOne({ email });
@@ -143,7 +149,5 @@ router.get("/verify-now/:verificationCode", async (req, res) => {
     return res.sendFile(join(__dirname, "../templates/errors.html"));
   }
 });
-
-
 
 module.exports = router;

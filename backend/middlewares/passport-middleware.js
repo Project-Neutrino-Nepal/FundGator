@@ -1,7 +1,9 @@
 const passport = require("passport");
 const User  = require("../models/userModel");
 const { Strategy, ExtractJwt } = require("passport-jwt");
-const { SECRET: secretOrKey } = require("../constants/index");
+const  SECRET  = require("../constants/index");
+
+const secretOrKey = SECRET;
 
 const opts = {
   secretOrKey,
