@@ -8,17 +8,15 @@ import UserInput from "./smallcomponent/UserInput";
 function Settings() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [national, setNational] = useState("");
+  const [bio, setBio] = useState("");
+  const [country, setCountry] = useState("");
 
   const item = {
     email: "Dpa@gmail.com",
     Phone: "12345678910",
     Birthday: "",
-    Nationality: "",
+    countryity: "",
   };
-  // const token = localStorage.getItem("token");
-  // console.log(token);
 
   const [formvalue, setform] = useState();
   const onsave = ({ name, value }) => {
@@ -26,14 +24,33 @@ function Settings() {
     console.log("saved");
   };
 
-  useEffect(()=>{
-    axios.get("http://localhost:5000/profile/api/profile/" + localStorage.getItem("userID")).then((res) => {
-      console.log(res.data.data);
-      setform(res.data.data);
-      // setName(res.data.name);
-      // setEmail(res.data.data.email);
+  // useEffect(()=>{
+  //   axios.get("http://localhost:5000/profile/api/profile/" + localStorage.getItem("userID")).then((res) => {
+  //     console.log(res.data.data);
+  //     setform(res.data.data);
+  //     // setName(res.data.name);
+  //     // setEmail(res.data.data.email);
+  //   });
+  // },[]);
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+
+  useEffect(() => { 
+    axios.get("http://localhost:5000/profile/api/my-profile",config).then((res) => {
+      console.log(res.data.profile);
+      const profile = res.data.profile;
+      setform(profile);
+      setEmail(profile.email);
+      setBio(profile.bio);
+      setCountry(profile.country)
+      setName(profile.name);
+      
     });
-  },[]);
+  }, []);
+
 
 
  
@@ -50,11 +67,11 @@ function Settings() {
             <h1>Account</h1>
             <UserInput
               name={"email"}
-              value={formvalue?.email}
-              question={"whats your email"}
+              value={email}
+              question={"whats your Email?"}
               onsave={onsave}
               type={"email"}
-              placeholder={"Enter Your Email"}
+              placeholder={email}
             />
             <div className="passwordreset hover">
               <span>Password</span>
@@ -66,32 +83,31 @@ function Settings() {
           </section>
           <section className="investorinfo">
             <h4>Investorinfo</h4>
-            {/* <UserInput
-              name={"Phone"}
-              value={formvalue.Phone}
-              question={"whats your PhoneNumber ?"}
+            <UserInput
+              name={"Name"}
+              value={name}
+              question={"whats your Name ?"}
               onsave={onsave}
               type={"text"}
-              placeholder={"Enter your PhoneNumber"}
+              placeholder={name}
+            />
+            <UserInput
+              name={"bio"}
+              value={bio}
+              question={"Share your bio?"}
+              onsave={onsave}
+              type={"text"}
+              placeholder={bio}
             />
 
             <UserInput
-              name={"Birthday"}
-              value={formvalue.Birthday}
-              question={"whats your Birthday ?"}
+              name={"countryity"}
+              value={country}
+              question={"Contry of country?"}
               onsave={onsave}
               type={"text"}
-              placeholder={"mm//dd//yyyy"}
+              placeholder={country}
             />
-
-            <UserInput
-              name={"Nationality"}
-              value={formvalue.Nationality}
-              question={"Contry of Nationality ?"}
-              onsave={onsave}
-              type={"text"}
-              placeholder={"Enter you Nationality"}
-            /> */}
           </section>
           <section className="investorlimit"></section>
           <section className="publicprofile"></section>

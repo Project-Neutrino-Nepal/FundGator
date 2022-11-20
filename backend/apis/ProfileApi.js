@@ -33,7 +33,7 @@ router.put("/api/update-profile", userAuth, async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Profile updated successfully",
-      data: updatedProfile,
+      updatedProfile,
     });
   } catch (error) {
     res.status(500).json({
