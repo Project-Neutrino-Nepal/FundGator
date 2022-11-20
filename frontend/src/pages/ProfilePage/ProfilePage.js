@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import Wrapper from "./wrapper/ProfilePage";
-import tabs from "./utils/tabs";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
+import { Link, useParams } from "react-router-dom";
 import {
   BankandCards,
   Cash,
@@ -9,10 +9,11 @@ import {
   Portfolio,
   Settings,
   TaxDocument,
-  Watchlist,
+  Watchlist
 } from "./component";
+import tabs from "./utils/tabs";
+import Wrapper from "./wrapper/ProfilePage";
 
-import { Link, useParams } from "react-router-dom";
 const ProfilePage = () => {
   const options = {
     dropdown: false,
@@ -48,16 +49,38 @@ const ProfilePage = () => {
       setActive(7);
     }
   }, []);
+  const [name, setName] = useState("");
+
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+
+  // fetching Profile data from API
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/profile/api/my-profile", config)
+      .then((res) => {
+        let program = res.data.profile;
+        setName(program.name);
+      });
+  });
+
   return (
     <Wrapper>
-      <section className="infocontainer">
+      <section className="infocontainer mt-5">
         <div className="userinfo">
           <img
-            src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fG1vZGVsfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-            alt=""
+            src="https://github.com/mdo.png"
+            alt="profile_avatar"
+            width={55}
+            height={55}
+            className="rounded-circle mt-4"
           />
           <div className="info">
-            <h5>John Doe</h5>
+            <h5>{name}</h5>
+
             <p onClick={editprofile}>Edit Profile</p>
           </div>
         </div>
@@ -83,7 +106,7 @@ const ProfilePage = () => {
           {tabs.map((item, index) => {
             return (
               <Link
-               to={`/profile/${item.text}`}
+                to={`/profile/${item.text}`}
                 className={activeindex === item.id ? "tabs active" : "tabs"}
                 key={item.id}
                 onClick={() => closedropdown(item.text, item.id)}

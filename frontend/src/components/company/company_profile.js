@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../css/company_profile.css";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-
+import axios from "axios";
 import People from "./people";
 import Overview from "./overview";
 import Question from "./question";
@@ -12,7 +12,7 @@ const ComProfile = () => {
   return (
     <>
       <div className="container mt-5 d-flex flex-wrap justify-content-around  ">
-        <div className=" container  col-8 ">
+        <div className=" container  col-8 mt-5 ">
           <div className="card m-3" style={{ width: 770 }}>
             <div className="card-body">
               <h4 className="card-title">John Doe</h4>
@@ -39,7 +39,7 @@ const ComProfile = () => {
               onSelect={(k) => setKey(k)}
               className="mb-3 mt-3"
             >
-              <Tab eventKey="overview" title="overview" >
+              <Tab eventKey="overview" title="overview">
                 <Overview />
               </Tab>
               <Tab eventKey="updates" title="updates">
@@ -53,23 +53,27 @@ const ComProfile = () => {
               </Tab>
             </Tabs>
           </div>
-          </div>
-          <div className="column ">
+        </div>
+        <div className="column ">
+          {" "}
+          <div className="text-end">
             {" "}
-            <div className="text-end">
-              {" "}
-              <span className=" btn border m-3 mb-5  btn-sm p-2 text-white bg-primary text-center w-50 text-uppercase ">
+            <span className=" btn border  mt-5 btn-sm p-2 text-white bg-primary text-center w-50 text-uppercase ">
               <i class="fa-solid fa-share text-white"></i>&nbsp; Share
-              </span>{" "}
-            </div>
-            <div className="">
-              <span className="card " style={{ height: "20vh", width: "45vh" }}>
-                <p className="ms-4 me-4 fs-6 fw-semibold mt-3 mb-2" >Follow fundgator to be notified if they later decide to raise funding.</p>
-                <span className="ms-5 me-5 btn btn-primary w-75 text-center mt-3 text-uppercase "><i class="fa-regular fa-heart"></i>&nbsp;Watch for updates</span>
-              </span>
-            </div>
+            </span>{" "}
           </div>
-        
+          <div className="mt-5">
+            <span className="card " style={{ height: "20vh", width: "45vh" }}>
+              <p className="ms-4 me-4  fs-6 fw-semibold mt-3 mb-2">
+                Follow fundgator to be notified if they later decide to raise
+                funding.
+              </p>
+              <span className="ms-5 me-5 btn btn-primary w-75 text-center mt-3 text-uppercase ">
+                <i class="fa-regular fa-heart"></i>&nbsp;Watch for updates
+              </span>
+            </span>
+          </div>
+        </div>
       </div>
     </>
   );

@@ -23,7 +23,7 @@ function App() {
         <Route path="/welcome" element={<WelcomePage />}></Route>
         <Route path="/homepage" element={<Homepage />}></Route>
         <Route path="/explore" element={<ExplorePage />}></Route>
-        <Route path="/comProfile" element={<ComProfile/>}></Route>
+        <Route path="/company" element={<ComProfile/>}></Route>
       </Routes>
     </BrowserRouter>
   );
