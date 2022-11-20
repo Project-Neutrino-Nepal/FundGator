@@ -42,10 +42,11 @@ const Homepage = () => {
               alt=""
               width={65}
               height={65}
-              className="rounded-circle me-2 mt-5"
+              className="rounded-circle me-2 mt-2"
             />
             <strong>{name}</strong>
           </a>
+
           <ul
             className="dropdown-menu dropdown-menu-dark text-small shadow"
             aria-labelledby="dropdownUser1"
