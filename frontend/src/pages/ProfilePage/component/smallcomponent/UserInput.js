@@ -1,11 +1,11 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Wrapper from "../../wrapper/smallcomponent/UserInput";
+
 const UserInput = React.memo(
   ({ name, value, question, onsave, type, placeholder }) => {
     const [isEdit, setEdit] = useState(false);
     const [assigend, setValue] = useState(value);
-    const [prop, setProp] = useState(name);
 
     const config = {
       headers: {
@@ -24,13 +24,7 @@ const UserInput = React.memo(
         "http://localhost:5000/profile/api/update-profile", data, {
           headers: config.headers
         }).then((res) => {
-        console.log(res.data);
-        // const profile = res.data.profile;
-        // setform(profile);
-        // setEmail(profile.email);
-        // setBio(profile.bio);
-        // setCountry(profile.country)
-        // setName(profile.name);
+        window.location.reload();
         
       });
 

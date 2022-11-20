@@ -11,27 +11,12 @@ function Settings() {
   const [bio, setBio] = useState("");
   const [country, setCountry] = useState("");
 
-  const item = {
-    email: "Dpa@gmail.com",
-    Phone: "12345678910",
-    Birthday: "",
-    countryity: "",
-  };
-
   const [formvalue, setform] = useState();
   const onsave = ({ name, value }) => {
     setform({ ...formvalue, [name]: value });
     console.log("saved");
   };
 
-  // useEffect(()=>{
-  //   axios.get("http://localhost:5000/profile/api/profile/" + localStorage.getItem("userID")).then((res) => {
-  //     console.log(res.data.data);
-  //     setform(res.data.data);
-  //     // setName(res.data.name);
-  //     // setEmail(res.data.data.email);
-  //   });
-  // },[]);
   const config = {
     headers: {
       Authorization: localStorage.getItem("token"),
@@ -40,13 +25,12 @@ function Settings() {
 
   useEffect(() => { 
     axios.get("http://localhost:5000/profile/api/my-profile",config).then((res) => {
-      console.log(res.data.profile);
       const profile = res.data.profile;
       setform(profile);
       setEmail(profile.email);
       setBio(profile.bio);
       setCountry(profile.country)
-      setName(profile.name);
+      setName(profile.legal_name);
       
     });
   }, [formvalue]);
@@ -84,7 +68,7 @@ function Settings() {
           <section className="investorinfo">
             <h4>Investorinfo</h4>
             <UserInput
-              name={"Name"}
+              name={"Legal Name"}
               value={name}
               question={"whats your Name ?"}
               onsave={onsave}
