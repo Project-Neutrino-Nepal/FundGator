@@ -49,7 +49,7 @@ function Settings() {
       setName(profile.name);
       
     });
-  }, []);
+  }, [formvalue]);
 
 
 
@@ -101,7 +101,7 @@ function Settings() {
             />
 
             <UserInput
-              name={"countryity"}
+              name={"country"}
               value={country}
               question={"Contry of country?"}
               onsave={onsave}

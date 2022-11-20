@@ -5,30 +5,42 @@ const UserInput = React.memo(
   ({ name, value, question, onsave, type, placeholder }) => {
     const [isEdit, setEdit] = useState(false);
     const [assigend, setValue] = useState(value);
-    // useEffect(()=>{
-    //   axios.get("http://localhost:5000/profile/api/profile/" + localStorage.getItem("userID")).then((res) => {
-    //     //console.log(res.data);
-    //   });
-    //  // setValue(value)
+    const [prop, setProp] = useState(name);
 
-    // },[value])
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    };
+
+   
     const onSave = (e) => {
       onsave({ name: name, value: assigend });
       const data = {
-        name: name,
+        [name]: assigend,
       };
-      console.log(onsave);
-      axios
-        .put(
-          "http://localhost:5000/profile/api/edit-profile/" +
-            localStorage.getItem("userID"),
-          data
-        )
-        .then((res) => {
-          console.log(res.data);
-        });
+      console.log(data);
+      axios.put(
+        "http://localhost:5000/profile/api/update-profile", data, {
+          headers: config.headers
+        }).then((res) => {
+        console.log(res.data);
+        // const profile = res.data.profile;
+        // setform(profile);
+        // setEmail(profile.email);
+        // setBio(profile.bio);
+        // setCountry(profile.country)
+        // setName(profile.name);
+        
+      });
 
-      setEdit(true);
+      
+      
+        
+  
+
+
+    
     };
     const onCancel = (e) => {
       e.stopPropagation();
