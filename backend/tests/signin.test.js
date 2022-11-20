@@ -17,7 +17,6 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-//test for login
 describe("User Schema test For login", () => {
   it("Add User testing login", () => {
     return User.findOne({ _id: Object("6374f3c1e3b3cdbe1bf1bbd6") }).then(
