@@ -1,19 +1,15 @@
-import React,{useState} from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "../wrapper/slick.css";
 import "../wrapper/slick-theme.css";
 import Card from "./Card";
 import { Prevbtn, Nextbtn } from "./Buttons";
-import {FcNext} from "react-icons/fc"
-import {Link} from "react-router-dom"
+import { FcNext } from "react-icons/fc";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
-const Cardlist = ({item,heading,to}) => {
-  
-
- 
-
+const Cardlist = ({ item, heading, to }) => {
   var settings = {
-  
     dots: true,
     infinite: false,
     speed: 500,
@@ -44,9 +40,19 @@ const Cardlist = ({item,heading,to}) => {
       },
     ],
   };
+
+  const [companies, setCompanies] = useState([]);
+
+  // fetching Profile data from API
+  useEffect(() => {
+    axios.get("http://localhost:5000/company/api/companies").then((res) => {
+      let program = res.data.companies;
+      setCompanies(program);
+    });
+  }, []);
+
   return (
     <section className="carousel-container">
-    
       <div className="title">
         <span className="heading">{heading}</span>
         <Link className="btn-disc" to={to}>
@@ -55,7 +61,7 @@ const Cardlist = ({item,heading,to}) => {
         </Link>
       </div>
       <Slider {...settings} className="slidy">
-        {item.map((item) => {
+        {companies.map((item) => {
           return <Card {...item} key={item.id} />;
         })}
       </Slider>

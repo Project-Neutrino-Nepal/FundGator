@@ -61,10 +61,6 @@ const CompanySchema = new Schema(
     company_instagram: {
       type: String,
     },
-
-    skills: {
-      type: String,
-    },
   },
   { timestamps: true }
 );

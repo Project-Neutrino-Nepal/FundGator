@@ -113,7 +113,7 @@ router.delete("/api/delete-company/:id", userAuth, async (req, res) => {
 
 router.get("/api/get-all-companies", userAuth, async (req, res) => {
   try {
-    let companies = await Company.find({ user: req.user.id });
+    let companies = await Company.find({ user: req.user._id });
     if (!companies) {
       return res.status(400).json({
         success: false,
