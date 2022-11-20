@@ -6,6 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import "../css/signup.css";
 
+// 
+
 export function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,6 +34,7 @@ export function Signin() {
             var token = res.data.token;
             console.log(token);
             localStorage.setItem("token", token);
+            localStorage.setItem("userID", res.data.user._id);
             window.location.replace("/");
           }
           setEmail("");

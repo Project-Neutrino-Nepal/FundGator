@@ -68,7 +68,7 @@ router.put("/api/edit-profile/:id", async (req, res) => {
  * @type GET
  */
 
-router.get("/api/profile/:id", userAuth, async (req, res) => {
+router.get("/api/profile/:id",  async (req, res) => {
   try {
     let profile = await Profile.findOne({ user: req.params.id });
     if (!profile) {
@@ -80,7 +80,7 @@ router.get("/api/profile/:id", userAuth, async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Profile Retrieved Successfully",
-      profile,
+      data:profile,
     });
   } catch (err) {
     console.log(err);
