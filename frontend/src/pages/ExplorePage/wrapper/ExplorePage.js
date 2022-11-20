@@ -5,7 +5,7 @@ const Wrapper = styled.div`
     margin-inline: 2.5%;
     font-size: 32px;
     text-transform: capitalize;
-    margin-top: 50px;
+    margin-top: 100px;
 
     & > span {
       margin-inline: 2.5%;

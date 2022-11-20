@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../css/nav-search.css";
+import axios from "axios";
 
 function Navbar() {
+
+    const [name, setName] = useState("");
+ 
+
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    };
+
+    // fetching Profile data from API
+    useEffect(() => {
+      axios
+        .get("http://localhost:5000/profile/api/my-profile", config)
+        .then((res) => {
+          let program = res.data.profile;
+          setName(program.name);
+        });
+    });
+
   const logout = async (e) => {
     localStorage.clear();
     sessionStorage.clear();
@@ -12,9 +33,9 @@ function Navbar() {
   if (localStorage.getItem("token") === null) {
     return (
       <>
-        <nav className="navbar navbar-expand-lg bg-dark navbar-dark navbar-fixed-top ">
+        <nav className="navbar navbar-expand-lg bg-dark navbar-dark navbar-fixed-top mt-5">
           <div className="container-fluid ms-4 me-4">
-            <Link className="navbar-brand" to="">
+            <Link className="navbar-brand" to="/">
               FundGator
             </Link>
             <button
@@ -94,7 +115,7 @@ function Navbar() {
   if (localStorage.getItem("token")) {
     return (
       <>
-        <nav className="navbar navbar-expand-lg bg-dark navbar-dark fixed-top ">
+        <nav className="navbar navbar-expand-lg bg-dark navbar-dark fixed-top mb-5">
           <div className="container-fluid ms-4 me-4">
             <Link className="navbar-brand" to="Homepage">
               FundGator
@@ -116,7 +137,11 @@ function Navbar() {
             >
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <Link className="nav-link active" aria-current="page" to="#">
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    to="explore"
+                  >
                     Explore
                   </Link>
                 </li>
@@ -165,7 +190,7 @@ function Navbar() {
                       height={55}
                       className="rounded-circle me-2 ms-3"
                     />
-                    <strong>Milan Yadav </strong>
+                    <strong>{name} </strong>
                   </a>
                   <ul
                     className="dropdown-menu dropdown-menu-dark text-small shadow"
