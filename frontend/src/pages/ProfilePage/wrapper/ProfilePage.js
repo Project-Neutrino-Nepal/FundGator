@@ -21,10 +21,51 @@ const Wrapper = styled.div`
       text-transform: capitalize;
 
       gap: 5%;
-      & > img {
+
+      & > .edit-img {
+        margin-top: 40px;
         width: min(170px, calc(50px + 3.5vw));
         height: min(170px, calc(50px + 3.5vw));
         border-radius: 50px;
+        position: relative;
+
+        & > img {
+          width: 100%;
+          height: 100%;
+        }
+        & > .upload-img {
+          /* background-color: white; */
+          position: absolute;
+          top: 4px;
+          right: 2px;
+          width: 30px;
+          height: 25px;
+          overflow: hidden;
+          cursor: pointer;
+          opacity: 0;
+
+          & > .file-upload {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            z-index: 2;
+            cursor: pointer;
+          }
+          & > .icon {
+            position: absolute;
+            top: 0px;
+            left: 2px;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: white;
+          }
+        }
+
+        &:hover .upload-img {
+          opacity: 1;
+        }
       }
 
       & > .info {
