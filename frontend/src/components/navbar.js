@@ -216,14 +216,14 @@ function Navbar() {
                     </li>
                     <hr />
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <h6 className="dropdown-item fw-semibold" href="#">
                         COMPANY
-                      </a>
+                      </h6>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <Link className="dropdown-item" to="company">
                         &nbsp;&nbsp;&nbsp;Fundgator
-                      </a>
+                      </Link>
                     </li>
                     <hr />
                     <li>

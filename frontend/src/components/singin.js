@@ -16,8 +16,9 @@ export function Signin() {
 
   const LoginUser = async (e) => {
     try {
-      e.preventDefault();
       // stop the form from reloading the page
+      e.preventDefault();
+      
       const data = {
         email: email,
         password: password,
