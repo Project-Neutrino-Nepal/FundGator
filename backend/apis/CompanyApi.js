@@ -4,37 +4,36 @@ const Company = require("../models/companyModel");
 const userAuth = require("../middlewares/auth-guard");
 
 /**
- * @description To create Company
+ * @description To create Company by authenticated user
  * @api /company/api/create-company
  * @access PRIVATE
  * @type POST
  */
-
 router.post("/api/create-company", userAuth, async (req, res) => {
   try {
-    let { body } = req;
-    let name = body.name;
-    let usedName = await Company.findOne({ name });
-    if (usedName) {
+    let {body} = req;
+    let company = await Company.findOne({ name:body.name });
+    if (company) {
       return res.status(400).json({
         success: false,
-        message: "Company already exists. Edit Previous Company",
+        message: "Company already exists",
       });
     }
-
-    let company = new Company({
+    company = new Company({
+      user: req.user._id,
       ...body,
     });
     await company.save();
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
-      message: "Company Created Successfully",
+      message: "Company created successfully",
+      company,
     });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
       success: false,
-      message: "An error occurred.",
+      message: "Internal server error",
     });
   }
 });
@@ -105,13 +104,13 @@ router.delete("/api/delete-company/:id", userAuth, async (req, res) => {
 });
 
 /**
- * @description To retrieve all Companies of User using User ID
+ * @description To retrieve all Companies of authenticated user
  * @api /company/api/create-company
  * @access PRIVATE
  * @type GET
  */
 
-router.get("/api/get-all-companies", userAuth, async (req, res) => {
+router.get("/api/get-my-companies", userAuth, async (req, res) => {
   try {
     let companies = await Company.find({ user: req.user._id });
     if (!companies) {
@@ -120,6 +119,7 @@ router.get("/api/get-all-companies", userAuth, async (req, res) => {
         message: "No Companies Found",
       });
     }
+   
     return res.status(200).json({
       success: true,
       message: "Companies Retrieved Successfully",
@@ -150,6 +150,12 @@ router.get("/api/companies", async (req, res) => {
         message: "No Companies Found",
       });
     }
+     if (companies.verified != true) {
+       return res.status(400).json({
+         success: false,
+         message: "Company not verified",
+       });
+     }
     return res.status(200).json({
       success: true,
       message: "Companies Retrieved Successfully",
@@ -174,14 +180,19 @@ router.get("/api/companies", async (req, res) => {
 router.post("/api/search-company", async (req, res) => {
   try {
     let { body } = req;
-    let name = body.name;
-    let company = await Company.findOne;
+    let company = await Company.findOne({ name: body.name });
     if (!company) {
       return res.status(400).json({
         success: false,
         message: "Company not found",
       });
     }
+     if (companies.verified != true) {
+       return res.status(400).json({
+         success: false,
+         message: "Company not verified",
+       });
+     }
     return res.status(200).json({
       success: true,
 

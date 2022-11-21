@@ -1,12 +1,29 @@
 // models for company data
 const { model, Schema } = require("mongoose");
 
-
 const CompanySchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
       ref: "user",
+    },
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: "category",
+      required: true,
+    },
+    tags: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "tags",
+      },
+    ],
+    verified: {
+      type: Boolean,
+      default: false,
+    },
+    Image: {
+      type: String,
     },
     email: {
       type: String,
@@ -31,9 +48,7 @@ const CompanySchema = new Schema(
     short_pitch: {
       type: String,
     },
-    status: {
-      type: String,
-    },
+    
     tax_document: {
       type: String,
     },
@@ -61,8 +76,16 @@ const CompanySchema = new Schema(
     company_instagram: {
       type: String,
     },
+
+    skills: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
 
-module.exports = model("company", CompanySchema);
+
+
+
+const Company = model("company", CompanySchema);
+module.exports = Company;
