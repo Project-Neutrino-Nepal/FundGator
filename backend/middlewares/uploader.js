@@ -21,34 +21,49 @@ const destination = (req, file, next) => {
   next(null, `${__dirname}/../uploads`);
 };
 
-const eventImageDestination = (req, file, next) => {
-  next(null, `${__dirname}/../uploads/event-images`);
+const profileImageDestination = (req, file, next) => {
+  next(null, `${__dirname}/../uploads/profile-images`);
 };
 
-const eventStoryImageDestination = (req, file, next) => {
-  next(null, `${__dirname}/../uploads/event-story-images`);
+const postsImageDestination = (req, file, next) => {
+  next(null, `${__dirname}/../uploads/posts-images`);
 };
 
-const eventStoryVideoDestination = (req, file, next) => {
-  next(null, `${__dirname}/../uploads/event-story-videos`);
+const companyImageDestination = (req, file, next) => {
+  next(null, `${__dirname}/../uploads/company-images`);
 };
 
-module.exports = uploadEventImage = multer({
-  storage: multer.diskStorage({ destination: eventImageDestination, filename }),
-  fileFilter: filter,
-});
+const companyVideoDestination = (req, file, next) => {
+  next(null, `${__dirname}/../uploads/company-videos`);
+};
 
-module.exports = uploadEventStoryImage = multer({
+module.exports = uploadProfileImage = multer({
   storage: multer.diskStorage({
-    destination: eventStoryImageDestination,
+    destination: profileImageDestination,
     filename,
   }),
   fileFilter: filter,
 });
 
-module.exports = uploadEventStoryVideo = multer({
+module.exports = uploadPostsImage = multer({
   storage: multer.diskStorage({
-    destination: eventStoryVideoDestination,
+    destination: postsImageDestination,
+    filename,
+  }),
+  fileFilter: filter,
+});
+
+module.exports = uploadCompanyImage = multer({
+  storage: multer.diskStorage({
+    destination: companyImageDestination,
+    filename,
+  }),
+  fileFilter: filter,
+});
+
+module.exports = uploadCompanyVideo = multer({
+  storage: multer.diskStorage({
+    destination: companyVideoDestination,
     filename,
   }),
   fileFilter: filter,
