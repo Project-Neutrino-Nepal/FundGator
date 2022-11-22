@@ -52,7 +52,7 @@ export function Signin() {
   return (
     <>
       <ToastContainer />
-      <div className="signup-form ">
+      <div className="signup-form mt-5">
         <form id="loginForm" >
           <h3 className="fs-3 fw-semibold">Hi! Welcome in FundGator</h3>
           <p className="hint-text">

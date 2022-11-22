@@ -42,15 +42,15 @@ const WelcomePage = () => {
 
   return (
     <Wrapper>
-      <form id="profileUpdate">
-        <div className="welcome">
+      <form id="profileUpdate" style={{margin:'80px'}}>
+        <div className="welcome mt-5">
           <h2 className="heading">Investor Information</h2>
           <p>
             To invest online, federal law requires that we collect some info
           </p>
-          <div className="inputs">
-            <label> LegalName:&nbsp;&nbsp;&nbsp;</label>
-            <input
+          <div className="inputs m-2">
+            <label  className="m-2"> LegalName:&nbsp;&nbsp;&nbsp; </label>
+            <input className="p-1"
               type="text"
               placeholder="Enter Your Legal Name"
               id="legalName"
@@ -60,8 +60,8 @@ const WelcomePage = () => {
               }}
             />
             <br />
-            <label> Country:&nbsp;&nbsp;&nbsp;</label>
-            <input
+            <label className="m-2"> Country:&nbsp;&nbsp;&nbsp; &emsp; &nbsp;</label>
+            <input className="p-1"
               type="text"
               placeholder="Enter Your Country"
               id="country"
@@ -71,8 +71,8 @@ const WelcomePage = () => {
               }}
             />
             <br />
-            <label> Address:&nbsp;&nbsp;&nbsp;</label>
-            <input
+            <label className="m-2"> Address:&nbsp;&nbsp;&nbsp; &emsp; &nbsp;</label>
+            <input className="p-1"
               type="text"
               placeholder="Enter Your Address"
               id="address"
