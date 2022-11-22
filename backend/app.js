@@ -8,6 +8,9 @@ const passport = require("passport");
 const userRouter = require("./apis/UserApi");
 const profileRouter = require("./apis/ProfileApi");
 const companyRouter = require("./apis/CompanyApi");
+const adminRouter = require("./apis/admin/AuthApi");
+const adminRouter2 = require("./apis/admin/CategoryApi");
+const adminRouter3 = require("./apis/admin/TagsApi");
 
 // Import passport middleware
 require("./middlewares/passport-middleware");
@@ -25,6 +28,7 @@ app.use(passport.initialize());
 app.use("/users", userRouter);
 app.use("/company", companyRouter);
 app.use("/profile", profileRouter);
+app.use("/admin", adminRouter, adminRouter2, adminRouter3);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`listening on port ${port}!`));
