@@ -4,7 +4,7 @@ import Wrapper from "./wrapper/DetailPage";
 import { FaPlay, FaShare } from "react-icons/fa";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { AiOutlineHeart } from "react-icons/ai";
-import { InvestmentTerm, LeadInvestor, Overview} from "./component";
+import { InvestmentTerm, LeadInvestor, Overview,Detail} from "./component";
 import { Link } from "react-router-dom";
 import { AiFillFacebook, AiFillTwitterSquare } from "react-icons/ai";
 import tabs from "./utils/tab";
@@ -118,7 +118,7 @@ const DetailPage = () => {
 
         <section className="five">
           {activeindex === 1 ? <Overview /> : null}
-     
+          {activeindex === 2 ? <Detail /> : null}
         </section>
       </div>
 
