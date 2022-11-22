@@ -1,6 +1,10 @@
-body {
-	background: #dfe7e9;
+.bg-image {
+	background: white;
 	font-family: 'Roboto', sans-serif;
+	background-image: url(../assets/image/landing.png), url(../assets/image/illustration2.png);
+	background-repeat: no-repeat;
+	background-size: cover;
+
 }
 .form-control {
 	font-size: 16px;

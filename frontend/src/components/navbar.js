@@ -33,7 +33,7 @@ function Navbar() {
   if (localStorage.getItem("token") === null) {
     return (
       <>
-        <nav className="navbar navbar-expand-lg bg-dark navbar-dark navbar-fixed-top">
+        <nav className="navbar navbar-expand-lg   navbar-fixed-top" style={{backgroundColor:'#A4CCF9'}}>
           <div className="container-fluid ms-4 me-4">
             <Link className="navbar-brand" to="/">
               FundGator
@@ -115,7 +115,7 @@ function Navbar() {
   if (localStorage.getItem("token")) {
     return (
       <>
-        <nav className="navbar navbar-expand-lg bg-dark navbar-dark fixed-top mb-5">
+        <nav className="navbar navbar-expand-lg  navbar-dark fixed-top mb-5" style={{backgroundColor:'#0d3b66'}}>
           <div className="container-fluid ms-4 me-4">
             <Link className="navbar-brand" to="Homepage">
               FundGator

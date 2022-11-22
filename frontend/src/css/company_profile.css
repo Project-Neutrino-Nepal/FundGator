@@ -1,0 +1,8 @@
+.bg-image {
+	background: white;
+	font-family: 'Roboto', sans-serif;
+	background-image: url(../assets/image/landing.png);
+	background-repeat: no-repeat;
+	background-size: cover;
+
+}

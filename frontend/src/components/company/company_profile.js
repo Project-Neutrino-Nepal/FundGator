@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../../css/company_profile.css";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import axios from "axios";
 import People from "./people";
 import Overview from "./overview";
 import Question from "./question";
@@ -11,11 +10,11 @@ const ComProfile = () => {
   const [key, setKey] = useState("overview");
   return (
     <>
-      <div className="container mt-5 d-flex flex-wrap justify-content-around  ">
-        <div className=" container  col-8 mt-5 ">
-          <div className="card m-3" style={{ width: 770 }}>
-            <div className="card-body">
-              <h4 className="card-title">John Doe</h4>
+      <div className="container-sm-fluid bg-image  d-flex flex-wrap justify-content-around  ">
+        <div className=" container  col-8 mt-5">
+          <div className="card m-3 ps-3" style={{ width: '80%' }}>
+            <div className="card-body ">
+              <h4 className="card-title fs-4 fw-semibold">John Doe</h4>
               <p className="card-text">
                 Some example text some example text. John Doe is an architect
                 and engineer
@@ -54,7 +53,7 @@ const ComProfile = () => {
             </Tabs>
           </div>
         </div>
-        <div className="column ">
+        <div className=" position-fixed" style={{position:'absolute',right:'5vh',width:"20%"}}>
           {" "}
           <div className="text-end">
             {" "}
@@ -62,13 +61,13 @@ const ComProfile = () => {
               <i class="fa-solid fa-share text-white"></i>&nbsp; Share
             </span>{" "}
           </div>
-          <div className="mt-5">
-            <span className="card " style={{ height: "20vh", width: "45vh" }}>
-              <p className="ms-4 me-4  fs-6 fw-semibold mt-3 mb-2">
+          <div className="mt-5 ">
+            <span className="card " style={{ width: "100%" }}>
+              <p className=" ms-3 me-3   fs-6 fw-semibold mt-3 mb-2">
                 Follow fundgator to be notified if they later decide to raise
                 funding.
               </p>
-              <span className="ms-5 me-5 btn btn-primary w-75 text-center mt-3 text-uppercase ">
+              <span className="ms-3 me-3 mb-3 btn btn-primary w-75 text-center mt-3 text-uppercase ">
                 <i class="fa-regular fa-heart"></i>&nbsp;Watch for updates
               </span>
             </span>
