@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link, useParams } from "react-router-dom";
+import { AiFillEdit } from "react-icons/ai";
 import {
   BankandCards,
   Cash,
@@ -9,7 +10,7 @@ import {
   Portfolio,
   Settings,
   TaxDocument,
-  Watchlist
+  Watchlist,
 } from "./component";
 import tabs from "./utils/tabs";
 import Wrapper from "./wrapper/ProfilePage";
@@ -19,9 +20,15 @@ const ProfilePage = () => {
     dropdown: false,
     tab: "tax document",
     activeindex: 0,
+    
   };
   const [activeindex, setActive] = useState(1);
   const [dropdown, setDropdown] = useState(false);
+  const [image, setPreview] = useState({
+    preview: "https://github.com/mdo.png",
+    file: "",
+  });
+
   const closedropdown = (text, index) => {
     setActive(index);
     setDropdown(false);
@@ -30,6 +37,19 @@ const ProfilePage = () => {
   const editprofile = () => {
     setActive(6);
   };
+
+  const onuploadimg = (e)=>{
+    console.log(e.target.value)
+    setPreview({ ...image, file: e.target.files[0] });
+     if (e.target.files && e.target.files[0]) {
+       let reader = new FileReader();
+
+       reader.onload = function () {
+         setPreview({...image,preview:reader.result});
+       };
+       reader.readAsDataURL(e.target.files[0]);
+     }
+  }
 
   const { id } = useParams();
   useEffect(() => {
@@ -71,13 +91,17 @@ const ProfilePage = () => {
     <Wrapper>
       <section className="infocontainer mt-5">
         <div className="userinfo">
-          <img
-            src="https://github.com/mdo.png"
-            alt="profile_avatar"
-            width={55}
-            height={55}
-            className="rounded-circle mt-4"
-          />
+          <div className="edit-img">
+            <img
+              src={image.preview}
+              alt="profile_avatar"
+              className="rounded-circle "
+            />
+            <div className="upload-img">
+              <input type="file" name="" id="" className="file-upload" onChange={onuploadimg} />
+              <AiFillEdit className="icon" />
+            </div>
+          </div>
           <div className="info">
             <h5>{name}</h5>
 

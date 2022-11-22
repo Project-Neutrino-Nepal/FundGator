@@ -3,6 +3,8 @@ const router = express.Router();
 const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
 const userAuth = require("../middlewares/auth-guard");
+const { uploadProfileImage: uploader } = require("../middlewares/uploader");
+
 /**
  * @description To edit authenticated user profile
  * @api /users/api/update-profile
@@ -10,39 +12,43 @@ const userAuth = require("../middlewares/auth-guard");
  * @type PUT
  */
 
-router.put("/api/update-profile", userAuth, async (req, res) => {
-  try {
-    let { body } = req;
+router.put(
+  "/api/update-profile",
+  userAuth,
+  async (req, res) => {
+    try {
+      let { body } = req;
 
-    const user = await User.findById(req.user._id);
-    if (!user) {
-      return res.status(404).json({
+      const user = await User.findById(req.user._id);
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+
+      const updatedProfile = await Profile.updateMany(
+        { user: req.user._id },
+        {
+          ...body,
+        },
+        { new: true }
+      );
+
+      res.status(200).json({
+        success: true,
+        message: "Profile updated successfully",
+        data: updatedProfile,
+      });
+    } catch (error) {
+      res.status(500).json({
         success: false,
-        message: "User not found",
+        message: "Internal server error",
+        error: error.message,
       });
     }
-
-    const updatedProfile = await Profile.updateMany(
-      { user: req.user._id },
-      {
-        ...body,
-      },
-      { new: true }
-    );
-
-    res.status(200).json({
-      success: true,
-      message: "Profile updated successfully",
-      updatedProfile,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-      error: error.message,
-    });
   }
-});
+);
 
 /**
  * @description To get authenticated user's profile
@@ -73,7 +79,6 @@ router.get("/api/my-profile", userAuth, async (req, res) => {
     });
   }
 });
-
 
 /**
  * @description To Delete a Investor's Profile
