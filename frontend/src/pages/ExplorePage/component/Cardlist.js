@@ -46,7 +46,7 @@ const Cardlist = ({ item, heading, to }) => {
   // fetching Profile data from API
   useEffect(() => {
     axios.get("http://localhost:5000/company/api/companies").then((res) => {
-      let program = res.data.companies;
+      let program = res.data.company;
       setCompanies(program);
     });
   }, []);
@@ -62,7 +62,7 @@ const Cardlist = ({ item, heading, to }) => {
       </div>
       <Slider {...settings} className="slidy">
         {companies.map((item) => {
-          return <Card {...item} key={item.id} />;
+          return <Card {...item} key={item._id} />;
         })}
       </Slider>
     </section>

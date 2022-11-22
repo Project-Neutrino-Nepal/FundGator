@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Company = require("../models/companyModel");
 const userAuth = require("../middlewares/auth-guard");
+const { find } = require("../models/companyModel");
 
 /**
  * @description To create Company by authenticated user
@@ -11,8 +12,8 @@ const userAuth = require("../middlewares/auth-guard");
  */
 router.post("/api/create-company", userAuth, async (req, res) => {
   try {
-    let {body} = req;
-    let company = await Company.findOne({ name:body.name });
+    let { body } = req;
+    let company = await Company.findOne({ name: body.name });
     if (company) {
       return res.status(400).json({
         success: false,
@@ -119,7 +120,7 @@ router.get("/api/get-my-companies", userAuth, async (req, res) => {
         message: "No Companies Found",
       });
     }
-   
+
     return res.status(200).json({
       success: true,
       message: "Companies Retrieved Successfully",
@@ -150,17 +151,13 @@ router.get("/api/companies", async (req, res) => {
         message: "No Companies Found",
       });
     }
-     if (companies.verified != true) {
-       return res.status(400).json({
-         success: false,
-         message: "Company not verified",
-       });
-     }
-    return res.status(200).json({
-      success: true,
-      message: "Companies Retrieved Successfully",
-      companies,
-    });
+
+    let company = await Company.find({verified: true});
+      return res.status(200).json({
+        success: true,
+        message: "Companies Retrieved Successfully",
+        company,
+      });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
@@ -187,12 +184,12 @@ router.post("/api/search-company", async (req, res) => {
         message: "Company not found",
       });
     }
-     if (companies.verified != true) {
-       return res.status(400).json({
-         success: false,
-         message: "Company not verified",
-       });
-     }
+    if (companies.verified != true) {
+      return res.status(400).json({
+        success: false,
+        message: "Company not verified",
+      });
+    }
     return res.status(200).json({
       success: true,
 
