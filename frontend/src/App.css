@@ -1,12 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap');
 
 body {
-    padding: 0 0 30px 0;
     background-color: #fafafa;
     letter-spacing: -0.3px;
-    color: rgba(0, 0, 0, 0.65);
-    font-size: 14px;
-    line-height: 1.6;
-    font-weight: 400;
     font-family: open sans, Helvetica, Arial, sans-serif;
   }
+
+
+  /* :root{
+ 
+  --arial-font: Arial, Helvetica, sans-serif;
+  --h-color : #1B1F2E;
+  --p-color:#525252;
+  --l-p-color:#6C757D;
+  --l-h-color:#8a8b8b;
+  --primary-color:#2A85FF;
+  --secondary-color:#FE6655;
+  --dm-font:'DM Sans', sans-serif;
+  --sample-color:#e5e5e5bc;
+
+} */

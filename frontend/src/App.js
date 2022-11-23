@@ -24,6 +24,7 @@ function App() {
         <Route path="/explore" element={<ExplorePage />}></Route>
         <Route path="/company" element={<ComProfile />}></Route>
         <Route path="/detail" element={<DetailPage />}></Route>
+        <Route path="/comdetails" element={<CompanyDetails/>}></Route>
       </Routes>
     </BrowserRouter>
   );

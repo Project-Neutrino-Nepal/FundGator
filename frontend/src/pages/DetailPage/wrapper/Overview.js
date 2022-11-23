@@ -3,7 +3,7 @@ import styled from "styled-components";
 const Wrapper = styled.div`
   margin-top: 20px;
 
-& > .lists {
+  & > .lists {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -22,9 +22,27 @@ const Wrapper = styled.div`
         text-align: center;
         min-height: 50px;
         display: flex;
-          align-items: center;
+        align-items: center;
         justify-content: center;
       }
+    }
+  }
+
+  .our-team {
+    & > h1 {
+      margin-block: 20px;
+    }
+
+    & > .lists {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+
+  .about {
+    & > h1 {
+      margin-block: 20px;
     }
   }
 `;
