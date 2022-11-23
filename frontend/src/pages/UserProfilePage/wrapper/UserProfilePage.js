@@ -33,6 +33,7 @@ const Wrapper = styled.div`
       height: 190px;
       border-radius: 50%;
       border: 5px solid white;
+      object-fit: cover;
     }
 
     & > .btn-edit {

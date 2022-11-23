@@ -19,7 +19,7 @@ const Wrapper = styled.div`
         justify-content: space-between;
         & > .info {
           & > h3 {
-            color: var(--l-p-color);
+            color: #6C757D;
             font-size: 1.5rem;
           }
           & > h1 {
@@ -56,12 +56,12 @@ const Wrapper = styled.div`
 
     & > .two {
       & > span {
-        color: var(--secondary-color);
+        color: #FE6655;
         font-weight: bold;
       }
       & > .line {
-        background-color: var(--secondary-color);
-        color: var(--secondary-color);
+        background-color: #FE6655;
+        color: #FE6655;
         height: 3px;
         width: 100%;
       }
@@ -75,7 +75,7 @@ const Wrapper = styled.div`
           & + p {
             font-weight: normal;
             font-size: 0.8rem;
-            color: var(--l-p-color);
+            color: #6C757D;
           }
         }
       }
@@ -116,7 +116,7 @@ const Wrapper = styled.div`
         width: 100%;
         padding: 10px;
         margin-top: 10px;
-        background-color: var(--secondary-color);
+        background-color: #FE6655;
         color: white;
         border: none;
         font-weight: bold;
@@ -175,15 +175,15 @@ const Wrapper = styled.div`
       gap: 5px;
       flex-wrap: wrap;
       text-align: center;
-      margin-top: 10px;
+    margin-top: 20px;
       position: sticky;
-      top: 50px;
+      top: 0 !important;
       background-color: white;
 
       & > span {
         white-space: nowrap;
         font-size: 14px;
-        color: var(--l-p-color);
+        color: #6C757D;
         cursor: pointer;
         padding: 7px;
         &.active {
@@ -250,12 +250,12 @@ const Wrapper = styled.div`
         -webkit-box-shadow: 1px 3px 5px 1px rgba(135, 158, 158, 0.75);
         -moz-box-shadow: 1px 3px 5px 1px rgba(135, 158, 158, 0.75);
         & > span {
-          color: var(--secondary-color);
+          color: #FE6655;
           font-weight: bold;
         }
         & > .line {
-          background-color: var(--secondary-color);
-          color: var(--secondary-color);
+          background-color: #FE6655;
+          color: #FE6655;
           height: 3px;
           width: 100%;
         }
@@ -269,7 +269,7 @@ const Wrapper = styled.div`
             & + p {
               font-weight: normal;
               font-size: 0.8rem;
-              color: var(--l-p-color);
+              color: #6C757D;
             }
           }
         }
@@ -284,7 +284,7 @@ const Wrapper = styled.div`
 
           & > .invest-info {
             line-height: 5px;
-            color: var(--l-p-color);
+            color: #6C757D;
 
             & > p {
               font-weight: bold;
@@ -311,7 +311,7 @@ const Wrapper = styled.div`
           width: 100%;
           padding: 10px;
           margin-top: 10px;
-          background-color: var(--secondary-color);
+          background-color: #FE6655;
           color: white;
           border: none;
           font-weight: bold;
