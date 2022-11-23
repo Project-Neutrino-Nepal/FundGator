@@ -33,7 +33,7 @@ function Navbar() {
   if (localStorage.getItem("token") === null) {
     return (
       <>
-        <nav className="navbar navbar-expand-lg   navbar-fixed-top" style={{backgroundColor:'#0d3b66'}}>
+        <nav className="navbar navbar-expand-lg navbar-fixed-top" style={{backgroundColor:'#0d3b66'}}>
           <div className="container-fluid ms-4 me-4">
             <Link className="navbar-brand" to="/">
               FundGator
