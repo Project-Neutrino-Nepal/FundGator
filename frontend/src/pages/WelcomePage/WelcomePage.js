@@ -126,12 +126,8 @@ const WelcomePage = () => {
               }}
             />
             <br />
-            <label className="m-2">
-              {" "}
-              Country:&nbsp;&nbsp;&nbsp; &emsp;&nbsp;
-            </label>
-            <input
-              className="p-1"
+            <label className="m-2"> Country:&nbsp;&nbsp;&nbsp; &emsp; &nbsp;</label>
+            <input className="p-1 "
               type="text"
               placeholder="Enter Your Country"
               id="country"

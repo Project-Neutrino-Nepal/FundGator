@@ -69,9 +69,10 @@ const Signin = () => {
 
   return (
     <>
+    <div className="container-sm-fluid  bg-image mt-0 bg-white " >
       <ToastContainer />
-      <div className="signup-form mt-5">
-        <form id="loginForm">
+      <div className="signup-form " >
+        <form id="loginForm shadow border" >
           <h3 className="fs-3 fw-semibold">Hi! Welcome in FundGator</h3>
           <p className="hint-text">
             Get Login with your social media account or email address
@@ -79,13 +80,13 @@ const Signin = () => {
           <div className="d-flex justify-content-center flex-wrap  social-btn text-center">
             <div>
               <a href="#" className="btn btn-primary btn-lg ms-2 me-2">
-                <i className="fa fa-linkedin" /> LinkedIn
+              <i className="fa-brands fa-linkedin-in"/>LinkedIn
               </a>
             </div>
             <div>
               {" "}
               <a href="#" className="btn btn-danger btn-lg ms-2 me-2">
-                <i className="fa fa-google" /> Google
+              <i className="fa-brands fa-google"/>Google
               </a>
             </div>
           </div>
@@ -133,6 +134,7 @@ const Signin = () => {
         <div className="text-center">
           New to FundGator? <Link to="/signup">SingUp here</Link>
         </div>
+      </div>
       </div>
     </>
   );
