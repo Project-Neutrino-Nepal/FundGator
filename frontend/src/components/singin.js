@@ -52,12 +52,15 @@ const Signin = () => {
               toast.success(
                 res.data.message,
                 setTimeout(function () {
+                  if(res.data.user.admin === true){
+                    window.location.href = "/admin";
+                  }else{
                   if(res.data.user.isFirstTime == true){
                   window.location.href = "/welcome";}
                   else{
                     window.location.href = "/homepage";
                   }
-                }, 2000)
+                }}, 2000)
               );
             }
           });
