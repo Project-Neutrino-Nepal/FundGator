@@ -6,6 +6,7 @@ import Navbar from './components/navbar.js';
 import Signup from './components/Signup';
 import Signin from './components/singin';
 import { DetailPage, ExplorePage, LandingPage, ProfilePage, UserProfilePage, WelcomePage } from "./pages";
+import CompanyDetails from './components/admin/company_details';
 
 
 
