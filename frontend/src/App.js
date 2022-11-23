@@ -7,6 +7,7 @@ import { Signin } from './components/singin';
 import {LandingPage,ProfilePage,UserProfilePage,WelcomePage,ExplorePage,DetailPage} from "./pages"
 import Homepage from "./components/homepage"
 import ComProfile from './components/company/company_profile';
+import CompanyDetails from './components/admin/company_details';
 
 
 
@@ -25,6 +26,7 @@ function App() {
         <Route path="/explore" element={<ExplorePage />}></Route>
         <Route path="/company" element={<ComProfile />}></Route>
         <Route path="/detail" element={<DetailPage />}></Route>
+        <Route path="/comdetails" element={<CompanyDetails/>}></Route>
       </Routes>
     </BrowserRouter>
   );
