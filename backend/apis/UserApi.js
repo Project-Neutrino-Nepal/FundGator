@@ -97,7 +97,7 @@ router.post("/api/login", LoginValidations, validator, async (req, res) => {
     if (user.verified != true) {
       return res.status(401).json({
         success: false,
-        message: "Unauthorized access. Please verify your account.",
+        message: "Unauthorized access. Please verify your account email has been sent.",
       });
     }
     if (!(await user.comparePassword(password))) {

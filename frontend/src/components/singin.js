@@ -6,45 +6,58 @@ import "react-toastify/dist/ReactToastify.css";
 
 import "../css/signup.css";
 
-// 
-
-export function Signin() {
+const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
+  const validate = () => {
+    if (email === "" && password === "") {
+      toast.error("All fields are Required.");
+      return false;
+    }
+    if (email === "") {
+      toast.error("Email is required");
+    } else if (!regex.test(email)) {
+      toast.error("Email is invalid");
+      return false;
+    }
+
+    if (password === "") {
+      toast.error("Password is required");
+    } else if (password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return false;
+    }
+    return true;
+  };
   // form submit
 
   const LoginUser = async (e) => {
-    try {
-      // stop the form from reloading the page
-      e.preventDefault();
-      
-      const data = {
-        email: email,
-        password: password,
-      };
-      console.log(data);
-      await axios
-        .post("http://localhost:5000/users/api/login", data)
-        .then((res) => {
-          if (res.data.token) {
-            console.log(res);
+    // stop the form from reloading the page
+    e.preventDefault();
 
-            var token = res.data.token;
-            console.log(token);
-            localStorage.setItem("token", token);
-            window.location.replace("welcome");
-          }
-          setEmail("");
-          setPassword("");
-          res.data.success === true
-            ? toast.success(res.data.message)
-            : toast.error(res.data.message);
-          // setSuccess(true);
-        });
-    } catch (err) {
-      if (err === "  Request failed with status code 401") {
-        toast.info("please verify your email address");
+    const data = {
+      email: email,
+      password: password,
+    };
+    if (validate()) {
+      try {
+        await axios
+          .post("http://localhost:5000/users/api/login", data)
+          .then((res) => {
+            if (res.data.success) {
+              localStorage.setItem("token", res.data.token);
+              toast.success(
+                res.data.message,
+                setTimeout(function () {
+                  window.location.assign("/welcome");
+                }, 2000)
+              );
+            }
+          });
+      } catch (error) {
+        toast.error(error.response.data.message);
       }
     }
   };
@@ -53,7 +66,7 @@ export function Signin() {
     <>
       <ToastContainer />
       <div className="signup-form mt-5">
-        <form id="loginForm" >
+        <form id="loginForm">
           <h3 className="fs-3 fw-semibold">Hi! Welcome in FundGator</h3>
           <p className="hint-text">
             Get Login with your social media account or email address
@@ -118,4 +131,6 @@ export function Signin() {
       </div>
     </>
   );
-}
+};
+
+export default Signin;
