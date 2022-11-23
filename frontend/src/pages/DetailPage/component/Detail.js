@@ -1,7 +1,6 @@
 import React from "react";
 import Wrapper from "../wrapper/Detail";
 import highlights from "../utils/highlights";
-
 const Detail = () => {
   return (
     <Wrapper>
