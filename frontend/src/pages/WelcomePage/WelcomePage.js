@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Wrapper from "./wrapper/WelcomePage";
@@ -12,7 +12,17 @@ const WelcomePage = () => {
   const [website, setWebsite] = useState("");
   const [skills, setSkills] = useState("");
 
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
 
+  const config2 = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
   const validate = () => {
     if (
       legalName === "" &&
@@ -45,14 +55,25 @@ const WelcomePage = () => {
     }
     return true;
   };
+
+  const UpdateUser = async (e) => {
+    await axios
+      .put("http://localhost:5000/users/api/update-user", config2)
+      .then((res) => {
+        if (res.data.success) {
+          console.log(res.data);
+          toast.success(
+            res.data.message,
+            setTimeout(function () {
+              window.location.href = "/homepage";
+            }, 2000)
+          );
+        }
+      });
+  };
+
   const UpdateProfiles = (e) => {
     e.preventDefault();
-
-    const config = {
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-    };
 
     const data = {
       legal_name: legalName,
@@ -68,11 +89,12 @@ const WelcomePage = () => {
           .put("http://localhost:5000/profile/api/update-profile", data, config)
           .then((response) => {
             if (response.data.success) {
+              UpdateUser();
               toast.success(
                 response.data.message,
                 setTimeout(function () {
-                  window.location.href = "/welcome";
-                }, 2000)
+                  window.location.href = "/homepage";
+                }, 10000)
               );
             }
           });

@@ -1,12 +1,10 @@
 const compare = require("bcryptjs").compare;
-const  hash = require("bcryptjs").hash;
+const hash = require("bcryptjs").hash;
 const { randomBytes } = require("crypto");
 const { sign } = require("jsonwebtoken");
 const { pick } = require("lodash");
 const { model, Schema } = require("mongoose");
-const  SECRET  = require("../constants/index");
-
-
+const SECRET = require("../constants/index");
 
 const UserSchema = new Schema(
   {
@@ -25,6 +23,10 @@ const UserSchema = new Schema(
     admin: {
       type: Boolean,
       default: false,
+    },
+    isFirstTime: {
+      type: Boolean,
+      default: true,
     },
     verified: {
       type: Boolean,
@@ -72,7 +74,14 @@ UserSchema.methods.generatePasswordReset = function () {
 };
 
 UserSchema.methods.getUserInfo = function () {
-  return pick(this, ["_id", "name", "email", "verified"]);
+  return pick(this, [
+    "_id",
+    "name",
+    "email",
+    "verified",
+    "admin",
+    "isFirstTime",
+  ]);
 };
 
 const User = model("users", UserSchema);

@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import "../css/signup.css";
 
 const Signin = () => {
@@ -31,6 +30,7 @@ const Signin = () => {
     }
     return true;
   };
+
   // form submit
 
   const LoginUser = async (e) => {
@@ -47,11 +47,16 @@ const Signin = () => {
           .post("http://localhost:5000/users/api/login", data)
           .then((res) => {
             if (res.data.success) {
+              console.log(res.data);
               localStorage.setItem("token", res.data.token);
               toast.success(
                 res.data.message,
                 setTimeout(function () {
-                  window.location.assign("/welcome");
+                  if(res.data.user.isFirstTime == true){
+                  window.location.href = "/welcome";}
+                  else{
+                    window.location.href = "/homepage";
+                  }
                 }, 2000)
               );
             }
