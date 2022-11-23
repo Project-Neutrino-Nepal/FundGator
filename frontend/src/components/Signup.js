@@ -11,33 +11,64 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
 
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+
+  const validate = () => {
+    if (name === "") {
+      toast.error("Please fill all the fields");
+      return false;
+    }
+
+    if (name === "") {
+      toast.error("Name is required");
+      return false;
+    }
+    if (email == "") {
+      toast.error("Email is required");
+    } else if (!regex.test(email)) {
+      toast.error("Email is invalid");
+      return false;
+    }
+
+    if (password === "") {
+      toast.error("Password is required");
+      return false;
+    } else if (password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return false;
+    }
+    if (confirmpassword === "") {
+      toast.error("Confirm Password is required");
+      return false;
+    }
+    if (password !== confirmpassword) {
+      toast.error("Password and Confirm Password must be same");
+      return false;
+    }
+    return true;
+  };
+
   // on form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(name, email, password, confirmpassword);
     const data = {
       name,
       email,
       password,
     };
-
-    if (password !== confirmpassword) {
-      toast.error("Password does not match");
-      return;
-    }
-
-    try {
-      await axios
-        .post("http://localhost:5000/users/api/register", data)
-        .then((res) => {
-          if (res.data.success === true) {
-            toast.success(res.data.message);
-          } else {
-            toast.error(res.data.message);
-          }
-        });
-    } catch (err) {
-      toast.error(err.message);
+    if (validate()) {
+      try {
+        await axios
+          .post("http://localhost:5000/users/api/register", data)
+          .then((res) => {
+            if (res.data.success) {
+              toast.success(res.data.message,
+              setTimeout(function(){ window.location.assign("/signin")}, 2000 ));
+            }
+          });
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
     }
   };
 
@@ -52,18 +83,16 @@ const Signup = () => {
           </p>
           <div className="d-flex justify-content-center flex-wrap  social-btn text-center">
             <div>
-               <a href="#" className="btn btn-primary btn-lg ms-2 me-2">
-              <i className="fa fa-linkedin" /> LinkedIn
-            </a>
+              <a href="#" className="btn btn-primary btn-lg ms-2 me-2">
+                <i className="fa fa-linkedin" /> LinkedIn
+              </a>
             </div>
-            <div> <a href="#" className="btn btn-danger btn-lg ms-2 me-2">
-              <i className="fa fa-google" /> Google
-            </a>
+            <div>
+              {" "}
+              <a href="#" className="btn btn-danger btn-lg ms-2 me-2">
+                <i className="fa fa-google" /> Google
+              </a>
             </div>
-
-           
-
-            
           </div>
           <div className="or-seperator">
             <b>or</b>
@@ -73,9 +102,8 @@ const Signup = () => {
               type="text"
               className="form-control input-lg"
               name="name"
-              placeholder="name"
+              placeholder="Name"
               id="name"
-              required="required"
               onChange={(e) => setName(e.target.value)}
             />
           </div>
