@@ -37,27 +37,24 @@ const Feeds = () => {
                 className="img-fluid"
               />
               <div className="p-1">
-                <p className="text-justify ">
-                  <p className="fa fa-thumbs-up text-dark ms-2">
-                    {" "}
-                    200 likes . 20 comments . 3 shares
-                  </p>
-                </p>
+                <span className="fs-6 ms-2 " style={{textTransform:'capitalize'}}>
+                  <i className="fa fa-thumbs-up " />&nbsp;10 Likes &emsp;. 200 comments &emsp;. 20 shares
+                </span>
                 <hr />
-                <div className="d-flex justify-content-between align-items-center ms-2 me-2 ">
-                  <div className="d-flex flex-row icons d-flex align-items-center">
-                    <span className="fa fa-thumbs-up">&nbsp; Like </span>
+                <div className="d-flex flex-wrap justify-content-between align-items-center ms-2 me-2 ">
+                  <div className=" align-items-center">
+                    <span > <i className="fa fa-thumbs-up"></i> &nbsp; Like</span>
                   </div>
-                  <div className="d-flex flex-row icons d-flex align-items-center">
+                  <div className=" ">
                     <span className="fa fa-comment" />
                     &nbsp; comment
                   </div>
-                  <div className="d-flex flex-row icons d-flex align-items-center">
-                    <span className="fa fa-heart" />
+                  <div className=" ">
+                    <span className="fa fa-heart text-primary" />
                     &nbsp; favoutite
                   </div>
-                  <div className="d-flex flex-row icons d-flex align-items-center">
-                    <span className="fa fa-share">&nbsp; share </span>
+                  <div className=" ">
+                    <span > <i className="fa fa-share "></i> &nbsp; share </span>
                   </div>
                 </div>
                 <hr />

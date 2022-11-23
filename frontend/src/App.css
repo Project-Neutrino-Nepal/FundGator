@@ -1,2 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap');
 
+body {
+    padding: 0 0 30px 0;
+    background-color: #fafafa;
+    letter-spacing: -0.3px;
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 14px;
+    line-height: 1.6;
+    font-weight: 400;
+    font-family: open sans, Helvetica, Arial, sans-serif;
+  }

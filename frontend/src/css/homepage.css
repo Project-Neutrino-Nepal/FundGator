@@ -22,9 +22,16 @@
     top: 10vh;
 }
 
+/* set the width of the navbar according to size */
 @media only screen and (max-width: 768px) {
     #sidebar-width{
-        width: 25%;
-    }
-    
+        width: 28%;
+    } 
+}
+
+@media only screen and (max-width: 426px) {
+    #sidebar-width{
+        display: none;
+        /* visibility: hidden; */
+    } 
 }

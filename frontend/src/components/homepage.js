@@ -27,7 +27,7 @@ const Homepage = () => {
       {/* <div className="d-flex flex-wrap"> */}
       <div
         className="  p-3 text-white mt-5 col-3 position-fixed"
-        id="sidebar-width" style={{backgroundColor:"#2b4570"}}
+        id="sidebar-width" style={{backgroundColor:"#0d3b66"}}
       >
         <div className="dropdown">
           <a
