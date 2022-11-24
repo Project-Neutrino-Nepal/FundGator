@@ -7,6 +7,7 @@ import Signup from './components/Signup';
 import Signin from './components/singin';
 import { DetailPage, ExplorePage, LandingPage, ProfilePage, UserProfilePage, WelcomePage } from "./pages";
 import CompanyDetails from './components/admin/company_details';
+import Basenav from './components/basenav';
 
 
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="/company" element={<ComProfile />}></Route>
         <Route path="/detail" element={<DetailPage />}></Route>
         <Route path="/comdetails" element={<CompanyDetails/>}></Route>
+        <Route path="/basenav" element={<Basenav/>}></Route>
       </Routes>
     </BrowserRouter>
   );
