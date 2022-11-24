@@ -18,9 +18,9 @@ beforeAll(async () => {
 describe('User Schema test For updating', () => {
     // Testing for updating user
     it('Add User testing updating', () => {
-        return User.findOneAndUpdate({_id : Object('63735ff9f81253f5d8339db7')},{$set : {name:'testing '}})
+        return User.findOneAndUpdate({_id : Object('637752fe4053d5b4c0cff2e9')},{$set : {name:"test"}})
         .then((result) => {
-            expect(result.name).toEqual('sprint met ');
+            expect(result.name).toEqual("Shivakoti");
         });
     });
 })

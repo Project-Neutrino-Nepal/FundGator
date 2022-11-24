@@ -9,12 +9,19 @@ import { DetailPage, ExplorePage, LandingPage, ProfilePage, UserProfilePage, Wel
 import CompanyDetails from './components/admin/company_details';
 import Basenav from './components/basenav';
 
+import Sidebar from './components/Admin/sidebar';
+
+
+
+
+
+
 
 
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
+      {/* <Navbar /> */}
       <Routes>
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/signin" element={<Signin />}></Route>
@@ -28,6 +35,19 @@ function App() {
         <Route path="/detail" element={<DetailPage />}></Route>
         <Route path="/comdetails" element={<CompanyDetails/>}></Route>
         <Route path="/basenav" element={<Basenav/>}></Route>
+        <Route path="/company" element={<ComProfile/>}></Route>
+        <Route path="/admin-nav" element={<navbarAdmin/>}></Route>
+        <Route path="/sidebar" element={<Sidebar/>}></Route>
+        {/* <Route path="/dashboard" element={<Layout/>}></Route> */}
+
+        
+       
+-
+        
+
+         
+
+        
       </Routes>
     </BrowserRouter>
   );
