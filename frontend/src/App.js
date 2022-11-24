@@ -8,6 +8,7 @@ import Signin from './components/singin';
 import { DetailPage, ExplorePage, LandingPage, ProfilePage, UserProfilePage, WelcomePage } from "./pages";
 import CompanyDetails from './components/admin/company_details';
 import Basenav from './components/basenav';
+import Categories from './components/admin/categories';
 
 import Sidebar from './components/admin/sidebar';
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path="/company" element={<ComProfile/>}></Route>
         <Route path="/admin-nav" element={<navbarAdmin/>}></Route>
         <Route path="/sidebar" element={<Sidebar/>}></Route>
+        <Route path="/category" element={<Categories/>}></Route>
         {/* <Route path="/dashboard" element={<Layout/>}></Route> */}
       </Routes>
     </BrowserRouter>
