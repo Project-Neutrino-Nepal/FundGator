@@ -10,7 +10,24 @@ import CompanyDetails from './components/admin/company_details';
 import Basenav from './components/basenav';
 import Categories from './components/admin/categories';
 
-import Sidebar from './components/admin/sidebar';
+
+import Home from './components/admin/pages/Home';
+import Profile from './components/admin/pages/Profile';
+import Tables from './components/admin/pages/Tables';
+
+import Main from './components/admin/components/layout/Main';
+import 'antd/dist/antd.min.css';
+// import "antd/dist/antd.css";
+ import "./components/admin/assets/styles/main.css";
+ import "./components/admin/assets/styles/responsive.css";
+
+
+
+
+
+
+
+
 function App() {
   return (
     <BrowserRouter>
@@ -33,6 +50,18 @@ function App() {
         <Route path="/sidebar" element={<Sidebar/>}></Route>
         <Route path="/category" element={<Categories/>}></Route>
         {/* <Route path="/dashboard" element={<Layout/>}></Route> */}
+        
+              
+        
+         {/* DASHBOARD ROUTES */}
+        <Route path="/dashboard" element={<Main />}>
+          <Route path="" element={<Home />} />
+          <Route path="/dashboard/tables" element={<Tables />} />
+          <Route path="/dashboard/profile" element={<Profile />} />
+
+          {/* Add others routes of dashboard below */}
+        </Route>
+  
       </Routes>
     </BrowserRouter>
   );
