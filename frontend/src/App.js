@@ -16,8 +16,8 @@ import Tables from './components/admin/pages/Tables';
 import Main from './components/admin/components/layout/Main';
 import 'antd/dist/antd.min.css';
 // import "antd/dist/antd.css";
- import "./components/admin/assets/styles/main.css";
- import "./components/admin/assets/styles/responsive.css";
+import "./components/admin/assets/styles/main.css";
+import "./components/admin/assets/styles/responsive.css";
 import CompanyAdmin from './components/admin/pages/company';
 
 
