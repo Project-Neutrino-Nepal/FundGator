@@ -25,13 +25,25 @@
 /* set the width of the navbar according to size */
 @media only screen and (max-width: 768px) {
     #sidebar-width{
-        width: 28%;
+        width: 30%;
     } 
 }
 
 @media only screen and (max-width: 426px) {
     #sidebar-width{
         display: none;
-        /* visibility: hidden; */
+    } 
+    #feeds-position{
+        margin-left: 0.5%;
+        width: 100%;
+        top: 33vh;
     } 
 }
+
+
+@media only screen and (min-width:426px) and (max-width: 2565px) {
+    .basenav{
+        display: none;
+    } 
+}
+    

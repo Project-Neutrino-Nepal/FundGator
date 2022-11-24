@@ -3,7 +3,6 @@ import "../css/feeds.css";
 const Feeds = () => {
   return (
     <>
-      <div className="container mb-3">
         <div className="row d-flex align-items-center justify-content-center">
           <div className="col-md-7">
             <div className="card">
@@ -104,7 +103,6 @@ const Feeds = () => {
             </div>
           </div>
         </div>
-      </div>
     </>
   );
 };

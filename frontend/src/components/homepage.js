@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "../css/homepage.css";
+import Basenav from "./basenav";
 import Feeds from "./feeds";
 
 const Homepage = () => {
@@ -29,6 +30,9 @@ const Homepage = () => {
 
   return (
     <>
+    <div className="basenav">
+      <Basenav/>
+    </div>
       {/* <div className="d-flex flex-wrap"> */}
       <div
         className="  p-3 text-white mt-5 col-3 position-fixed"
