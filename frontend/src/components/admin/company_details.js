@@ -13,13 +13,13 @@ const CompanyDetails = () => {
             <h3>Company Details</h3>
           </div>
 
-          <div className="mt-3 mb-2">
-            <span>
+          <div className="mt-3 mb-2 ">
+            <span className="">
               <img
-                className=" h-75 border border-5 rounded-circle"
+                className=" border "
                 src="https://cdn.dribbble.com/users/3293507/screenshots/14667603/media/d8cbe035a61f64afdf6deabca5182842.jpg?compress=1&resize=400x300&vertical=top"
                 alt="profile"
-                style={{ borderRadius: "100%", width: "12%" }}
+                style={{  width: "90px",height:"90px",borderRadius:"70%" }}
               />
             </span>
           </div>
