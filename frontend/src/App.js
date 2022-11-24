@@ -19,6 +19,7 @@ import 'antd/dist/antd.min.css';
  import "./components/admin/assets/styles/main.css";
  import "./components/admin/assets/styles/responsive.css";
 import CompanyAdmin from './components/admin/pages/company';
+import InvestorAdmin from './components/admin/pages/investor';
 
 
 
@@ -52,9 +53,12 @@ function App() {
          {/* DASHBOARD ROUTES */}
         <Route path="/dashboard" element={<Main />}>
           <Route path="" element={<Home />} />
-          <Route path="/dashboard/tables" element={<Tables />} />
+
+          {/* There is no need of tables for now */}
+          {/* <Route path="/dashboard/tables" element={<Tables />} /> */}
           <Route path="/dashboard/profile" element={<Profile />} />
           <Route path="/dashboard/company_admin" element={<CompanyAdmin />} />
+          <Route path="/dashboard/investor_admin" element={<InvestorAdmin />} />
 
           {/* Add others routes of dashboard below */}
         </Route>
