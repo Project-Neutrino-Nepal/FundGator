@@ -44,12 +44,9 @@ function App() {
         <Route path="/company" element={<ComProfile />}></Route>
         <Route path="/detail" element={<DetailPage />}></Route>
         <Route path="/comdetails" element={<CompanyDetails/>}></Route>
-        <Route path="/basenav" element={<Basenav/>}></Route>
         <Route path="/company" element={<ComProfile/>}></Route>
         <Route path="/admin-nav" element={<navbarAdmin/>}></Route>
-        <Route path="/sidebar" element={<Sidebar/>}></Route>
         <Route path="/category" element={<Categories/>}></Route>
-        {/* <Route path="/dashboard" element={<Layout/>}></Route> */}
         
               
         
