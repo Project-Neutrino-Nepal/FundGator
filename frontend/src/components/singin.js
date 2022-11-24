@@ -3,57 +3,79 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import "../css/signup.css";
 
-// 
-
-export function Signin() {
+const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+
+  const validate = () => {
+    if (email === "" && password === "") {
+      toast.error("All fields are Required.");
+      return false;
+    }
+    if (email === "") {
+      toast.error("Email is required");
+    } else if (!regex.test(email)) {
+      toast.error("Email is invalid");
+      return false;
+    }
+
+    if (password === "") {
+      toast.error("Password is required");
+    } else if (password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return false;
+    }
+    return true;
+  };
 
   // form submit
 
   const LoginUser = async (e) => {
-    try {
-      // stop the form from reloading the page
-      e.preventDefault();
-      
-      const data = {
-        email: email,
-        password: password,
-      };
-      console.log(data);
-      await axios
-        .post("http://localhost:5000/users/api/login", data)
-        .then((res) => {
-          if (res.data.token) {
-            console.log(res);
+    // stop the form from reloading the page
+    e.preventDefault();
 
-            var token = res.data.token;
-            console.log(token);
-            localStorage.setItem("token", token);
-            window.location.replace("welcome");
-          }
-          setEmail("");
-          setPassword("");
-          res.data.success === true
-            ? toast.success(res.data.message)
-            : toast.error(res.data.message);
-          // setSuccess(true);
-        });
-    } catch (err) {
-      if (err === "  Request failed with status code 401") {
-        toast.info("please verify your email address");
+    const data = {
+      email: email,
+      password: password,
+    };
+    if (validate()) {
+      try {
+        await axios
+          .post("http://localhost:5000/users/api/login", data)
+          .then((res) => {
+            if (res.data.success) {
+              console.log(res.data);
+              localStorage.setItem("token", res.data.token);
+              toast.success(
+                res.data.message,
+                setTimeout(function () {
+                  if(res.data.user.admin === true){
+                    window.location.href = "/admin";
+                  }else{
+                  if(res.data.user.isFirstTime == true){
+                  window.location.href = "/welcome";}
+                  else{
+                    window.location.href = "/homepage";
+                  }
+                }}, 2000)
+              );
+            }
+          });
+      } catch (error) {
+        toast.error(error.response.data.message);
       }
     }
   };
 
   return (
     <>
+    <div className="container-sm-fluid  bg-image mt-0 bg-white " >
       <ToastContainer />
-      <div className="signup-form mt-5">
-        <form id="loginForm" >
+      <div className="signup-form " >
+        <form id="loginForm shadow border" >
           <h3 className="fs-3 fw-semibold">Hi! Welcome in FundGator</h3>
           <p className="hint-text">
             Get Login with your social media account or email address
@@ -61,13 +83,13 @@ export function Signin() {
           <div className="d-flex justify-content-center flex-wrap  social-btn text-center">
             <div>
               <a href="#" className="btn btn-primary btn-lg ms-2 me-2">
-                <i className="fa fa-linkedin" /> LinkedIn
+              <i className="fa-brands fa-linkedin-in"/>LinkedIn
               </a>
             </div>
             <div>
               {" "}
               <a href="#" className="btn btn-danger btn-lg ms-2 me-2">
-                <i className="fa fa-google" /> Google
+              <i className="fa-brands fa-google"/>Google
               </a>
             </div>
           </div>
@@ -116,6 +138,9 @@ export function Signin() {
           New to FundGator? <Link to="/signup">SingUp here</Link>
         </div>
       </div>
+      </div>
     </>
   );
-}
+};
+
+export default Signin;

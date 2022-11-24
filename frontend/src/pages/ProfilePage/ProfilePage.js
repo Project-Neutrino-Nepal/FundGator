@@ -20,7 +20,6 @@ const ProfilePage = () => {
     dropdown: false,
     tab: "tax document",
     activeindex: 0,
-    
   };
   const [activeindex, setActive] = useState(1);
   const [dropdown, setDropdown] = useState(false);
@@ -38,18 +37,18 @@ const ProfilePage = () => {
     setActive(6);
   };
 
-  const onuploadimg = (e)=>{
-    console.log(e.target.value)
+  const onuploadimg = (e) => {
+    console.log(e.target.value);
     setPreview({ ...image, file: e.target.files[0] });
-     if (e.target.files && e.target.files[0]) {
-       let reader = new FileReader();
+    if (e.target.files && e.target.files[0]) {
+      let reader = new FileReader();
 
-       reader.onload = function () {
-         setPreview({...image,preview:reader.result});
-       };
-       reader.readAsDataURL(e.target.files[0]);
-     }
-  }
+      reader.onload = function () {
+        setPreview({ ...image, preview: reader.result });
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
 
   const { id } = useParams();
   useEffect(() => {
@@ -98,7 +97,13 @@ const ProfilePage = () => {
               className="rounded-circle "
             />
             <div className="upload-img">
-              <input type="file" name="" id="" className="file-upload" onChange={onuploadimg} />
+              <input
+                type="file"
+                name=""
+                id=""
+                className="file-upload"
+                onChange={onuploadimg}
+              />
               <AiFillEdit className="icon" />
             </div>
           </div>
