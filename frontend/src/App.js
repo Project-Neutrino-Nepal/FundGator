@@ -9,7 +9,7 @@ import { DetailPage, ExplorePage, LandingPage, ProfilePage, UserProfilePage, Wel
 import CompanyDetails from './components/admin/company_details';
 import Basenav from './components/basenav';
 
-import Sidebar from './components/admin/sidebar';
+
 import Home from './components/admin/pages/Home';
 import Profile from './components/admin/pages/Profile';
 import Tables from './components/admin/pages/Tables';
@@ -46,7 +46,7 @@ function App() {
         <Route path="/basenav" element={<Basenav/>}></Route>
         <Route path="/company" element={<ComProfile/>}></Route>
         <Route path="/admin-nav" element={<navbarAdmin/>}></Route>
-        <Route path="/sidebar" element={<Sidebar/>}></Route>
+        
               
         
          {/* DASHBOARD ROUTES */}
