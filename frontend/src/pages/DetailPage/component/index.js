@@ -6,6 +6,8 @@ import WhatInvestorSay from "./WhatInvestorSay";
 import SingleComment from "./SingleComment";
 import AskAQuestion from "./AskAQuestion";
 import OurFounder from "./OurFounder";
+import Update from "./Update";
+
 export {
   LeadInvestor,
   InvestmentTerm,
@@ -14,5 +16,6 @@ export {
   WhatInvestorSay,
   SingleComment,
   AskAQuestion,
-  OurFounder
+  OurFounder,
+  Update
 };
