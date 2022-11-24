@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { AiFillCamera } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Wrapper from "./wrapper/WelcomePage";
@@ -11,6 +12,10 @@ const WelcomePage = () => {
   const [bio, setBio] = useState("");
   const [website, setWebsite] = useState("");
   const [skills, setSkills] = useState("");
+  const [image, setPreview] = useState({
+    preview: "https://github.com/mdo.png",
+    file: "",
+  });
 
   const config = {
     headers: {
@@ -18,10 +23,30 @@ const WelcomePage = () => {
     },
   };
 
-  const config2 = {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
+  const onuploadimg = (e) => {
+    console.log(e.target.value);
+    setPreview({ ...image, file: e.target.files[0] });
+    if (e.target.files && e.target.files[0]) {
+      console.log(e.target.files[0]);
+
+      const formData = new FormData();
+      formData.append("avatar", e.target.files[0]);
+      axios
+        .put(
+          "http://localhost:5000/profile/api/update-profile",
+          formData,
+          config
+        )
+        .then((res) => {
+          toast.success("Profile updated successfully");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      setPreview({ ...image, preview: " " });
+      console.log("no file selected");
+    }
   };
   const validate = () => {
     if (
@@ -58,7 +83,7 @@ const WelcomePage = () => {
 
   const UpdateUser = async (e) => {
     await axios
-      .put("http://localhost:5000/users/api/update-user", config2)
+      .put("http://localhost:5000/users/api/update-user", config)
       .then((res) => {
         if (res.data.success) {
           console.log(res.data);
@@ -126,8 +151,12 @@ const WelcomePage = () => {
               }}
             />
             <br />
-            <label className="m-2"> Country:&nbsp;&nbsp;&nbsp; &emsp; &nbsp;</label>
-            <input className="p-1 "
+            <label className="m-2">
+              {" "}
+              Country:&nbsp;&nbsp;&nbsp; &emsp; &nbsp;
+            </label>
+            <input
+              className="p-1 "
               type="text"
               placeholder="Enter Your Country"
               id="country"
@@ -158,10 +187,39 @@ const WelcomePage = () => {
             <h4 className="heading">Public Infomration</h4>
             <p>show founders </p>
             <div className="information">
-              <img
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=464&q=80"
-                alt=""
-              />
+              <div className="edit-img">
+                <img
+                  src={image.preview}
+                  style={{ width: "100px", height: "100px" }}
+                  alt="profile_avatar"
+                  className="rounded-circle border border-2 border-grey"
+                  onChange={onuploadimg}
+                />
+                <div className="upload-img">
+                  <input
+                    type="file"
+                    name=""
+                    id=""
+                    className="file-upload"
+                    onChange={onuploadimg}
+                  />
+                  <div
+                    style={{
+                      // position: "relative",
+                      // left: "80px",
+                      // top: "70px",
+                      borderRadius: "50%",
+                      height: "30px",
+                      width: "30px",
+                      cursor: "pointer",
+                      backgroundColor: "white",
+                    }}
+                    className="text-center border border-2 border-grey"
+                  >
+                    <AiFillCamera className="icon text-dark " />
+                  </div>
+                </div>
+              </div>
               <div className="inputs">
                 <textarea
                   name=""
