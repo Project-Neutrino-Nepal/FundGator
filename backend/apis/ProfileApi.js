@@ -3,18 +3,23 @@ const router = express.Router();
 const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
 const userAuth = require("../middlewares/auth-guard");
-const { uploadProfileImage: uploader } = require("../middlewares/uploader");
+const  uploadProfileImage = require("../middlewares/uploader").uploadProfileImage;
+const validator = require("../middlewares/validator-middleware");
+const DOMAIN = "http://127.0.0.1:5000/";
+
 
 /**
  * @description To edit authenticated user profile
  * @api /users/api/update-profile
  * @access PRIVATE
- * @type PUT
+ * @type PUT <multipart-form> request
  */
 
 router.put(
   "/api/update-profile",
   userAuth,
+  uploadProfileImage.single("avatar"),
+  validator,
   async (req, res) => {
     try {
       let { body } = req;
@@ -27,13 +32,19 @@ router.put(
         });
       }
 
-      const updatedProfile = await Profile.updateMany(
+      let file = req.file;
+
+      let filename = DOMAIN + "uploads/profile-images/" + file.filename;
+
+      const updatedProfile = await Profile.findOneAndUpdate(
         { user: req.user._id },
         {
           ...body,
+          avatar: filename,
         },
         { new: true }
       );
+      console.log(filename);
 
       res.status(200).json({
         success: true,

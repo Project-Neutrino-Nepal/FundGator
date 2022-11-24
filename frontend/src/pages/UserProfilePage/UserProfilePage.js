@@ -10,6 +10,10 @@ const UserProfilePage = () => {
   const [address, setAddress] = useState("");
   const [skills, setSkills] = useState("");
   const [createdDate, setCreatedDate] = useState("");
+  const [image, setPreview] = useState({
+    preview: "https://github.com/mdo.png",
+    file: "",
+  });
 
   const config = {
     headers: {
@@ -30,6 +34,8 @@ const UserProfilePage = () => {
         setAddress(program.address);
         setSkills(program.skills);
         setCreatedDate(program.createdAt);
+        setPreview({ ...image, preview: program.avatar });
+
       });
   });
 
@@ -37,7 +43,7 @@ const UserProfilePage = () => {
     <Wrapper>
       <div className="left-container">
         <img
-          src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fG1vZGVsfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
+          src={image.preview}
           alt=""
           className="profilepic"
         />

@@ -6,6 +6,10 @@ import Feeds from "./feeds";
 
 const Homepage = () => {
   const [name, setName] = useState("");
+  const [image, setPreview] = useState({
+    preview: "https://github.com/mdo.png",
+    file: "",
+  });
 
   const config = {
     headers: {
@@ -20,6 +24,7 @@ const Homepage = () => {
       .then((res) => {
         let program = res.data.profile;
         setName(program.name);
+        setPreview({ ...image, preview: program.avatar });
       });
   });
 
@@ -42,7 +47,7 @@ const Homepage = () => {
             aria-expanded="false"
           >
             <img
-              src="https://github.com/mdo.png"
+              src={image.preview}
               alt=""
               width={65}
               height={65}

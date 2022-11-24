@@ -6,14 +6,14 @@ import Navbar from './components/navbar.js';
 import Signup from './components/Signup';
 import Signin from './components/singin';
 import { DetailPage, ExplorePage, LandingPage, ProfilePage, UserProfilePage, WelcomePage } from "./pages";
-import CompanyDetails from './components/admin/company_details';
-import Categories from './components/admin/categories';
-import Home from './components/admin/pages/Home';
-import Profile from './components/admin/pages/Profile';
-import Tables from './components/admin/pages/Tables';
+import CompanyDetails from './components/Admin/company_details';
+import Categories from './components/Admin/categories';
+import Home from './components/Admin/pages/Home';
+import Profile from './components/Admin/pages/Profile';
+import Tables from './components/Admin/pages/Tables';
 
 
-import Main from './components/admin/components/layout/Main';
+import Main from './components/Admin/components/layout/Main';
 import 'antd/dist/antd.min.css';
 // import "antd/dist/antd.css";
  import "./components/admin/assets/styles/main.css";

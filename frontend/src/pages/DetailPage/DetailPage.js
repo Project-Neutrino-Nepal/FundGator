@@ -11,6 +11,7 @@ import {
   Detail,
   WhatInvestorSay,
   AskAQuestion,
+  Update,
 } from "./component";
 import { Link } from "react-router-dom";
 import { AiFillFacebook, AiFillTwitterSquare } from "react-icons/ai";
@@ -126,6 +127,8 @@ const DetailPage = () => {
         <section className="five">
           {activeindex === 1 ? <Overview /> : null}
           {activeindex === 2 ? <Detail /> : null}
+          {activeindex === 3 ? <Update /> : null}
+
           {activeindex === 4 ? <WhatInvestorSay /> : null}
           {activeindex === 5 ? <AskAQuestion /> : null}
         </section>

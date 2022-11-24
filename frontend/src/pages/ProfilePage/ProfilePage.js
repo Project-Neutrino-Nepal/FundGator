@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { AiFillCamera } from "react-icons/ai";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link, useParams } from "react-router-dom";
-import { AiFillEdit } from "react-icons/ai";
+import { toast, ToastContainer } from "react-toastify";
 import {
   BankandCards,
   Cash,
@@ -37,16 +38,42 @@ const ProfilePage = () => {
     setActive(6);
   };
 
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+
   const onuploadimg = (e) => {
     console.log(e.target.value);
     setPreview({ ...image, file: e.target.files[0] });
     if (e.target.files && e.target.files[0]) {
-      let reader = new FileReader();
+      console.log(e.target.files[0]);
+      // let reader = new FileReader();
+      // reader.onload = function () {
+      //   setPreview({ ...image, preview: reader.result });
 
-      reader.onload = function () {
-        setPreview({ ...image, preview: reader.result });
-      };
-      reader.readAsDataURL(e.target.files[0]);
+      // };
+      // reader.readAsDataURL(e.target.files[0]);
+
+      const formData = new FormData();
+      formData.append("avatar", e.target.files[0]);
+      axios
+        .put(
+          "http://localhost:5000/profile/api/update-profile",
+          formData,
+          config
+        )
+        .then((res) => {
+          toast.success("Profile updated successfully");
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      setPreview({ ...image, preview: " " });
+      console.log("no file selected");
     }
   };
 
@@ -70,12 +97,6 @@ const ProfilePage = () => {
   }, []);
   const [name, setName] = useState("");
 
-  const config = {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
-  };
-
   // fetching Profile data from API
   useEffect(() => {
     axios
@@ -83,18 +104,21 @@ const ProfilePage = () => {
       .then((res) => {
         let program = res.data.profile;
         setName(program.name);
+        setPreview({ ...image, preview: program.avatar });
       });
   });
 
   return (
     <Wrapper>
+      <ToastContainer />
       <section className="infocontainer mt-5">
         <div className="userinfo">
           <div className="edit-img">
             <img
               src={image.preview}
               alt="profile_avatar"
-              className="rounded-circle "
+              className="rounded-circle border border-2 border-grey"
+              onChange={onuploadimg}
             />
             <div className="upload-img">
               <input
@@ -104,9 +128,24 @@ const ProfilePage = () => {
                 className="file-upload"
                 onChange={onuploadimg}
               />
-              <AiFillEdit className="icon" />
+              <div
+                style={{
+                  // position: "relative",
+                  // left: "80px",
+                  // top: "70px",
+                  borderRadius: "50%",
+                  height: "30px",
+                  width: "30px",
+                  cursor: "pointer",
+                  backgroundColor: "white",
+                }}
+                className="text-center border border-2 border-grey"
+              >
+                <AiFillCamera className="icon text-dark " />
+              </div>
             </div>
           </div>
+
           <div className="info">
             <h5>{name}</h5>
 

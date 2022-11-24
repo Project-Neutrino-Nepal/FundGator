@@ -6,6 +6,10 @@ import axios from "axios";
 function Navbar() {
 
     const [name, setName] = useState("");
+    const [image, setPreview] = useState({
+      preview: "https://github.com/mdo.png",
+      file: "",
+    });
  
 
     const config = {
@@ -21,6 +25,7 @@ function Navbar() {
         .then((res) => {
           let program = res.data.profile;
           setName(program.name);
+          setPreview({ ...image, preview: program.avatar });
         });
     });
 
@@ -184,7 +189,7 @@ function Navbar() {
                     aria-expanded="false"
                   >
                     <img
-                      src="https://github.com/mdo.png"
+                      src={image.preview}
                       alt=""
                       width={55}
                       height={55}

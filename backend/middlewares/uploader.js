@@ -18,7 +18,7 @@ const filter = (req, file, next) => {
   }
 };
 const destination = (req, file, next) => {
-  next(null, `${__dirname}/../uploads`);
+  next(null, `${__dirname}/../uploads/`);
 };
 
 const profileImageDestination = (req, file, next) => {
@@ -37,7 +37,7 @@ const companyVideoDestination = (req, file, next) => {
   next(null, `${__dirname}/../uploads/company-videos`);
 };
 
-module.exports = uploadProfileImage = multer({
+const uploadProfileImage = multer({
   storage: multer.diskStorage({
     destination: profileImageDestination,
     filename,
@@ -45,7 +45,7 @@ module.exports = uploadProfileImage = multer({
   fileFilter: filter,
 });
 
-module.exports = uploadPostsImage = multer({
+const uploadPostsImage = multer({
   storage: multer.diskStorage({
     destination: postsImageDestination,
     filename,
@@ -53,7 +53,7 @@ module.exports = uploadPostsImage = multer({
   fileFilter: filter,
 });
 
-module.exports = uploadCompanyImage = multer({
+const uploadCompanyImage = multer({
   storage: multer.diskStorage({
     destination: companyImageDestination,
     filename,
@@ -61,7 +61,7 @@ module.exports = uploadCompanyImage = multer({
   fileFilter: filter,
 });
 
-module.exports = uploadCompanyVideo = multer({
+const uploadCompanyVideo = multer({
   storage: multer.diskStorage({
     destination: companyVideoDestination,
     filename,
@@ -74,4 +74,10 @@ const upload = multer({
   fileFilter: filter,
 });
 
-module.exports = upload;
+module.exports = {
+  upload,
+  uploadProfileImage,
+  uploadPostsImage,
+  uploadCompanyImage,
+  uploadCompanyVideo,
+};
