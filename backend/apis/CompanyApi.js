@@ -3,6 +3,13 @@ const router = express.Router();
 const Company = require("../models/companyModel");
 const userAuth = require("../middlewares/auth-guard");
 const { find } = require("../models/companyModel");
+const User = require("../models/userModel");
+const Profile = require("../models/profileModel");
+const uploadCompanyVideo =
+  require("../middlewares/uploader").uploadCompanyVideo;
+const uploadCompanyImage =
+  require("../middlewares/uploader").uploadCompanyImage;
+const DOMAIN = "http://127.0.0.1:5000/";
 
 /**
  * @description To create Company by authenticated user
@@ -10,34 +17,92 @@ const { find } = require("../models/companyModel");
  * @access PRIVATE
  * @type POST
  */
-router.post("/api/create-company", userAuth, async (req, res) => {
-  try {
-    let { body } = req;
-    let company = await Company.findOne({ name: body.name });
-    if (company) {
-      return res.status(400).json({
+
+router.post(
+  "/api/create-company",
+  userAuth,
+  uploadCompanyImage.single("image"),
+
+  async (req, res) => {
+    try {
+      let { body } = req;
+      let company = await Company.findOne({ name: body.name });
+      if (company) {
+        return res.status(400).json({
+          success: false,
+          message: "Company already exists",
+        });
+      }
+      let file = req.file;
+      if (file === undefined || file === null) {
+        filename = DOMAIN + "uploads/assets/" + "default_company.svg";
+      } else {
+        filename = DOMAIN + "uploads/company-images/" + file.filename;
+      }
+      const userProfile = await Profile.findOne({ user: req.user._id });
+      company = new Company({
+        user: req.user._id,
+        profile: userProfile,
+        ...body,
+        image: filename,
+      });
+      await company.save();
+      res.status(200).json({
+        success: true,
+        message: "Company created successfully",
+        company,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
         success: false,
-        message: "Company already exists",
+        message: "Internal server error",
       });
     }
-    company = new Company({
-      user: req.user._id,
-      ...body,
-    });
-    await company.save();
-    res.status(200).json({
-      success: true,
-      message: "Company created successfully",
-      company,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
   }
-});
+);
+
+/**
+ * @description To upload company video
+ * @api /company/api/upload-video
+ * @access PRIVATE
+ * @type PUT
+ * */
+
+router.put(
+  "/api/upload-video",
+  userAuth,
+  uploadCompanyVideo.single("company_video"),
+  async (req, res) => {
+    try {
+      let { body } = req;
+      let file = req.file;
+      if (file === undefined || file === null) {
+        filename = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
+      } else {
+        filename = DOMAIN + "uploads/company-videos/" + file.filename;
+      }
+      const company = await Company.updateOne(
+        { user: req.user._id },
+        {
+          company_video: filename,
+        },
+        { new: true }
+      );
+      res.status(200).json({
+        success: true,
+        message: "Video uploaded successfully",
+        company,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
+  }
+);
 
 /**
  * @description To update Company
@@ -113,7 +178,10 @@ router.delete("/api/delete-company/:id", userAuth, async (req, res) => {
 
 router.get("/api/get-my-companies", userAuth, async (req, res) => {
   try {
-    let companies = await Company.find({ user: req.user._id });
+    let companies = await Company.find({ user: req.user._id })
+      .populate("category")
+      .populate("profile")
+      .exec();
     if (!companies) {
       return res.status(400).json({
         success: false,
@@ -136,7 +204,7 @@ router.get("/api/get-my-companies", userAuth, async (req, res) => {
 });
 
 /**
- * @description To get all Companies
+ * @description To get all Companies and their owners
  * @api /company/api/companies
  * @access Public
  * @type GET
@@ -144,7 +212,12 @@ router.get("/api/get-my-companies", userAuth, async (req, res) => {
 
 router.get("/api/companies", async (req, res) => {
   try {
-    let companies = await Company.find();
+    let companies = await Company.find({ verified: true })
+      .populate("user")
+      .populate("category")
+      .populate("profile")
+      .exec();
+
     if (!companies) {
       return res.status(400).json({
         success: false,
@@ -152,11 +225,10 @@ router.get("/api/companies", async (req, res) => {
       });
     }
 
-    let company = await Company.find({ verified: true });
     return res.status(200).json({
       success: true,
       message: "Companies Retrieved Successfully",
-      company,
+      companies,
     });
   } catch (err) {
     console.log(err);
@@ -166,6 +238,31 @@ router.get("/api/companies", async (req, res) => {
     });
   }
 });
+
+// router.get("/api/companies", async (req, res) => {
+//   try {
+//     let companies = await Company.find();
+//     if (!companies) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "No Companies Found",
+//       });
+//     }
+
+//     let company = await Company.find({ verified: true });
+//     return res.status(200).json({
+//       success: true,
+//       message: "Companies Retrieved Successfully",
+//       company,
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(500).json({
+//       success: false,
+//       message: "An error occurred.",
+//     });
+//   }
+// });
 
 /**
  * @description To search Company
