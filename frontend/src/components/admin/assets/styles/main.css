@@ -1,13 +1,7 @@
 /*!
 =========================================================
 * Muse Ant Design Dashboard - v1.0.0
-=========================================================
-* Product Page: https://www.creative-tim.com/product/muse-ant-design-dashboard
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/muse-ant-design-dashboard/blob/main/LICENSE.md)
-* Coded by Creative Tim
-=========================================================
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
 */
 body {
   padding: 0 0 30px 0;
@@ -2372,11 +2366,11 @@ section.ant-layout.layout-content .ant-layout-content.content-ant {
 .ant-row-flex-middle {
   align-items: center;
 }
-.d-flex {
+/* .d-flex {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-}
+} */
 .payment-method-card.ant-card {
   box-shadow: none;
   word-spacing: 10px;
