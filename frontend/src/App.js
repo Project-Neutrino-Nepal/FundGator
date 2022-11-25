@@ -1,7 +1,7 @@
 import "antd/dist/antd.min.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Categories from './components/admin/categories';
+import Categories from './components/admin/pages/categories';
 import CompanyDetails from './components/admin/company_details';
 import Main from "./components/admin/components/layout/Main";
 import Home from './components/admin/pages/Home';
