@@ -4,32 +4,30 @@ import { Link } from "react-router-dom";
 import "../css/nav-search.css";
 
 function Navbar() {
+  const [name, setName] = useState("");
+  const [admin, setAdmin] = useState(false);
+  const [image, setPreview] = useState({
+    preview: "https://github.com/mdo.png",
+    file: "",
+  });
 
-    const [name, setName] = useState("");
-    const [admin, setAdmin] = useState(false);
-    const [image, setPreview] = useState({
-      preview: "https://github.com/mdo.png",
-      file: "",
-    });
- 
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
 
-    const config = {
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-    };
-
-    // fetching Profile data from API
-    useEffect(() => {
-      axios
-        .get("http://localhost:5000/profile/api/my-profile", config)
-        .then((res) => {
-          let program = res.data.profile;
-          setName(program.name);
-          setAdmin(program.admin);
-          setPreview({ ...image, preview: program.avatar });
-        });
-    });
+  // fetching Profile data from API
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/profile/api/my-profile", config)
+      .then((res) => {
+        let program = res.data.profile;
+        setName(program.name);
+        setAdmin(program.admin);
+        setPreview({ ...image, preview: program.avatar });
+      });
+  });
 
   const logout = async (e) => {
     localStorage.clear();
@@ -40,7 +38,10 @@ function Navbar() {
   if (localStorage.getItem("token") === null) {
     return (
       <>
-        <nav className="navbar navbar-expand-lg navbar-dark  navbar-fixed-top" style={{backgroundColor:'#0d3b66'}}>
+        <nav
+          className="navbar navbar-expand-lg navbar-dark  navbar-fixed-top"
+          style={{ backgroundColor: "#0a4fa3" }}
+        >
           <div className="container-fluid ms-4 me-4">
             <Link className="navbar-brand" to="/">
               FundGator
@@ -62,7 +63,11 @@ function Navbar() {
             >
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <Link className="nav-link active" aria-current="page" to="explore">
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    to="explore"
+                  >
                     Explore
                   </Link>
                 </li>
@@ -84,14 +89,22 @@ function Navbar() {
               </form>
 
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li className="nav-item me-2">
-                  <Link className="nav-link active" aria-current="page" to="comProfile">
-                    Raise funding 
+                <li className="nav-item me-2">
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    to="comProfile"
+                  >
+                    Raise funding
                   </Link>
                 </li>
                 <li className="nav-item me-2">
-                  <Link className="nav-link active" aria-current="page" to="overview">
-                    FAQ 
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    to="overview"
+                  >
+                    FAQ
                   </Link>
                 </li>
                 <li className="nav-item border-start ms-2">
@@ -118,13 +131,15 @@ function Navbar() {
         </nav>
       </>
     );
-  }
-  if (localStorage.getItem("token") && admin === false) {
+  } else if (localStorage.getItem("token") && !admin) {
     return (
       <>
-        <nav className="navbar navbar-expand-lg  navbar-dark fixed-top mb-5" style={{backgroundColor:'#0d3b66'}}>
+        <nav
+          className="navbar navbar-expand-lg  navbar-dark fixed-top mb-5"
+          style={{ backgroundColor: "#0a4fa3" }}
+        >
           <div className="container-fluid ms-4 me-4">
-            <Link className="navbar-brand" to="Homepage">
+            <Link className="navbar-brand" to="/homepage">
               FundGator
             </Link>
             <button
@@ -195,7 +210,7 @@ function Navbar() {
                       alt=""
                       width={55}
                       height={55}
-                      className="rounded-circle me-2 ms-3"
+                      className="rounded-circle me-2 ms-3 border border-grey border-2"
                     />
                     <strong>{name} </strong>
                   </a>
@@ -248,9 +263,12 @@ function Navbar() {
       </>
     );
   } else {
-     return (
+    return (
       <>
-        <nav className="navbar navbar-expand-lg  navbar-dark fixed-top mb-5" style={{backgroundColor:'#0d3b66'}}>
+        <nav
+          className="navbar navbar-expand-lg  navbar-dark fixed-top mb-5"
+          style={{ backgroundColor: "#0a4fa3" }}
+        >
           <div className="container-fluid ms-4 me-4">
             <Link className="navbar-brand" to="/dashboard">
               FundGator
@@ -374,8 +392,8 @@ function Navbar() {
           </div>
         </nav>
       </>
-     );
-  } 
+    );
+  }
 }
 
 export default Navbar;
