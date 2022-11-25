@@ -152,12 +152,12 @@ router.get("/api/companies", async (req, res) => {
       });
     }
 
-    let company = await Company.find({verified: true});
-      return res.status(200).json({
-        success: true,
-        message: "Companies Retrieved Successfully",
-        company,
-      });
+    let company = await Company.find({ verified: true });
+    return res.status(200).json({
+      success: true,
+      message: "Companies Retrieved Successfully",
+      company,
+    });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
@@ -195,6 +195,37 @@ router.post("/api/search-company", async (req, res) => {
 
       message: "Company Retrieved Successfully",
       company,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To get number of Companies
+ * @api /company/api/get-no-companies
+ * @access Private
+ * @type GET
+ * */
+
+router.get("/api/get-no-companies", userAuth, async (req, res) => {
+  try {
+    let companies = await Company.find({ user: req.user._id });
+    if (!companies) {
+      return res.status(400).json({
+        success: false,
+        message: "No Companies Found",
+      });
+    }
+    const noCompanies = await Company.countDocuments();
+    return res.status(200).json({
+      success: true,
+      message: "Companies Retrieved Successfully",
+      noCompanies,
     });
   } catch (err) {
     console.log(err);
