@@ -212,11 +212,7 @@ router.get("/api/get-my-companies", userAuth, async (req, res) => {
 
 router.get("/api/companies", async (req, res) => {
   try {
-    let companies = await Company.find({ verified: true })
-      .populate("user")
-      .populate("category")
-      .populate("profile")
-      .exec();
+    let companies = await Company.find();
 
     if (!companies) {
       return res.status(400).json({
@@ -224,11 +220,15 @@ router.get("/api/companies", async (req, res) => {
         message: "No Companies Found",
       });
     }
-
+    let company = await Company.find({ verified: true })
+      .populate("user")
+      .populate("category")
+      .populate("profile")
+      .exec();
     return res.status(200).json({
       success: true,
       message: "Companies Retrieved Successfully",
-      companies,
+      company,
     });
   } catch (err) {
     console.log(err);
@@ -238,31 +238,6 @@ router.get("/api/companies", async (req, res) => {
     });
   }
 });
-
-// router.get("/api/companies", async (req, res) => {
-//   try {
-//     let companies = await Company.find();
-//     if (!companies) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "No Companies Found",
-//       });
-//     }
-
-//     let company = await Company.find({ verified: true });
-//     return res.status(200).json({
-//       success: true,
-//       message: "Companies Retrieved Successfully",
-//       company,
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     return res.status(500).json({
-//       success: false,
-//       message: "An error occurred.",
-//     });
-//   }
-// });
 
 /**
  * @description To search Company
