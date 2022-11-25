@@ -84,5 +84,5 @@ UserSchema.methods.getUserInfo = function () {
   ]);
 };
 
-const User = model("users", UserSchema);
+const User = model("user", UserSchema);
 module.exports = User;

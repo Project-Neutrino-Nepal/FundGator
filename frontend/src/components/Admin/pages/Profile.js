@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Row,
@@ -32,10 +32,33 @@ import convesionImg5 from "../assets/images/face-2.jpg";
 import project1 from "../assets/images/home-decor-1.jpeg";
 import project2 from "../assets/images/home-decor-2.jpeg";
 import project3 from "../assets/images/home-decor-3.jpeg";
+import axios from "axios";
 
 function Profile() {
   const [imageURL, setImageURL] = useState(false);
-  const [, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [name, setName] = useState("");
+   const [image, setPreview] = useState({
+     preview: "https://github.com/mdo.png",
+     file: "",
+   });
+
+   const config = {
+     headers: {
+       Authorization: localStorage.getItem("token"),
+     },
+   };
+
+   // fetching Profile data from API
+   useEffect(() => {
+     axios
+       .get("http://localhost:5000/profile/api/my-profile", config)
+       .then((res) => {
+         let program = res.data.profile;
+         setName(program.name);
+         setPreview({ ...image, preview: program.avatar });
+       });
+   });
 
   const getBase64 = (img, callback) => {
     const reader = new FileReader();
@@ -161,11 +184,11 @@ function Profile() {
           <Row justify="space-between" align="middle" gutter={[24, 0]}>
             <Col span={24} md={12} className="col-info">
               <Avatar.Group>
-                <Avatar size={74} shape="square" src={profilavatar} />
+                <Avatar size={74} shape="square" src={image.preview} />
 
                 <div className="avatar-info">
-                  <h4 className="font-semibold m-0">Sarah Jacob</h4>
-                  <p>CEO / Co-Founder</p>
+                  <h4 className="font-semibold m-0">{name}</h4>
+                  <p>Admin</p>
                 </div>
               </Avatar.Group>
             </Col>

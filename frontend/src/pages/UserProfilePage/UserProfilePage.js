@@ -44,6 +44,7 @@ const UserProfilePage = () => {
       <div className="left-container">
         <img
           src={image.preview}
+          style={{ width: "155px", height: "155px" }}
           alt=""
           className="profilepic"
         />

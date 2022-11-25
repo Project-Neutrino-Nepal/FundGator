@@ -53,7 +53,7 @@ const Signin = () => {
                 res.data.message,
                 setTimeout(function () {
                   if(res.data.user.admin === true){
-                    window.location.href = "/admin";
+                    window.location.href = "/dashboard";
                   }else{
                   if(res.data.user.isFirstTime == true){
                   window.location.href = "/welcome";}

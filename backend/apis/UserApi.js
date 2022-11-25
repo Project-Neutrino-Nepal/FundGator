@@ -186,4 +186,36 @@ router.put("/api/update-user", userAuth, async (req, res) => {
   }
 });
 
+/**
+ * @description To get number of users
+ * @api /users/api/get-no-users
+ * @access PRIVATE
+ * @type GET
+ * */
+
+router.get("/api/get-no-users", userAuth, async (req, res) => {
+  try {
+    let user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+    const noUsers = await User.countDocuments();
+    return res.status(200).json({
+      noUsers,
+      success: true,
+      message: "Hurray! Your account has been updated.",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+
 module.exports = router;

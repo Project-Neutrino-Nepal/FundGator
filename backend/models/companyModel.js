@@ -7,6 +7,10 @@ const CompanySchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "user",
     },
+    profile: {
+      type: Schema.Types.ObjectId,
+      ref: "profile",
+    },
     category: {
       type: Schema.Types.ObjectId,
       ref: "category",
@@ -22,8 +26,9 @@ const CompanySchema = new Schema(
       type: Boolean,
       default: false,
     },
-    Image: {
+    image: {
       type: String,
+      default: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
     },
     email: {
       type: String,
@@ -48,7 +53,6 @@ const CompanySchema = new Schema(
     short_pitch: {
       type: String,
     },
-    
     tax_document: {
       type: String,
     },
@@ -83,9 +87,6 @@ const CompanySchema = new Schema(
   },
   { timestamps: true }
 );
-
-
-
 
 const Company = model("company", CompanySchema);
 module.exports = Company;

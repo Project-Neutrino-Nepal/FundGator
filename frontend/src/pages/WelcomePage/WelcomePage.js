@@ -119,7 +119,7 @@ const WelcomePage = () => {
                 response.data.message,
                 setTimeout(function () {
                   window.location.href = "/homepage";
-                }, 10000)
+                }, 2000)
               );
             }
           });

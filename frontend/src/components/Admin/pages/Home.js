@@ -1,5 +1,5 @@
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 import {
   Card,
@@ -125,17 +125,47 @@ function Home() {
       ></path>
     </svg>,
   ];
+
+  // Get number of Users from API
+  const [usersNo, setUsersNo] = useState(0);
+
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/users/api/get-no-users", config)
+      .then((res) => {
+        setUsersNo(res.data.noUsers);
+      });
+  });
+
+  // Get number of Company from API
+  const [companyNo, setCompanyNo] = useState(0);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/company/api/get-no-companies", config)
+      .then((res) => {
+        setCompanyNo(res.data.noCompanies);
+      });
+  });
+
+
   const count = [
     {
-      today: "No of Companies",
-      title: "100",
+      today: "No of User",
+      title: usersNo,
       // persent: "+30%",
       icon: dollor,
       bnb: "bnb2",
     },
     {
-      today: "No of Investors",
-      title: "20",
+      today: "No of Companies",
+      title: companyNo,
       // persent: "+20%",
       icon: profile,
       bnb: "bnb2",
@@ -155,10 +185,6 @@ function Home() {
       bnb: "bnb2",
     },
   ];
-
-  
-
- 
 
   const uploadProps = {
     name: "file",
@@ -223,10 +249,6 @@ function Home() {
             </Card>
           </Col>
         </Row>
-
-        
-
-        
       </div>
     </>
   );
