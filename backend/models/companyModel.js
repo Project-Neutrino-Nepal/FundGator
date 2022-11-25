@@ -80,10 +80,18 @@ const CompanySchema = new Schema(
     company_instagram: {
       type: String,
     },
-
-    skills: {
-      type: String,
+    raising_fund: {
+      type: Boolean,
+      default: true,
     },
+    fund_raised: {
+      type: Number,
+      default: 0,
+    },
+    fund_goal: {
+      type: Number,
+      default: 0,
+    }
   },
   { timestamps: true }
 );
