@@ -1,5 +1,6 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 import {
   Card,
@@ -125,10 +126,26 @@ function Home() {
       ></path>
     </svg>,
   ];
+
+  // Get number of Users from API
+  const [usersNo, setUsersNo] = useState(0);
+
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+
+  useEffect(() => {
+    axios.get("http://localhost:5000/users/api/get-no-users",config).then((res) => {
+      setUsersNo(res.data.noUsers);
+    });
+  });
+  
   const count = [
     {
       today: "No of Companies",
-      title: "100",
+      title: usersNo,
       // persent: "+30%",
       icon: dollor,
       bnb: "bnb2",
