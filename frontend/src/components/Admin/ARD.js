@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import ARD from "./ARD";
 import illustration from "../../assets/image/illustration.png";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import AdminCompany_profile from "./admin-company-profile";
+import ARD from "./ARD";
 const CompanyDetails = () => {
     const [key, setKey] = useState("profile");
   return (
@@ -13,7 +13,6 @@ const CompanyDetails = () => {
           <div className="row">
             <h3>Company Details</h3>
           </div>
-
           <div className="mt-3 mb-2 ">
             <span className="">
               <img
@@ -36,9 +35,8 @@ const CompanyDetails = () => {
               </Tab>
               <Tab eventKey="" title="Portfolio">
               </Tab>
-              <Tab eventKey="documnet" title="Document">
+              <Tab eventKey="document" title="Document">
                 <ARD/>
-                
               </Tab>
             </Tabs>
           </div>
