@@ -1,48 +1,23 @@
-import React, { useState } from "react";
-import illustration from "../../assets/image/illustration.png";
-import Tab from "react-bootstrap/Tab";
-import Tabs from "react-bootstrap/Tabs";
-import AdminCompany_profile from "./admin-company-profile";
-import ARD from "./ARD";
-const CompanyDetails = () => {
-    const [key, setKey] = useState("profile");
+import React from "react";
+const ARD = () => {
   return (
-    <>
-      <div className="container-sm-fluid* mt-5">
-        <div className="container col-9" style={{ marginTop: "100px" }}>
-          <div className="row">
-            <h3>Company Details</h3>
-          </div>
-          <div className="mt-3 mb-2 ">
-            <span className="">
-              <img
-                className=" border "
-                src="https://cdn.dribbble.com/users/3293507/screenshots/14667603/media/d8cbe035a61f64afdf6deabca5182842.jpg?compress=1&resize=400x300&vertical=top"
-                alt="profile"
-                style={{  width: "90px",height:"90px",borderRadius:"70%" }}
-              />
-            </span>
-          </div>
-          <div>
-          <Tabs
-              id="controlled-tab-example"
-              activeKey={key}
-              onSelect={(k) => setKey(k)}
-              className="mb-3 mt-3"
-            >
-              <Tab eventKey="profile" title="Profile">
-                <AdminCompany_profile />
-              </Tab>
-              <Tab eventKey="" title="Portfolio">
-              </Tab>
-              <Tab eventKey="document" title="Document">
-                <ARD/>
-              </Tab>
-            </Tabs>
-          </div>
-        </div>
+    <div className="pb-3">
+      <iframe
+        id="doc"
+        title="doco"
+        className=" w-100 "
+        style={{height:"900px"}}
+        src="https://www.issuelab.org/resources/15957/15957.pdf"
+        frameborder="0"
+      ></iframe>
+      <div className="buttons mt-2 d-flex justify-content-between ">
+        <button className="btn btn-primary col-3">Delete</button>
+        <button className="btn btn-success col-3">Approve</button>
+        <button className="btn btn-danger  col-3">Reject</button>
       </div>
-    </>
+    </div>
   );
 };
-export default CompanyDetails;
+export default ARD;
+
+
