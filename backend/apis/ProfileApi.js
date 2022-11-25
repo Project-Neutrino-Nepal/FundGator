@@ -3,10 +3,10 @@ const router = express.Router();
 const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
 const userAuth = require("../middlewares/auth-guard");
-const  uploadProfileImage = require("../middlewares/uploader").uploadProfileImage;
+const uploadProfileImage =
+  require("../middlewares/uploader").uploadProfileImage;
 const validator = require("../middlewares/validator-middleware");
 const DOMAIN = "http://127.0.0.1:5000/";
-
 
 /**
  * @description To edit authenticated user profile
@@ -33,9 +33,11 @@ router.put(
       }
 
       let file = req.file;
-
-      let filename = DOMAIN + "uploads/profile-images/" + file.filename;
-
+      if (file === undefined || file === null) {
+        filename = DOMAIN + "uploads/assets/" + "default_userProfile.png";
+      } else {
+        filename = DOMAIN + "uploads/profile-images/" + file.filename;
+      }
       const updatedProfile = await Profile.findOneAndUpdate(
         { user: req.user._id },
         {

@@ -30,13 +30,14 @@ const Homepage = () => {
 
   return (
     <>
-    <div className="basenav">
-      <Basenav/>
-    </div>
+      <div className="basenav">
+        <Basenav />
+      </div>
       {/* <div className="d-flex flex-wrap"> */}
       <div
         className="  p-3 text-white mt-5 col-3 position-fixed"
-        id="sidebar-width" style={{backgroundColor:"#0d3b66"}}
+        id="sidebar-width"
+        style={{ backgroundColor: "#0a4fa3" }}
       >
         <div className="dropdown">
           <a
