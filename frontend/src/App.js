@@ -1,5 +1,11 @@
+import "antd/dist/antd.min.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
+import Categories from './components/admin/categories';
+import CompanyDetails from './components/admin/company_details';
+import Main from "./components/admin/components/layout/Main";
+import Home from './components/admin/pages/Home';
+import Profile from './components/admin/pages/Profile';
 import ComProfile from "./components/company/company_profile";
 import Homepage from "./components/homepage";
 import Navbar from "./components/navbar.js";
@@ -11,19 +17,13 @@ import {
   LandingPage,
   ProfilePage,
   UserProfilePage,
-  WelcomePage,
+  WelcomePage
 } from "./pages";
-import CompanyDetails from './components/Admin/company_details';
-import Categories from './components/Admin/categories';
-import Home from './components/Admin/pages/Home';
-import Profile from './components/Admin/pages/Profile';
-import Main from "./components/Admin/components/layout/Main";
-import "antd/dist/antd.min.css";
 // import "antd/dist/antd.css";
-import "./components/Admin/assets/styles/main.css";
-import "./components/Admin/assets/styles/responsive.css";
-import CompanyAdmin from "./components/Admin/pages/company";
-import InvestorAdmin from "./components/Admin/pages/investor";
+import "./components/admin/assets/styles/main.css";
+import "./components/admin/assets/styles/responsive.css";
+import CompanyAdmin from "./components/admin/pages/company";
+import InvestorAdmin from "./components/admin/pages/investor";
 
 function App() {
   return (
