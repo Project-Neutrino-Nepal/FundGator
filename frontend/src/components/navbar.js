@@ -189,7 +189,7 @@ function Navbar() {
                     aria-expanded="false"
                   >
                     <img
-                      src={image.preview}
+                      src={image.preview }
                       alt=""
                       width={55}
                       height={55}
