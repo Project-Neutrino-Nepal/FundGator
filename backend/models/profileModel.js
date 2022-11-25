@@ -18,6 +18,7 @@ const ProfileSchema = new Schema(
     },
     avatar: {
       type: String,
+      default: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
     },
     phone: {
       type: String,
