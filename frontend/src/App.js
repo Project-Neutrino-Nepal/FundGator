@@ -16,10 +16,10 @@ import Tables from './components/Admin/pages/Tables';
 import Main from './components/Admin/components/layout/Main';
 import 'antd/dist/antd.min.css';
 // import "antd/dist/antd.css";
- import "./components/admin/assets/styles/main.css";
- import "./components/admin/assets/styles/responsive.css";
-import CompanyAdmin from './components/admin/pages/company';
-import InvestorAdmin from './components/admin/pages/investor';
+ import "./components/Admin/assets/styles/main.css";
+ import "./components/Admin/assets/styles/responsive.css";
+import CompanyAdmin from './components/Admin/pages/company';
+import InvestorAdmin from './components/Admin/pages/investor';
 
 
 
