@@ -5,7 +5,6 @@ import "../css/nav-search.css";
 
 function Navbar() {
   const [name, setName] = useState("");
-  const [admin, setAdmin] = useState(false);
   const [image, setPreview] = useState({
     preview: "https://github.com/mdo.png",
     file: "",
@@ -24,10 +23,12 @@ function Navbar() {
       .then((res) => {
         let program = res.data.profile;
         setName(program.name);
-        setAdmin(program.admin);
         setPreview({ ...image, preview: program.avatar });
       });
   });
+
+
+  const admin = localStorage.getItem("admin");
 
   const logout = async (e) => {
     localStorage.clear();
@@ -131,7 +132,7 @@ function Navbar() {
         </nav>
       </>
     );
-  } else if (localStorage.getItem("token") && !admin) {
+  } else if (localStorage.getItem("token") && admin === "false") {
     return (
       <>
         <nav
@@ -337,7 +338,7 @@ function Navbar() {
                     aria-expanded="false"
                   >
                     <img
-                      src={image.preview }
+                      src={image.preview}
                       alt=""
                       width={55}
                       height={55}
