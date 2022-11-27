@@ -1,43 +1,62 @@
-import { Avatar, Button, Card, Col, Row, Table, Typography } from "antd";
+import { Card, Col, Row, Space, Table, Typography } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-// Images
 const { Title } = Typography;
-// table code start
 const columns = [
   {
-    title: "AUTHOR",
-    dataIndex: "name",
-    key: "name",
-    width: "32%",
+    title: "Profile",
+    dataIndex: "profile",
+    key: "profile",
   },
   {
-    title: "FUNCTION",
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
+    sorter: (a, b) => a.name.localeCompare(b.name),
+    render: (text) => (text ? text : "N/A"),
+  },
+  {
+    title: "Email",
     dataIndex: "function",
     key: "function",
   },
-
   {
-    title: "STATUS",
-    key: "status",
-    dataIndex: "status",
+    title: "Phone",
+    dataIndex: "phone",
+    key: "phone",
+    render: (text) => (text ? text : "N/A"),
   },
   {
-    title: "EMPLOYED",
+    title: "PAN No",
+    dataIndex: "pan_No",
+    key: "pan_No",
+    // if pan_No is not available then show N/A
+    render: (text) => (text ? text : "N/A"),
+  },
+  {
+    title: "Member Since",
     key: "employed",
     dataIndex: "employed",
+    // first sort by date, then by name
+    sorter: (a, b) => a.employed.localeCompare(b.employed),
+    // show the date in a readable format
+    render: (text) => new Date(text).toLocaleDateString(),
+  },
+  {
+    title: "Actions",
+    key: "action",
+    render: (text, record) => (
+      <Space size="middle">
+        <a href="#">Edit</a>
+        <a href="#">Delete</a>
+      </Space>
+    ),
   },
 ];
 
-
-
 function InvestorAdmin() {
-  
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [createdAt, setCreatedAt] = useState("");
-  const [image, setPreview] = useState("");
+  const [profiles, setProfiles] = useState([]);
 
   const config = {
     headers: {
@@ -50,69 +69,32 @@ function InvestorAdmin() {
     axios
       .get("http://localhost:5000/profile//api/get-profiles", config)
       .then((res) => {
-        console.log(res.data.profiles);
         const profiles = res.data.profiles;
-   
-        
-     profiles.map((profile) => {
-        setName(profile.user.name);
-        setEmail(profile.user.email);
-        setCreatedAt(profile.user.createdAt);
-        setPreview(profile.avatar);
-      });
+        setProfiles(profiles);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-  
 
-     
-const data = [
-  {
-    key: "1",
-    name: (
-      <>
-        <Avatar.Group>
-          <Avatar
-            className="shape-avatar"
-            shape="square"
-            size={40}
-            src={image}
-          ></Avatar>
-          <div className="avatar-info">
-            <Title level={5}>{name}</Title>
-            <p>{email}</p>
-          </div>
-        </Avatar.Group>{" "}
-      </>
-    ),
-    function: (
-      <>
-        <div className="author-info">
-          <Title level={5}>Manager</Title>
-          <p>Organization</p>
-        </div>
-      </>
-    ),
+  const data = profiles.map((profile) => {
+    return {
+      key: profile._id,
+      profile: (
+        <img
+          src={profile.avatar}
+          alt="profile"
+          style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+        />
+      ),
+      name: profile.legal_name,
+      function: profile.email,
+      employed: profile.createdAt,
+      phone: profile.phone,
+      pan_No: profile.pan_No,
+    };
+  });
 
-    status: (
-      <>
-        <Button type="primary" className="tag-primary">
-          ONLINE
-        </Button>
-      </>
-    ),
-    employed: (
-      <>
-        <div className="ant-employed">
-          <span>{createdAt}</span>
-          <a href="#">Edit</a>
-        </div>
-      </>
-    ),
-  },
-];
   return (
     <>
       <div className="tabled">
