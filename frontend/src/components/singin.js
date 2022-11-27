@@ -47,8 +47,8 @@ const Signin = () => {
           .post("http://localhost:5000/users/api/login", data)
           .then((res) => {
             if (res.data.success) {
-              console.log(res.data);
               localStorage.setItem("token", res.data.token);
+              localStorage.setItem("admin", res.data.user.admin);
               toast.success(
                 res.data.message,
                 setTimeout(function () {

@@ -124,4 +124,42 @@ router.delete("/api/delete-profile/", userAuth, async (req, res) => {
   }
 });
 
+/**
+ * @description To get all users profile
+ * @api /profile/api/get-profiles
+ * @access PRIVATE
+ * @type GET
+ * */
+
+router.get("/api/get-profiles", userAuth, async (req, res) => {
+  try {
+    let user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+    let profiles = await Profile.find().populate("user", ["name", "email","admin", "createdAt"]);
+    if (!profiles) {
+      return res.status(400).json({
+        success: false,
+        message: "No profiles found.",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Profiles fetched successfully.",
+      profiles,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+
 module.exports = router;

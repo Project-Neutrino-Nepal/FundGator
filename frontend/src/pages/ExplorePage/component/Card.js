@@ -38,7 +38,7 @@ const Card = ({
           <div className="category">
             <span>venture backend</span>
             <span>
-              {raising_fund == true ? "Rasing Fund" : "Rasing Closed"}
+              {raising_fund === true ? "Rasing Fund" : "Rasing Closed"}
             </span>
           </div>
           <hr />

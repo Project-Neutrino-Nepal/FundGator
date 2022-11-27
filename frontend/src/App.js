@@ -1,10 +1,14 @@
 import "antd/dist/antd.min.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Categories from './components/admin/pages/categories';
-import CompanyDetails from './components/admin/company_details';
+import "./components/admin/assets/styles/main.css";
+import "./components/admin/assets/styles/responsive.css";
 import Main from "./components/admin/components/layout/Main";
+import Categories from './components/admin/pages/categories';
+import CompanyAdmin from "./components/admin/pages/company";
+import CompanyDetails from "./components/admin/pages/companyDetails/companyDetails";
 import Home from './components/admin/pages/Home';
+import InvestorAdmin from "./components/admin/pages/investor";
 import Profile from './components/admin/pages/Profile';
 import ComProfile from "./components/company/company_profile";
 import Homepage from "./components/homepage";
@@ -19,11 +23,6 @@ import {
   UserProfilePage,
   WelcomePage
 } from "./pages";
-// import "antd/dist/antd.css";
-import "./components/admin/assets/styles/main.css";
-import "./components/admin/assets/styles/responsive.css";
-import CompanyAdmin from "./components/admin/pages/company";
-import InvestorAdmin from "./components/admin/pages/investor";
 
 function App() {
   return (
@@ -40,7 +39,6 @@ function App() {
         <Route path="/company" element={<ComProfile />}></Route>
         <Route path="/explore" element={<ExplorePage />}></Route>
         <Route path="/detail" element={<DetailPage />}></Route>
-        <Route path="/comdetails" element={<CompanyDetails />}></Route>
         <Route path="/category" element={<Categories />}></Route>
 
         {/* DASHBOARD ROUTES */}
@@ -52,6 +50,7 @@ function App() {
           <Route path="/dashboard/profile" element={<Profile />} />
           <Route path="/dashboard/company_admin" element={<CompanyAdmin />} />
           <Route path="/dashboard/investor_admin" element={<InvestorAdmin />} />
+          <Route path="/dashboard/company-details/:id" element={<CompanyDetails/>} />
 
           {/* Add others routes of dashboard below */}
         </Route>
