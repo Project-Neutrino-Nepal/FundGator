@@ -263,7 +263,7 @@ function Navbar() {
         </nav>
       </>
     );
-  } else if(localStorage.getItem("token") && !admin){
+  } else if(localStorage.getItem("token") && admin ==="true"){
     return (
       <>
         <nav

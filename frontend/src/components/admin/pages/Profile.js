@@ -46,9 +46,9 @@ function Profile() {
    // fetching Profile data from API
    useEffect(() => {
      axios
-       .get("http://localhost:5000/profile/api/profile", config)
+       .get("http://localhost:5000/profile/api/my-profile", config)
        .then((res) => {
-         let program = res.data.user;
+         let program = res.data.profile;
          setName(program.name);
          setBio(program.bio);
           setEmail(program.email);
