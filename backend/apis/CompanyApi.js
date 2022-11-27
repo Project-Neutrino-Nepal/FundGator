@@ -204,7 +204,7 @@ router.get("/api/get-my-companies", userAuth, async (req, res) => {
 });
 
 /**
- * @description To get all Companies and their owners
+ * @description To get all verified Companies and their owners
  * @api /company/api/companies
  * @access Public
  * @type GET
@@ -238,6 +238,44 @@ router.get("/api/companies", async (req, res) => {
     });
   }
 });
+
+/**
+ * @description To get all Companies and their owners
+ * @api /company/api/companies
+ * @access Public
+ * @type GET
+ */
+
+router.get("/api/all-companies", async (req, res) => {
+  try {
+    let companies = await Company.find();
+
+    if (!companies) {
+      return res.status(400).json({
+        success: false,
+        message: "No Companies Found",
+      });
+    }
+    let company = await Company.find()
+
+      .populate("user")
+      .populate("category")
+      .populate("profile")
+      .exec();
+    return res.status(200).json({
+      success: true,
+      message: "Companies Retrieved Successfully",
+      company,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
 
 /**
  * @description To search Company
