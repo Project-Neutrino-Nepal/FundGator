@@ -131,6 +131,11 @@ router.post("/api/login", LoginValidations, validator, async (req, res) => {
  * @type GET
  */
 
+
+// dockstring
+
+
+
 router.get("/verify-now/:verificationCode", async (req, res) => {
   try {
     let { verificationCode } = req.params;

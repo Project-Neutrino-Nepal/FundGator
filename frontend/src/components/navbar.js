@@ -24,10 +24,11 @@ function Navbar() {
       .then((res) => {
         let program = res.data.profile;
         setName(program.name);
-        setAdmin(program.admin);
         setPreview({ ...image, preview: program.avatar });
       });
   });
+
+
 
   const logout = async (e) => {
     localStorage.clear();
@@ -262,7 +263,7 @@ function Navbar() {
         </nav>
       </>
     );
-  } else {
+  } else if(localStorage.getItem("token") && !admin){
     return (
       <>
         <nav

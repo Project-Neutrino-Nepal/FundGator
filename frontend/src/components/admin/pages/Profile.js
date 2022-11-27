@@ -52,9 +52,9 @@ function Profile() {
    // fetching Profile data from API
    useEffect(() => {
      axios
-       .get("http://localhost:5000/profile/api/my-profile", config)
+       .get("http://localhost:5000/profile/api/profile", config)
        .then((res) => {
-         let program = res.data.profile;
+         let program = res.data.user;
          setName(program.name);
          setPreview({ ...image, preview: program.avatar });
        });
