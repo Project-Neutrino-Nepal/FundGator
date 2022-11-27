@@ -346,4 +346,35 @@ router.get("/api/get-no-companies", userAuth, async (req, res) => {
   }
 });
 
+/**
+ * @description To get company by id
+ * @api /company/api/company/:id
+ * @access Private
+ * @type GET
+ * */
+
+router.get("/api/company/:id", userAuth, async (req, res) => {
+  try {
+    let company = await Company.findOne({ _id: req.params.id });
+    if (!company) {
+      return res.status(400).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Company Retrieved Successfully",
+      company,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+
 module.exports = router;

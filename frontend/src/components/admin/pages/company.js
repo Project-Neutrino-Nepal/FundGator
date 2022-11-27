@@ -105,7 +105,7 @@ function CompanyAdmin() {
       ),
       action: (
         <div className="d-flex flex-wrap justify-content-evenly">
-          <Link to={`/admin/company/${company._id}`}>
+          <Link to={`/dashboard/company-details/${company._id}`}>
             <i className="fa-solid fa-eye text-info"></i>
           </Link>
           <Link to={`/admin/company/${company._id}`}>
