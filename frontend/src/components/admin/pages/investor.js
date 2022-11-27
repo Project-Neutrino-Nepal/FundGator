@@ -1,4 +1,3 @@
-import { SearchOutlined } from "@ant-design/icons";
 import { Card, Col, Row, Space, Table } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -44,13 +43,18 @@ const columns = [
     render: (text) => new Date(text).toLocaleDateString(),
   },
   {
+    title: "Status",
+    key: "status",
+    dataIndex: "status",
+    render: (text) => (text ? text : "N/A"),
+  },
+  {
     title: "Actions",
     key: "action",
     // render the action buttons with green and red colors on hover
     render: (text, record) => (
       <Space size="middle">
-        <a style={{ color: "green" }}>Approve</a>
-        <a style={{ color: "red" }}>Reject</a>
+        <a style={{ color: "red" }}>Suspend</a>
       </Space>
     ),
   },
@@ -88,7 +92,7 @@ function InvestorAdmin() {
           style={{ width: "50px", height: "50px", borderRadius: "50%" }}
         />
       ),
-      name: profile.legal_name? profile.legal_name: profile.name,
+      name: profile.legal_name ? profile.legal_name : profile.name,
       function: profile.email,
       employed: profile.createdAt,
       phone: profile.phone,
@@ -104,7 +108,7 @@ function InvestorAdmin() {
             <Card
               bordered={false}
               className="criclebox tablespace mb-24"
-              title="Authors Table"
+              title="Investor Table"
             >
               <div className="table-responsive">
                 <Table
