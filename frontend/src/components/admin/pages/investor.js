@@ -1,8 +1,8 @@
-import { Card, Col, Row, Space, Table, Typography } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import { Card, Col, Row, Space, Table } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const { Title } = Typography;
 const columns = [
   {
     title: "Profile",
@@ -10,7 +10,7 @@ const columns = [
     key: "profile",
   },
   {
-    title: "Name",
+    title: "Legal Name",
     dataIndex: "name",
     key: "name",
     sorter: (a, b) => a.name.localeCompare(b.name),
@@ -46,10 +46,11 @@ const columns = [
   {
     title: "Actions",
     key: "action",
+    // render the action buttons with green and red colors on hover
     render: (text, record) => (
       <Space size="middle">
-        <a href="#">Edit</a>
-        <a href="#">Delete</a>
+        <a style={{ color: "green" }}>Approve</a>
+        <a style={{ color: "red" }}>Reject</a>
       </Space>
     ),
   },
@@ -87,7 +88,7 @@ function InvestorAdmin() {
           style={{ width: "50px", height: "50px", borderRadius: "50%" }}
         />
       ),
-      name: profile.legal_name,
+      name: profile.legal_name? profile.legal_name: profile.name,
       function: profile.email,
       employed: profile.createdAt,
       phone: profile.phone,
@@ -109,7 +110,7 @@ function InvestorAdmin() {
                 <Table
                   columns={columns}
                   dataSource={data}
-                  pagination={false}
+                  pagination={true}
                   className="ant-border-space"
                 />
               </div>
