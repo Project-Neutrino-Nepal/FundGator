@@ -74,6 +74,7 @@ const columns = [
             onClick={() => clearFilters()}
             size="small"
             style={{ width: 90 }}
+            type="danger"
           >
             Reset
           </Button>
