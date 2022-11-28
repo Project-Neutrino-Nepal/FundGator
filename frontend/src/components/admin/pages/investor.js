@@ -1,6 +1,7 @@
-import { Card, Col, Row, Space, Table } from "antd";
+import { Button, Card, Col, Input, Row, Space, Table } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { SearchOutlined } from "@ant-design/icons";
 
 const columns = [
   {
@@ -14,6 +15,44 @@ const columns = [
     key: "name",
     sorter: (a, b) => a.name.localeCompare(b.name),
     render: (text) => (text ? text : "N/A"),
+    // search in row with name
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div style={{ padding: 8 }}>
+
+        <Input
+          placeholder={`Search Name`}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => confirm()}
+          style={{ width: 188, marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => confirm()}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button onClick={() => clearFilters()} size="small" style={{ width: 90 }}>
+            Reset
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />,
+    onFilter: (value, record) => record.name.toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select(), 100);
+      }
+    }
+
+
+    
+    
   },
   {
     title: "Email",
