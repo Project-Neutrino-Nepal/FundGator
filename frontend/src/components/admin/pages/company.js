@@ -1,8 +1,19 @@
-import { Card, Col, message, Progress, Radio, Row, Table } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Input,
+  message,
+  Progress,
+  Row,
+  Space,
+  Table,
+} from "antd";
 
 import { Link } from "react-router-dom";
 
 // Images
+import { SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -32,15 +43,61 @@ const columns = [
   {
     title: "COMPANIES NAME",
     dataIndex: "name",
+    // search company by name
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          placeholder={`Search Name`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => confirm()}
+          style={{ width: 188, marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => confirm()}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters()}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record.name.toLowerCase().includes(value.toLowerCase()),
+
+    sorter: (a, b) => a.name.localeCompare(b.name),
   },
   {
     title: "Fund Goal",
     dataIndex: "fund_goal",
+    sorter: (a, b) => a.name.localeCompare(b.name),
   },
 
   {
     title: "Fund Raised",
     dataIndex: "fund_raised",
+    sorter: (a, b) => a.name.localeCompare(b.name),
   },
   {
     title: "STATUS",
@@ -49,10 +106,12 @@ const columns = [
   {
     title: "Fund Completion",
     dataIndex: "completion",
+    sorter: (a, b) => a.name.localeCompare(b.name),
   },
   {
     title: "ACTION",
     dataIndex: "action",
+    sorter: (a, b) => a.name.localeCompare(b.name),
   },
 ];
 
@@ -125,7 +184,6 @@ function CompanyAdmin() {
               bordered={false}
               className="criclebox tablespace mb-24"
               title="Company Table"
-              
             >
               <div className="table-responsive">
                 <Table
