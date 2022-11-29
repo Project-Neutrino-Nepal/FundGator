@@ -3,7 +3,7 @@ const { Given, When, Then, Before, After } = require("@cucumber/cucumber");
 const { Builder, By, Key, until, sleep } = require("selenium-webdriver");
 
 const delay = 5000;
-Given("Test Profile Update Feature", { timeout: 30000 }, async function () {
+Given("Test Profile Update Feature", { timeout: 100000 }, async function () {
   let driver = await new Builder().forBrowser("chrome").build();
   await driver.get("http://localhost:3000/welcome");
   await driver.findElement(By.id("legalName")).sendKeys("Milan Yadav");
@@ -15,12 +15,12 @@ Given("Test Profile Update Feature", { timeout: 30000 }, async function () {
   await driver.sleep(delay);
   await driver.findElement(By.id("updateButton")).click();
 
-  await driver.wait(until.elementLocated(By.id("profileUpdate")), 30000);
+  await driver.wait(until.elementLocated(By.id("profileUpdate")), 100000);
   expect(await driver.wait(until.elementLocated(By.id("profileUpdate"))));
-  // await driver.quit();
+  await driver.quit();
 });
 
-Given("Test update Settings ", { timeout: 30000 }, async function () {
+Given("Test update Settings ", { timeout: 100000 }, async function () {
   let driver = await new Builder().forBrowser("chrome").build();
   await driver.get("http://localhost:3000/profile/Settings");
   await driver.findElement(By.id("legalName")).sendKeys("Milan Yadav");
@@ -32,8 +32,8 @@ Given("Test update Settings ", { timeout: 30000 }, async function () {
   await driver.sleep(delay);
   await driver.findElement(By.id("updateButton")).click();
 
-  await driver.wait(until.elementLocated(By.id("profileUpdate")), 30000);
+  await driver.wait(until.elementLocated(By.id("profileUpdate")), 100000);
   expect(await driver.wait(until.elementLocated(By.id("profileUpdate"))));
-  // await driver.quit();
+  await driver.quit()
 });
 
