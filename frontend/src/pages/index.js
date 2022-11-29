@@ -5,6 +5,7 @@ import WelcomePage from "./WelcomePage/WelcomePage";
 import ExplorePage from "./ExplorePage/ExplorePage";
 import DetailPage from "./DetailPage/DetailPage";
 import RaisePage from "./RaisePage/RaisePage";
+import CompanyRegisterPage from "./CompanyRegisterPage/CompanyRegisterPage";
 
 
 export {
@@ -15,4 +16,5 @@ export {
   ExplorePage,
   DetailPage,
   RaisePage,
+  CompanyRegisterPage
 };

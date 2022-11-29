@@ -22,7 +22,8 @@ import {
   ProfilePage,
   UserProfilePage,
   WelcomePage,
-  RaisePage
+  RaisePage,
+  CompanyRegisterPage,
 } from "./pages";
 
 function App() {
@@ -42,6 +43,10 @@ function App() {
         <Route path="/detail" element={<DetailPage />}></Route>
         <Route path="/category" element={<Categories />}></Route>
         <Route path="/raise" element={<RaisePage />}></Route>
+        <Route
+          path="/CompanyRegister/:id"
+          element={<CompanyRegisterPage />}
+        ></Route>
 
         {/* DASHBOARD ROUTES */}
         <Route path="/dashboard" element={<Main />}>
