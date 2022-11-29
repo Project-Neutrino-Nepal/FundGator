@@ -178,7 +178,7 @@ function CompanyAdmin() {
 
   return (
     <>
-      <div className="tabled">
+      <div className="tabled" id="adminCompany">
         <Row gutter={[24, 0]}>
           <Col xs="24" xl={24}>
             <Card
