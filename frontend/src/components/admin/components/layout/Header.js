@@ -1,29 +1,19 @@
-
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 import {
-  Row,
-  Col,
-  Breadcrumb,
-  Badge,
-  Dropdown,
-  Button,
-  List,
   Avatar,
+  Badge,
+  Breadcrumb,
+  Col,
+  Dropdown,
   Input,
-  Drawer,
-  Typography,
-  Switch,
+  List,
+  Row,
 } from "antd";
 
-import {
-  SearchOutlined,
-  StarOutlined,
-  TwitterOutlined,
-  FacebookFilled,
-} from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 
-import { NavLink, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import avtar from "../../assets/images/team-2.jpg";
 
@@ -220,11 +210,7 @@ const toggler = [
   </svg>,
 ];
 
-function Header({
-  name,
-  subName,
-  onPress
-}) {
+function Header({ name, subName, onPress }) {
   // const { Title, Text } = Typography;
 
   // const [visible, setVisible] = useState(false);
@@ -237,31 +223,22 @@ function Header({
 
   return (
     <>
-      
-      <Row gutter={[24, 0]}>
+      <Row gutter={[24, 0]} style={{ marginTop: 50 }}>
         <Col span={24} md={6}>
           <Breadcrumb>
             <Breadcrumb.Item>
-              <NavLink to="/">Pages</NavLink>
+              {/* <NavLink to="/">Pages</NavLink> */}
             </Breadcrumb.Item>
             <Breadcrumb.Item style={{ textTransform: "capitalize" }}>
-              {name.replace("/", "")}
+              {name.replace("/", "/")}
             </Breadcrumb.Item>
           </Breadcrumb>
-          <div className="ant-page-header-heading">
-            <span
-              className="ant-page-header-heading-title"
-              style={{ textTransform: "capitalize" }}
-            >
-              {subName.replace("/", "")}
-            </span>
-          </div>
         </Col>
         <Col span={24} md={18} className="header-control">
           <Badge size="small" count={4}>
             <Dropdown overlay={menu} trigger={["click"]}>
               <a
-                href="#pablo"
+                href="#"
                 className="ant-dropdown-link"
                 onClick={(e) => e.preventDefault()}
               >
@@ -269,10 +246,7 @@ function Header({
               </a>
             </Dropdown>
           </Badge>
-          
-          
-          
-          
+
           <Input
             className="header-search"
             placeholder="Type here..."

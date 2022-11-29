@@ -2,42 +2,36 @@
 import { useEffect, useState } from "react";
 
 import {
-  Row,
-  Col,
-  Card,
-  Button,
-  List,
-  Descriptions,
-  Avatar,
-  Radio,
-  Switch,
-  Upload,
-  message,
+  Avatar, Button, Card, Col, Descriptions, List, message, Radio, Row, Switch,
+  Upload
 } from "antd";
 
 import {
-  FacebookOutlined,
-  TwitterOutlined,
-  InstagramOutlined,
-  VerticalAlignTopOutlined,
+  FacebookOutlined, InstagramOutlined, TwitterOutlined, VerticalAlignTopOutlined
 } from "@ant-design/icons";
 
+import axios from "axios";
 import BgProfile from "../assets/images/bg-profile.jpg";
 import profilavatar from "../assets/images/face-1.jpg";
+import convesionImg5 from "../assets/images/face-2.jpg";
 import convesionImg from "../assets/images/face-3.jpg";
 import convesionImg2 from "../assets/images/face-4.jpg";
 import convesionImg3 from "../assets/images/face-5.jpeg";
 import convesionImg4 from "../assets/images/face-6.jpeg";
-import convesionImg5 from "../assets/images/face-2.jpg";
 import project1 from "../assets/images/home-decor-1.jpeg";
 import project2 from "../assets/images/home-decor-2.jpeg";
 import project3 from "../assets/images/home-decor-3.jpeg";
-import axios from "axios";
 
 function Profile() {
   const [imageURL, setImageURL] = useState(false);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [pan, setPan] = useState("");
+  const [bio, setBio] = useState("");
+  const [address, setAddress] = useState("");
+
    const [image, setPreview] = useState({
      preview: "https://github.com/mdo.png",
      file: "",
@@ -56,6 +50,12 @@ function Profile() {
        .then((res) => {
          let program = res.data.profile;
          setName(program.name);
+         setBio(program.bio);
+          setEmail(program.email);
+          setPhone(program.phone);
+          setPan(program.pan_No);
+          setAddress(program.address);
+
          setPreview({ ...image, preview: program.avatar });
        });
    });
@@ -201,11 +201,6 @@ function Profile() {
                 justifyContent: "flex-end",
               }}
             >
-              <Radio.Group defaultValue="a">
-                <Radio.Button value="a">OVERVIEW</Radio.Button>
-                <Radio.Button value="b">TEAMS</Radio.Button>
-                <Radio.Button value="c">PROJECTS</Radio.Button>
-              </Radio.Group>
             </Col>
           </Row>
         }
@@ -264,25 +259,52 @@ function Profile() {
             bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
           >
             <p className="text-dark">
-              {" "}
-              Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer
-              is no. If two equally difficult paths, choose the one more painful
-              in the short term (pain avoidance is creating an illusion of
-              equality).{" "}
+              {bio ? (
+                bio
+              ) : (
+                <h6 style={{ color: "lightblue" }}>Please Update Your Bio </h6>
+              )}
             </p>
             <hr className="my-25" />
-            <Descriptions title="Oliver Liam">
+            <Descriptions title="Admin Details">
               <Descriptions.Item label="Full Name" span={3}>
-                Sarah Emily Jacob
+                {name}
               </Descriptions.Item>
               <Descriptions.Item label="Mobile" span={3}>
-                (44) 123 1234 123
+                {phone ? (
+                  phone
+                ) : (
+                  <p style={{ color: "lightblue" }}>
+                    Please Update Your profile{" "}
+                  </p>
+                )}
               </Descriptions.Item>
               <Descriptions.Item label="Email" span={3}>
-                sarahjacob@mail.com
+                {email ? (
+                  email
+                ) : (
+                  <p style={{ color: "lightblue" }}>
+                    Please Update Your profile{" "}
+                  </p>
+                )}
+              </Descriptions.Item>
+              <Descriptions.Item label="PAN No" span={3}>
+                {pan ? (
+                  pan
+                ) : (
+                  <p style={{ color: "lightblue" }}>
+                    Please Update Your profile{" "}
+                  </p>
+                )}
               </Descriptions.Item>
               <Descriptions.Item label="Location" span={3}>
-                USA
+                {address ? (
+                  address
+                ) : (
+                  <p style={{ color: "lightblue" }}>
+                    Please Update Your profile{" "}
+                  </p>
+                )}
               </Descriptions.Item>
               <Descriptions.Item label="Social" span={3}>
                 <a href="#pablo" className="mx-5 px-5">
@@ -301,7 +323,7 @@ function Profile() {
         <Col span={24} md={8} className="mb-24">
           <Card
             bordered={false}
-            title={<h6 className="font-semibold m-0">Conversations</h6>}
+            title={<p className="font-semibold m-0">Conversations</p>}
             className="header-solid h-full"
             bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
           >

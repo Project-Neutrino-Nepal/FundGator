@@ -29,7 +29,7 @@ const ProfileSchema = new Schema(
     website: {
       type: String,
     },
-    tax_ID_No: {
+    pan_No: {
       type: String,
     },
     passport_No: {

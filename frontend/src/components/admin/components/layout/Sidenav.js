@@ -1,4 +1,3 @@
-
 import { Menu, Button } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 
@@ -51,10 +50,6 @@ function Sidenav({ color }) {
     </svg>,
   ];
 
-  
-
-  
-
   const profile = [
     <svg
       width="20"
@@ -73,14 +68,10 @@ function Sidenav({ color }) {
     </svg>,
   ];
 
-  
-
-  
-
   return (
     <>
       <div className="brand">
-        <img  alt="" />
+        <img alt="" />
         <span>FundGator Dashboard</span>
       </div>
       <hr />
@@ -109,7 +100,7 @@ function Sidenav({ color }) {
               {tables}
             </span>
             <span className="label">Invesotrs</span>
-          </NavLink> 
+          </NavLink>
         </Menu.Item>
 
         <Menu.Item key="3">
@@ -125,7 +116,7 @@ function Sidenav({ color }) {
             <span className="label">Companies</span>
           </NavLink>
         </Menu.Item>
-        
+
         <Menu.Item key="3">
           <NavLink to="/dashboard/profile">
             <span
@@ -139,10 +130,7 @@ function Sidenav({ color }) {
             <span className="label">Profile</span>
           </NavLink>
         </Menu.Item>
-        
-        
       </Menu>
-      
     </>
   );
 }
