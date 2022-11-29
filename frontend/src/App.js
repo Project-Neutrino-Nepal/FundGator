@@ -15,6 +15,7 @@ import Homepage from "./components/homepage";
 import Navbar from "./components/navbar.js";
 import Signup from "./components/Signup";
 import Signin from "./components/singin";
+import RaisePage from "./pages/RaisePage/RaisePage"
 import {
   DetailPage,
   ExplorePage,
@@ -22,7 +23,6 @@ import {
   ProfilePage,
   UserProfilePage,
   WelcomePage,
-  RaisePage,
   CompanyRegisterPage,
 } from "./pages";
 
