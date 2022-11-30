@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Basic} from "./component";
+import { Basic,Visiblity} from "./component";
 import Wrapper from "./wrapper/CompanyRegisterPage";
 import tabs from "./utils/tab";
 const CompanyRegisterPage = () => {
@@ -64,6 +64,9 @@ const CompanyRegisterPage = () => {
         {activeindex === 1 ? (
           <Basic values={values} handleChange={handleChange} />
         ) : null}
+       {activeindex === 4 ? <Visiblity /> : null}
+
+
     
       </section>
       <section className="save">
