@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Basic} from "./component";
+import { Basic, Visiblity, Story } from "./component";
 import Wrapper from "./wrapper/CompanyRegisterPage";
 import tabs from "./utils/tab";
 const CompanyRegisterPage = () => {
@@ -64,10 +64,14 @@ const CompanyRegisterPage = () => {
         {activeindex === 1 ? (
           <Basic values={values} handleChange={handleChange} />
         ) : null}
-    
+        {activeindex === 4 ? <Visiblity /> : null}
+        {activeindex === 3 ? <Story /> : null}
       </section>
       <section className="save">
-        <button onClick={onsave}> {activeindex === 4 ? "save" : "save and Continue"}</button>
+        <button onClick={onsave}>
+          {" "}
+          {activeindex === 4 ? "save" : "save and Continue"}
+        </button>
       </section>
     </Wrapper>
   );
