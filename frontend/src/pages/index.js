@@ -6,7 +6,7 @@ import ExplorePage from "./ExplorePage/ExplorePage";
 import DetailPage from "./DetailPage/DetailPage";
 import RaisePage from "./RaisePage/RaisePage";
 import CompanyRegisterPage from "./CompanyRegisterPage/CompanyRegisterPage";
-
+import FooterLayout from "./FooterLayout/FooterLayout";
 
 export {
   LandingPage,
@@ -16,5 +16,6 @@ export {
   ExplorePage,
   DetailPage,
   RaisePage,
-  CompanyRegisterPage
+  CompanyRegisterPage,
+  FooterLayout
 };

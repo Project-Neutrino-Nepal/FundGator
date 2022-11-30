@@ -4,6 +4,11 @@ const Wrapper = styled.div`
   padding-inline: 10%;
   padding-block: 5%;
   font-family: var(--dm-font);
+  background-color: white;
+
+  & > hr{
+    padding-block: 3%;
+  }
   & > .header {
     display: flex;
     gap: 10%;
@@ -14,6 +19,10 @@ const Wrapper = styled.div`
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 5%;
+
+      & > h1{
+        font-weight: bolder;
+      }
       & > .box {
         & > h4 {
           font-weight: bold;

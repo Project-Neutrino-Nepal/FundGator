@@ -4,9 +4,10 @@ import Wrapper from "../wrappers/Footer";
 const Footer = () => {
   return (
     <Wrapper className="footer">
+      <hr />
       <div className="header">
         <div className="boxes">
-          <h1>Logo</h1>
+          <h1>FunGator</h1>
           <div className="box">
             <h4>Investor</h4>
             <p>invest</p>
