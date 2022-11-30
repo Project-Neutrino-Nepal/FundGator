@@ -15,16 +15,15 @@ import Homepage from "./components/homepage";
 import Navbar from "./components/navbar.js";
 import Signup from "./components/Signup";
 import Signin from "./components/singin";
-import RaisePage from "./pages/RaisePage/RaisePage"
 import {
-  DetailPage,
+  CompanyRegisterPage, DetailPage,
   ExplorePage,
   LandingPage,
   ProfilePage,
   UserProfilePage,
-  WelcomePage,
-  CompanyRegisterPage,
+  WelcomePage
 } from "./pages";
+import RaisePage from "./pages/RaisePage/RaisePage";
 
 function App() {
   return (
