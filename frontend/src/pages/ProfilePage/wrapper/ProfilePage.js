@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   overflow: hidden;
 
   .infocontainer {
-    background-color: #f7f8fb;
+    background-color: #0a4fa3;
     .userinfo {
       display: flex;
 

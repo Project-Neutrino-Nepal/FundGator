@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../css/company_profile.css";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
@@ -6,13 +6,29 @@ import People from "./people";
 import Overview from "./overview";
 import Question from "./question";
 import Update from "./updates";
+import axios from "axios";
 const ComProfile = () => {
   const [key, setKey] = useState("overview");
+
+  const [comprofile, setComprofile] = useState({});
+
+  const config = { headers: { Authorization: localStorage.getItem("token") } };
+  const getComprofile = async () => {
+    const res = await axios.get(
+      "http://localhost:5000/profile/api/get-profile",
+      config
+    );
+    setComprofile(res.data);
+  };
+  useEffect(() => {
+    getComprofile();
+  }, []);
+
   return (
     <>
       <div className="container-sm-fluid bg-image  d-flex flex-wrap justify-content-around  ">
         <div className=" container  col-8 mt-5">
-          <div className="card m-3 ps-3" style={{ width: '80%' }}>
+          <div className="card m-3 ps-3" style={{ width: "80%" }}>
             <div className="card-body ">
               <h4 className="card-title fs-4 fw-semibold">John Doe</h4>
               <p className="card-text">
@@ -53,7 +69,10 @@ const ComProfile = () => {
             </Tabs>
           </div>
         </div>
-        <div className=" position-fixed" style={{position:'absolute',right:'5vh',width:"20%"}}>
+        <div
+          className=" position-fixed"
+          style={{ position: "absolute", right: "5vh", width: "20%" }}
+        >
           {" "}
           <div className="text-end">
             {" "}
