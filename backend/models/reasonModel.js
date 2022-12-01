@@ -43,7 +43,29 @@ const ReasonSchema = new Schema({
     reason8:{
         type:String,
         required:false
+    },
+    city:{
+        type:String,
+        required:false
+    },
+    facebook:{
+        type:String,
+        required:false
+    },
+    linkedin:{
+        type:String,
+        required:false
+    },
+    
+    companylink:{
+        type:String,
+        required:false
+    },
+    twitter:{
+        type:String,
+        required:false
     }
+
     
     
 });

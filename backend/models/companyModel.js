@@ -68,19 +68,6 @@ const CompanySchema = new Schema(
     company_video: {
       type: String,
     },
-    company_website: {
-      type: String,
-    },
-    company_facebook: {
-      type: String,
-    },
-    company_twitter: {
-      type: String,
-    },
-    company_linkedin: {
-      type: String,
-    },
-
     raising_fund: {
       type: Boolean,
       default: true,
