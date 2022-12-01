@@ -22,7 +22,6 @@ import {
   ProfilePage,
   UserProfilePage,
   WelcomePage,
-  CompanyRegisterPage,
   FooterLayout,
 } from "./pages";
 import RaisePage from "./pages/RaisePage/RaisePage";

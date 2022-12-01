@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Basic, Visiblity, Story } from "./component";
 import Wrapper from "./wrapper/CompanyRegisterPage";
 import tabs from "./utils/tab";
+import { toast } from "react-toastify";
+import axios from "axios";
 const CompanyRegisterPage = () => {
   const formvalue = {
     name:"",
