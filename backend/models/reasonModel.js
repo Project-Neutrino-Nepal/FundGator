@@ -2,8 +2,14 @@
 const {model,Schema} = require('mongoose');
 const ReasonSchema = new Schema({
 
+    company:{
+        type:Schema.Types.ObjectId,
+        ref:'company'},
 
-
+    reason0:{
+        type:String,
+        required:false
+    },
     reason1:{
         type:String,
         required:false
@@ -21,24 +27,20 @@ const ReasonSchema = new Schema({
         required:false
     },
     reason5:{
+
         type:String,
         required:false
     },
     reason6:{
-
         type:String,
         required:false
     },
     reason7:{
-        type:String,
-        required:false
-    },
-    reason8:{
 
         type:String,
         required:false
     },
-    reason9:{
+    reason8:{
         type:String,
         required:false
     }

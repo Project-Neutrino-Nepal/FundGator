@@ -13,6 +13,7 @@ const companyRouter = require("./apis/CompanyApi");
 const adminRouter = require("./apis/admin/AuthApi");
 const adminRouter2 = require("./apis/admin/CategoryApi");
 const adminRouter3 = require("./apis/admin/TagsApi");
+const reasonRouter=require("./apis/reasonApi");
 
 // Import passport middleware
 require("./middlewares/passport-middleware");
@@ -32,6 +33,7 @@ app.use('/uploads', express.static('uploads'));
 // Inject Sub router and apis
 app.use("/users", userRouter);
 app.use("/company", companyRouter);
+app.use("/company/reason",reasonRouter);
 app.use("/profile", profileRouter);
 app.use("/admin", adminRouter, adminRouter2, adminRouter3);
 
