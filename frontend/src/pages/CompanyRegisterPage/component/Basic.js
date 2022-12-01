@@ -84,7 +84,7 @@ const Basic = ({ values, handleChange }) => {
         label={"Company Name"}
         value={id}
         handleChange={handleChange}
-        name={"companyname"}
+        name={"name"}
       />
 
       <label htmlFor="">The Top Reason to Invest</label>

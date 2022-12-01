@@ -5,6 +5,7 @@ const userAuth = require("../middlewares/auth-guard");
 const { find } = require("../models/companyModel");
 const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
+const Reason = require("../models/reason_model");
 const uploadCompanyVideo =
   require("../middlewares/uploader").uploadCompanyVideo;
 const uploadCompanyImage =
@@ -46,7 +47,7 @@ router.post(
         ...body,
         image: filename,
       });
-      await company.save();
+      await company.save();    
       res.status(200).json({
         success: true,
         message: "Company created successfully",

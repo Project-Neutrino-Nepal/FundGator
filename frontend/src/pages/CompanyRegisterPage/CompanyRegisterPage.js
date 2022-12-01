@@ -4,7 +4,7 @@ import Wrapper from "./wrapper/CompanyRegisterPage";
 import tabs from "./utils/tab";
 const CompanyRegisterPage = () => {
   const formvalue = {
-    companyname:"",
+    name:"",
     city:"",
     facebook:"",
     linkedin:"",
@@ -21,8 +21,48 @@ const CompanyRegisterPage = () => {
     reason5:"",
     reason6:"",
     reason7:"",
+    reason8:"",
     
   }
+  const data={
+    name:formvalue.name,
+    city:formvalue.city,
+    facebook:formvalue.facebook,
+    linkedin:formvalue.linkedin,
+    instagram:formvalue.instagram,
+    companylink:formvalue.companylink,
+    twitter:formvalue.twitter,
+    youtube:formvalue.youtube,
+    blog:formvalue.blog,
+
+  }
+const createCompany= async(e)=>{
+e.preventDefault();
+const config={
+  headers:{
+    authorization:localStorage.getItem("token")
+  }
+}
+try {
+  await axios
+    .post("http://localhost:5000/users/api/register", formvalue,config)
+    .then((res) => {
+      if (res.data.success) {
+        toast.success(
+          res.data.message,
+          setTimeout(function () {
+            window.location.assign("/signin");
+          }, 2000)
+        );
+      }
+    });
+} catch (error) {
+  toast.error(error.response.data.message);
+}
+
+
+}
+ 
   const [activeindex, setActive] = useState(1);
   const [values,setValue] =useState(formvalue)
 
@@ -30,7 +70,7 @@ const CompanyRegisterPage = () => {
   setValue({...values,[e.target.name]:e.target.value})
 
  }
-
+console.log(values);
  const onsave =()=>{
   if(activeindex <=3){
     setActive((prev)=> prev + 1)
@@ -39,7 +79,7 @@ const CompanyRegisterPage = () => {
  }
   return (
     <Wrapper>
-      <section className="tabs-container">
+      <section className="tabs-container" style={{marginTop:80}}>
         {tabs.map((item, index) => {
           return (
             <div
