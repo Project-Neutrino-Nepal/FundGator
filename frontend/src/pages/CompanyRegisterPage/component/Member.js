@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Labelinput from "./Labelinput";
 import UnderlineInput from "./UnderlineInput";
 import { AiFillFacebook } from "react-icons/ai";
 import { FaLinkedin } from "react-icons/fa";
-const Member = ({ item, handleChange, index, }) => {
+import upload from "../../../assets/image/uploadpic.svg";
+
+const Member = React.memo(({ item, handleChange, index }) => {
+  const [preview, setPreview] = useState(upload);
+
   const {
     id,
     name,
@@ -14,12 +18,15 @@ const Member = ({ item, handleChange, index, }) => {
     userlinkedinlink,
     foundertype,
     jobtype,
-    imagepreview,
+    
   } = item;
 
   const fileSelection = (e) => {
     if (e.target.files && e.target.files[0]) {
+      let file = e.target.files[0];
+      let blobURL = URL.createObjectURL(file);
       handleChange(e, index, e.target.name);
+      setPreview(blobURL);
     }
   };
 
@@ -28,7 +35,7 @@ const Member = ({ item, handleChange, index, }) => {
       <div className="info">
         <div className="image-upload me-2">
           <label htmlFor={`flie-input${index}`} className="f-input">
-            <img src={imagepreview} alt="" />
+            <img src={preview} alt="" />
             <input
               id={`flie-input${index}`}
               type="file"
@@ -137,6 +144,6 @@ const Member = ({ item, handleChange, index, }) => {
       </div>
     </section>
   );
-};
+});
 
 export default Member;

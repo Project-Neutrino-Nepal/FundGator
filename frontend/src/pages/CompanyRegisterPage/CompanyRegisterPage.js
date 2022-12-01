@@ -34,7 +34,6 @@ const CompanyRegisterPage = () => {
         userlinkedinlink: "",
         foundertype: "",
         jobtype: "",
-        imagepreview: upload,
       },
     ],
     imageupload: "",
@@ -98,12 +97,9 @@ const CompanyRegisterPage = () => {
   const teamChange = (e, index, name) => {
     var teams = values.teams;
     if (e.target.files && e.target.files[0]) {
-      let file = e.target.files[0];
-      let blobURL = URL.createObjectURL(file);
       teams[index] = {
         ...teams[index],
         [name]: e.target.files[0],
-        imagepreview: blobURL,
       };
 
       setValue({ ...values, teams: teams });
@@ -126,7 +122,6 @@ const CompanyRegisterPage = () => {
       userlinkedinlink: "",
       foundertype: "",
       jobtype: "",
-      imagepreview: upload,
     });
     setValue({ ...values, teams: newTeam });
   };
@@ -177,32 +172,33 @@ const CompanyRegisterPage = () => {
         })}
       </section>
       <section className="form-section">
-        {activeindex === 1 ? (
+        <div className={activeindex === 1 ? "form-child" : "d-none"}>
           <Basic
             values={values}
             handleChange={handleChange}
             Addreason={Addreason}
             reasonChange={reasonChange}
           />
-        ) : null}
-        {activeindex === 4 ? (
+        </div>
+        <div className={activeindex === 4 ? "form-child" : "d-none"}>
           <Visiblity handleChange={handleChange} values={values} />
-        ) : null}
-        {activeindex === 3 ? (
+        </div>
+        <div className={activeindex === 3 ? "form-child" : "d-none"}>
           <Story
             handleChange={fileChange}
             imgpreview={values.imageuploadpreview}
             vdpreview={values.videouploadpreview}
           />
-        ) : null}
-        {activeindex === 2 ? (
+        </div>
+
+        <div className={activeindex === 2 ? "form-child" : "d-none"}>
           <Team
             values={values}
             handleChange={handleChange}
             Addteam={Addteam}
             teamChange={teamChange}
           />
-        ) : null}
+        </div>
       </section>
       <section className="save">
         <button onClick={onsave}>
