@@ -77,9 +77,9 @@ const Signin = () => {
   return (
     <>
       <div className="container-sm-fluid  bg-image mt-0 bg-white ">
-        <ToastContainer />
+        <ToastContainer  id="loginSuccess"/>
         <div className="signup-form ">
-          <form id="loginForm shadow border">
+          <form id="loginForm">
             <h3 className="fs-3 fw-semibold">Hi! Welcome in FundGator</h3>
             <p className="hint-text">
               Get Login with your social media account or email address

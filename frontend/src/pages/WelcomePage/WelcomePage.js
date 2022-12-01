@@ -187,39 +187,6 @@ const WelcomePage = () => {
             <h4 className="heading">Public Infomration</h4>
             <p>show founders </p>
             <div className="information">
-              <div className="edit-img">
-                <img
-                  src={image.preview}
-                  style={{ width: "100px", height: "100px" }}
-                  alt="profile_avatar"
-                  className="rounded-circle border border-2 border-grey"
-                  onChange={onuploadimg}
-                />
-                <div className="upload-img">
-                  <input
-                    type="file"
-                    name=""
-                    id=""
-                    className="file-upload"
-                    onChange={onuploadimg}
-                  />
-                  <div
-                    style={{
-                      // position: "relative",
-                      // left: "80px",
-                      // top: "70px",
-                      borderRadius: "50%",
-                      height: "30px",
-                      width: "30px",
-                      cursor: "pointer",
-                      backgroundColor: "white",
-                    }}
-                    className="text-center border border-2 border-grey"
-                  >
-                    <AiFillCamera className="icon text-dark " />
-                  </div>
-                </div>
-              </div>
               <div className="inputs">
                 <textarea
                   name=""
