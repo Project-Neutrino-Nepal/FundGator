@@ -91,7 +91,12 @@ const CompanySchema = new Schema(
     fund_goal: {
       type: Number,
       default: 0,
+    },
+    overview:{
+      type: Schema.Types.ObjectId,
+      ref: "overview",
     }
+
   },
   { timestamps: true }
 );

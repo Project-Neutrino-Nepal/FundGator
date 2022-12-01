@@ -10,6 +10,7 @@ const uploadCompanyVideo =
 const uploadCompanyImage =
   require("../middlewares/uploader").uploadCompanyImage;
 const DOMAIN = "http://127.0.0.1:5000/";
+const Overview = require("../models/orviewModel");
 
 /**
  * @description To create Company by authenticated user
@@ -366,6 +367,53 @@ router.get("/api/company/:id", userAuth, async (req, res) => {
       success: true,
       message: "Company Retrieved Successfully",
       company,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To POST A Overview
+ * @api /company/api/overview
+ * @access Private
+ * @type POST
+ * */
+
+router.post("/api/overview", async (req, res) => {
+  try {
+    let { body } = req;
+    //let company = await Company.findOne({ user: req.user._id });
+    // if (!company) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Company not found",
+    //   });
+    // }
+    // let overview = await Company.findOne({ overview: body.overview });
+    // if (overview) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Overview already exists",
+    //   });
+    // }
+    let newoverview = new Overview({
+      //company: Company._id,
+      overview: body.overview,
+      
+
+
+
+    });
+    await newoverview.save();
+    return res.status(200).json({
+      success: true,
+      message: "Overview Added Successfully",
+      newoverview,
     });
   } catch (err) {
     console.log(err);
