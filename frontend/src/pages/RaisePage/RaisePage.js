@@ -27,12 +27,7 @@ const RaisePage = () => {
       try{
         await axios.post("http://localhost:5000/company/api/create-company", data,config).then((res) => {
           if (res.data.success) {
-            toast.success(
-              res.data.message,
-              setTimeout(function(){
-                navigate(`/companyRegister/${name}`)
-              },1000)
-            );
+            navigate(`/companyRegister/${name}`) 
           }
         })
       }catch(error){

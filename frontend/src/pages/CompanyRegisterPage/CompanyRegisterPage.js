@@ -2,86 +2,92 @@ import React, { useState } from "react";
 import { Basic, Visiblity, Story } from "./component";
 import Wrapper from "./wrapper/CompanyRegisterPage";
 import tabs from "./utils/tab";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 const CompanyRegisterPage = () => {
   const formvalue = {
-    name:"",
-    city:"",
-    facebook:"",
-    linkedin:"",
-    instagram:"",
-    companylink:"",
-    twitter:"",
-    youtube:"",
-    blog:"",
-    reason0:"",
-    reason1:"",
-    reason2:"",
-    reason3:"",
-    reason4:"",
-    reason5:"",
-    reason6:"",
-    reason7:"",
-    reason8:"",
-    
-  }
-  const data={
-    name:formvalue.name,
-    city:formvalue.city,
-    facebook:formvalue.facebook,
-    linkedin:formvalue.linkedin,
-    instagram:formvalue.instagram,
-    companylink:formvalue.companylink,
-    twitter:formvalue.twitter,
-    youtube:formvalue.youtube,
-    blog:formvalue.blog,
-
-  }
-const createCompany= async(e)=>{
-e.preventDefault();
-const config={
-  headers:{
-    authorization:localStorage.getItem("token")
-  }
-}
-try {
-  await axios
-    .post("http://localhost:5000/users/api/register", formvalue,config)
-    .then((res) => {
-      if (res.data.success) {
-        toast.success(
-          res.data.message,
-          setTimeout(function () {
-            window.location.assign("/signin");
-          }, 2000)
-        );
-      }
-    });
-} catch (error) {
-  toast.error(error.response.data.message);
-}
-
-
-}
- 
+    name: "",
+    city: "",
+    facebook: "",
+    linkedin: "",
+    instagram: "",
+    companylink: "",
+    twitter: "",
+    youtube: "",
+    blog: "",
+    reason0: "",
+    reason1: "",
+    reason2: "",
+    reason3: "",
+    reason4: "",
+    reason5: "",
+    reason6: "",
+    reason7: "",
+    reason8: "",
+  };
   const [activeindex, setActive] = useState(1);
-  const [values,setValue] =useState(formvalue)
+  const [values, setValue] = useState(formvalue);
+  const handleChange = (e) => {
+    setValue({ ...values, [e.target.name]: e.target.value });
+  };
+  const data = {
+    city: values.city,
+    facebook: values.facebook,
+    linkedin: values.linkedin,
+    companylink: values.companylink,
+    twitter: values.twitter,
+    blog: values.blog,
+    reason0: values.reason0,
+    reason1: values.reason1,
+    reason2: values.reason2,
+    reason3: values.reason3,
+    reason4: values.reason4,
+    reason5: values.reason5,
+    reason6: values.reason6,
+    reason7: values.reason7,
+    reason8: values.reason8,
+  };
+  // console.log(values);
+  const onsave = () => {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    };
+    if (activeindex <= 3) {
+      setActive((prev) => prev + 1);
+      if (activeindex == 1) {
+        try {
+          axios
+            .post(
+              "http://localhost:5000/company/reason/api/create-reason" +
+                `/${useParams.name}`,
+              values,
+              config
+            )
+            .then((res) => {
+              // if (res.data.success) {
+              //   toast.success(
+              //     res.data.message,
+                  
+              //   );
+              // }
+            });
+        } catch (error) {
+          toast.error(error.response.data.message);
+        }
+      }
+    }
+  };
 
- const handleChange =(e)=>{
-  setValue({...values,[e.target.name]:e.target.value})
+ 
+  console.log(data);
 
- }
-console.log(values);
- const onsave =()=>{
-  if(activeindex <=3){
-    setActive((prev)=> prev + 1)
-
-  }
- }
   return (
     <Wrapper>
-      <section className="tabs-container" style={{marginTop:80}}>
+      <ToastContainer />
+      <section className="tabs-container" style={{ marginTop: 80 }}>
         {tabs.map((item, index) => {
           return (
             <div
