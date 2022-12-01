@@ -21,7 +21,9 @@ import {
   LandingPage,
   ProfilePage,
   UserProfilePage,
-  WelcomePage
+  WelcomePage,
+  RaisePage,
+  CompanyRegisterPage,
 } from "./pages";
 
 function App() {
@@ -40,6 +42,11 @@ function App() {
         <Route path="/explore" element={<ExplorePage />}></Route>
         <Route path="/detail" element={<DetailPage />}></Route>
         <Route path="/category" element={<Categories />}></Route>
+        <Route path="/raise" element={<RaisePage />}></Route>
+        <Route
+          path="/CompanyRegister/:id"
+          element={<CompanyRegisterPage />}
+        ></Route>
 
         {/* DASHBOARD ROUTES */}
         <Route path="/dashboard" element={<Main />}>
@@ -50,7 +57,10 @@ function App() {
           <Route path="/dashboard/profile" element={<Profile />} />
           <Route path="/dashboard/company_admin" element={<CompanyAdmin />} />
           <Route path="/dashboard/investor_admin" element={<InvestorAdmin />} />
-          <Route path="/dashboard/company-details/:id" element={<CompanyDetails/>} />
+          <Route
+            path="/dashboard/company-details/:id"
+            element={<CompanyDetails />}
+          />
 
           {/* Add others routes of dashboard below */}
         </Route>
