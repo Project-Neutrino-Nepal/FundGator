@@ -49,7 +49,7 @@ router.post("/api/create-reason/:name", userAuth, async (req, res) => {
 });
 
 //route to get reasons for a company
-router.get("/api/get-reasons/:id", async (req, res) => {
+router.get("/-reasons/:idapi/get", async (req, res) => {
   try {
     const company = await Company.findOne({ _id: req.params.id });
     if (!company) {

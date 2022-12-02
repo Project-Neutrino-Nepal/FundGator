@@ -31,15 +31,8 @@ const Overview = () => {
               </div>
               <div>
                 <p className="fs-5 ">
-                  {reason?.forEach((reason) => {
-                    return (
-                      <div>
-                        <p>{reason.reason0}</p>
-                      </div>
-                    )
-                  })}
+                  this app socilize the invesment and startup
                 </p>
-                 
               </div>
             </div>
             <hr />
