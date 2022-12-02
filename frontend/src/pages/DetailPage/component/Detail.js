@@ -20,18 +20,15 @@ const Detail = () => {
 
 
 
-  };
+ 
 
     // setReason(res.data);
     // console.log(res.data);
    
 
-  useEffect(() => {
-    getReason();
-  }, []);
-
-
-
+  // useEffect(() => {
+  //   getReason();
+  // }, []);
 
   return (
     <Wrapper>
@@ -170,6 +167,9 @@ const Detail = () => {
 
     </Wrapper>
   );
+
+
+  
 };
 
 export default Detail;
