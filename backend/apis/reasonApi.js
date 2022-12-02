@@ -48,4 +48,66 @@ router.post("/api/create-reason/:name", userAuth, async (req, res) => {
   }
 });
 
+//route to get reasons for a company
+router.get("/-reasons/:idapi/get", async (req, res) => {
+  try {
+    const company = await Company.findOne({ _id: req.params.id });
+    if (!company) {
+      return res.status(404).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+    const reasons = await Reason.findOne({ company: company._id });
+    if (!reasons) {
+      return res.status(404).json({
+        success: false,
+        message: "Reasons not found",
+      });
+    }
+    res.status(200).json({
+      reasons,
+      success: true,
+      message: "Reasons found",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
+
+//route to get all reasons by company
+
+// router.get("/api/get-all-reasons-by-company", async (req, res) => {
+//     try {
+//         const { name } = req.query;
+//         const company = await Company.findOne({
+//             name
+//         });
+
+//         const companyID = company._id;
+//         const reasons = await Reason.find({ company: companyID });
+//         res.status(200).json({
+//             success: true,
+//             message: "Reasons fetched successfully",
+//             reasons,
+//         });
+//     } catch (error) {
+//         console.log(error);
+
+//         res.status(500).json({
+//             success: false,
+//             message: "Internal server error",
+//         });
+//     }
+// });
+
+
+
+
+
 module.exports = router;

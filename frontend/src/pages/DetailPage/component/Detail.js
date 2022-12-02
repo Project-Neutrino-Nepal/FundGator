@@ -1,7 +1,38 @@
-import React from "react";
+
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Wrapper from "../wrapper/Detail";
 import highlights from "../utils/highlights";
+
+
 const Detail = () => {
+  const [reason, setReason] = useState({});
+ const reasons = [];
+  
+  axios.get(
+      "http://localhost:5000/reason/api/get-reasons/:id"
+
+
+    ).then((res) => {
+       reasons = res.data.reasons;
+       console.log(reasons);
+    });
+
+
+
+  };
+
+    // setReason(res.data);
+    // console.log(res.data);
+   
+
+  useEffect(() => {
+    getReason();
+  }, []);
+
+
+
+
   return (
     <Wrapper>
       <section className="financial">
@@ -11,9 +42,10 @@ const Detail = () => {
         Saepe iusto libero fuga.
       </section>
 
-      <section className="risks">
-        <h3>Risks</h3>
-        {highlights.map((item, index) => {
+      
+          
+      <section className="highlights">
+        {reasons.map((item, index) => {
           return (
             <div className="list">
               <div className="number">{index + 1}</div> {item.text}

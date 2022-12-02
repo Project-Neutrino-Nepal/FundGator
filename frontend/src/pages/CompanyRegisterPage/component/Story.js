@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Wrapper from "../wrapper/Story";
 import upload from "../../../assets/image/uploadpic.svg";
-const Story = () => {
+const Story = ({ handleChange, imgpreview, vdpreview }) => {
   const [preview, setPreview] = useState(null);
   const [vpreview, setvPreview] = useState(null);
 
@@ -27,10 +27,15 @@ const Story = () => {
         center on your profile.
       </p>
 
-      <label for="input-file" className="img-container">
-        <img src={upload} alt="" srcset="" className="upload-pic" />
-        <input type="file" name="" id="input-file" onChange={fileSelection} />
-        <img src={preview} className="preview-img" alt="" />
+      <label htmlFor="input-file" className="img-container">
+        <img src={upload} alt="" className="upload-pic" />
+        <input
+          type="file"
+          name="imageupload"
+          id="input-file"
+          onChange={(e) => handleChange(e, "imageuploadpreview")}
+        />
+        <img src={imgpreview} className="preview-img" alt="" />
       </label>
 
       <h5>Upload a 1-2 minute video</h5>
@@ -42,13 +47,13 @@ const Story = () => {
       <label htmlFor="video-file" className="vfile btn btn-primary">
         upload video
       </label>
-      <video src={vpreview} controls></video>
+      <video src={vdpreview} controls></video>
 
       <input
         type="file"
-        name=""
+        name="videoupload"
         id="video-file"
-        onChange={videofileSelection}
+        onChange={(e) => handleChange(e, "videouploadpreview")}
       />
     </Wrapper>
   );
