@@ -5,7 +5,7 @@ const Company = require("../models/companyModel");
 const Reason = require("../models/reasonModel");
 /**
  * @description To input list of top resason to invest in a company
- * @api /company/reason/api/create-reason
+ * @api /reason/api/create-reason
  * @access PRIVATE
  * @type POST
  */

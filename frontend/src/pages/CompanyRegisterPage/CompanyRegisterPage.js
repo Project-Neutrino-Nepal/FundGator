@@ -63,25 +63,18 @@ const CompanyRegisterPage = () => {
             .post(
               "http://localhost:5000/company/reason/api/create-reason" +
                 `/${useParams.name}`,
-              values,
+              data,
               config
             )
-            .then((res) => {
-              // if (res.data.success) {
-              //   toast.success(
-              //     res.data.message,
-                  
-              //   );
-              // }
-            });
+            .then((res) => {});
         } catch (error) {
           toast.error(error.response.data.message);
         }
       }
+     
     }
   };
 
- 
   console.log(data);
 
   return (
