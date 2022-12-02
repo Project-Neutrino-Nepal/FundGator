@@ -1,6 +1,19 @@
-import React from "react";
+
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+
+
 
 const Overview = () => {
+  const [reason, setReason] = useState();
+  useEffect(() => {
+    axios.get("http://localhost:5000/company/api/all-companies").then((res) => {
+    
+      setReason(res.data);
+    });
+  }, []);
+
+  console.log("test");
   return (
     <>
       <div className="container mt-5 card ">
@@ -18,8 +31,15 @@ const Overview = () => {
               </div>
               <div>
                 <p className="fs-5 ">
-                  this app socilize the invesment and startup
+                  {reason?.forEach((reason) => {
+                    return (
+                      <div>
+                        <p>{reason.reason0}</p>
+                      </div>
+                    )
+                  })}
                 </p>
+                 
               </div>
             </div>
             <hr />

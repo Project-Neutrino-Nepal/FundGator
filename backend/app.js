@@ -33,7 +33,7 @@ app.use('/uploads', express.static('uploads'));
 // Inject Sub router and apis
 app.use("/users", userRouter);
 app.use("/company", companyRouter);
-app.use("/company/reason",reasonRouter);
+app.use("/reason",reasonRouter);
 app.use("/profile", profileRouter);
 app.use("/admin", adminRouter, adminRouter2, adminRouter3);
 
