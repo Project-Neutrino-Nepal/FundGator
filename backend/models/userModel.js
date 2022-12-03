@@ -28,6 +28,7 @@ const UserSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    // only admin can change the status
     status: {
       type: Boolean,
       default: true,
@@ -85,7 +86,7 @@ UserSchema.methods.getUserInfo = function () {
     "verified",
     "admin",
     "isFirstTime",
-    "status"
+    "status",
   ]);
 };
 

@@ -90,8 +90,7 @@ const columns = [
     title: "Actions",
     key: "action",
     dataIndex: "action",
-   
-  },  
+  },
 ];
 
 function InvestorAdmin() {
@@ -122,7 +121,11 @@ function InvestorAdmin() {
     },
   };
   // suspend user api
+
   const suspendUser = (id) => {
+    // chaeck if user is admin or not
+    const admin = localStorage.getItem("admin");
+    if (admin === "true") {
     axios
       .put("http://localhost:5000/users/api/suspend/" + id, configurations)
       .then((res) => {
@@ -132,9 +135,16 @@ function InvestorAdmin() {
       .catch((err) => {
         toast.error(err.response.data.message);
       });
+    } else {
+      toast.error("You are not Authorized to perform this action");
+    }
   };
 
   const activateUser = (id) => {
+    // chaeck if user is admin or not
+    const admin = localStorage.getItem("admin");
+    if (admin === "true") {
+
     axios
       .put("http://localhost:5000/users/api/activate/" + id, configurations)
       .then((res) => {
@@ -145,6 +155,9 @@ function InvestorAdmin() {
       .catch((err) => {
         toast.error(err.response.data.message);
       });
+    } else {
+      toast.error("You are not Authorized to perform this action");
+    }
   };
 
   const data = profiles.map((profile) => {
