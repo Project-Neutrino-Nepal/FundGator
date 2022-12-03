@@ -1,7 +1,49 @@
-import React from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Wrapper from "../wrapper/Detail";
 import highlights from "../utils/highlights";
+
+
 const Detail = () => {
+  const [reason, setReason] = useState({});
+ const reasons = [];
+ let { id } = useParams();
+  
+ const config = {
+  headers: {
+    Authorization: localStorage.getItem("token"),
+  },
+};
+
+// get company details using id from params
+
+
+useEffect(() => {
+  axios
+    .get("http://localhost:5000/reason/api/get-reasons"+id, config)
+    .then((res) => {
+      let reasons = res.data.reasons;
+      console.log(reasons);
+      
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}, );
+
+
+
+ 
+
+    // setReason(res.data);
+    // console.log(res.data);
+   
+
+  // useEffect(() => {
+  //   getReason();
+  // }, []);
+
   return (
     <Wrapper>
       <section className="financial">
@@ -11,9 +53,10 @@ const Detail = () => {
         Saepe iusto libero fuga.
       </section>
 
-      <section className="risks">
-        <h3>Risks</h3>
-        {highlights.map((item, index) => {
+      
+          
+      <section className="highlights">
+        {reasons.map((item, index) => {
           return (
             <div className="list">
               <div className="number">{index + 1}</div> {item.text}
@@ -138,6 +181,9 @@ const Detail = () => {
 
     </Wrapper>
   );
+
+
+  
 };
 
 export default Detail;

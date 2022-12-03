@@ -5,7 +5,7 @@ const Wrapper = styled.div`
   flex-direction: column;
 
   .left-container {
-    background-color: #d1eaeb;
+    background-color: #0a4fa3;
     display: flex;
     flex-direction: column;
     justify-content: center;

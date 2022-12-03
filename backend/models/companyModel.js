@@ -14,7 +14,6 @@ const CompanySchema = new Schema(
     category: {
       type: Schema.Types.ObjectId,
       ref: "category",
-      required: true,
     },
     tags: [
       {
@@ -22,17 +21,22 @@ const CompanySchema = new Schema(
         ref: "tags",
       },
     ],
+    reasons: 
+      {
+        type: Schema.Types.ObjectId,
+        ref: "reason",
+      },
+    
+
     verified: {
       type: Boolean,
       default: false,
     },
     image: {
       type: String,
-      default: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
     },
     email: {
       type: String,
-      required: true,
     },
     name: {
       type: String,
@@ -65,21 +69,6 @@ const CompanySchema = new Schema(
     company_video: {
       type: String,
     },
-    company_website: {
-      type: String,
-    },
-    company_facebook: {
-      type: String,
-    },
-    company_twitter: {
-      type: String,
-    },
-    company_linkedin: {
-      type: String,
-    },
-    company_instagram: {
-      type: String,
-    },
     raising_fund: {
       type: Boolean,
       default: true,
@@ -91,7 +80,7 @@ const CompanySchema = new Schema(
     fund_goal: {
       type: Number,
       default: 0,
-    }
+    },
   },
   { timestamps: true }
 );

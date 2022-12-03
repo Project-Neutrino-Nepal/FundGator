@@ -1,37 +1,82 @@
-const buffer = Buffer.from("some data");
-const token =
-"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InltaWxhbjU5M0BnbWFpbC5jb20iLCJuYW1lIjoiTWlsYW4gWWFkYXYiLCJpZCI6IjYzODBhNWM2MWZhYjg2NDNkNDZiMzg5ZSIsImlhdCI6MTY2OTYxNjk5OSwiZXhwIjoxNjY5NzAzMzk5fQ.9h3SLnEaq9WGyju7LCLkvLnS-2vG-yZS_yVnSHix5D8";
-const request = require("supertest");
-const app = require("../app");
+const User = require("../models/userModel");
+const mongoose = require("mongoose");
+const Company = require("../models/companyModel");
 
+// const url = "mongodb+srv://Tulsi:qwerty12345@cluster0.bcsf13g.mongodb.net/?retryWrites=true&w=majority";
+const url =
+  "mongodb+srv://milan361:iZEK0AAW2n6p4ilc@cluster0.uanmf.mongodb.net/FundGator?retryWrites=true&w=majority";
 
-//To get all Companies and their owners
-
-test("Show All Companies", async () => {
-  await request(app)
-    .get("/company/api/companies")
-
-    .set("Authorization", token)
-    .expect(200)
-    // .expect("Content-Type", /json/)
-    .then((response) => {
-        expect(response.body.success).toBe(true);
-        expect(response.body.message).toBe("Companies Retrieved Successfully");
-        expect(response.body.company).not.toBe(null);
-    });
+beforeAll(async () => {
+  await mongoose.connect(url, {
+    useNewUrlParser: true,
+  });
+});
+afterAll(async () => {
+  await mongoose.connection.close();
 });
 
-test("To retrieve all Companies of authenticated user ", async () => {
-
-    await request(app)
-      .get("/company/api/get-my-companies/6380a6181fab8643d46b38a8")
-        .set("Authorization", token)
-        .expect(200)
-      .expect("Content-Type", /json/)
-      .expect(200);
+//testing for getting all company
+describe("Company Schema test  finding all company", () => {
+  it("Add user to get all company", async () => {
+    const status = await Company.find();
+    expect(status.ok);
   });
+});
+
+//testing for getting company by id
+
+describe("Company Schema test for getting Company by id", () => {
+  it("Add user to get company by Id", async () => {
+    const status = await Company.findOne({
+      _id: Object("638ae051ab5f574a80158613"),
+    });
+    expect(status.ok);
+  });
+});
+
+//testing to create company
+describe("Company Schema test For creating company", () => {
+  it("Add user to create company", async () => {
+    const status = await Company.create({
+      name: "Tulsi",
+      email: "test@gmail.com",
+      password: "qwerty123"
+    });
+    expect(status.ok);
+  });
+});
 
 
+//testing to update company
+describe("Company Schema test For updating company", () => {
+  it("Add user to update company", async () => {
+    const status = await Company.updateOne({ _id: Object("638b0a4641ff299e4fb40085") },
+      {
+        $set: {
+          name: "Tulsi test",
+          email: "testing@gmail.com",
+          password: "qwerty123"
+        }
+      });
+    expect(status.ok);
+  });
+});
 
 
+//testing for getting company by name
+describe("Company Schema test For deleting", () => {
+  it("Add User to delete company", async () => {
+    const status = await Company.findOne({ name: "softwarica" });
+    expect(status.ok);
+  });
+});
 
+//testing for getting number of company
+describe("Company Schema test the number of comapny", () => {
+  it("To get number of company", async () => {
+    const status = await Company.count({
+      _id: Object("638a53a66bb236611c0262be"),
+    });
+    expect(status.ok);
+  });
+});

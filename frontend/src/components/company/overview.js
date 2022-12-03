@@ -1,6 +1,19 @@
-import React from "react";
+
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+
+
 
 const Overview = () => {
+  const [reason, setReason] = useState();
+  useEffect(() => {
+    axios.get("http://localhost:5000/company/api/all-companies").then((res) => {
+    
+      setReason(res.data);
+    });
+  }, []);
+
+  console.log("test");
   return (
     <>
       <div className="container mt-5 card ">

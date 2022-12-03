@@ -12,17 +12,12 @@ afterAll(async () => {
 });
 
 //AdminLogin test
-
-describe("User Schema test For login", () => {
-  it("Add User testing login", () => {
-    return User.findOne({ _id: Object("6380a5c61fab8643d46b389e") }).then(
-      (result) => {
+describe("Admin Schema test For login", () => {
+    it("Add admin to login", async () => {
+      const result = await User.findOne({ _id: Object("6380a5c61fab8643d46b389e") });
         expect(result.email).toEqual("ymilan593@gmail.com");
-      }
-    );
+    });
   });
-});
-
 
 
 

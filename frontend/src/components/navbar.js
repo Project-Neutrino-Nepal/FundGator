@@ -187,7 +187,7 @@ function Navbar() {
 
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li className="nav-item me-2">
-                  <Link className="nav-link active" aria-current="page" to="#">
+                  <Link className="nav-link active" aria-current="page" to="raise">
                     Raise funding
                   </Link>
                 </li>

@@ -78,13 +78,13 @@ const Basic = ({ values, handleChange }) => {
   };
   return (
     <div className="form-content">
-      <Labelinput
+      <Labelinput 
         type={"text"}
         placeholder={"Enter Company Name"}
         label={"Company Name"}
         value={id}
         handleChange={handleChange}
-        name={"companyname"}
+        name={"name"} 
       />
 
       <label htmlFor="">The Top Reason to Invest</label>

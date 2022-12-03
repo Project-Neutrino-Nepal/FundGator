@@ -46,7 +46,7 @@ router.post(
         ...body,
         image: filename,
       });
-      await company.save();
+      await company.save();    
       res.status(200).json({
         success: true,
         message: "Company created successfully",
@@ -61,6 +61,8 @@ router.post(
     }
   }
 );
+
+
 
 /**
  * @description To upload company video
@@ -93,6 +95,7 @@ router.put(
         success: true,
         message: "Video uploaded successfully",
         company,
+        
       });
     } catch (error) {
       console.log(error);
