@@ -155,7 +155,7 @@ router.delete("/api/delete-company/:id", userAuth, async (req, res) => {
         message: "Company not found",
       });
     }
-    await company.remove();
+    await company.deleteOne();
     return res.status(200).json({
       success: true,
       message: "Company Deleted Successfully",
