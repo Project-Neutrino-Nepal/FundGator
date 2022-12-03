@@ -25,8 +25,7 @@ const CompanyDetails = () => {
   const videoRef = useRef(null);
   const [play, setplay] = useState(false);
   const [activeindex, setActiveIndex] = useState(1);
-  let  {id}  = useParams();
-
+  let { id } = useParams();
 
   const onplay = () => {
     if (!play) {
@@ -39,26 +38,25 @@ const CompanyDetails = () => {
     console.log(videoRef);
   };
 
-const [name, setName] = useState("");
-const [image, setImage] = useState("");
-const [description, setDescription] = useState("");
-const [video, setVideo] = useState("");
-const [website, setWebsite] = useState("");
-const [facebook, setFacebook] = useState("");
-const [twitter, setTwitter] = useState("");
-const [linkedin, setLinkedin] = useState("");
-const [instagram, setInstagram] = useState("");
-const [short_pitch, setShort_pitch] = useState("");
-const [email, setEmail] = useState("");
-const [phone, setPhone] = useState("");
-const [address, setAddress] = useState("");
-const [fund_goal, setFund_goal] = useState("");
-const [fund_raised, setFund_raised] = useState("");
-const [category, setCategory] = useState("");
-const [status, setStatus] = useState("");
-const [tags, setTags] = useState("");
-
-
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("");
+  const [description, setDescription] = useState("");
+  const [video, setVideo] = useState("");
+  const [website, setWebsite] = useState("");
+  const [facebook, setFacebook] = useState("");
+  const [twitter, setTwitter] = useState("");
+  const [linkedin, setLinkedin] = useState("");
+  const [instagram, setInstagram] = useState("");
+  const [short_pitch, setShort_pitch] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [fund_goal, setFund_goal] = useState("");
+  const [fund_raised, setFund_raised] = useState("");
+  const [category, setCategory] = useState("");
+  const [status, setStatus] = useState("");
+  const [tags, setTags] = useState("");
+  const [ID, setID] = useState("");
 
   const config = {
     headers: {
@@ -70,7 +68,7 @@ const [tags, setTags] = useState("");
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/company/api/company/"+id, config)
+      .get("http://localhost:5000/company/api/company/" + id, config)
       .then((res) => {
         let company = res.data.company;
         setName(company.name);
@@ -91,6 +89,7 @@ const [tags, setTags] = useState("");
         setCategory(company.category);
         setStatus(company.status);
         setTags(company.tags);
+        setID(company._id);
       })
       .catch((err) => {
         console.log(err);
@@ -104,9 +103,7 @@ const [tags, setTags] = useState("");
           <div className="header">
             <div className="info">
               <h3>Invest in {name}</h3>
-              <h1>
-               {short_pitch}
-              </h1>
+              <h1>{short_pitch}</h1>
             </div>
             <div className="share">
               <FaShare />
@@ -121,7 +118,7 @@ const [tags, setTags] = useState("");
               controls={play ? true : false}
               src={video}
               className="video"
-              poster="https://images.pexels.com/photos/41162/moon-landing-apollo-11-nasa-buzz-aldrin-41162.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              poster={image}
             ></video>
             <FaPlay className={!play ? "icon" : "d-none"} onClick={onplay} />
           </div>
@@ -189,7 +186,12 @@ const [tags, setTags] = useState("");
         </section>
 
         <section className="five">
-          {activeindex === 1 ? <Overview /> : null}
+          {activeindex === 1 ? (
+            <Overview
+              // pass company details as props
+              company={ID}
+            />
+          ) : null}
           {activeindex === 2 ? <Detail /> : null}
           {activeindex === 3 ? <Update /> : null}
 

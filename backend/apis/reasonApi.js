@@ -98,7 +98,7 @@ router.put("/api/update-reason/:name", userAuth, async (req, res) => {
 
 
 //route to get reasons for a company
-router.get("/-reasons/:idapi/get", async (req, res) => {
+router.get("/api/get-reasons/:id", async (req, res) => {
   try {
     const company = await Company.findOne({ _id: req.params.id });
     if (!company) {
