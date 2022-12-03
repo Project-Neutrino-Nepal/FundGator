@@ -54,7 +54,7 @@ const Team = ({ values, handleChange, Addteam, teamChange }) => {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="staticBackdropLabel">
-                Modal title
+                Add Member
               </h5>
               <button
                 type="button"

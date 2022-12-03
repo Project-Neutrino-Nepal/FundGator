@@ -95,6 +95,7 @@ router.put(
         success: true,
         message: "Video uploaded successfully",
         company,
+        
       });
     } catch (error) {
       console.log(error);

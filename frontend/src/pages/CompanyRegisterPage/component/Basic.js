@@ -76,7 +76,7 @@ const Basic = ({ values, handleChange, Addreason, reasonChange }) => {
         Add More Link
       </button>
 
-      <div className={show ? "" : "d-none"}>
+      {/* <div className={show ? "" : "d-none"}>
         <UnderlineInput
           type={"text"}
           index={<FaInstagramSquare />}
@@ -85,7 +85,7 @@ const Basic = ({ values, handleChange, Addreason, reasonChange }) => {
           handleChange={handleChange}
           name={"instagram"}
         />
-      </div>
+      </div> */}
       <div className={show ? "" : "d-none"}>
         <UnderlineInput
           type={"text"}
@@ -106,7 +106,7 @@ const Basic = ({ values, handleChange, Addreason, reasonChange }) => {
           name={"linkedin"}
         />
       </div>
-      <div className={show ? "" : "d-none"}>
+      {/* <div className={show ? "" : "d-none"}>
         <UnderlineInput
           type={"text"}
           index={<FaYoutube />}
@@ -125,7 +125,7 @@ const Basic = ({ values, handleChange, Addreason, reasonChange }) => {
           handleChange={handleChange}
           name={"blog"}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

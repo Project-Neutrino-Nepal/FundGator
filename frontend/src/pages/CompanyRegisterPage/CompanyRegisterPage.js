@@ -6,13 +6,10 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import upload from "../../assets/image/uploadpic.svg";
 import { useParams } from "react-router-dom";
-
 const CompanyRegisterPage = () => {
   const { id } = useParams();
-
   const formvalue = {
     companyname: id,
-
     city: "",
     facebook: "",
     linkedin: "",
@@ -78,7 +75,6 @@ const CompanyRegisterPage = () => {
       toast.error(error.response.data.message);
     }
   };
-
   const [activeindex, setActive] = useState(1);
   const [values, setValue] = useState(formvalue);
   const reasonChange = (e, index) => {
@@ -93,7 +89,6 @@ const CompanyRegisterPage = () => {
       setValue({ ...values, reasons: newReason });
     }
   };
-
   const teamChange = (e, index, name) => {
     var teams = values.teams;
     if (e.target.files && e.target.files[0]) {
@@ -101,11 +96,9 @@ const CompanyRegisterPage = () => {
         ...teams[index],
         [name]: e.target.files[0],
       };
-
       setValue({ ...values, teams: teams });
     } else {
       teams[index] = { ...teams[index], [name]: e.target.value };
-
       setValue({ ...values, teams: teams });
     }
   };
@@ -125,7 +118,6 @@ const CompanyRegisterPage = () => {
     });
     setValue({ ...values, teams: newTeam });
   };
-
   const handleChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       setValue({ ...values, [e.target.name]: e.target.files[0] });
@@ -133,7 +125,6 @@ const CompanyRegisterPage = () => {
       setValue({ ...values, [e.target.name]: e.target.value });
     }
   };
-
   const fileChange = (e, name) => {
     let file = e.target.files[0];
     let blobURL = URL.createObjectURL(file);
@@ -190,7 +181,6 @@ const CompanyRegisterPage = () => {
             vdpreview={values.videouploadpreview}
           />
         </div>
-
         <div className={activeindex === 2 ? "form-child" : "d-none"}>
           <Team
             values={values}
@@ -209,5 +199,4 @@ const CompanyRegisterPage = () => {
     </Wrapper>
   );
 };
-
 export default CompanyRegisterPage;

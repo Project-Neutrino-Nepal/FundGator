@@ -30,11 +30,19 @@ useEffect(() => {
     .catch((err) => {
       console.log(err);
     });
-}, []);
+}, );
 
 
 
+ 
 
+    // setReason(res.data);
+    // console.log(res.data);
+   
+
+  // useEffect(() => {
+  //   getReason();
+  // }, []);
 
   return (
     <Wrapper>
@@ -173,6 +181,9 @@ useEffect(() => {
 
     </Wrapper>
   );
+
+
+  
 };
 
 export default Detail;
