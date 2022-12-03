@@ -131,10 +131,7 @@ router.post("/api/login", LoginValidations, validator, async (req, res) => {
  * @type GET
  */
 
-
 // dockstring
-
-
 
 router.get("/verify-now/:verificationCode", async (req, res) => {
   try {
@@ -216,6 +213,76 @@ router.get("/api/get-no-users", userAuth, async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To suspend a user
+ * @api /users/api/suspend-user/:userId
+ * @access PRIVATE
+ * @type PUT
+ */
+
+router.put("/api/suspend/:userId",userAuth, async (req, res) => {
+  try {
+    let user = await User.findById(req.user._id);
+    if (user.admin === false) {
+      return res.status(401).json({
+        success: false,
+        message: "You are not authorized to suspend this user.",
+      });
+    }
+    const updateUser = await User.findByIdAndUpdate(req.params.userId, {
+      status: false,
+    });
+    return res.status(200).json({
+      updateUser,
+      success: true,
+      message: "User has been suspended! Successfully.",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      err,
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To unsuspend a user
+ * @api /users/api/activate/:userId
+ * @access PRIVATE
+ * @type PUT
+ * */
+
+router.put("/api/activate/:userId", async (req, res) => {
+  try {
+    // let user = await User.findById(req.user._id);
+    // if (user.admin === false) {
+    //   return res.status(401).json({
+    //     success: false,
+    //     message: "You are not authorized to activate this user.",
+    //   });
+    // }
+    const updateUser
+      = await
+      User.findByIdAndUpdate(req.params.userId, {
+        status: true,
+      });
+    return res.status(200).json({
+      updateUser,
+      success: true,
+      message: "User has been activated! Successfully.",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      err,
       success: false,
       message: "An error occurred.",
     });
