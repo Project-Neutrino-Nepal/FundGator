@@ -51,6 +51,23 @@ const CompanyRegisterPage = () => {
   const [activeindex, setActive] = useState(1);
   const [values, setValue] = useState(formvalue);
 
+
+  const image=values.imageuploadpreview;
+  const video=values.videouploadpreview;
+  const imageuploads=values.imageupload;
+  const videouploads=values.videoupload;
+  console.log(image);
+  console.log(video);
+  console.log(imageuploads);
+  console.log(videouploads);
+
+  const uploads={
+    company_logo:imageuploads,
+    company_video:videouploads,
+  }
+
+
+
   const config = {
     headers: {
       authorization: localStorage.getItem("token"),

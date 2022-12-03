@@ -40,8 +40,8 @@ const Story = ({ handleChange, imgpreview, vdpreview }) => {
 
       <h5>Upload a 1-2 minute video</h5>
       <p>
-        Please keep it simple: recording yourself with an iPhone will do. Fancy
-        expensive videos perform worse on Wefunder.
+        Please keep it simple with short description of your company: recording
+        yourself with an overview of the company may brings difference on FundGator.
       </p>
 
       <label htmlFor="video-file" className="vfile btn btn-primary">
