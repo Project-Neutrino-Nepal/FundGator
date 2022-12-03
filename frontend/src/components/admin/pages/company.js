@@ -205,7 +205,7 @@ function CompanyAdmin() {
                 <Table
                   columns={columns}
                   dataSource={comapnyData}
-                  pagination={false}
+                  pagination={true}
                   className="ant-border-space"
                 />
               </div>

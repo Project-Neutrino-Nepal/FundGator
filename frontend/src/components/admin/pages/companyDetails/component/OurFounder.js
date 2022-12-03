@@ -1,6 +1,10 @@
 import React from "react";
 import Wrapper from "../wrapper/OurFounder";
-const OurFounder = () => {
+const OurFounder = (
+  name,
+  image,
+  position,
+) => {
   return (
     <Wrapper>
       <img

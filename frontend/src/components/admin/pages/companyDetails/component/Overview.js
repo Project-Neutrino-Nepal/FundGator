@@ -1,29 +1,63 @@
-import React from "react";
-import highlights from "../utils/highlights";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Wrapper from "../wrapper/Overview";
 import OurFounder from "./OurFounder";
 
-const Overview = () => {
+const Overview = (ID) => {
+let id = ID.company;
+const [reasons0, setReasons0] = useState();
+const [reasons1, setReasons1] = useState();
+const [reasons2, setReasons2] = useState();
+const [reasons3, setReasons3] = useState();
+const [reasons4, setReasons4] = useState();
+const [reasons5, setReasons5] = useState();
+const [reasons6, setReasons6] = useState();
+const [reasons7, setReasons7] = useState();
+const [reasons8, setReasons8] = useState();
+const [team, setTeam] = useState();
+  const config = {
+    headers: {
+      "Authorization": localStorage.getItem("token"),
+    },
+  };
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/reason/api/get-reasons/"+id, config)
+      .then((res) => {
+        let reasons = res.data.reasons;
+       setReasons0(reasons.reason0);
+      let team = reasons.team;
+      setTeam(team);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+
+
   return (
     <Wrapper>
       <section className="lists">
         <h1>Highlights</h1>
-        {highlights.map((item, index) => {
-          return (
-            <div className="list">
-              <div className="number">{index + 1}</div> {item.text}
-            </div>
-          );
-        })}
+        <li>
+          <h6>{reasons0}</h6>
+        </li>
       </section>
 
       <section className="our-team">
         <h1>Our Founders</h1>
 
         <div className="lists">
-          <OurFounder />
-          <OurFounder />
-          <OurFounder />
+          {/* {team.map((item) => (
+            <OurFounder
+              key={item._id}
+              name={item.name}
+              image={item.image}
+              position={item.position}              
+            />
+          ))} */}
+         < OurFounder/>
         </div>
       </section>
 
