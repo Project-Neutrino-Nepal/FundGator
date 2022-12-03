@@ -28,6 +28,10 @@ const UserSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    status: {
+      type: Boolean,
+      default: true,
+    },
     verified: {
       type: Boolean,
       default: false,
@@ -81,6 +85,7 @@ UserSchema.methods.getUserInfo = function () {
     "verified",
     "admin",
     "isFirstTime",
+    "status"
   ]);
 };
 

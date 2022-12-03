@@ -16,6 +16,8 @@ import { Link } from "react-router-dom";
 import { SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const formProps = {
   name: "file",
@@ -117,13 +119,26 @@ const columns = [
 ];
 
 function CompanyAdmin() {
-  const onChange = (e) => console.log(`radio checked:${e.target.value}`);
   const [company, setCompany] = useState([]);
 
   const config = {
     headers: {
       Authorization: localStorage.getItem("token"),
     },
+  };
+
+  const deleteCompany = (id) => {
+    console.log(id);
+    axios
+      .delete("http://localhost:5000/company/api/delete-company/" + id, config)
+      .then((res) => {
+        console.log(res);
+        toast.success(res.data.message);
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
   };
 
   // fetching Profile data from API and map multiple times to show in table
@@ -133,7 +148,6 @@ function CompanyAdmin() {
       .then((res) => {
         const companies = res.data.company;
         setCompany(companies);
-        console.log(companies.verified);
       })
       .catch((err) => {
         console.log(err);
@@ -168,9 +182,9 @@ function CompanyAdmin() {
           <Link to={`/dashboard/company-details/${company._id}`}>
             <i className="fa-solid fa-eye text-info"></i>
           </Link>
-          <Link to={`/admin/company/${company._id}`}>
+          <a onClick={() => deleteCompany(company._id)}>
             <i className="fa-solid fa-trash text-danger"></i>
-          </Link>
+          </a>
         </div>
       ),
     };
@@ -178,6 +192,7 @@ function CompanyAdmin() {
 
   return (
     <>
+      <ToastContainer />
       <div className="tabled" id="adminCompany">
         <Row gutter={[24, 0]}>
           <Col xs="24" xl={24}>

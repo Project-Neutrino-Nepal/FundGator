@@ -1,7 +1,9 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { Card, Col, Input, Row, Space, Table } from "antd";
+import { Card, Col, Input, Row, Table } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const columns = [
   {
@@ -76,18 +78,20 @@ const columns = [
     title: "Status",
     key: "status",
     dataIndex: "status",
-    render: (text) => (text ? text : "N/A"),
+    // if Active then show green, else show red
+    render: (text) =>
+      text === "Active" ? (
+        <span style={{ color: "green" }}>{text}</span>
+      ) : (
+        <span style={{ color: "red" }}>{text}</span>
+      ),
   },
   {
     title: "Actions",
     key: "action",
-    // render the action buttons with green and red colors on hover
-    render: (text, record) => (
-      <Space size="middle">
-        <a style={{ color: "red" }}>Suspend</a>
-      </Space>
-    ),
-  },
+    dataIndex: "action",
+   
+  },  
 ];
 
 function InvestorAdmin() {
@@ -102,7 +106,7 @@ function InvestorAdmin() {
   // fetching Profile data from API and map multiple times to show in table
   useEffect(() => {
     axios
-      .get("http://localhost:5000/profile//api/get-profiles", config)
+      .get("http://localhost:5000/profile/api/get-profiles", config)
       .then((res) => {
         const profiles = res.data.profiles;
         setProfiles(profiles);
@@ -111,6 +115,37 @@ function InvestorAdmin() {
         console.log(err);
       });
   }, []);
+
+  const configurations = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+  // suspend user api
+  const suspendUser = (id) => {
+    axios
+      .put("http://localhost:5000/users/api/suspend/" + id, configurations)
+      .then((res) => {
+        toast.success(res.data.message);
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  };
+
+  const activateUser = (id) => {
+    axios
+      .put("http://localhost:5000/users/api/activate/" + id, configurations)
+      .then((res) => {
+        console.log(res);
+        toast.success(res.data.message);
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  };
 
   const data = profiles.map((profile) => {
     return {
@@ -126,12 +161,56 @@ function InvestorAdmin() {
       function: profile.email,
       employed: profile.createdAt,
       phone: profile.phone,
+      status: profile.user.status === true ? "Active" : "Suspended",
       pan_No: profile.pan_No,
+      // call suspend api to suspend the user in Action column
+      action:
+        // if status is Active then show Deactivate, else show Activate
+        profile.user.status === true ? (
+          <a
+            onClick={() => suspendUser(profile.user._id)}
+            style={{ color: "red" }}
+          >
+            Suspend
+          </a>
+        ) : (
+          <a
+            onClick={() => activateUser(profile.user._id)}
+            style={{ color: "green" }}
+          >
+            Activate
+          </a>
+        ),
     };
   });
 
+  //     handleSuspend: (profile) => {
+  //       axios
+  //         .put(
+  //           `http://localhost:5000/user/api/suspend/${profile.user._id}`,
+  //           config
+  //         )
+  //         .then((res) => {
+  //          if (res.data.success) {
+  //            toast.success(
+  //              res.data.message,
+  //              setTimeout(function () {
+  //                window.location.assign("/signin");
+  //              }, 2000)
+  //            );
+  //          }
+  //         })
+  //         .catch((err) => {
+  //           console.log(err);
+  //         });
+  //     },
+  //   };
+  // });
+
   return (
     <>
+      <ToastContainer />
+
       <div className="tabled">
         <Row gutter={[24, 0]}>
           <Col xs="24" xl={24}>

@@ -17,14 +17,12 @@ import Signup from "./components/Signup";
 import Signin from "./components/singin";
 import {
   CompanyRegisterPage, DetailPage,
-  ExplorePage,
-  LandingPage,
+  ExplorePage, FooterLayout, LandingPage,
   ProfilePage,
   UserProfilePage,
-  WelcomePage,
-  CompanyRegisterPage,
-  FooterLayout,
+  WelcomePage
 } from "./pages";
+
 import RaisePage from "./pages/RaisePage/RaisePage";
 
 function App() {
