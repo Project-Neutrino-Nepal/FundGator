@@ -48,6 +48,55 @@ router.post("/api/create-reason/:name", userAuth, async (req, res) => {
   }
 });
 
+
+
+/**
+ * @description To update reason for adding team information
+ * @api /reason/api/update-reason/:name
+ * @access PRIVATE
+ * @type POST
+ */
+router.put("/api/update-reason/:name", userAuth, async (req, res) => {
+  try {
+    const { body } = req;
+    const company = await Company.findOne({ name: req.params.name });
+    const companyID = company._id;
+    if (!company) {
+      return res.status(404).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+    const reasons = await Reason.findOne
+    ({ company: companyID });
+    if (!reasons) {
+      return res.status(400).json({
+        success: false,
+        message: "Reasons not found",
+      });
+    }
+    const reason = await Reason.findOneAndUpdate(
+      { company: companyID },
+      { ...body },
+      { new: true }
+    );
+    res.status(200).json({
+      success: true,
+      message: "Reason updated successfully",
+      reason,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
+
+
+
+
 //route to get reasons for a company
 router.get("/-reasons/:idapi/get", async (req, res) => {
   try {
