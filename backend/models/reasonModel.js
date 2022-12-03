@@ -54,7 +54,7 @@ const ReasonSchema = new Schema({
     type: String,
     required: false,
   },
-  team: [
+  teams: [
     {
       image: {
         type: String,
