@@ -220,33 +220,31 @@ router.get("/api/get-no-users", userAuth, async (req, res) => {
 });
 
 /**
- * @description To suspend a user
+ * @description To suspend a user account by admin
  * @api /users/api/suspend-user/:userId
  * @access PRIVATE
  * @type PUT
  */
 
-router.put("/api/suspend/:userId",userAuth, async (req, res) => {
+router.put("/api/suspend/:userId", async (req, res) => {
   try {
-    let user = await User.findById(req.user._id);
-    if (user.admin === false) {
-      return res.status(401).json({
+    let { userId } = req.params;
+    let userToSuspend = await User.findById(userId);
+    if (!userToSuspend) {
+      return res.status(404).json({
         success: false,
-        message: "You are not authorized to suspend this user.",
+        message: "User not found.",
       });
     }
-    const updateUser = await User.findByIdAndUpdate(req.params.userId, {
-      status: false,
-    });
+    userToSuspend.status = false;
+    await userToSuspend.save();
     return res.status(200).json({
-      updateUser,
       success: true,
-      message: "User has been suspended! Successfully.",
+      message: "Hurray! User account has been suspended.",
     });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
-      err,
       success: false,
       message: "An error occurred.",
     });
@@ -262,18 +260,9 @@ router.put("/api/suspend/:userId",userAuth, async (req, res) => {
 
 router.put("/api/activate/:userId", async (req, res) => {
   try {
-    // let user = await User.findById(req.user._id);
-    // if (user.admin === false) {
-    //   return res.status(401).json({
-    //     success: false,
-    //     message: "You are not authorized to activate this user.",
-    //   });
-    // }
-    const updateUser
-      = await
-      User.findByIdAndUpdate(req.params.userId, {
-        status: true,
-      });
+    const updateUser = await User.findByIdAndUpdate(req.params.userId, {
+      status: true,
+    });
     return res.status(200).json({
       updateUser,
       success: true,
@@ -288,6 +277,5 @@ router.put("/api/activate/:userId", async (req, res) => {
     });
   }
 });
-
 
 module.exports = router;
