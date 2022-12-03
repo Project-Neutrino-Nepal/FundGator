@@ -52,6 +52,7 @@ const Cardlist = ({ item, heading, to }) => {
   }, []);
 
   return (
+
     <section className="carousel-container">
       <div className="title">
         <span className="heading">{heading}</span>
@@ -61,8 +62,10 @@ const Cardlist = ({ item, heading, to }) => {
         </Link>
       </div>
       <Slider {...settings} className="slidy">
+
         {companies.map((item) => {
-          return <Card {...item} key={item._id} />;
+          
+          return <Link to={"/detail"}> <Card {...item} key={item._id} /></Link> ;
         })}
       </Slider>
     </section>

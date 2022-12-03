@@ -1,4 +1,4 @@
-
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Wrapper from "../wrapper/Detail";
@@ -8,15 +8,29 @@ import highlights from "../utils/highlights";
 const Detail = () => {
   const [reason, setReason] = useState({});
  const reasons = [];
+ let { id } = useParams();
   
-  axios.get(
-      "http://localhost:5000/reason/api/get-reasons/:id"
+ const config = {
+  headers: {
+    Authorization: localStorage.getItem("token"),
+  },
+};
+
+// get company details using id from params
 
 
-    ).then((res) => {
-       reasons = res.data.reasons;
-       console.log(reasons);
+useEffect(() => {
+  axios
+    .get("http://localhost:5000/reason/api/get-reasons"+id, config)
+    .then((res) => {
+      let reasons = res.data.reasons;
+      console.log(reasons);
+      
+    })
+    .catch((err) => {
+      console.log(err);
     });
+}, );
 
 
 
