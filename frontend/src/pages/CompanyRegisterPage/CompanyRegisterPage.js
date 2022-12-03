@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 const CompanyRegisterPage = () => {
   const { id } = useParams();
   const formvalue = {
+    companyname: id,
     city: "",
     facebook: "",
     linkedin: "",
@@ -131,7 +132,7 @@ const CompanyRegisterPage = () => {
           axios
             .post(
               "http://localhost:5000/reason/api/create-reason/" +
-                values.companyname,
+                formvalue.companyname,
               data,
               config
             )

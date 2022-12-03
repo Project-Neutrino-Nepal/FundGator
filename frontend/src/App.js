@@ -20,8 +20,7 @@ import {
   ExplorePage, FooterLayout, LandingPage,
   ProfilePage,
   UserProfilePage,
-  WelcomePage,
-  FooterLayout,
+  WelcomePage
 } from "./pages";
 
 import RaisePage from "./pages/RaisePage/RaisePage";
