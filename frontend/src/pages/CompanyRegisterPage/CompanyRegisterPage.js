@@ -56,7 +56,7 @@ const CompanyRegisterPage = () => {
       authorization: localStorage.getItem("token"),
     },
   };
-  console.log(values);
+  console.log({});
   const data = {
     reason0: values.reason0,
     reason1: values.reason1,
@@ -74,7 +74,6 @@ const CompanyRegisterPage = () => {
     companylink: values.companylink,
   };
 
-  console.log(data);
 
   const teamChange = (e, index, name) => {
     var teams = values.teams;
@@ -134,6 +133,25 @@ const CompanyRegisterPage = () => {
               "http://localhost:5000/reason/api/create-reason/" +
                 formvalue.companyname,
               data,
+              config
+            )
+            .then((res) => {
+              if (res.data.success) {
+                toast.success(res.data.message);
+              }
+            });
+        } catch (error) {
+          toast.error(error.response.data.message);
+        }
+      }
+
+      else if (activeindex === 2) {
+        try {
+          axios
+            .post(
+              "http://localhost:5000/reason/api/update-reason/" +
+                formvalue.companyname,
+              values.teams,
               config
             )
             .then((res) => {

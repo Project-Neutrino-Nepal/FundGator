@@ -54,6 +54,46 @@ const ReasonSchema = new Schema({
     type: String,
     required: false,
   },
+  team: [
+    {
+      image: {
+        type: String,
+        required: false,
+      },
+      name: {
+        type: String,
+        required: false,
+      },
+      email: {
+        type: String,
+        required: false,
+      },
+      position: {
+        type: String,
+        required: false,
+      },
+      accomplished: {
+        type: String,
+        required: false,
+      },
+      userfblink: {
+        type: String,
+        required: false,
+      },
+      userlinkedinlink: {
+        type: String,
+        required: false,
+      },
+      foundertype: {
+        type: String,
+        required: false,
+      },
+      jobtype: {
+        type: String,
+        required: false,
+      },
+    },
+  ],
 });
 
 const Reason = model("reason", ReasonSchema);
