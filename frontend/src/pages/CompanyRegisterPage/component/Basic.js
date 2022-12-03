@@ -11,33 +11,97 @@ import {
   FaYoutube,
   FaBlogger,
 } from "react-icons/fa";
-const Basic = ({ values, handleChange, Addreason, reasonChange }) => {
+import { useParams } from "react-router-dom";
+const Basic = ({ values, handleChange }) => {
+  const [addlink, setlink] = useState(0);
   const [show, setShow] = useState(false);
+  const { id } = useParams();
+  const list = [
+    {
+      id: 0,
+      value: values.reason0,
+      name: "reason0",
+    },
+    {
+      id: 1,
 
+      value: values.reason1,
+      name: "reason1",
+    },
+    {
+      id: 2,
+
+      value: values.reason2,
+      name: "reason2",
+    },
+    {
+      id: 3,
+
+      value: values.reason3,
+      name: "reason3",
+    },
+    {
+      id: 4,
+
+      value: values.reason4,
+      name: "reason4",
+    },
+    {
+      id: 5,
+
+      value: values.reason5,
+      name: "reason5",
+    },
+    {
+      id: 6,
+
+      value: values.reason6,
+      name: "reason6",
+    },
+    {
+      id: 7,
+
+      value: values.reason7,
+      name: "reason7",
+    },
+    {
+      id: 8,
+
+      value: values.reason8,
+      name: "reason8",
+    },
+  ].filter((item) => item.id <= addlink);
+  const Addlink = () => {
+    if (addlink < 8) {
+      setlink((addlink) => addlink + 1);
+    }
+  };
   return (
     <div className="form-content">
-      <Labelinput
+      <Labelinput 
         type={"text"}
         placeholder={"Enter Company Name"}
         label={"Company Name"}
-        value={values.companyname}
+        value={id}
         handleChange={handleChange}
-        name={"companyname"}
+        name={"name"} 
       />
 
       <label htmlFor="">The Top Reason to Invest</label>
-      {values.reasons.map((item, index) => {
+      {list.map((item, index) => {
+        console.log(list);
         return (
           <UnderlineInput
             key={index}
             type={"text"}
             index={index + 1}
-            handleChange={(e) => reasonChange(e, index)}
-            value={values.reasons[index].reason}
+            name={item.name}
+            handleChange={handleChange}
+            value={item.value}
           />
         );
       })}
-      <button className="btn-addlink" onClick={Addreason}>
+      <button className="btn-addlink" onClick={Addlink}>
         Add Reason
       </button>
 
@@ -76,7 +140,7 @@ const Basic = ({ values, handleChange, Addreason, reasonChange }) => {
         Add More Link
       </button>
 
-      {/* <div className={show ? "" : "d-none"}>
+      <div className={show ? "" : "d-none"}>
         <UnderlineInput
           type={"text"}
           index={<FaInstagramSquare />}
@@ -85,7 +149,7 @@ const Basic = ({ values, handleChange, Addreason, reasonChange }) => {
           handleChange={handleChange}
           name={"instagram"}
         />
-      </div> */}
+      </div>
       <div className={show ? "" : "d-none"}>
         <UnderlineInput
           type={"text"}
@@ -106,7 +170,7 @@ const Basic = ({ values, handleChange, Addreason, reasonChange }) => {
           name={"linkedin"}
         />
       </div>
-      {/* <div className={show ? "" : "d-none"}>
+      <div className={show ? "" : "d-none"}>
         <UnderlineInput
           type={"text"}
           index={<FaYoutube />}
@@ -125,7 +189,7 @@ const Basic = ({ values, handleChange, Addreason, reasonChange }) => {
           handleChange={handleChange}
           name={"blog"}
         />
-      </div> */}
+      </div>
     </div>
   );
 };

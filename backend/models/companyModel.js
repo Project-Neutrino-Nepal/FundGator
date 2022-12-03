@@ -21,11 +21,12 @@ const CompanySchema = new Schema(
         ref: "tags",
       },
     ],
-    reasons: [
+    reasons: 
       {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "reason",
       },
-    ],
+    
 
     verified: {
       type: Boolean,
