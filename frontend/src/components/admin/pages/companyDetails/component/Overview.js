@@ -3,61 +3,63 @@ import React, { useEffect, useState } from "react";
 import Wrapper from "../wrapper/Overview";
 import OurFounder from "./OurFounder";
 
-const Overview = (ID) => {
-let id = ID.company;
-const [reasons0, setReasons0] = useState();
-const [reasons1, setReasons1] = useState();
-const [reasons2, setReasons2] = useState();
-const [reasons3, setReasons3] = useState();
-const [reasons4, setReasons4] = useState();
-const [reasons5, setReasons5] = useState();
-const [reasons6, setReasons6] = useState();
-const [reasons7, setReasons7] = useState();
-const [reasons8, setReasons8] = useState();
-const [team, setTeam] = useState();
+const Overview = (ID, description) => {
+  let id = ID.company;
+  let desc = description.description;
+  const [reasons0, setReasons0] = useState();
+  const [reasons1, setReasons1] = useState();
+  const [reasons2, setReasons2] = useState();
+  const [reasons3, setReasons3] = useState();
+  const [reasons4, setReasons4] = useState();
+  const [reasons5, setReasons5] = useState();
+  const [reasons6, setReasons6] = useState();
+  const [reasons7, setReasons7] = useState();
+  const [reasons8, setReasons8] = useState();
+  const [teams, setTeams] = useState([]);
   const config = {
     headers: {
-      "Authorization": localStorage.getItem("token"),
+      Authorization: localStorage.getItem("token"),
     },
   };
   useEffect(() => {
     axios
-      .get("http://localhost:5000/reason/api/get-reasons/"+id, config)
+      .get("http://localhost:5000/reason/api/get-reasons/" + id, config)
       .then((res) => {
         let reasons = res.data.reasons;
-       setReasons0(reasons.reason0);
-      let team = reasons.team;
-      setTeam(team);
+        setReasons0(reasons.reason0);
+        let team = reasons.teams;
+        console.log(team);
+        setTeams(team);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
-
-
   return (
     <Wrapper>
       <section className="lists">
         <h1>Highlights</h1>
-        <li>
+        <div className="list">
+          <div className="number">1</div>
           <h6>{reasons0}</h6>
-        </li>
+        </div>
       </section>
 
       <section className="our-team">
         <h1>Our Founders</h1>
 
         <div className="lists">
-          {/* {team.map((item) => (
+          {teams.map((team) => (
             <OurFounder
-              key={item._id}
-              name={item.name}
-              image={item.image}
-              position={item.position}              
+              key={team._id}
+              name={team.name}
+              image={team.image}
+              email={team.email}
+              position={team.position}
+              description={desc}
             />
-          ))} */}
-         < OurFounder/>
+          ))}
         </div>
       </section>
 

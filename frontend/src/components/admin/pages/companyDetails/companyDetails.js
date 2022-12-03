@@ -190,6 +190,7 @@ const CompanyDetails = () => {
             <Overview
               // pass company details as props
               company={ID}
+              description={description}
             />
           ) : null}
           {activeindex === 2 ? <Detail /> : null}
