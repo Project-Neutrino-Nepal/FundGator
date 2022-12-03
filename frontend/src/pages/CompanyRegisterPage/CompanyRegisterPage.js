@@ -56,7 +56,9 @@ const CompanyRegisterPage = () => {
       authorization: localStorage.getItem("token"),
     },
   };
-  console.log({});
+  console.log(values);
+  const teams=values.teams;
+  console.log(teams)
   const data = {
     reason0: values.reason0,
     reason1: values.reason1,
@@ -73,6 +75,13 @@ const CompanyRegisterPage = () => {
     twitter: values.twitter,
     companylink: values.companylink,
   };
+const teamsdata=
+{
+  teams:values.teams
+} 
+console.log(teamsdata)
+
+
 
 
   const teamChange = (e, index, name) => {
@@ -148,10 +157,10 @@ const CompanyRegisterPage = () => {
       else if (activeindex === 2) {
         try {
           axios
-            .post(
+            .put(
               "http://localhost:5000/reason/api/update-reason/" +
                 formvalue.companyname,
-              values.teams,
+              teamsdata,
               config
             )
             .then((res) => {
