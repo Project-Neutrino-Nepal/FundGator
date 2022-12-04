@@ -134,7 +134,7 @@ const WelcomePage = () => {
       <ToastContainer />
       <form id="profileUpdate" style={{ margin: "80px" }}>
         <div className="welcome mt-5">
-          <h2 className="heading">Investor Information</h2>
+          <h2 className="heading" id="InfoText">Investor Information</h2>
           <p>
             To invest online, federal law requires that we collect some info
           </p>

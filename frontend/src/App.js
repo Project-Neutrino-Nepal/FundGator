@@ -16,9 +16,8 @@ import Navbar from "./components/navbar.js";
 import Signup from "./components/Signup";
 import Signin from "./components/singin";
 import {
-  CompanyRegisterPage, DetailPage,
-  ExplorePage, FooterLayout, LandingPage,
-  ProfilePage,
+  CompanyRegisterPage, ExplorePage, FooterLayout, LandingPage,
+  ProfilePage, Details,
   UserProfilePage,
   WelcomePage
 } from "./pages";
@@ -39,7 +38,7 @@ function App() {
         <Route path="/profile/:id" element={<ProfilePage />}></Route>
         <Route path="/company" element={<ComProfile />}></Route>
         <Route path="/explore" element={<ExplorePage />}></Route>
-        <Route path="/detail" element={<DetailPage />}></Route>
+        <Route path="/detail/:id" element={<Details />}></Route>
         <Route path="/category" element={<Categories />}></Route>
         <Route path="/raise" element={<FooterLayout />}>
           <Route index element={<RaisePage />} />

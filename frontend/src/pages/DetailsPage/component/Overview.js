@@ -37,6 +37,8 @@ const Overview = (ID) => {
         setReasons8(reasons.reason8);
         setDescription(reasons.description);
         let team = reasons.teams;
+        console.log(reasons.description);
+        console.log(team);
         setTeams(team);
       })
       .catch((err) => {
@@ -45,32 +47,31 @@ const Overview = (ID) => {
   }, []);
   // only add reason if it is not empty
   let reasons = [];
-
   if (reasons0 != null) {
     reasons.push(reasons0);
   }
-  if (reasons1 != null) {
+   if (reasons1 != null) {
     reasons.push(reasons1);
   }
-  if (reasons2 != null) {
+   if (reasons2 != null) {
     reasons.push(reasons2);
   }
-  if (reasons3 != null) {
+   if (reasons3 != null) {
     reasons.push(reasons3);
   }
-  if (reasons4 != null) {
+   if (reasons4 != null) {
     reasons.push(reasons4);
   }
-  if (reasons5 != null) {
+   if (reasons5 != null) {
     reasons.push(reasons5);
   }
-  if (reasons6 != null) {
+   if (reasons6 != null) {
     reasons.push(reasons6);
   }
-  if (reasons7 != null) {
+   if (reasons7 != null) {
     reasons.push(reasons7);
   }
-  if (reasons8 != null) {
+   if (reasons8 != null) {
     reasons.push(reasons8);
   }
 
