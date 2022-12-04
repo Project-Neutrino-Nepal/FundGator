@@ -1,12 +1,11 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
-import Slider from "react-slick";
-import "../wrapper/slick.css";
-import "../wrapper/slick-theme.css";
-import Card from "./Card";
-import { Prevbtn, Nextbtn } from "./Buttons";
 import { FcNext } from "react-icons/fc";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import Slider from "react-slick";
+import "../wrapper/slick-theme.css";
+import "../wrapper/slick.css";
+import Card from "./Card";
 
 const Cardlist = ({ item, heading, to }) => {
   var settings = {
@@ -52,7 +51,6 @@ const Cardlist = ({ item, heading, to }) => {
   }, []);
 
   return (
-
     <section className="carousel-container">
       <div className="title">
         <span className="heading">{heading}</span>
@@ -62,10 +60,13 @@ const Cardlist = ({ item, heading, to }) => {
         </Link>
       </div>
       <Slider {...settings} className="slidy">
-
         {companies.map((item) => {
-          
-          return <Link to={"/detail"}> <Card {...item} key={item._id} /></Link> ;
+          return (
+            <Link to={`/detail/${item._id}`}>
+              {" "}
+              <Card {...item} key={item._id} />
+            </Link>
+          );
         })}
       </Slider>
     </section>

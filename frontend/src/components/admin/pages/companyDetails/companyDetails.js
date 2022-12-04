@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Wrapper from "./wrapper/DetailPage";
 
+import { Button, Space } from "antd";
 import axios from "axios";
 import {
   AiFillFacebook,
@@ -40,7 +43,6 @@ const CompanyDetails = () => {
 
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
-  const [description, setDescription] = useState("");
   const [video, setVideo] = useState("");
   const [website, setWebsite] = useState("");
   const [facebook, setFacebook] = useState("");
@@ -73,7 +75,6 @@ const CompanyDetails = () => {
         let company = res.data.company;
         setName(company.name);
         setImage(company.image);
-        setDescription(company.description);
         setVideo(company.video);
         setWebsite(company.website);
         setFacebook(company.facebook);
@@ -96,8 +97,54 @@ const CompanyDetails = () => {
       });
   }, []);
 
+  // Verify company by admin
+  const admin = localStorage.getItem("admin");
+
+  const verifyCompany = () => {
+    if (admin) {
+      axios
+        .put(
+          "http://localhost:5000/company/api/verify-company/" + id,
+
+          config
+        )
+        .then((res) => {
+          console.log(res);
+          toast.success(res.data.message);
+          window.location.replace("/dashboard/company_admin");
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message);
+        });
+    } else {
+      toast.error("You are not authorized to verify company");
+    }
+  };
+
+  // Delete company
+  const deleteCompany = () => {
+    if (admin) {
+      axios
+        .put(
+          "http://localhost:5000/company/api/reject-company/" + id,
+          config
+        )
+        .then((res) => {
+          toast.success(res.data.message);
+          window.location.replace("/dashboard/company_admin");
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message);
+        });
+    } else {
+      toast.error("You are not authorized to delete company");
+    }
+  };
+
   return (
     <Wrapper>
+      <ToastContainer />
+
       <div className="left-container">
         <section className="one">
           <div className="header">
@@ -188,16 +235,44 @@ const CompanyDetails = () => {
         <section className="five">
           {activeindex === 1 ? (
             <Overview
-              // pass company details as props
+              // pass company ID as props
               company={ID}
-              description={description}
             />
           ) : null}
-          {activeindex === 2 ? <Detail /> : null}
+          {activeindex === 2 ? (
+            <Detail
+              // pass company ID as props
+              company={{
+                id: ID,
+                fundGoal: fund_goal,
+                fundRaised: fund_raised,
+              }}
+            />
+          ) : null}
           {activeindex === 3 ? <Update /> : null}
-
           {activeindex === 4 ? <WhatInvestorSay /> : null}
           {activeindex === 5 ? <AskAQuestion /> : null}
+        </section>
+      </div>
+      <div className="right-container">
+        <section className="two">
+          <Space wrap>
+            <Button
+              type="primary"
+              onClick={() => {
+                verifyCompany();
+              }}
+            >
+              Verify Company
+            </Button>
+            <Button
+              onClick={() => {
+                deleteCompany();
+              }}
+            >
+              Reject Company
+            </Button>
+          </Space>
         </section>
       </div>
     </Wrapper>

@@ -7,7 +7,7 @@ import {
   Progress,
   Row,
   Space,
-  Table,
+  Table
 } from "antd";
 
 import { Link } from "react-router-dom";
@@ -105,6 +105,17 @@ const columns = [
   {
     title: "STATUS",
     dataIndex: "status",
+    sorter: (a, b) => a.name.localeCompare(b.name),
+    // if Verified then show green, else show red
+    render: (text) => (
+      <div>
+        {text === "Verified" ? (
+          <div style={{ color: "green" }}>{text}</div>
+        ) : (
+          <div style={{ color: "red" }}>{text}</div>
+        )}
+      </div>
+    ),
   },
   {
     title: "Fund Completion",
@@ -114,7 +125,6 @@ const columns = [
   {
     title: "ACTION",
     dataIndex: "action",
-    sorter: (a, b) => a.name.localeCompare(b.name),
   },
 ];
 
