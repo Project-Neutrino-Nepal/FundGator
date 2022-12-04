@@ -1,24 +1,45 @@
 import React, { useState } from "react";
 import Wrapper from "../wrapper/Story";
 import upload from "../../../assets/image/uploadpic.svg";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 const Story = ({ handleChange, imgpreview, vdpreview }) => {
-  const [preview, setPreview] = useState(null);
-  const [vpreview, setvPreview] = useState(null);
 
-  const fileSelection = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      let file = e.target.files[0];
-      let blobURL = URL.createObjectURL(file);
-      setPreview(blobURL);
-    }
-  };
-  const videofileSelection = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      let file = e.target.files[0];
-      let blobURL = URL.createObjectURL(file);
-      setvPreview(blobURL);
-    }
-  };
+
+const [image, setPreview] = useState(null);
+  const [vpreview, setvPreview] = useState(null);
+  const {id}=useParams();
+
+  const config={
+    headers:{
+      authorization:localStorage.getItem("token")}
+  }
+
+const onuploadimg = (e) => {
+  console.log(e.target.value);
+  setPreview({ ...image, file: e.target.files[0] });
+  if (e.target.files && e.target.files[0]) {
+    console.log(e.target.files[0]);
+    const formData = new FormData();
+    formData.append("company_logo", e.target.files[0]);
+    axios
+      .put(
+        "http://localhost:5000/company/api/update-companyimage/"+id,
+        formData,
+        config
+      )
+      .then((res) => {
+        toast.success("Profile updated successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } 
+};
+
+console.log(image);
+
   return (
     <Wrapper className="form-content">
       <h6>Your best Image *</h6>
@@ -33,10 +54,15 @@ const Story = ({ handleChange, imgpreview, vdpreview }) => {
           type="file"
           name="imageupload"
           id="input-file"
-          onChange={(e) => handleChange(e, "imageuploadpreview")}
+          onChange={onuploadimg}
         />
         <img src={imgpreview} className="preview-img" alt="" />
       </label>
+      
+      <div className="">
+
+      <h6 className="btn btn-sm p-2 w-25 fw-semibold m-2 ms-0 btn-primary  ">upload pic</h6>
+      </div>
 
       <h5>Upload a 1-2 minute video</h5>
       <p>

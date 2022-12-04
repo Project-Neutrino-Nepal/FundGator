@@ -51,22 +51,15 @@ const CompanyRegisterPage = () => {
   const [activeindex, setActive] = useState(1);
   const [values, setValue] = useState(formvalue);
 
-
-  const image=values.imageuploadpreview;
-  const video=values.videouploadpreview;
-  const imageuploads=values.imageupload;
-  const videouploads=values.videoupload;
-  console.log(image);
-  console.log(video);
+  const image = values.imageuploadpreview;
+  const video = values.videouploadpreview;
+  const imageuploads = values.imageupload;
+  const videouploads = values.videoupload;
   console.log(imageuploads);
-  console.log(videouploads);
 
-  const uploads={
-    company_logo:imageuploads,
-    company_video:videouploads,
-  }
-
-
+  const uploads_video = {
+    company_video: videouploads,
+  };
 
   const config = {
     headers: {
@@ -74,8 +67,8 @@ const CompanyRegisterPage = () => {
     },
   };
   console.log(values);
-  const teams=values.teams;
-  console.log(teams)
+  const teams = values.teams;
+  console.log(teams);
   const data = {
     reason0: values.reason0,
     reason1: values.reason1,
@@ -92,14 +85,10 @@ const CompanyRegisterPage = () => {
     twitter: values.twitter,
     companylink: values.companylink,
   };
-const teamsdata=
-{
-  teams:values.teams
-} 
-console.log(teamsdata)
-
-
-
+  //to pass variable to add teams data
+  const teamsdata = {
+    teams: values.teams,
+  };
 
   const teamChange = (e, index, name) => {
     var teams = values.teams;
@@ -130,6 +119,7 @@ console.log(teamsdata)
     });
     setValue({ ...values, teams: newTeam });
   };
+
   const handleChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       setValue({ ...values, [e.target.name]: e.target.files[0] });
@@ -137,6 +127,7 @@ console.log(teamsdata)
       setValue({ ...values, [e.target.name]: e.target.value });
     }
   };
+
   const fileChange = (e, name) => {
     let file = e.target.files[0];
     let blobURL = URL.createObjectURL(file);
@@ -151,7 +142,7 @@ console.log(teamsdata)
 
     if (activeindex <= 3) {
       setActive((prev) => prev + 1);
-
+      // creating reasons
       if (activeindex === 1) {
         try {
           axios
@@ -170,7 +161,7 @@ console.log(teamsdata)
           toast.error(error.response.data.message);
         }
       }
-
+      // updating reasons and adding team members
       else if (activeindex === 2) {
         try {
           axios
@@ -178,6 +169,22 @@ console.log(teamsdata)
               "http://localhost:5000/reason/api/update-reason/" +
                 formvalue.companyname,
               teamsdata,
+              config
+            )
+            .then((res) => {
+              if (res.data.success) {
+                toast.success(res.data.message);
+              }
+            });
+        } catch (error) {
+          toast.error(error.response.data.message);
+        }
+      } else if (activeindex === 3) {
+        try {
+          axios
+            .put(
+              "http://localhost:5000/company/api/upload-video",
+              uploads_video,
               config
             )
             .then((res) => {
