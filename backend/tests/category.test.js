@@ -34,8 +34,7 @@ describe("Admin Schema test For updating Category", () => {
     const status = await Category.updateOne({ _id: Object("638b140f0d5e509a4e8cec9d") },
       {
         $set: {
-            description: "test test",
-        
+            description: "test test",   
         }
       });
     expect(status.ok);
@@ -43,7 +42,7 @@ describe("Admin Schema test For updating Category", () => {
 });
 
 
-// //testing for getting company by name
+//testing for getting company by name
 // describe("Company Schema test For deleting", () => {
 //   it("Add User to delete company", async () => {
 //     const status = await Company.findOne({ name: "softwarica" });

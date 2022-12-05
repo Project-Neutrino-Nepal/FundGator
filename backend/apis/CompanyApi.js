@@ -140,6 +140,42 @@ router.put("/api/update-company/:id", userAuth, async (req, res) => {
 });
 
 /**
+ * @description To update Company image with company name
+ * @api /company/api/update-companyimage/:name
+ * @access PRIVATE
+ * @type PUT
+ */
+
+ router.put("/api/update-companyimage/:name", userAuth, async (req, res) => {
+  try {
+    let { body } = req;
+    let company = await Company.findOne({ name: req.params.name });
+    if (!company) {
+      return res.status(400).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+    company = await Company.findOneAndUpdate(
+      req.params.name,
+      { $set: body },
+      { new: true }
+    );
+    return res.status(200).json({
+      success: true,
+      message: "image added Successfully",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+
+/**
  * @description To delete Company
  * @api /company/api/delete-company
  * @access PRIVATE

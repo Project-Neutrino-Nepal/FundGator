@@ -49,13 +49,6 @@ const ProfilePage = () => {
     setPreview({ ...image, file: e.target.files[0] });
     if (e.target.files && e.target.files[0]) {
       console.log(e.target.files[0]);
-      // let reader = new FileReader();
-      // reader.onload = function () {
-      //   setPreview({ ...image, preview: reader.result });
-
-      // };
-      // reader.readAsDataURL(e.target.files[0]);
-
       const formData = new FormData();
       formData.append("avatar", e.target.files[0]);
       axios
