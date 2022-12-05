@@ -59,6 +59,7 @@ const CompanyDetails = () => {
   const [status, setStatus] = useState("");
   const [tags, setTags] = useState("");
   const [ID, setID] = useState("");
+  const [content, setContent] = useState("");
 
   const config = {
     headers: {
@@ -90,6 +91,7 @@ const CompanyDetails = () => {
         setCategory(company.category);
         setStatus(company.status);
         setTags(company.tags);
+        setContent(company.content);
         setID(company._id);
       })
       .catch((err) => {
@@ -233,6 +235,14 @@ const CompanyDetails = () => {
         </section>
 
         <section className="five">
+          <div className="content">
+            <div className="content-one">
+              <div className="content-one-left">
+                <h3>Company</h3>
+                <p>{content}</p>
+              </div>
+            </div>
+            </div>
           {activeindex === 1 ? (
             <Overview
               // pass company ID as props

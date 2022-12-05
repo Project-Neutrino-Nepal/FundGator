@@ -48,7 +48,7 @@ const CompanyRegisterPage = () => {
     videouploadpreview: "",
     linktype: "",
     companyurl: "",
-    content:""
+    content: "",
   };
 
   const navigate = useNavigate();
@@ -85,10 +85,11 @@ const CompanyRegisterPage = () => {
     teams: values.teams,
   };
 
-   const setcontent = (content) => {
-     setValue({ ...values, content: content });
-     console.log(content);
-   };
+  const setcontent = (content) => {
+    setValue({ ...values, content: content });
+  };
+
+  console.log(values.content);
 
   const teamChange = (e, index, name) => {
     var teams = values.teams;
@@ -179,11 +180,12 @@ const CompanyRegisterPage = () => {
         }
       } else if (activeindex === 3) {
         const formData = new FormData();
-    formData.append("company_video", videouploads);
+        formData.append("company_video", videouploads);
         try {
           axios
             .put(
-              "http://localhost:5000/company/api/upload-video/"+formvalue.companyname,
+              "http://localhost:5000/company/api/upload-video/" +
+                formvalue.companyname,
               formData,
               config
             )
@@ -195,15 +197,28 @@ const CompanyRegisterPage = () => {
           console.log(error.response.data.message);
         }
       }
-      
+    } else {
+      const formData = new FormData();
+      formData.append("content", values.content);
+      try {
+        axios
+          .put(
+            "http://localhost:5000/company/api/update-companycontent/" +
+              formvalue.companyname,
+            formData,
+            config
+          )
+          .then((res) => {
+            if (res.data.success) {
+              toast.success("Company created Successfully",setTimeout(() => {
+                navigate("/homepage");
+              }, 1200));
+            }
+          });
+      } catch (error) {
+        console.log(error.response.data.message);
+      }
     }
-    else{
-      toast.success("Company created Successfully");
-      navigate("/homepage");
-    }
-   
-      
-    
   };
   return (
     <Wrapper>
@@ -232,13 +247,13 @@ const CompanyRegisterPage = () => {
 
       <section className="form-section">
         <div className={activeindex === 1 ? "form-child" : "d-none"}>
-          <Basic values={values} handleChange={handleChange} 
-          
-          />
+          <Basic values={values} handleChange={handleChange} />
         </div>
         <div className={activeindex === 4 ? "form-child" : "d-none"}>
-          <Visiblity handleChange={handleChange} values={values} 
-          setcontent={setcontent}
+          <Visiblity
+            handleChange={handleChange}
+            values={values}
+            setcontent={setcontent}
           />
         </div>
         <div className={activeindex === 3 ? "form-child" : "d-none"}>

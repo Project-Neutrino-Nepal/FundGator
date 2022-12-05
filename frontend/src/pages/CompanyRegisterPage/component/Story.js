@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Wrapper from "../wrapper/Story";
 import upload from "../../../assets/image/uploadpic.svg";
-import { toast } from "react-toastify";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 const Story = ({ handleChange, imgpreview, vdpreview }) => {
