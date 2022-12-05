@@ -76,7 +76,7 @@ router.put(
   async (req, res) => {
     try {
       let { name } = req.params;
-      let {file} = req;
+      let { file } = req;
       console.log(file);
       if (file === undefined || file === null) {
         filename = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
@@ -149,20 +149,56 @@ router.put("/api/update-company/:id", userAuth, async (req, res) => {
 });
 
 /**
+ * @description To update Company content by company name
+ * @api /company/api/update-companycontent/:id
+ * @access PRIVATE
+ * @type PUT
+ */
+
+router.put("/api/update-companycontent/:id", userAuth, async (req, res) => {
+  try {
+    let { body } = req;
+    let company = await Company.findOne({ name: req.params.id });
+    if (!company) {
+      return res.status(400).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+    company = await Company.findOneAndUpdate(
+      { name: req.params.id },
+      { ...body },
+      { new: true }
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Company Updated Successfully",
+      company,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
  * @description To update Company image with company name by the company owner
  * @api /company/api/update-companyimage/:name
  * @access PRIVATE
  * @type PUT
  */
 
- router.put(
+router.put(
   "/api/upload-companyimage/:name",
   userAuth,
   uploadCompanyImage.single("image"),
   async (req, res) => {
     try {
       let { name } = req.params;
-      let {file} = req;
+      let { file } = req;
       if (file === undefined || file === null) {
         filename = DOMAIN + "uploads/assets/" + "default_company.svg";
       } else {
@@ -177,6 +213,7 @@ router.put("/api/update-company/:id", userAuth, async (req, res) => {
       }
       company = await Company.findOneAndUpdate(
         { name: name, user: req.user._id },
+
         {
           image: filename,
         },

@@ -48,8 +48,6 @@ router.post("/api/create-reason/:name", userAuth, async (req, res) => {
   }
 });
 
-
-
 /**
  * @description To update reason for adding team information
  * @api /reason/api/update-reason/:name
@@ -67,8 +65,7 @@ router.put("/api/update-reason/:name", userAuth, async (req, res) => {
         message: "Company not found",
       });
     }
-    const reasons = await Reason.findOne
-    ({ company: companyID });
+    const reasons = await Reason.findOne({ company: companyID });
     if (!reasons) {
       return res.status(400).json({
         success: false,
@@ -92,10 +89,6 @@ router.put("/api/update-reason/:name", userAuth, async (req, res) => {
     });
   }
 });
-
-
-
-
 
 //route to get reasons for a company
 router.get("/api/get-reasons/:id", async (req, res) => {

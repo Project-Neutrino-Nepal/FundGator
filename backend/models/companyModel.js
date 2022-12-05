@@ -64,7 +64,7 @@ const CompanySchema = new Schema(
     company_document: {
       type: String,
     },
-    
+
     company_video: {
       type: String,
     },
@@ -92,7 +92,9 @@ const CompanySchema = new Schema(
       type: Number,
       default: 0,
     },
-    
+    content: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
