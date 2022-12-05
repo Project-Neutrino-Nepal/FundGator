@@ -9,12 +9,15 @@ const filename = (req, file, next) => {
 const filter = (req, file, next) => {
   if (
     file.mimetype === "image/jpeg" ||
-    file.mimetype ===
-      "image/png || file.mimetype === 'image/jpg' || file.mimetype === 'video/mp4'||file.mimetype === 'video/gif'"
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "video/mp4" ||
+    file.mimetype === "video/gif"
   ) {
     next(null, true);
   } else {
     next(null, false);
+    return next(new Error("Only .jpeg, .jpg, .png, .mp4 and .gif format allowed!"));
   }
 };
 const destination = (req, file, next) => {
