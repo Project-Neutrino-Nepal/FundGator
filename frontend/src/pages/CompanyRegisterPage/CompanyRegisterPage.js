@@ -6,6 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import upload from "../../assets/image/uploadpic.svg";
 import { useNavigate, useNavigation, useParams } from "react-router-dom";
+const parse = require("html-react-parser");
 
 const CompanyRegisterPage = () => {
   const { id } = useParams();
@@ -87,6 +88,10 @@ const CompanyRegisterPage = () => {
 
   const setcontent = (content) => {
     setValue({ ...values, content: content });
+  };
+
+  const contentdata = {
+    content: values.content,
   };
 
   console.log(values.content);
@@ -198,21 +203,22 @@ const CompanyRegisterPage = () => {
         }
       }
     } else {
-      const formData = new FormData();
-      formData.append("content", values.content);
       try {
         axios
           .put(
             "http://localhost:5000/company/api/update-companycontent/" +
               formvalue.companyname,
-            formData,
+            contentdata,
             config
           )
           .then((res) => {
             if (res.data.success) {
-              toast.success("Company created Successfully",setTimeout(() => {
-                navigate("/homepage");
-              }, 1200));
+              toast.success(
+                "Company created Successfully",
+                setTimeout(() => {
+                  navigate("/homepage");
+                }, 1200)
+              );
             }
           });
       } catch (error) {

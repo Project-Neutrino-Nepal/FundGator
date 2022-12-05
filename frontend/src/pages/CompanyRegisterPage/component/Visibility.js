@@ -4,11 +4,7 @@ import Wrapper from "../wrapper/Visibility";
 import JoditEditor from "jodit-react";
 const Visiblity = ({ handleChange, values, setcontent }) => {
   const editor = useRef(null);
-  const parse = require('html-react-parser');
-  const text=parse(values.content);
- 
-
-  
+  const parse = require("html-react-parser");
 
   return (
     <Wrapper className="form-content">
@@ -21,8 +17,6 @@ const Visiblity = ({ handleChange, values, setcontent }) => {
           setcontent(newContent);
         }}
       />
-      <div>{values.content}</div>
-      <div>{text}</div>
     </Wrapper>
   );
 };
