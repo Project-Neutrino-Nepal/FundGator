@@ -22,7 +22,7 @@ const onuploadimg = (e) => {
   if (e.target.files && e.target.files[0]) {
     console.log(e.target.files[0]);
     const formData = new FormData();
-    formData.append("company_logo", e.target.files[0]);
+    formData.append("image", e.target.files[0]);
     axios
       .put(
         "http://localhost:5000/company/api/update-companyimage/"+id,

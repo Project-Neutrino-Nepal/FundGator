@@ -183,7 +183,7 @@ const CompanyRegisterPage = () => {
         try {
           axios
             .put(
-              "http://localhost:5000/company/api/upload-video",
+              "http://localhost:5000/company/api/upload-video/"+formvalue.companyname,
               uploads_video,
               config
             )
@@ -195,6 +195,9 @@ const CompanyRegisterPage = () => {
         } catch (error) {
           toast.error(error.response.data.message);
         }
+      }
+      else if(activeindex===4){
+        window.location.replace = "detail";
       }
     }
   };

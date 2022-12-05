@@ -64,9 +64,7 @@ const CompanySchema = new Schema(
     company_document: {
       type: String,
     },
-    company_logo: {
-      type: String,
-    },
+    
     company_video: {
       type: String,
     },
