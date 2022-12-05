@@ -29,4 +29,3 @@ describe('User Schema test For inserting', () => {
      });
      });
     })
-

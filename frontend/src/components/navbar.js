@@ -34,6 +34,7 @@ function Navbar() {
     return (
       <>
         <nav className="navbar navbar-expand-lg bg-dark navbar-dark navbar-fixed-top">
+
           <div className="container-fluid ms-4 me-4">
             <Link className="navbar-brand" to="/">
               FundGator
@@ -84,6 +85,7 @@ function Navbar() {
                 </li>
                 <li className="nav-item me-2">
                   <Link className="nav-link active" aria-current="page" to="overview">
+
                     FAQ 
                   </Link>
                 </li>

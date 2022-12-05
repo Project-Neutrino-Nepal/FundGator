@@ -10,6 +10,7 @@ import ComProfile from './components/company/company_profile';
 
 
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -24,8 +25,10 @@ function App() {
         <Route path="/homepage" element={<Homepage />}></Route>
         <Route path="/explore" element={<ExplorePage />}></Route>
         <Route path="/company" element={<ComProfile/>}></Route>
+
       </Routes>
     </BrowserRouter>
+    
   );
 }
 
