@@ -25,12 +25,12 @@ const onuploadimg = (e) => {
     formData.append("image", e.target.files[0]);
     axios
       .put(
-        "http://localhost:5000/company/api/update-companyimage/"+id,
+        "http://localhost:5000/company/api/upload-companyimage/"+id,
         formData,
         config
       )
       .then((res) => {
-        toast.success("Profile updated successfully");
+        
       })
       .catch((err) => {
         console.log(err);
@@ -58,11 +58,6 @@ console.log(image);
         />
         <img src={imgpreview} className="preview-img" alt="" />
       </label>
-      
-      <div className="">
-
-      <h6 className="btn btn-sm p-2 w-25 fw-semibold m-2 ms-0 btn-primary  ">upload pic</h6>
-      </div>
 
       <h5>Upload a 1-2 minute video</h5>
       <p>

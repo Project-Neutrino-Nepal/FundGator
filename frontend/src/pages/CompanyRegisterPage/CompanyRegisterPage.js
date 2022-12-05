@@ -5,7 +5,8 @@ import tabs from "./utils/tab";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import upload from "../../assets/image/uploadpic.svg";
-import { useParams } from "react-router-dom";
+import { useNavigate, useNavigation, useParams } from "react-router-dom";
+
 const CompanyRegisterPage = () => {
   const { id } = useParams();
   const formvalue = {
@@ -48,27 +49,20 @@ const CompanyRegisterPage = () => {
     linktype: "",
     companyurl: "",
   };
+
+  const navigate = useNavigate();
+
   const [activeindex, setActive] = useState(1);
   const [values, setValue] = useState(formvalue);
 
-  const image = values.imageuploadpreview;
-  const video = values.videouploadpreview;
-  const imageuploads = values.imageupload;
   const videouploads = values.videoupload;
-  console.log(imageuploads);
-
-  const uploads_video = {
-    company_video: videouploads,
-  };
 
   const config = {
     headers: {
       authorization: localStorage.getItem("token"),
     },
   };
-  console.log(values);
-  const teams = values.teams;
-  console.log(teams);
+
   const data = {
     reason0: values.reason0,
     reason1: values.reason1,
@@ -154,11 +148,10 @@ const CompanyRegisterPage = () => {
             )
             .then((res) => {
               if (res.data.success) {
-                toast.success(res.data.message);
               }
             });
         } catch (error) {
-          toast.error(error.response.data.message);
+          console.log(error.response.data.message);
         }
       }
       // updating reasons and adding team members
@@ -173,33 +166,38 @@ const CompanyRegisterPage = () => {
             )
             .then((res) => {
               if (res.data.success) {
-                toast.success(res.data.message);
               }
             });
         } catch (error) {
-          toast.error(error.response.data.message);
+          console.log(error.response.data.message);
         }
       } else if (activeindex === 3) {
+        const formData = new FormData();
+    formData.append("company_video", videouploads);
         try {
           axios
             .put(
               "http://localhost:5000/company/api/upload-video/"+formvalue.companyname,
-              uploads_video,
+              formData,
               config
             )
             .then((res) => {
               if (res.data.success) {
-                toast.success(res.data.message);
               }
             });
         } catch (error) {
-          toast.error(error.response.data.message);
+          console.log(error.response.data.message);
         }
       }
-      else if(activeindex===4){
-        window.location.replace = "detail";
-      }
+      
     }
+    else{
+      toast.success("Company created Successfully");
+      navigate("/homepage");
+    }
+   
+      
+    
   };
   return (
     <Wrapper>
