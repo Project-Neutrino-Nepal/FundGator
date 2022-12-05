@@ -41,7 +41,7 @@ const UserProfilePage = () => {
 
   return (
     <Wrapper>
-      <div className="left-container" style={{color:'white'}}>
+      <div className="left-container"  id="ProfilePage" style={{color:'white'}}>
         <img
           src={image.preview}
           style={{ width: "155px", height: "155px" }}

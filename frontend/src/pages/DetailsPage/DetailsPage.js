@@ -96,7 +96,7 @@ const Details = () => {
 
   return (
     <Wrapper>
-      <div className="left-container">
+      <div className="left-container" id="detailPage">
         <section className="one">
           <div className="header">
             <div className="info">
