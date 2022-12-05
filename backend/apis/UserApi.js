@@ -131,10 +131,7 @@ router.post("/api/login", LoginValidations, validator, async (req, res) => {
  * @type GET
  */
 
-
 // dockstring
-
-
 
 router.get("/verify-now/:verificationCode", async (req, res) => {
   try {
@@ -222,5 +219,63 @@ router.get("/api/get-no-users", userAuth, async (req, res) => {
   }
 });
 
+/**
+ * @description To suspend a user account by admin
+ * @api /users/api/suspend-user/:userId
+ * @access PRIVATE
+ * @type PUT
+ */
+
+router.put("/api/suspend/:userId", async (req, res) => {
+  try {
+    let { userId } = req.params;
+    let userToSuspend = await User.findById(userId);
+    if (!userToSuspend) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+    userToSuspend.status = false;
+    await userToSuspend.save();
+    return res.status(200).json({
+      success: true,
+      message: "Hurray! User account has been suspended.",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To unsuspend a user
+ * @api /users/api/activate/:userId
+ * @access PRIVATE
+ * @type PUT
+ * */
+
+router.put("/api/activate/:userId", async (req, res) => {
+  try {
+    const updateUser = await User.findByIdAndUpdate(req.params.userId, {
+      status: true,
+    });
+    return res.status(200).json({
+      updateUser,
+      success: true,
+      message: "User has been activated! Successfully.",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      err,
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
 
 module.exports = router;

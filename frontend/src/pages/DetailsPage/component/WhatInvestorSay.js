@@ -8,7 +8,7 @@ const WhatInvestorSay = () => {
 
       <div className="comments">
           {commentlst.map((item) => {
-            const { profilePicture, text, id, username } = item;
+            const { profilePicture, id, username } = item;
             return (
               <div key={id} className="comment">
                 <img src={profilePicture} alt="" />

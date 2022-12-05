@@ -21,11 +21,10 @@ const CompanySchema = new Schema(
         ref: "tags",
       },
     ],
-    reasons: [
-      {
-        type: String,
-      },
-    ],
+    reasons: {
+      type: Schema.Types.ObjectId,
+      ref: "reason",
+    },
 
     verified: {
       type: Boolean,
@@ -45,6 +44,9 @@ const CompanySchema = new Schema(
       type: String,
     },
     phone: {
+      type: String,
+    },
+    description: {
       type: String,
     },
     tax_ID_No: {
@@ -80,6 +82,19 @@ const CompanySchema = new Schema(
       type: Number,
       default: 0,
     },
+    total_equity: {
+      type: Number,
+      default: 0,
+    },
+    released_equity: {
+      type: Number,
+      default: 0,
+    },
+    sold_equity: {
+      type: Number,
+      default: 0,
+    },
+    
   },
   { timestamps: true }
 );

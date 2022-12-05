@@ -140,7 +140,7 @@ router.get("/api/get-profiles", userAuth, async (req, res) => {
         message: "User not found.",
       });
     }
-    let profiles = await Profile.find().populate("user", ["name", "email","admin", "createdAt"]);
+    let profiles = await Profile.find().populate("user", ["name", "email","admin","status","createdAt"]);
     if (!profiles) {
       return res.status(400).json({
         success: false,

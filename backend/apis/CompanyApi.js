@@ -46,7 +46,7 @@ router.post(
         ...body,
         image: filename,
       });
-      await company.save();    
+      await company.save();
       res.status(200).json({
         success: true,
         message: "Company created successfully",
@@ -61,8 +61,6 @@ router.post(
     }
   }
 );
-
-
 
 /**
  * @description To upload company video
@@ -95,7 +93,6 @@ router.put(
         success: true,
         message: "Video uploaded successfully",
         company,
-        
       });
     } catch (error) {
       console.log(error);
@@ -143,6 +140,42 @@ router.put("/api/update-company/:id", userAuth, async (req, res) => {
 });
 
 /**
+ * @description To update Company image with company name
+ * @api /company/api/update-companyimage/:name
+ * @access PRIVATE
+ * @type PUT
+ */
+
+ router.put("/api/update-companyimage/:name", userAuth, async (req, res) => {
+  try {
+    let { body } = req;
+    let company = await Company.findOne({ name: req.params.name });
+    if (!company) {
+      return res.status(400).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+    company = await Company.findOneAndUpdate(
+      req.params.name,
+      { $set: body },
+      { new: true }
+    );
+    return res.status(200).json({
+      success: true,
+      message: "image added Successfully",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+
+/**
  * @description To delete Company
  * @api /company/api/delete-company
  * @access PRIVATE
@@ -158,7 +191,7 @@ router.delete("/api/delete-company/:id", userAuth, async (req, res) => {
         message: "Company not found",
       });
     }
-    await company.remove();
+    await company.deleteOne();
     return res.status(200).json({
       success: true,
       message: "Company Deleted Successfully",
@@ -279,7 +312,6 @@ router.get("/api/all-companies", async (req, res) => {
   }
 });
 
-
 /**
  * @description To search Company
  * @api /company/api/search-company
@@ -380,4 +412,76 @@ router.get("/api/company/:id", userAuth, async (req, res) => {
 });
 
 
+/**
+ * @description To verify company by id
+ * @api /company/api/verify-company/:id
+ * @access Private
+ * @type PUT
+ * */
+
+router.put("/api/verify-company/:id", async (req, res) => {
+  try {
+    let company = await Company.findOne({ _id: req.params.id });
+    if (!company) {
+      return res.status(400).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+    let updatedCompany = await Company.findOneAndUpdate(
+      { _id: req.params.id },
+      { verified: true },
+      { new: true }
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Company Verified Successfully",
+      updatedCompany,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To reject company by id
+ * @api /company/api/reject-company/:id
+ * @access Private
+ * @type PUT
+ * */
+
+router.put("/api/reject-company/:id", async (req, res) => {
+  try {
+    let company = await Company.findOne({ _id: req.params.id });
+    if (!company) {
+      return res.status(400).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+    let updatedCompany = await Company.findOneAndUpdate(
+      { _id: req.params.id },
+      { verified: false },
+      { new: true }
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Company Rejected Successfully",
+      updatedCompany,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+
+ 
 module.exports = router;

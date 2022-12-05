@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 import Wrapper from '../wrapper/PostCard'
-import { BsThreeDots, BsHeart } from "react-icons/bs";
+import { BsThreeDots, } from "react-icons/bs";
 import { AiTwotoneEdit } from "react-icons/ai";
 import {MdDelete} from "react-icons/md"
 const PostCard = () => {

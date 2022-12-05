@@ -4,7 +4,8 @@ const userAuth = require("../middlewares/auth-guard");
 const Company = require("../models/companyModel");
 const Reason = require("../models/reasonModel");
 /**
- * @description To input list of top resason to invest in a company
+ * @description To input list of top resason,city name and differnet link like
+ * company websites,facebook,tkinter  to invest in a company
  * @api /reason/api/create-reason
  * @access PRIVATE
  * @type POST
@@ -13,7 +14,7 @@ router.post("/api/create-reason/:name", userAuth, async (req, res) => {
   try {
     const { body } = req;
 
-    const company = await Company.find({ name: req.params.name });
+    const company = await Company.findOne({ name: req.params.name });
     const companyID = company._id;
 
     if (!company) {
@@ -22,8 +23,8 @@ router.post("/api/create-reason/:name", userAuth, async (req, res) => {
         message: "Company not found",
       });
     }
-    const reasons= await Reason.find({company:companyID});
-    if(reasons){
+    const reasons = await Reason.findOne({ company: companyID });
+    if (reasons) {
       return res.status(400).json({
         success: false,
         message: "Reasons already added",
@@ -34,13 +35,12 @@ router.post("/api/create-reason/:name", userAuth, async (req, res) => {
       ...body,
     });
     await reason.save();
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: "Reason created successfully",
       reason,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -48,8 +48,57 @@ router.post("/api/create-reason/:name", userAuth, async (req, res) => {
   }
 });
 
+
+
+/**
+ * @description To update reason for adding team information
+ * @api /reason/api/update-reason/:name
+ * @access PRIVATE
+ * @type POST
+ */
+router.put("/api/update-reason/:name", userAuth, async (req, res) => {
+  try {
+    const { body } = req;
+    const company = await Company.findOne({ name: req.params.name });
+    const companyID = company._id;
+    if (!company) {
+      return res.status(404).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+    const reasons = await Reason.findOne
+    ({ company: companyID });
+    if (!reasons) {
+      return res.status(400).json({
+        success: false,
+        message: "Reasons not found",
+      });
+    }
+    const reason = await Reason.findOneAndUpdate(
+      { company: companyID },
+      { ...body },
+      { new: true }
+    );
+    res.status(200).json({
+      success: true,
+      message: "Reason updated successfully",
+      reason,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
+
+
+
+
 //route to get reasons for a company
-router.get("/-reasons/:idapi/get", async (req, res) => {
+router.get("/api/get-reasons/:id", async (req, res) => {
   try {
     const company = await Company.findOne({ _id: req.params.id });
     if (!company) {
@@ -79,7 +128,6 @@ router.get("/-reasons/:idapi/get", async (req, res) => {
   }
 });
 
-
 //route to get all reasons by company
 
 // router.get("/api/get-all-reasons-by-company", async (req, res) => {
@@ -105,9 +153,5 @@ router.get("/-reasons/:idapi/get", async (req, res) => {
 //         });
 //     }
 // });
-
-
-
-
 
 module.exports = router;
