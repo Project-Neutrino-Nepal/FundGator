@@ -107,7 +107,8 @@ body {
 	font-size: 20px;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 768px) {
+
 	.signup-form {
 		width: 90%;
 		margin: 0 auto;

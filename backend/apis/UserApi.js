@@ -1,11 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
+const Profile = require("../models/profileModel");
 const { randomBytes } = require("crypto");
 const { join } = require("path");
 // const DOMAIN = require("../constants/index") || "http://127.0.0.1:5000/";
 const sendMail = require("../functions/email-sender");
 const DOMAIN = "http://127.0.0.1:5000/";
+const RegisterValidations = require("../validators/user-validators");
+const validator = require("../middlewares/validator-middleware");
 
 /**
  * @description To create a new User Account
@@ -16,8 +19,8 @@ const DOMAIN = "http://127.0.0.1:5000/";
 
 router.post(
   "/api/register",
-  // RegisterValidations,
-  // Validator,
+  RegisterValidations,
+  validator,
   async (req, res) => {
     try {
       let { email } = req.body;
@@ -51,6 +54,14 @@ router.post(
         "Please verify Your Account.",
         html
       );
+      // create profile for the user
+      const profile = new Profile({
+        user: user._id,
+        email: user.email,
+        name: user.name,
+      });
+      await profile.save();
+
       return res.status(201).json({
         success: true,
         message:
@@ -73,26 +84,24 @@ router.post(
  * @type POST
  */
 
-router.post("/api/login", async (req, res) => {
+router.post("/api/login", LoginValidations, validator, async (req, res) => {
   try {
     let { email, password } = req.body;
     let user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
-        message: "Invalid Credentials",
+        message: "Invalid Credentials.",
       });
     }
-    if (!user.verified) {
-      return res.status(400).json({
+    if (user.verified != true) {
+      return res.status(401).json({
         success: false,
-        message: "Please verify your email address.",
+        message: "Unauthorized access. Please verify your account.",
       });
     }
-
-    let isMatch = await user.comparePassword(password);
-    if (!isMatch) {
-      return res.status(400).json({
+    if (!(await user.comparePassword(password))) {
+      return res.status(401).json({
         success: false,
         message: "Invalid Credentials.",
       });
@@ -100,12 +109,11 @@ router.post("/api/login", async (req, res) => {
     let token = await user.generateJWT();
     return res.status(200).json({
       success: true,
-      message: "Login Successful.",
-      token,
       user: user.getUserInfo(),
+      token: `Bearer ${token}`,
+      message: "Hurray! You are now logged in.",
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({
       success: false,
       message: "An error occurred.",
