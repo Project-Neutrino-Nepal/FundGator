@@ -104,7 +104,7 @@ const ProfilePage = () => {
   return (
     <Wrapper>
       <ToastContainer />
-      <section className="infocontainer mt-5">
+      <section className="infocontainer mt-5" id="SettingPage">
         <div className="userinfo">
           <div className="edit-img">
             <img

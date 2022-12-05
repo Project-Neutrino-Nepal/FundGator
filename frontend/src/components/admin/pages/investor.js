@@ -224,7 +224,7 @@ function InvestorAdmin() {
     <>
       <ToastContainer />
 
-      <div className="tabled">
+      <div className="tabled" id="AdminInvestor">
         <Row gutter={[24, 0]}>
           <Col xs="24" xl={24}>
             <Card

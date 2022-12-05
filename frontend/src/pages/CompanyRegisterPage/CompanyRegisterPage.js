@@ -210,7 +210,7 @@ const CompanyRegisterPage = () => {
   return (
     <Wrapper>
       <ToastContainer />
-      <section className="tabs-container" style={{ marginTop: 80 }}>
+      <section className="tabs-container" id="RaiseFund" style={{ marginTop: 80 }}>
         {tabs.map((item, index) => {
           return (
             <div

@@ -103,7 +103,7 @@ const MyCompanyProfile = () => {
     <Wrapper>
       <ToastContainer />
 
-      <div className="left-container">
+      <div className="left-container" id="CompanyProfile">
         <section className="one">
           <div className="header">
             <div className="info">
