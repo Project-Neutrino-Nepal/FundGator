@@ -28,7 +28,7 @@ describe("Company Schema test  finding all company", () => {
 describe("Company Schema test for getting Company by id", () => {
   it("Add user to get company by Id", async () => {
     const status = await Company.findOne({
-      _id: Object("638ae051ab5f574a80158613"),
+      _id: Object("638ae96e1af5d85efbfa94d1"),
     });
     expect(status.ok);
   });
