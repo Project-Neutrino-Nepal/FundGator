@@ -17,7 +17,7 @@ afterAll(async () => {
 
 describe("User Schema test For login", () => {
   it("Add User testing login", async () => {
-    const result = await User.findOne({ _id: Object("638b1a196c5845c23787bde7") });
+    const result = await User.findOne({ _id: Object("638b1ae2bf04f5176565e19f") });
       expect(result.email).toEqual("sprint@gmail.com");
   });
 });

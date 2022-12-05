@@ -5,6 +5,8 @@ import "../css/nav-search.css";
 
 function Navbar() {
   const [name, setName] = useState("");
+  const [companyID, SetCompanyID] = useState("");
+  const [companyName, SetCompanyName] = useState("");
   const [image, setPreview] = useState({
     preview: "https://github.com/mdo.png",
     file: "",
@@ -27,6 +29,19 @@ function Navbar() {
       });
   });
 
+  // get my company /api/get-my-companies
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/company/api/get-my-companies", config)
+      .then((res) => {
+        const company = res.data.companies;
+        company.map((company) => {
+          SetCompanyID(company._id);
+          SetCompanyName(company.name);
+        });
+      });
+  });
 
   const admin = localStorage.getItem("admin");
 
@@ -187,7 +202,11 @@ function Navbar() {
 
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li className="nav-item me-2">
-                  <Link className="nav-link active" aria-current="page" to="raise">
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    to="raise"
+                  >
                     Raise funding
                   </Link>
                 </li>
@@ -244,8 +263,12 @@ function Navbar() {
                       </h6>
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="company">
-                        &nbsp;&nbsp;&nbsp;Fundgator
+                      <Link
+                        className="dropdown-item"
+                        aria-current="page"
+                        to={`/company/${companyID}`}
+                      >
+                        {companyName}
                       </Link>
                     </li>
                     <hr />
@@ -263,7 +286,7 @@ function Navbar() {
         </nav>
       </>
     );
-  } else if(localStorage.getItem("token") && admin ==="true"){
+  } else if (localStorage.getItem("token") && admin === "true") {
     return (
       <>
         <nav
@@ -375,9 +398,15 @@ function Navbar() {
                       </h6>
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="company">
-                        &nbsp;&nbsp;&nbsp;Fundgator
-                      </Link>
+                      {/* {companies.map((company) => (
+                        <Link
+                          className="dropdown-item"
+                          aria-current="page"
+                          to={`/company/${company._id}`}
+                        >
+                          {company.name}
+                        </Link>
+                      ))} */}
                     </li>
                     <hr />
                     <li>

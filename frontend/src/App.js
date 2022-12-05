@@ -10,17 +10,16 @@ import CompanyDetails from "./components/admin/pages/companyDetails/companyDetai
 import Home from "./components/admin/pages/Home";
 import InvestorAdmin from "./components/admin/pages/investor";
 import Profile from "./components/admin/pages/Profile";
-import ComProfile from "./components/company/company_profile";
 import Homepage from "./components/homepage";
 import Navbar from "./components/navbar.js";
 import Signup from "./components/Signup";
 import Signin from "./components/singin";
 import {
-  CompanyRegisterPage, ExplorePage, FooterLayout, LandingPage,
-  ProfilePage, Details,
-  UserProfilePage,
+  CompanyRegisterPage, Details, ExplorePage, FooterLayout, LandingPage,
+  ProfilePage, UserProfilePage,
   WelcomePage
 } from "./pages";
+import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
 
 import RaisePage from "./pages/RaisePage/RaisePage";
 
@@ -36,7 +35,7 @@ function App() {
         <Route path="/homepage" element={<Homepage />}></Route>
         <Route path="/profile" element={<UserProfilePage />}></Route>
         <Route path="/profile/:id" element={<ProfilePage />}></Route>
-        <Route path="/company" element={<ComProfile />}></Route>
+        <Route path="/company/:id" element={<MyCompanyProfile />}></Route>
         <Route path="/explore" element={<ExplorePage />}></Route>
         <Route path="/detail/:id" element={<Details />}></Route>
         <Route path="/category" element={<Categories />}></Route>

@@ -14,8 +14,10 @@ afterAll(async () => {
 //AdminLogin test
 describe("Admin Schema test For login", () => {
     it("Add admin to login", async () => {
-      const result = await User.findOne({ _id: Object("6380a5c61fab8643d46b389e") });
+      const result = await User.findOne({ _id: Object("638a54f33cac1a6957d836ac") });
+      //console.log(result)
         expect(result.email).toEqual("ymilan593@gmail.com");
+        
     });
   });
 
