@@ -47,6 +47,7 @@ const CompanyRegisterPage = () => {
     videouploadpreview: "",
     linktype: "",
     companyurl: "",
+    content:""
   };
   const [activeindex, setActive] = useState(1);
   const [values, setValue] = useState(formvalue);
@@ -89,6 +90,11 @@ const CompanyRegisterPage = () => {
   const teamsdata = {
     teams: values.teams,
   };
+
+   const setcontent = (content) => {
+     setValue({ ...values, content: content });
+     console.log(content);
+   };
 
   const teamChange = (e, index, name) => {
     var teams = values.teams;
@@ -228,10 +234,14 @@ const CompanyRegisterPage = () => {
 
       <section className="form-section">
         <div className={activeindex === 1 ? "form-child" : "d-none"}>
-          <Basic values={values} handleChange={handleChange} />
+          <Basic values={values} handleChange={handleChange} 
+          
+          />
         </div>
         <div className={activeindex === 4 ? "form-child" : "d-none"}>
-          <Visiblity handleChange={handleChange} values={values} />
+          <Visiblity handleChange={handleChange} values={values} 
+          setcontent={setcontent}
+          />
         </div>
         <div className={activeindex === 3 ? "form-child" : "d-none"}>
           <Story

@@ -1,51 +1,24 @@
-import React from "react";
+import React, { useState, useRef, useMemo } from "react";
 
 import Wrapper from "../wrapper/Visibility";
-const Visiblity = ({ handleChange, values }) => {
-  const { companyurl, linktype } = values;
+import JoditEditor from "jodit-react";
+const Visiblity = ({ handleChange, values, setcontent }) => {
+  const editor = useRef(null);
+ 
+
+  
 
   return (
     <Wrapper className="form-content">
-      <p>Who should be able to see your company?</p>
-
-      <div className="radios ">
-        <div className="d-flex gap-3">
-          <input
-            type="radio"
-            name="linktype"
-            value={false}
-            id=""
-            checked={linktype === "false" ? true : false}
-            onChange={handleChange}
-          />
-
-          <label htmlFor="">Anyone who visits FunGator</label>
-        </div>
-
-        <div className="d-flex gap-3">
-          <input
-            type="radio"
-            name="linktype"
-            value={true}
-            id=""
-            checked={linktype === "true" ? true : false}
-            onChange={handleChange}
-          />
-
-          <label htmlFor="">Anyone with the link</label>
-        </div>
-      </div>
-
-      <p>
-        https://wefunder.com/
-        <input
-          type="text"
-          name="companyurl"
-          id=""
-          onChange={handleChange}
-          value={companyurl}
-        />
-      </p>
+      <JoditEditor
+        ref={editor}
+        value={values.content}
+        tabIndex={1} // tabIndex of textarea
+        // preferred to use only this option to update the content for performance reasons
+        onChange={(newContent) => {
+          setcontent(newContent);
+        }}
+      />
     </Wrapper>
   );
 };
