@@ -2,32 +2,31 @@ const { expect } = require("chai");
 const { Given, When, Then, Before, After } = require("@cucumber/cucumber");
 const { Builder, By, Key, until, sleep } = require("selenium-webdriver");
 
-const driver = new Builder().forBrowser("chrome").build();
 const delay = 5000;
 
-Given("I am on the login page", async function () {
-  await this.driver.get("http://localhost:3000/signin");
-  await this.driver.wait(until.elementLocated(By.id("loginForm")), delay);
+Given("I am on the registration page", { timeout: 30000 }, async function () {
+  let driver = await new Builder().forBrowser("chrome").build();
+  await driver.get("http://localhost:3000/signup");
+  await driver.findElement(By.id("name")).sendKeys("test");
+  await driver.findElement(By.id("email")).sendKeys("test1@gmail.com");
+  await driver.findElement(By.id("password")).sendKeys("test1234");
+  await driver.findElement(By.id("confirmpassword")).sendKeys("test1234");
+  await driver.sleep(delay);
+  await driver.findElement(By.id("registerBtn")).click();
+
+  await driver.wait(until.elementLocated(By.id("registerForm")), 30000);
+  expect(await driver.wait(until.elementLocated(By.id("registerForm"))));
+  await driver.quit();
 });
+Given("I am on the login page", { timeout: 30000 }, async function () {
+  let driver = await new Builder().forBrowser("chrome").build();
+  await driver.get("http://localhost:3000/signin");
+  await driver.findElement(By.id("email")).sendKeys("test@gmail.com");
+  await driver.findElement(By.id("password")).sendKeys("test1234");
+  await driver.sleep(delay);
+  await driver.findElement(By.id("loginBtn")).click();
 
-When(
-  "I enter {string} as username and I enter {string1} as password",
-  async function (username, password) {
-    username = await this.driver.findElement(By.id("email"));
-    password = await this.driver.findElement(By.id("password"));
-    await this.driver.findElement(By.id("email")).sendKeys(username);
-    await this.driver.findElement(By.id("password")).sendKeys(password);
-  }
-);
-
-When("I click on the login button", async function () {
-  await this.driver.findElement(By.id("login")).click();
+  await driver.wait(until.elementLocated(By.id("loginForm")), 30000);
+  expect(await driver.wait(until.elementLocated(By.id("loginForm"))));
+  await driver.quit();
 });
-
-Then("I should be redirected to the home page", async function () {
-  await this.driver.wait(until.elementLocated(By.id("profileUpdate")), delay);
-  const url = await this.driver.getCurrentUrl();
-  expect(url).to.equal("http://localhost:3000/Welcome");
-});
-
-

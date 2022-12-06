@@ -39,7 +39,7 @@ const RaisePage = () => {
   };
 
   return (
-    <Wrapper className="">
+    <Wrapper id="createCompany">
       <ToastContainer/>
       <section className="left-container ">
         <h1>

@@ -5,7 +5,8 @@ import tabs from "./utils/tab";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import upload from "../../assets/image/uploadpic.svg";
-import { useParams } from "react-router-dom";
+import { useNavigate, useNavigation, useParams } from "react-router-dom";
+
 const CompanyRegisterPage = () => {
   const { id } = useParams();
   const formvalue = {
@@ -47,28 +48,22 @@ const CompanyRegisterPage = () => {
     videouploadpreview: "",
     linktype: "",
     companyurl: "",
+    content: "",
   };
+
+  const navigate = useNavigate();
+
   const [activeindex, setActive] = useState(1);
   const [values, setValue] = useState(formvalue);
 
-  const image = values.imageuploadpreview;
-  const video = values.videouploadpreview;
-  const imageuploads = values.imageupload;
   const videouploads = values.videoupload;
-  console.log(imageuploads);
-
-  const uploads_video = {
-    company_video: videouploads,
-  };
 
   const config = {
     headers: {
       authorization: localStorage.getItem("token"),
     },
   };
-  console.log(values);
-  const teams = values.teams;
-  console.log(teams);
+
   const data = {
     reason0: values.reason0,
     reason1: values.reason1,
@@ -89,6 +84,12 @@ const CompanyRegisterPage = () => {
   const teamsdata = {
     teams: values.teams,
   };
+
+  const setcontent = (content) => {
+    setValue({ ...values, content: content });
+  };
+
+  console.log(values.content);
 
   const teamChange = (e, index, name) => {
     var teams = values.teams;
@@ -154,11 +155,10 @@ const CompanyRegisterPage = () => {
             )
             .then((res) => {
               if (res.data.success) {
-                toast.success(res.data.message);
               }
             });
         } catch (error) {
-          toast.error(error.response.data.message);
+          console.log(error.response.data.message);
         }
       }
       // updating reasons and adding team members
@@ -173,35 +173,57 @@ const CompanyRegisterPage = () => {
             )
             .then((res) => {
               if (res.data.success) {
-                toast.success(res.data.message);
               }
             });
         } catch (error) {
-          toast.error(error.response.data.message);
+          console.log(error.response.data.message);
         }
       } else if (activeindex === 3) {
+        const formData = new FormData();
+        formData.append("company_video", videouploads);
         try {
           axios
             .put(
-              "http://localhost:5000/company/api/upload-video",
-              uploads_video,
+              "http://localhost:5000/company/api/upload-video/" +
+                formvalue.companyname,
+              formData,
               config
             )
             .then((res) => {
               if (res.data.success) {
-                toast.success(res.data.message);
               }
             });
         } catch (error) {
-          toast.error(error.response.data.message);
+          console.log(error.response.data.message);
         }
+      }
+    } else {
+      const formData = new FormData();
+      formData.append("content", values.content);
+      try {
+        axios
+          .put(
+            "http://localhost:5000/company/api/update-companycontent/" +
+              formvalue.companyname,
+            formData,
+            config
+          )
+          .then((res) => {
+            if (res.data.success) {
+              toast.success("Company created Successfully",setTimeout(() => {
+                navigate("/homepage");
+              }, 1200));
+            }
+          });
+      } catch (error) {
+        console.log(error.response.data.message);
       }
     }
   };
   return (
     <Wrapper>
       <ToastContainer />
-      <section className="tabs-container" style={{ marginTop: 80 }}>
+      <section className="tabs-container" id="RaiseFund" style={{ marginTop: 80 }}>
         {tabs.map((item, index) => {
           return (
             <div
@@ -228,7 +250,11 @@ const CompanyRegisterPage = () => {
           <Basic values={values} handleChange={handleChange} />
         </div>
         <div className={activeindex === 4 ? "form-child" : "d-none"}>
-          <Visiblity handleChange={handleChange} values={values} />
+          <Visiblity
+            handleChange={handleChange}
+            values={values}
+            setcontent={setcontent}
+          />
         </div>
         <div className={activeindex === 3 ? "form-child" : "d-none"}>
           <Story

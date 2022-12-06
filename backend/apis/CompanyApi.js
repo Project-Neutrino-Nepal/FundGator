@@ -63,32 +63,41 @@ router.post(
 );
 
 /**
- * @description To upload company video
- * @api /company/api/upload-video
+ * @description To upload company video by company owner using company name as params
+ * @api /company/api/upload-video/:name
  * @access PRIVATE
  * @type PUT
  * */
 
 router.put(
-  "/api/upload-video",
+  "/api/upload-video/:name",
   userAuth,
   uploadCompanyVideo.single("company_video"),
   async (req, res) => {
     try {
-      let { body } = req;
-      let file = req.file;
+      let { name } = req.params;
+      let {file} = req;
+      console.log(file);
       if (file === undefined || file === null) {
         filename = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
       } else {
         filename = DOMAIN + "uploads/company-videos/" + file.filename;
       }
-      const company = await Company.updateOne(
-        { user: req.user._id },
+      let company = await Company.findOne({ name: name, user: req.user._id });
+      if (!company) {
+        return res.status(400).json({
+          success: false,
+          message: "Company not found",
+        });
+      }
+      company = await Company.findOneAndUpdate(
+        { name: name, user: req.user._id },
         {
           company_video: filename,
         },
         { new: true }
       );
+
       res.status(200).json({
         success: true,
         message: "Video uploaded successfully",
@@ -140,41 +149,54 @@ router.put("/api/update-company/:id", userAuth, async (req, res) => {
 });
 
 /**
- * @description To update Company image with company name
+ * @description To update Company image with company name by the company owner
  * @api /company/api/update-companyimage/:name
  * @access PRIVATE
  * @type PUT
  */
 
- router.put("/api/update-companyimage/:name", userAuth, async (req, res) => {
-  try {
-    let { body } = req;
-    let company = await Company.findOne({ name: req.params.name });
-    if (!company) {
-      return res.status(400).json({
+ router.put(
+  "/api/upload-companyimage/:name",
+  userAuth,
+  uploadCompanyImage.single("image"),
+  async (req, res) => {
+    try {
+      let { name } = req.params;
+      let {file} = req;
+      if (file === undefined || file === null) {
+        filename = DOMAIN + "uploads/assets/" + "default_company.svg";
+      } else {
+        filename = DOMAIN + "uploads/company-images/" + file.filename;
+      }
+      let company = await Company.findOne({ name: name, user: req.user._id });
+      if (!company) {
+        return res.status(400).json({
+          success: false,
+          message: "Company not found",
+        });
+      }
+      company = await Company.findOneAndUpdate(
+        { name: name, user: req.user._id },
+        {
+          image: filename,
+        },
+        { new: true }
+      );
+
+      res.status(200).json({
+        success: true,
+        message: "image upload successfully",
+        company,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
         success: false,
-        message: "Company not found",
+        message: "Internal server error",
       });
     }
-    company = await Company.findOneAndUpdate(
-      req.params.name,
-      { $set: body },
-      { new: true }
-    );
-    return res.status(200).json({
-      success: true,
-      message: "image added Successfully",
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred.",
-    });
   }
-});
-
-
+);
 /**
  * @description To delete Company
  * @api /company/api/delete-company
@@ -411,7 +433,6 @@ router.get("/api/company/:id", userAuth, async (req, res) => {
   }
 });
 
-
 /**
  * @description To verify company by id
  * @api /company/api/verify-company/:id
@@ -482,6 +503,4 @@ router.put("/api/reject-company/:id", async (req, res) => {
   }
 });
 
-
- 
 module.exports = router;
