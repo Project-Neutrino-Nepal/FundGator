@@ -96,6 +96,13 @@ router.post("/api/login", LoginValidations, validator, async (req, res) => {
         message: "Invalid Credentials.",
       });
     }
+    if (user.status != true) {
+      return res.status(401).json({
+        success: false,
+        message:
+          "Your account is suspended, Please contact Admin to Reactivate your Account.",
+      });
+    }
     if (user.verified != true) {
       return res.status(401).json({
         success: false,
