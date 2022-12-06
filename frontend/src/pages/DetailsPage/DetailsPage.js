@@ -4,8 +4,9 @@ import Wrapper from "./wrapper/DetailPage";
 import axios from "axios";
 import {
   AiFillFacebook,
+  AiFillInstagram,
   AiFillTwitterSquare,
-  AiOutlineHeart
+  AiOutlineHeart,
 } from "react-icons/ai";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { FaPlay, FaShare } from "react-icons/fa";
@@ -17,7 +18,7 @@ import {
   LeadInvestor,
   Overview,
   Update,
-  WhatInvestorSay
+  WhatInvestorSay,
 } from "./component";
 import tabs from "./utils/tab";
 
@@ -72,8 +73,7 @@ const Details = () => {
         let company = res.data.company;
         setName(company.name);
         setImage(company.image);
-        setVideo(company.video);
-        setWebsite(company.website);
+        setVideo(company.company_video);
         setFacebook(company.facebook);
         setTwitter(company.twitter);
         setLinkedin(company.linkedin);
@@ -94,6 +94,26 @@ const Details = () => {
       });
   }, []);
 
+
+
+  // get reason details using id from params
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/reason/api/get-reasons/" + id, config)
+      .then((res) => {
+        let reason = res.data.reason;
+        setFacebook(reason.facebook);
+        setTwitter(reason.twitter);
+        setLinkedin(reason.linkedin);
+        setWebsite(reason.companylink);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+
   return (
     <Wrapper>
       <div className="left-container" id="detailPage">
@@ -109,6 +129,7 @@ const Details = () => {
           </div>
           <div className="video-container">
             <video
+              autoPlay
               ref={videoRef}
               onClick={onplay}
               loop
@@ -151,12 +172,15 @@ const Details = () => {
             <Link>{website}</Link>
             <span>{address}</span>
 
-            <Link className="icon">
+            <Link className="icon" to={facebook}>
               <AiFillFacebook />
             </Link>
 
-            <Link className="icon">
+            <Link className="icon" to={twitter}>
               <AiFillTwitterSquare />
+            </Link>
+            <Link className="icon" to={instagram}>
+              <AiFillInstagram />
             </Link>
           </div>
 
