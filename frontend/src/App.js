@@ -12,6 +12,8 @@ import InvestorAdmin from "./components/admin/pages/investor";
 import Profile from "./components/admin/pages/Profile";
 import ComProfile from "./components/company/company_profile";
 import Homepage from "./components/homepage";
+import Khalti from "./components/Khalti/Khalti";
+
 import Navbar from "./components/navbar.js";
 import Signup from "./components/Signup";
 import Signin from "./components/singin";
@@ -47,6 +49,7 @@ function App() {
           path="/CompanyRegister/:id"
           element={<CompanyRegisterPage />}
         ></Route>
+        <Route path="/Khalti" element={< Khalti/>}> </Route>
 
         {/* DASHBOARD ROUTES */}
         <Route path="/dashboard" element={<Main />}>
