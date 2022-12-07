@@ -7,7 +7,7 @@ import Details from "./DetailsPage/DetailsPage";
 import RaisePage from "./RaisePage/RaisePage";
 import CompanyRegisterPage from "./CompanyRegisterPage/CompanyRegisterPage";
 import FooterLayout from "./FooterLayout/FooterLayout";
-
+import PaymentPage from "./PaymentPage/PaymentPage"
 export {
   LandingPage,
   ProfilePage,
@@ -17,5 +17,6 @@ export {
   Details,
   RaisePage,
   CompanyRegisterPage,
-  FooterLayout
+  FooterLayout,
+  PaymentPage
 };

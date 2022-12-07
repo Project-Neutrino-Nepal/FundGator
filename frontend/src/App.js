@@ -19,7 +19,9 @@ import Signin from "./components/singin";
 import {
   CompanyRegisterPage, Details, ExplorePage, FooterLayout, LandingPage,
   ProfilePage, UserProfilePage,
-  WelcomePage
+  WelcomePage,
+  PaymentPage
+
 } from "./pages";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
 
@@ -44,11 +46,16 @@ function App() {
         <Route path="/raise" element={<FooterLayout />}>
           <Route index element={<RaisePage />} />
         </Route>
+        <Route path="/payment/:id" element={<FooterLayout />}>
+          <Route index element={<PaymentPage />} />
+        </Route>
         <Route
           path="/CompanyRegister/:id"
           element={<CompanyRegisterPage />}
         ></Route>
-        <Route path="/Khalti" element={< Khalti/>}> </Route>
+        <Route path="/Khalti" element={<Khalti />}>
+          {" "}
+        </Route>
 
         {/* DASHBOARD ROUTES */}
         <Route path="/dashboard" element={<Main />}>
