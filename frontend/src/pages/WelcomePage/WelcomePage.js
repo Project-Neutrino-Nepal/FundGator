@@ -1,6 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { AiFillCamera } from "react-icons/ai";
+import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Wrapper from "./wrapper/WelcomePage";
@@ -12,10 +11,7 @@ const WelcomePage = () => {
   const [bio, setBio] = useState("");
   const [website, setWebsite] = useState("");
   const [skills, setSkills] = useState("");
-  const [image, setPreview] = useState({
-    preview: "https://github.com/mdo.png",
-    file: "",
-  });
+  const [name, setName] = useState("");
 
   const config = {
     headers: {
@@ -23,31 +19,6 @@ const WelcomePage = () => {
     },
   };
 
-  const onuploadimg = (e) => {
-    console.log(e.target.value);
-    setPreview({ ...image, file: e.target.files[0] });
-    if (e.target.files && e.target.files[0]) {
-      console.log(e.target.files[0]);
-
-      const formData = new FormData();
-      formData.append("avatar", e.target.files[0]);
-      axios
-        .put(
-          "http://localhost:5000/profile/api/update-profile",
-          formData,
-          config
-        )
-        .then((res) => {
-          toast.success("Profile updated successfully");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      setPreview({ ...image, preview: " " });
-      console.log("no file selected");
-    }
-  };
   const validate = () => {
     if (
       legalName === "" &&
@@ -81,9 +52,19 @@ const WelcomePage = () => {
     return true;
   };
 
+  // fetching Profile data from API
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/profile/api/my-profile", config)
+      .then((res) => {
+        let program = res.data.profile;
+        setName(program.name);
+      });
+  });
+
   const UpdateUser = async (e) => {
     await axios
-      .put("http://localhost:5000/users/api/update-user", config)
+      .put("http://localhost:5000/users/api/update-user/" + name, config)
       .then((res) => {
         if (res.data.success) {
           console.log(res.data);
@@ -114,7 +95,6 @@ const WelcomePage = () => {
           .put("http://localhost:5000/profile/api/update-profile", data, config)
           .then((response) => {
             if (response.data.success) {
-              UpdateUser();
               toast.success(
                 response.data.message,
                 setTimeout(function () {
@@ -134,7 +114,9 @@ const WelcomePage = () => {
       <ToastContainer />
       <form id="profileUpdate" style={{ margin: "80px" }}>
         <div className="welcome mt-5">
-          <h2 className="heading" id="InfoText">Investor Information</h2>
+          <h2 className="heading" id="InfoText">
+            Investor Information
+          </h2>
           <p>
             To invest online, federal law requires that we collect some info
           </p>
@@ -216,7 +198,10 @@ const WelcomePage = () => {
             <button
               className="btn-continue"
               id="updateButton"
-              onClick={UpdateProfiles}
+              onClick={(e) => {
+                UpdateProfiles(e);
+                UpdateUser(e);
+              }}
             >
               SAVE & CONTINUE
             </button>
