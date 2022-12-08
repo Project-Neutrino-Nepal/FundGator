@@ -40,9 +40,6 @@ const CompanySchema = new Schema(
       type: String,
       required: true,
     },
-    avatar: {
-      type: String,
-    },
     phone: {
       type: String,
     },
@@ -64,7 +61,6 @@ const CompanySchema = new Schema(
     company_document: {
       type: String,
     },
-
     company_video: {
       type: String,
     },
