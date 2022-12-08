@@ -1,13 +1,25 @@
-
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
-  Avatar, Button, Card, Col, Descriptions, List, message, Radio, Row, Switch,
-  Upload
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Descriptions,
+  List,
+  message,
+  Radio,
+  Row,
+  Switch,
+  Upload,
 } from "antd";
 
 import {
-  FacebookOutlined, InstagramOutlined, TwitterOutlined, VerticalAlignTopOutlined
+  FacebookOutlined,
+  InstagramOutlined,
+  TwitterOutlined,
+  VerticalAlignTopOutlined,
 } from "@ant-design/icons";
 
 import axios from "axios";
@@ -19,8 +31,6 @@ import convesionImg2 from "../assets/images/face-4.jpg";
 import convesionImg3 from "../assets/images/face-5.jpeg";
 import convesionImg4 from "../assets/images/face-6.jpeg";
 import project1 from "../assets/images/home-decor-1.jpeg";
-import project2 from "../assets/images/home-decor-2.jpeg";
-import project3 from "../assets/images/home-decor-3.jpeg";
 
 function Profile() {
   const [imageURL, setImageURL] = useState(false);
@@ -32,63 +42,51 @@ function Profile() {
   const [bio, setBio] = useState("");
   const [address, setAddress] = useState("");
 
-   const [image, setPreview] = useState({
-     preview: "https://github.com/mdo.png",
-     file: "",
-   });
+  const [image, setPreview] = useState({
+    preview: "https://github.com/mdo.png",
+    file: "",
+  });
 
-   const config = {
-     headers: {
-       Authorization: localStorage.getItem("token"),
-     },
-   };
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
 
-   // fetching Profile data from API
-   useEffect(() => {
-     axios
-       .get("http://localhost:5000/profile/api/my-profile", config)
-       .then((res) => {
-         let program = res.data.profile;
-         setName(program.name);
-         setBio(program.bio);
-          setEmail(program.email);
-          setPhone(program.phone);
-          setPan(program.pan_No);
-          setAddress(program.address);
+  // creating variable for fetching data from company api to get list of companies by user id
+  const [comdatas, setComdata] = useState([]);
 
-         setPreview({ ...image, preview: program.avatar });
-       });
-   });
+  // fetching Profile data from API
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/profile/api/my-profile", config)
+      .then((res) => {
+        let program = res.data.profile;
+        setName(program.name);
+        setBio(program.bio);
+        setEmail(program.email);
+        setPhone(program.phone);
+        setPan(program.pan_No);
+        setAddress(program.address);
+
+        setPreview({ ...image, preview: program.avatar });
+      });
+  });
+
+  // fetching company data from api thoruogh userid
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/company/api/get-my-companies", config)
+      .then((res) => {
+        let comdata = res.data.companies;
+        setComdata(comdata);
+      });
+  });
 
   const getBase64 = (img, callback) => {
     const reader = new FileReader();
     reader.addEventListener("load", () => callback(reader.result));
     reader.readAsDataURL(img);
-  };
-
-  const beforeUpload = (file) => {
-    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-    if (!isJpgOrPng) {
-      message.error("You can only upload JPG/PNG file!");
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error("Image must smaller than 2MB!");
-    }
-    return isJpgOrPng && isLt2M;
-  };
-
-  const handleChange = (info) => {
-    if (info.file.status === "uploading") {
-      setLoading(false);
-      return;
-    }
-    if (info.file.status === "done") {
-      getBase64(info.file.originFileObj, (imageUrl) => {
-        setLoading(false);
-        setImageURL(false);
-      });
-    }
   };
 
   const pencil = [
@@ -111,12 +109,17 @@ function Profile() {
     </svg>,
   ];
 
-  const uploadButton = (
+  const createButton = (
     <div className="ant-upload-text font-semibold text-dark">
       {<VerticalAlignTopOutlined style={{ width: 20, color: "#000" }} />}
-      <div>Upload New Project</div>
+      <div>Create new company</div>
     </div>
   );
+  const navigate = useNavigate();
+
+  const handleChange = () => {
+    navigate("/raise");
+  };
 
   const data = [
     {
@@ -154,20 +157,6 @@ function Profile() {
       disciption:
         "As Uber works through a huge amount of internal management turmoil.",
     },
-    {
-      img: project2,
-      titlesub: "Project #2",
-      title: "Scandinavian",
-      disciption:
-        "Music is something that every person has his or her own specific opinion about.",
-    },
-    {
-      img: project3,
-      titlesub: "Project #3",
-      title: "Minimalist",
-      disciption:
-        "Different people have different taste, and various types of music, Zimbali Resort",
-    },
   ];
 
   return (
@@ -200,8 +189,7 @@ function Profile() {
                 alignItems: "center",
                 justifyContent: "flex-end",
               }}
-            >
-            </Col>
+            ></Col>
           </Row>
         }
       ></Card>
@@ -352,25 +340,25 @@ function Profile() {
         className="header-solid mb-24"
         title={
           <>
-            <h6 className="font-semibold">Projects</h6>
-            <p>Architects design houses</p>
+            <h6 className="font-semibold">Company</h6>
+            <p>Total company created by FundGator</p>
           </>
         }
       >
         <Row gutter={[24, 24]}>
-          {project.map((p, index) => (
+          {comdatas.map((p, index) => (
             <Col span={24} md={12} xl={6} key={index}>
               <Card
                 bordered={false}
                 className="card-project"
-                cover={<img alt="example" src={p.img} />}
+                cover={<img alt="example" src={p.image} />}
               >
-                <div className="card-tag">{p.titlesub}</div>
-                <h5>{p.titile}</h5>
+                <div className="card-tag">{p.content}</div>
+                <h5>{p.name}</h5>
                 <p>{p.disciption}</p>
                 <Row gutter={[6, 0]} className="card-footer">
                   <Col span={12}>
-                    <Button type="button">VIEW PROJECT</Button>
+                    <Button type="button">View Company</Button>
                   </Col>
                   <Col span={12} className="text-right">
                     <Avatar.Group className="avatar-chips">
@@ -385,21 +373,15 @@ function Profile() {
             </Col>
           ))}
           <Col span={24} md={12} xl={6}>
-            <Upload
-              name="avatar"
-              listType="picture-card"
-              className="avatar-uploader projects-uploader"
-              showUploadList={false}
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              beforeUpload={beforeUpload}
-              onChange={handleChange}
-            >
-              {imageURL ? (
-                <img src={imageURL} alt="avatar" style={{ width: "100%" }} />
-              ) : (
-                uploadButton
-              )}
-            </Upload>
+            <Card style={{ width: 300, height: 350, textAlign: "center" }}>
+              <div
+                className="mt-5 btn  d-flex justify-content-center p-5"
+                onClick={handleChange}
+              >
+                {" "}
+                {createButton}
+              </div>
+            </Card>
           </Col>
         </Row>
       </Card>
