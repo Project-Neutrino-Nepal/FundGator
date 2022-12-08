@@ -196,30 +196,6 @@ function InvestorAdmin() {
         ),
     };
   });
-
-  //     handleSuspend: (profile) => {
-  //       axios
-  //         .put(
-  //           `http://localhost:5000/user/api/suspend/${profile.user._id}`,
-  //           config
-  //         )
-  //         .then((res) => {
-  //          if (res.data.success) {
-  //            toast.success(
-  //              res.data.message,
-  //              setTimeout(function () {
-  //                window.location.assign("/signin");
-  //              }, 2000)
-  //            );
-  //          }
-  //         })
-  //         .catch((err) => {
-  //           console.log(err);
-  //         });
-  //     },
-  //   };
-  // });
-
   return (
     <>
       <ToastContainer />
