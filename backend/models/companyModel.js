@@ -95,6 +95,12 @@ const CompanySchema = new Schema(
     content: {
       type: String,
     },
+    investors: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
   },
   { timestamps: true }
 );
