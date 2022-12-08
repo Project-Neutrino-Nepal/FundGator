@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import Wrapper from "./wrapper/DetailPage";
-
 import axios from "axios";
+import KhaltiCheckout from "khalti-checkout-web";
+import React, { useEffect, useRef, useState } from "react";
 import {
   AiFillFacebook,
   AiFillInstagram,
@@ -11,6 +10,9 @@ import {
 import { BsCurrencyDollar } from "react-icons/bs";
 import { FaPlay, FaShare } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import khalticonfig from "../../components/Khalti/KhaltiConfig";
 import {
   AskAQuestion,
   Detail,
@@ -21,12 +23,14 @@ import {
   WhatInvestorSay,
 } from "./component";
 import tabs from "./utils/tab";
-
+import Wrapper from "./wrapper/DetailPage";
 const Details = () => {
   const videoRef = useRef(null);
   const [play, setplay] = useState(false);
   const [activeindex, setActiveIndex] = useState(1);
   let { id } = useParams();
+  let checkout = new KhaltiCheckout(khalticonfig);
+  const [amount, setAmount] = useState(0);
 
   const onplay = () => {
     if (!play) {
@@ -94,8 +98,6 @@ const Details = () => {
       });
   }, []);
 
-
-
   // get reason details using id from params
 
   useEffect(() => {
@@ -113,9 +115,10 @@ const Details = () => {
       });
   }, []);
 
-
   return (
     <Wrapper>
+      <ToastContainer />
+
       <div className="left-container" id="detailPage">
         <section className="one">
           <div className="header">
@@ -244,10 +247,26 @@ const Details = () => {
             </div>
             <div className="invest-input">
               <BsCurrencyDollar />
-              <input type="number" placeholder="0" />
+              <input
+                type="number"
+                placeholder="0"
+                onChange={(e) => setAmount(e.target.value)}
+              />
             </div>
           </div>
-          <button className="btn-invest">Invest</button>
+          <button
+            className="btn-invest"
+            onClick={() =>
+              checkout.show({
+                amount: amount * 100,
+                productIdentity: id,
+                productName: name,
+                productUrl: "http://localhost:3000/detail/" + id,
+              })
+            }
+          >
+            Invest
+          </button>
           <button className="btn-bookmark">
             <AiOutlineHeart />
             <span>Watch for updates</span>
