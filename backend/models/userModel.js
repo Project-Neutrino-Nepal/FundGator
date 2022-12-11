@@ -90,5 +90,12 @@ UserSchema.methods.getUserInfo = function () {
   ]);
 };
 
+// If user deletes his account, delete all with his id
+UserSchema.pre("remove", async function (next) {
+  await this.model("company").deleteMany({ user: this._id });
+  await this.model("profile").deleteMany({ user: this._id });
+  await this.model("reason").deleteMany({ user: this._id });
+});
+
 const User = model("user", UserSchema);
 module.exports = User;

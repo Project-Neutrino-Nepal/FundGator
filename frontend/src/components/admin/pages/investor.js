@@ -176,7 +176,6 @@ function InvestorAdmin() {
       phone: profile.phone,
       status: profile.user.status === true ? "Active" : "Suspended",
       pan_No: profile.pan_No,
-      // call suspend api to suspend the user in Action column
       action:
         // if status is Active then show Deactivate, else show Activate
         profile.user.status === true ? (

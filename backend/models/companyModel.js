@@ -76,18 +76,6 @@ const CompanySchema = new Schema(
       type: Number,
       default: 0,
     },
-    total_equity: {
-      type: Number,
-      default: 0,
-    },
-    released_equity: {
-      type: Number,
-      default: 0,
-    },
-    sold_equity: {
-      type: Number,
-      default: 0,
-    },
     content: {
       type: String,
     },
