@@ -85,7 +85,10 @@ router.post("/api/create-portfolio", userAuth, async (req, res) => {
 
 router.get("/api/my-portfolio", userAuth, async (req, res) => {
   try {
-    let portfolio = await Portfolio.find({ user: req.user._id });
+    let portfolio = await Portfolio.find({ user: req.user._id })
+      .populate("company")
+      .populate("profile")
+      .exec();
     if (!portfolio) {
       return res.status(400).json({
         success: false,

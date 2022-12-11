@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Wrapper from "./wrapper/RaisePage";
 import raise from "../../assets/image/raise.png";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +7,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const RaisePage = () => {
-
   const [border, setBorder] = useState(false);
   const [name, setcompanyname] = useState("");
   const handleChange = async (e) => {
@@ -17,30 +16,36 @@ const RaisePage = () => {
 
   const createCompany = async (e) => {
     e.preventDefault();
-    const data = {name};
+    const data = { name };
     const config = {
       headers: {
         Authorization: localStorage.getItem("token"),
       },
     };
     if (name.length > 0) {
-      try{
-        await axios.post("http://localhost:5000/company/api/create-company", data,config).then((res) => {
-          if (res.data.success) {
-            navigate(`/companyRegister/${name}`) 
-          }
-        })
-      }catch(error){
+      try {
+        await axios
+          .post(
+            "http://localhost:5000/company/api/create-company",
+            data,
+            config
+          )
+          .then((res) => {
+            if (res.data.success) {
+              navigate(`/companyRegister/${name}`);
+            }
+          });
+      } catch (error) {
         toast.error(error.response.data.message);
       }
-    }else{
+    } else {
       toast.error("Please enter company name");
     }
   };
 
   return (
     <Wrapper id="createCompany">
-      <ToastContainer/>
+      <ToastContainer />
       <section className="left-container ">
         <h1>
           Start Rasing money in <span>15 minutes</span>
@@ -58,10 +63,7 @@ const RaisePage = () => {
             onFocus={() => setBorder(true)}
             onBlur={() => setBorder(false)}
           />
-          <button
-            className="btn-raise"
-            onClick={createCompany}
-          >
+          <button className="btn-raise" onClick={createCompany}>
             Start Raising now
           </button>
         </div>

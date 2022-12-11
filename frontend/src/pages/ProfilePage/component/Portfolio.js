@@ -1,8 +1,8 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import folderimg from "../../../assets/image/file.svg";
 import Wrapper from "../wrapper/Portfolio";
-import { useEffect, useState } from "react";
-import axios from "axios";
 const Portfolio = () => {
   const [portfolio, setPortfolio] = useState([]);
 
@@ -21,45 +21,16 @@ const Portfolio = () => {
       });
   }, []);
 
+  console.log(portfolio);
   // portfolio then show this
-  if (portfolio) {
+  if (portfolio.length === 0) {
     return (
       <Wrapper>
-        // map portfolio
-        {portfolio.map((portfolio) => (
-          <div className="post-box-list">
-            <div className="post-box">
-              <img
-                src="https://images.unsplash.com/photo-1529567186287-3e17bdefa342?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=386&q=80"
-                alt=""
-              />
-              <div className="user-info">
-                <div className="info">
-                  <span className="username">{portfolio.user.name}</span>
-                  <img
-                    src="https://images.unsplash.com/photo-1623323650632-94f1b9a018a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=812&q=80"
-                    className="profile-pic"
-                    alt=""
-                  />
-                </div>
-                <p className="description">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-                  itaque vero deleniti consequuntur alias vitae sunt, officia
-                  voluptatem, est at commodi tenetur. Lorem ipsum dolor sit amet
-                  consectetur adipisicing elit. Doloribus aperiam magnam velit
-                  alias et dolorum tenetur porro soluta earum, debitis ducimus
-                  incidunt. Odio sed aut vel commodi, vitae distinctio ipsam
-                  laborum aliquid placeat in modi maxime minima, facere, quos
-                  maiores!
-                </p>
-              </div>
-              <div className="investment">
-                <h6>Total investment</h6>
-                <h6>$ 10000</h6>
-              </div>
-            </div>
-          </div>
-        ))}
+        <img src={folderimg} alt="" className="fileimg" />
+        <p>build your own startup</p>
+        <Link to="/explore">
+          <button>Explore Companies</button>
+        </Link>
       </Wrapper>
     );
   }
@@ -67,9 +38,41 @@ const Portfolio = () => {
   else
     return (
       <Wrapper>
-        <img src={folderimg} alt="" className="fileimg" />
-        <p>build your own startup</p>
-        <button>Explore Companies</button>
+        {portfolio.map((portfolio) => (
+          <div className="post-box-list">
+            <div className="post-box d-flex flex-nowrap ">
+              <img src={portfolio.company.image} alt="" />
+              <div className="user-info border border-0 border-end ">
+                <div className="info">
+                  <span className="username">{portfolio.company.name}</span>
+                </div>
+                <p className="description">{portfolio.company.description}</p>
+              </div>
+              {/* add card that has amount invested, date of investment, and button to withdraw */}
+
+              <div className="card w-50 justify-content-center">
+                <div className="card-body">
+                  <p className="fs-5">
+                    Amount Invested
+                    <span className="fs-6">:&nbsp;Rs.{portfolio.amount}</span>
+                  </p>
+                  <p className="fs-5">
+                    Invested On
+                    <span className="fs-6">
+                      :&nbsp;{new Date(portfolio.date).toLocaleDateString()}
+                    </span>
+                  </p>
+                  <div className="d-flex flex-nowrap">
+                    <button className="btn btn-success m-2" 
+                    style={{backgroundColor: "green"}}
+                    >Withdraw</button>
+                    <button className="btn btn-primary m-2">Re Invest</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </Wrapper>
     );
 };
