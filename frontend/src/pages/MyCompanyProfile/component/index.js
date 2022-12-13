@@ -1,5 +1,4 @@
 import InvestmentTerm from "./InvestmentTerm";
-import LeadInvestor from "./LeadInvestor";
 import Overview from "./Overview";
 import Detail from "./Detail"
 import WhatInvestorSay from "./WhatInvestorSay";
@@ -9,7 +8,6 @@ import OurFounder from "./OurFounder";
 import Update from "./Update";
 
 export {
-  LeadInvestor,
   InvestmentTerm,
   Overview,
   Detail,

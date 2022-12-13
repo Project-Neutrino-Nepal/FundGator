@@ -5,6 +5,7 @@ const userAuth = require("../middlewares/auth-guard");
 const { find } = require("../models/companyModel");
 const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
+const Portfolio = require("../models/portfolioModel");
 const uploadCompanyVideo =
   require("../middlewares/uploader").uploadCompanyVideo;
 const uploadCompanyImage =
@@ -626,10 +627,42 @@ router.put("/api/reject-company/:id", async (req, res) => {
 });
 
 /**
- * @description To get all investor of company by ID
- * @api /company/api/investor-company/:id
- * @access Private
+ * @description To Get all investors of a company
+ * @api /events/api/get-investors/:id
+ * @access Public
  * @type GET
- * */
+ */
+
+router.get("/api/get-investors/:id", async (req, res) => {
+  try {
+    let company = await Company.findOne({ _id: req.params.id });
+    if (!company) {
+      return res.status(400).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+    let investors = await Portfolio.find({ company: req.params.id })
+      .populate("profile")
+      .exec();
+    if (!investors) {
+      return res.status(400).json({
+        success: false,
+        message: "No Investors Found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Investors Retrieved Successfully",
+      investors,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
 
 module.exports = router;

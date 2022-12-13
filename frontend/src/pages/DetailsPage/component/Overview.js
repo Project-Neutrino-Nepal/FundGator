@@ -50,30 +50,32 @@ const Overview = (ID) => {
   if (reasons0 != null) {
     reasons.push(reasons0);
   }
-   if (reasons1 != null) {
+  if (reasons1 != null) {
     reasons.push(reasons1);
   }
-   if (reasons2 != null) {
+  if (reasons2 != null) {
     reasons.push(reasons2);
   }
-   if (reasons3 != null) {
+  if (reasons3 != null) {
     reasons.push(reasons3);
   }
-   if (reasons4 != null) {
+  if (reasons4 != null) {
     reasons.push(reasons4);
   }
-   if (reasons5 != null) {
+  if (reasons5 != null) {
     reasons.push(reasons5);
   }
-   if (reasons6 != null) {
+  if (reasons6 != null) {
     reasons.push(reasons6);
   }
-   if (reasons7 != null) {
+  if (reasons7 != null) {
     reasons.push(reasons7);
   }
-   if (reasons8 != null) {
+  if (reasons8 != null) {
     reasons.push(reasons8);
   }
+  const validReasons = reasons.filter((reason) => reason !== ""); 
+  reasons = reasons.slice(0, validReasons.length);
 
   return (
     <Wrapper>
@@ -100,6 +102,8 @@ const Overview = (ID) => {
               image={team.image}
               email={team.email}
               position={team.position}
+              facebook={team.userfblink}
+              linkedin={team.userlinkedinlink}
             />
           ))}
         </div>

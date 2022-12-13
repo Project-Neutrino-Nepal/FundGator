@@ -7,7 +7,6 @@ import {
   AiFillTwitterSquare,
   AiOutlineHeart,
 } from "react-icons/ai";
-import { BsCurrencyDollar } from "react-icons/bs";
 import { FaPlay, FaShare } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -16,8 +15,6 @@ import khalticonfig from "../../components/Khalti/KhaltiConfig";
 import {
   AskAQuestion,
   Detail,
-  InvestmentTerm,
-  LeadInvestor,
   Overview,
   Update,
   WhatInvestorSay,
@@ -61,6 +58,7 @@ const Details = () => {
   const [status, setStatus] = useState("");
   const [tags, setTags] = useState("");
   const [ID, setID] = useState("");
+  const [investors, setInvestors] = useState([]);
 
   const config = {
     headers: {
@@ -78,10 +76,6 @@ const Details = () => {
         setName(company.name);
         setImage(company.image);
         setVideo(company.company_video);
-        setFacebook(company.facebook);
-        setTwitter(company.twitter);
-        setLinkedin(company.linkedin);
-        setInstagram(company.instagram);
         setShort_pitch(company.short_pitch);
         setEmail(company.email);
         setPhone(company.phone);
@@ -92,6 +86,7 @@ const Details = () => {
         setStatus(company.status);
         setTags(company.tags);
         setID(company._id);
+        setInvestors(company.investors);
       })
       .catch((err) => {
         console.log(err);
@@ -104,11 +99,12 @@ const Details = () => {
     axios
       .get("http://localhost:5000/reason/api/get-reasons/" + id, config)
       .then((res) => {
-        let reason = res.data.reason;
-        setFacebook(reason.facebook);
-        setTwitter(reason.twitter);
-        setLinkedin(reason.linkedin);
-        setWebsite(reason.companylink);
+        let reasons = res.data.reasons;
+        setFacebook(reasons.facebook);
+        setTwitter(reasons.twitter);
+        setLinkedin(reasons.linkedin);
+        setWebsite(reasons.companylink);
+        console.log(reasons);
       })
       .catch((err) => {
         console.log(err);
@@ -155,10 +151,10 @@ const Details = () => {
           <div className="invest">
             <div className="invest-info">
               <p>Invest</p>
-              <p>min$100</p>
+              <p>minRs.1000</p>
             </div>
             <div className="invest-input">
-              <BsCurrencyDollar />
+              Rs.
               <input type="number" placeholder="0" />
             </div>
           </div>
@@ -167,15 +163,19 @@ const Details = () => {
             <AiOutlineHeart />
             <span>Watch for updates</span>
           </button>
-          <InvestmentTerm />
-          <LeadInvestor />
         </section>
         <section className="three">
           <div className="links">
             <Link>{website}</Link>
             <span>{address}</span>
 
-            <Link className="icon" to={facebook}>
+            <Link
+              className="icon"
+              to={{
+                pathname: `https://www.facebook.com/${facebook}`,
+              }}
+              target="_blank"
+            >
               <AiFillFacebook />
             </Link>
 
@@ -238,15 +238,15 @@ const Details = () => {
           <div className="line"></div>
           <div className="price">
             <p>Rs.{fund_goal}</p>
-            <p>Raised money from 200 investor</p>
+            <p>Raised money from {investors.length} investor</p>
           </div>
           <div className="invest">
             <div className="invest-info">
               <p>Invest</p>
-              <p>min$100</p>
+              <p>min Rs.1000</p>
             </div>
             <div className="invest-input">
-              <BsCurrencyDollar />
+              Rs.
               <input
                 type="number"
                 placeholder="0"
@@ -271,8 +271,6 @@ const Details = () => {
             <AiOutlineHeart />
             <span>Watch for updates</span>
           </button>
-          <InvestmentTerm />
-          <LeadInvestor />
         </section>
       </div>
     </Wrapper>
