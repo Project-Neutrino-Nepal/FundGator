@@ -129,29 +129,9 @@ const MyCompanyProfile = () => {
           </div>
         </section>
         <section className="two">
-          <span>almost sold out</span>
-          <div className="line"></div>
-          <div className="price">
-            <p>$2,000,000</p>
-            <p>Raised money from 200 investor</p>
-          </div>
-          <div className="invest">
-            <div className="invest-info">
-              <p>Invest</p>
-              <p>min$100</p>
-            </div>
-            <div className="invest-input">
-              <BsCurrencyDollar />
-              <input type="number" placeholder="0" />
-            </div>
-          </div>
-          <button className="btn-invest">Invest</button>
-          <button className="btn-bookmark">
-            <AiOutlineHeart />
-            <span>Watch for updates</span>
-          </button>
-          <InvestmentTerm />
-          <LeadInvestor />
+          <Space wrap>
+            <Button type="primary">Edit Company</Button>
+          </Space>
         </section>
         <section className="three">
           <div className="links">
@@ -215,12 +195,7 @@ const MyCompanyProfile = () => {
       <div className="right-container">
         <section className="two">
           <Space wrap>
-            <Button
-              type="primary"
-            >
-              Edit Company
-            </Button>
-            
+            <Button type="primary">Edit Company</Button>
           </Space>
         </section>
       </div>
