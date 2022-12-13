@@ -61,6 +61,7 @@ const Details = () => {
   const [status, setStatus] = useState("");
   const [tags, setTags] = useState("");
   const [ID, setID] = useState("");
+  const [investors, setInvestors] = useState([]);
 
   const config = {
     headers: {
@@ -92,6 +93,7 @@ const Details = () => {
         setStatus(company.status);
         setTags(company.tags);
         setID(company._id);
+        setInvestors(company.investors);
       })
       .catch((err) => {
         console.log(err);
@@ -238,7 +240,7 @@ const Details = () => {
           <div className="line"></div>
           <div className="price">
             <p>Rs.{fund_goal}</p>
-            <p>Raised money from 200 investor</p>
+            <p>Raised money from {investors.length} investor</p>
           </div>
           <div className="invest">
             <div className="invest-info">
@@ -271,8 +273,6 @@ const Details = () => {
             <AiOutlineHeart />
             <span>Watch for updates</span>
           </button>
-          <InvestmentTerm />
-          <LeadInvestor />
         </section>
       </div>
     </Wrapper>
