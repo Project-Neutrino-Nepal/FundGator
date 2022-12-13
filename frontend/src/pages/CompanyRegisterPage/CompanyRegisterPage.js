@@ -50,6 +50,10 @@ const CompanyRegisterPage = () => {
     linktype: "",
     companyurl: "",
     content: "",
+    vimage:"",
+    vvideo:"",
+    vaudio:"",
+    vpdf:"",
   };
 
   const navigate = useNavigate();
@@ -94,7 +98,7 @@ const CompanyRegisterPage = () => {
     content: values.content,
   };
 
-  console.log(values.content);
+  
 
   const teamChange = (e, index, name) => {
     var teams = values.teams;
@@ -229,7 +233,7 @@ const CompanyRegisterPage = () => {
   return (
     <Wrapper>
       <ToastContainer />
-      <section className="tabs-container" id="RaiseFund" style={{ marginTop: 80 }}>
+      <section className="tabs-container" id="RaiseFund">
         {tabs.map((item, index) => {
           return (
             <div

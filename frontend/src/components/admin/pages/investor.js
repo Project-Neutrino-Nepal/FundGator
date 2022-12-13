@@ -176,7 +176,6 @@ function InvestorAdmin() {
       phone: profile.phone,
       status: profile.user.status === true ? "Active" : "Suspended",
       pan_No: profile.pan_No,
-      // call suspend api to suspend the user in Action column
       action:
         // if status is Active then show Deactivate, else show Activate
         profile.user.status === true ? (
@@ -196,30 +195,6 @@ function InvestorAdmin() {
         ),
     };
   });
-
-  //     handleSuspend: (profile) => {
-  //       axios
-  //         .put(
-  //           `http://localhost:5000/user/api/suspend/${profile.user._id}`,
-  //           config
-  //         )
-  //         .then((res) => {
-  //          if (res.data.success) {
-  //            toast.success(
-  //              res.data.message,
-  //              setTimeout(function () {
-  //                window.location.assign("/signin");
-  //              }, 2000)
-  //            );
-  //          }
-  //         })
-  //         .catch((err) => {
-  //           console.log(err);
-  //         });
-  //     },
-  //   };
-  // });
-
   return (
     <>
       <ToastContainer />

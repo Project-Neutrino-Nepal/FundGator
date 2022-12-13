@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "../css/homepage.css";
 import Basenav from "./basenav";
 import Feeds from "./feeds";
@@ -62,7 +63,7 @@ const Homepage = () => {
             aria-labelledby="dropdownUser1"
           >
             <li>
-              <a className="dropdown-item" href="#">
+              <a className="dropdown-item" href="/raise">
                 Raise fund
               </a>
             </li>
@@ -81,34 +82,36 @@ const Homepage = () => {
         <hr />
         <ul className="nav nav-pills flex-column mb-auto">
           <li className="nav-item">
-            <a href="" className="nav-link active" aria-current="page">
+            <Link to="/homepage" className="nav-link active">
               <i className="fa fa-home" />
               <span className="ms-2">Feeds</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#" className="nav-link text-white">
+            <Link to="/profile/Portfolio" className="nav-link text-white">
               <i className="fa fa-dashboard" />
+
               <span className="ms-2">My Investment</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#" className="nav-link text-white">
+            <Link to="/profile/Portfolio" className="nav-link text-white">
               <i className="fa fa-first-order" />
-              <span className="ms-2">By FundGator</span>
-            </a>
+
+              <span className="ms-2">By Fundgator</span>
+            </Link>
           </li>
           <li>
-            <a href="#" className="nav-link text-white">
+            <Link to="/profile/Portfolio" className="nav-link text-white">
               <i className="fa fa-bookmark" />
               <span className="ms-2">My Watchlist</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#" className="nav-link text-white">
+            <Link to="/profile/Portfolio" className="nav-link text-white">
               <i className="fa fa-cog" />
               <span className="ms-2">Add Post</span>
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

@@ -17,10 +17,6 @@ const PortfolioSchema = new Schema({
         type: Number,
         required: true,
     },
-    shares: {
-        type: Number,
-        required: true,
-    },
     date: {
         type: Date,
         default: Date.now,

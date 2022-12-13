@@ -441,7 +441,7 @@ router.get("/api/get-no-companies", userAuth, async (req, res) => {
 });
 
 /**
- * @description To get company by id
+ * @description To get company details by id
  * @api /company/api/company/:id
  * @access Private
  * @type GET
@@ -449,7 +449,9 @@ router.get("/api/get-no-companies", userAuth, async (req, res) => {
 
 router.get("/api/company/:id", userAuth, async (req, res) => {
   try {
-    let company = await Company.findOne({ _id: req.params.id });
+    let company = await Company.findOne({ _id: req.params.id })
+      .populate("user")
+      .exec();
     if (!company) {
       return res.status(400).json({
         success: false,
@@ -539,5 +541,16 @@ router.put("/api/reject-company/:id", async (req, res) => {
     });
   }
 });
+
+/**
+ * @description To get all investor of company by ID
+ * @api /company/api/investor-company/:id
+ * @access Private
+ * @type GET
+ * */
+
+
+
+
 
 module.exports = router;
