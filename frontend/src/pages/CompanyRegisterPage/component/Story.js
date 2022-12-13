@@ -55,7 +55,7 @@ console.log(image);
           id="input-file"
           onChange={onuploadimg}
         />
-        <img src={imgpreview} className="preview-img" alt="" />
+        <img src={image} className="preview-img" alt="" />
       </label>
 
       <h5>Upload a 1-2 minute video</h5>
