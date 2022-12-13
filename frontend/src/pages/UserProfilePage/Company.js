@@ -10,11 +10,11 @@ const Company = (
     { company }
 ) => {
   return (
-    <Card
+    <Card className="m-2"
       style={{
         width: 300,
       }}
-      cover={<img alt="example" src={company.image} />}
+      cover={<img  alt="example" src={company.image} style={{height:"25em"}} />}
       actions={[
         <SettingOutlined key="setting" />,
         <EditOutlined key="edit" />,
