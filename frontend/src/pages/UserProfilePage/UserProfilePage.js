@@ -92,12 +92,14 @@ const UserProfilePage = () => {
       <div className="right-container">
         <h1>interested in..</h1>
         <p>{skills}</p>
-        <div>
+        <div className="">
+          <div className="d-flex flex-wrap   ">
           {companies.map((company) => (
             <Link to={`/company/${company._id}`}>
               <Company key={company._id} company={company} />
             </Link>
           ))}
+        </div>
         </div>
       </div>
     </Wrapper>
