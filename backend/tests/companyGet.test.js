@@ -2,6 +2,7 @@ const User = require("../models/userModel");
 const mongoose = require("mongoose");
 const Company = require("../models/companyModel");
 
+
 // const url = "mongodb+srv://Tulsi:qwerty12345@cluster0.bcsf13g.mongodb.net/?retryWrites=true&w=majority";
 const url =
   "mongodb+srv://milan361:iZEK0AAW2n6p4ilc@cluster0.uanmf.mongodb.net/FundGator?retryWrites=true&w=majority";
@@ -80,3 +81,6 @@ describe("Company Schema test the number of comapny", () => {
     expect(status.ok);
   });
 });
+
+
+

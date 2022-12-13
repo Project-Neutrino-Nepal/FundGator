@@ -157,7 +157,7 @@ const Details = () => {
           <div className="invest">
             <div className="invest-info">
               <p>Invest</p>
-              <p>min$100</p>
+              <p>minRs.1000</p>
             </div>
             <div className="invest-input">
               <BsCurrencyDollar />
@@ -245,10 +245,10 @@ const Details = () => {
           <div className="invest">
             <div className="invest-info">
               <p>Invest</p>
-              <p>min$100</p>
+              <p>min Rs.1000</p>
             </div>
             <div className="invest-input">
-              <BsCurrencyDollar />
+            Rs.
               <input
                 type="number"
                 placeholder="0"
