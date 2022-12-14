@@ -25,6 +25,7 @@ import {
   ProfilePage,
   UserProfilePage,
   WelcomePage,
+  ProtectedRoute,
 } from "./pages";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
 
@@ -39,22 +40,75 @@ function App() {
         <Route path="/signin" element={<Signin />}></Route>
         <Route path="/" element={<LandingPage />}></Route>
         <Route path="/welcome" element={<WelcomePage />}></Route>
-        <Route path="/homepage" element={<Homepage />}></Route>
-        <Route path="/profile" element={<UserProfilePage />}></Route>
-        <Route path="/profile/:id" element={<ProfilePage />}></Route>
-        <Route path="/company/:id" element={<MyCompanyProfile />}></Route>
+        <Route
+          path="/homepage"
+          element={
+            <ProtectedRoute>
+              <Homepage />
+            </ProtectedRoute>
+          }
+        ></Route>
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <UserProfilePage />
+            </ProtectedRoute>
+          }
+        ></Route>
+        <Route
+          path="/profile/:id"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        ></Route>
+        <Route
+          path="/company/:id"
+          element={
+            <ProtectedRoute>
+              <MyCompanyProfile />
+            </ProtectedRoute>
+          }
+        ></Route>
         <Route path="/explore" element={<ExplorePage />}></Route>
-        <Route path="/detail/:id" element={<Details />}></Route>
+        <Route
+          path="/detail/:id"
+          element={
+            <ProtectedRoute>
+              <Details />
+            </ProtectedRoute>
+          }
+        ></Route>
         <Route path="/category" element={<Categories />}></Route>
-        <Route path="/raise" element={<FooterLayout />}>
+        <Route
+          path="/raise"
+          element={
+            <ProtectedRoute>
+              <FooterLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route index element={<RaisePage />} />
         </Route>
-        <Route path="/payment/:id" element={<FooterLayout />}>
+        <Route
+          path="/payment/:id"
+          element={
+            <ProtectedRoute>
+              <FooterLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route index element={<PaymentPage />} />
         </Route>
         <Route
           path="/CompanyRegister/:id"
-          element={<CompanyRegisterPage />}
+          element={
+            <ProtectedRoute>
+              <CompanyRegisterPage />
+            </ProtectedRoute>
+          }
         ></Route>
 
         <Route
@@ -63,7 +117,14 @@ function App() {
         ></Route>
 
         {/* DASHBOARD ROUTES */}
-        <Route path="/dashboard" element={<Main />}>
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Main />
+            </ProtectedRoute>
+          }
+        >
           <Route path="" element={<Home />} />
 
           {/* There is no need of tables for now */}

@@ -11,8 +11,10 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
     padding-top: 5%;
-    height: 80vh;
-    
+    min-height: 80vh;
+    position: sticky;
+    top: 10px;
+    left: 0;
 
     & > h2 {
       font-weight: bold;
@@ -54,6 +56,7 @@ const Wrapper = styled.div`
     background-color: white;
     padding-inline: 10%;
     padding-top: 5%;
+    height: max-content;
 
     & > h1 {
       font-weight: bolder;
@@ -71,24 +74,22 @@ const Wrapper = styled.div`
     }
   }
 
-
   @media screen and (min-width: 970px) {
-
     display: flex;
     flex-direction: row;
-    height: 92vh;
 
-    .left-container{
-        width: max(500px,30%);
-        height: 100%;
-
+    .left-container {
+      width: max(500px, 30%);
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      left: 0;
     }
 
-    .right-container{
-        width: 100%;
-        padding-inline: 5%;
+    .right-container {
+      width: 100%;
+      padding-inline: 5%;
     }
   }
-
 `;
 export default Wrapper;

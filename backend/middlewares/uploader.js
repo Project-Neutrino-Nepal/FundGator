@@ -64,6 +64,16 @@ const uploadCompanyImage = multer({
   fileFilter: filter,
 });
 
+// const uploadmultipleCompanyImage = uploadCompanyImage.fields([
+//   { name: "registration_card", maxCount: 1 },
+//   { name: "pan_card", maxCount: 1 },
+//   { name: "citizenship_front", maxCount: 1 },
+//   { name: "citizenship_back", maxCount: 1 },
+
+// ]);
+
+
+
 const uploadCompanyVideo = multer({
   storage: multer.diskStorage({
     destination: companyVideoDestination,

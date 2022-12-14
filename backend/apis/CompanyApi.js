@@ -10,6 +10,9 @@ const uploadCompanyVideo =
   require("../middlewares/uploader").uploadCompanyVideo;
 const uploadCompanyImage =
   require("../middlewares/uploader").uploadCompanyImage;
+
+const uploadmultipleCompanyImage =
+  require("../middlewares/uploader").uploadmultipleCompanyImage;
 const DOMAIN = "http://127.0.0.1:5000/";
 
 /**
@@ -114,6 +117,86 @@ router.put(
   }
 );
 
+/**
+ * @description To update company to add document of the company using company name as params
+ * @api /company/api/multipleimages/:name
+ * @access PRIVATE
+ * @type PUT
+ * */
+router.put(
+  "/api/multipleimages/:name",
+  userAuth,
+  uploadCompanyImage.fields([
+    { name: "registration_card", maxCount: 1 },
+    { name: "pan_card", maxCount: 1 },
+    { name: "citizenship_front", maxCount: 1 },
+    { name: "citizenship_back", maxCount: 1 },
+  ]),
+  async (req, res) => {
+    try {
+      let { name } = req.params;
+      let { body } = req;
+      let file = req.files.registration_card[0];
+      let file1 = req.files.pan_card[0];
+      let file2 = req.files.citizenship_front[0];
+      let file3 = req.files.citizenship_back[0];
+      console.log(file);
+      console.log(file1);
+      if (file === undefined || file === null) {
+        filename = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
+      } else {
+        filename = DOMAIN + "uploads/company-images/" + file.filename;
+      }
+      if (file1 === undefined || file1 === null) {
+        filename1 = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
+      } else {
+        filename1 = DOMAIN + "uploads/company-images/" + file1.filename;
+      }
+      if (file2 === undefined || file2 === null) {
+        filename2 = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
+      } else {
+        filename2 = DOMAIN + "uploads/company-images/" + file2.filename;
+      }
+      if (file3 === undefined || file3 === null) {
+        filename3 = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
+      } else {
+        filename3 = DOMAIN + "uploads/company-images/" + file3.filename;
+      }
+
+      let company = await Company.findOne({ name: name, user: req.user._id });
+      if (!company) {
+        return res.status(400).json({
+          success: false,
+          message: "Company not found",
+        });
+      }
+      company = await Company.findOneAndUpdate(
+        { name: name, user: req.user._id },
+        {
+          registration_card: filename,
+          pan_card: filename1,
+          citizenship_front: filename2,
+          citizenship_back: filename3,
+
+          $set: body,
+        },
+        { new: true }
+      );
+
+      res.status(200).json({
+        success: true,
+        message: "Video uploaded successfully",
+        company,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
+  }
+);
 /**
  * @description To update Company
  * @api /company/api/update-company
