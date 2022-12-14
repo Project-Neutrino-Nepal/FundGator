@@ -8,6 +8,7 @@ import RaisePage from "./RaisePage/RaisePage";
 import CompanyRegisterPage from "./CompanyRegisterPage/CompanyRegisterPage";
 import FooterLayout from "./FooterLayout/FooterLayout";
 import PaymentPage from "./PaymentPage/PaymentPage"
+import ProtectedRoute from "./ProtectedRoute";
 export {
   LandingPage,
   ProfilePage,
@@ -18,5 +19,6 @@ export {
   RaisePage,
   CompanyRegisterPage,
   FooterLayout,
-  PaymentPage
+  PaymentPage,
+  ProtectedRoute
 };

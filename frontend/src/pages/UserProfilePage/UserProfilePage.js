@@ -11,10 +11,12 @@ const UserProfilePage = () => {
   const [address, setAddress] = useState("");
   const [skills, setSkills] = useState("");
   const [createdDate, setCreatedDate] = useState("");
+
   const [image, setPreview] = useState({
     preview: "https://github.com/mdo.png",
     file: "",
   });
+
   const [companies, setCompanies] = useState([]);
   const config = {
     headers: {
@@ -71,7 +73,12 @@ const UserProfilePage = () => {
           <h4 className="text-white">Personal Information</h4>
           <div className="info-data ">
             <div className="data">
-              <h5 className="text-white">Email</h5>
+              <h5
+                className="text-white"
+                
+              >
+                Email
+              </h5>
               <p>{email}</p>
             </div>
             <div className="data ">
@@ -94,14 +101,16 @@ const UserProfilePage = () => {
         <p>{skills}</p>
         <div className="">
           <div className="d-flex flex-wrap   ">
-          {companies.map((company) => (
-            <Link to={`/company/${company._id}`}>
-              <Company key={company._id} company={company} />
-            </Link>
-          ))}
-        </div>
+            {companies.map((company) => (
+              <Link to={`/company/${company._id}`}>
+                <Company key={company._id} company={company} />
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
+
+     
     </Wrapper>
   );
 };
