@@ -22,3 +22,4 @@ export {
   PaymentPage,
   ProtectedRoute
 };
+

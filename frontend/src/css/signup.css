@@ -107,11 +107,12 @@
 }
 .social-btn .btn i {
 	float: left;
-	margin: 3px 10px;
+	margin: 1px 10px;
 	font-size: 20px;
 }
 
 @media screen and (max-width: 768px) {
+
 	.signup-form {
 		width: 90%;
 		margin: 0 auto;
