@@ -16,6 +16,7 @@ const adminRouter3 = require("./apis/admin/TagsApi");
 const portfolioRouter = require("./apis/PortfolioApi");
 const reasonRouter=require("./apis/reasonApi");
 const khaltiRouter = require("./apis/KhaltiApi");
+const postRouter = require("./apis/PostApi");
 
 // Import passport middleware
 require("./middlewares/passport-middleware");
@@ -40,6 +41,7 @@ app.use("/profile", profileRouter);
 app.use("/admin", adminRouter, adminRouter2, adminRouter3);
 app.use("/portfolio", portfolioRouter);
 app.use("/khalti", khaltiRouter);
+app.use("/posts",postRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`listening on port ${port}!`));

@@ -73,12 +73,7 @@ const UserProfilePage = () => {
           <h4 className="text-white">Personal Information</h4>
           <div className="info-data ">
             <div className="data">
-              <h5
-                className="text-white"
-                
-              >
-                Email
-              </h5>
+              <h5 className="text-white">Email</h5>
               <p>{email}</p>
             </div>
             <div className="data ">
@@ -99,6 +94,7 @@ const UserProfilePage = () => {
       <div className="right-container">
         <h1>interested in..</h1>
         <p>{skills}</p>
+        <h1>My Companies</h1>
         <div className="">
           <div className="d-flex flex-wrap   ">
             {companies.map((company) => (
@@ -109,8 +105,6 @@ const UserProfilePage = () => {
           </div>
         </div>
       </div>
-
-     
     </Wrapper>
   );
 };

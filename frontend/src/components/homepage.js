@@ -68,6 +68,26 @@ const Homepage = () => {
       });
   });
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("img", values.img);
+    formData.append("vid", values.vid);
+    formData.append("doc", values.doc);
+    formData.append("description", values.description);
+    try {
+      axios
+        .post("http://localhost:5000/posts/api/create-post", formData, config)
+        .then((res) => {
+          alert("Post created successfully");
+          console.log(res.data);
+        });
+    } catch (err) {
+      alert("Error in creating post");
+      console.log(err);
+    }
+  };
+
   return (
     <>
       <div className="basenav">
@@ -273,7 +293,10 @@ const Homepage = () => {
                   />
                   <input type="file" accept="image/*" name="doc" id="doc" />
                 </div>
-                <button className="btn mt-2 bg-dark bg-opacity-10 rounded-pill  ">
+                <button
+                  className="btn mt-2 bg-dark bg-opacity-10 rounded-pill  "
+                  onClick={handleSubmit}
+                >
                   post
                 </button>
               </div>
