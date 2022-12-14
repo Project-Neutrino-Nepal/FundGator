@@ -57,6 +57,11 @@ function App() {
           element={<CompanyRegisterPage />}
         ></Route>
 
+        <Route
+          path="/company/edit/:id"
+          element={<CompanyRegisterPage />}
+        ></Route>
+
         {/* DASHBOARD ROUTES */}
         <Route path="/dashboard" element={<Main />}>
           <Route path="" element={<Home />} />
