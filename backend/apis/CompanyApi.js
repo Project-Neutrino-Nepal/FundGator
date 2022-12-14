@@ -11,8 +11,7 @@ const uploadCompanyVideo =
 const uploadCompanyImage =
   require("../middlewares/uploader").uploadCompanyImage;
 
-const uploadmultipleCompanyImage =
-  require("../middlewares/uploader").uploadmultipleCompanyImage;
+
 const DOMAIN = "http://127.0.0.1:5000/";
 
 /**

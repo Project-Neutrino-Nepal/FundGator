@@ -3,6 +3,10 @@ const router = express.Router();
 const userAuth = require("../middlewares/auth-guard");
 const Company = require("../models/companyModel");
 const Reason = require("../models/reasonModel");
+const uploadCompanyImage =
+  require("../middlewares/uploader").uploadCompanyImage;
+const DOMAIN = "http://127.0.0.1:5000/";
+
 /**
  * @description To input list of top resason,city name and differnet link like
  * company websites,facebook,tkinter  to invest in a company
@@ -54,35 +58,80 @@ router.post("/api/create-reason/:name", userAuth, async (req, res) => {
  * @access PRIVATE
  * @type POST
  */
-router.put("/api/update-reason/:name", userAuth, async (req, res) => {
+router.put(
+  "/api/update-reason/:name",
+  userAuth,uploadCompanyImage.single("image"),
+  async (req, res) => {
+    try {
+      const { body } = req;
+      const company = await Company.findOne({ name: req.params.name });
+      const companyID = company._id;
+      if (!company) {
+        return res.status(404).json({
+          success: false,
+          message: "Company not found",
+        });
+      }
+      const reasons = await Reason.findOne({ company: companyID });
+      if (!reasons) {
+        return res.status(400).json({
+          success: false,
+          message: "Reasons not found",
+        });
+      }
+      let file = req.file;
+      if (file === undefined || file === null) {
+        filename = DOMAIN + "uploads/assets/" + "default_company.svg";
+      } else {
+        filename = DOMAIN + "uploads/company-images/" + file.filename;
+      }
+      const reason = await Reason.findOneAndUpdate(
+        { company: companyID },
+        { $set:body,
+          image: filename,
+        },
+
+        { new: true }
+      );
+      res.status(200).json({
+        success: true,
+        message: "Reason updated successfully",
+        reason,
+      });
+    } catch (error) {
+      res.status(500).json({
+        error,
+        success: false,
+        message: "Internal server error",
+      });
+    }
+  }
+);
+
+//route to get reasons for a company
+router.get("/api/get-reasons/:id", async (req, res) => {
   try {
-    const { body } = req;
-    const company = await Company.findOne({ name: req.params.name });
-    const companyID = company._id;
+    const company = await Company.findOne({ _id: req.params.id });
     if (!company) {
       return res.status(404).json({
         success: false,
         message: "Company not found",
       });
     }
-    const reasons = await Reason.findOne({ company: companyID });
+    const reasons = await Reason.findOne({ company: company._id });
     if (!reasons) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
         message: "Reasons not found",
       });
     }
-    const reason = await Reason.findOneAndUpdate(
-      { company: companyID },
-      { ...body },
-      { new: true }
-    );
     res.status(200).json({
+      reasons,
       success: true,
-      message: "Reason updated successfully",
-      reason,
+      message: "Reasons found",
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -90,10 +139,9 @@ router.put("/api/update-reason/:name", userAuth, async (req, res) => {
   }
 });
 
-//route to get reasons for a company
-router.get("/api/get-reasons/:id", async (req, res) => {
+router.get("/api/get-reason/:id", async (req, res) => {
   try {
-    const company = await Company.findOne({ _id: req.params.id });
+    const company = await Company.findOne({name: req.params.id });
     if (!company) {
       return res.status(404).json({
         success: false,
