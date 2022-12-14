@@ -32,17 +32,18 @@ const Wrapper = styled.div`
         & > img {
           width: 100%;
           height: 100%;
+          object-fit: cover;
         }
         & > .upload-img {
           /* background-color: white; */
           position: absolute;
-          top: 4px;
+          top: 75px;
           right: 2px;
           width: 30px;
-          height: 25px;
+          height: 30px;
           overflow: hidden;
           cursor: pointer;
-          opacity: 0;
+          opacity: 1;
 
           & > .file-upload {
             position: absolute;
@@ -63,9 +64,9 @@ const Wrapper = styled.div`
           }
         }
 
-        &:hover .upload-img {
+        ${'' /* &:hover .upload-img {
           opacity: 1;
-        }
+        } */}
       }
 
       & > .info {

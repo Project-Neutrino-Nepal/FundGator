@@ -1,0 +1,22 @@
+#basenav {
+    letter-spacing: -0.3px;
+    line-height: 1.4;
+    font-family: poppins, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 550;
+  }
+div.scrollmenu {
+    /* background-color: rgb(175, 167, 234); */
+    overflow: auto;
+    white-space: nowrap;
+  }
+  
+  div.scrollmenu a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 14px;
+    text-decoration: none;
+  }
+ 
+  

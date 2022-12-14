@@ -1,12 +1,34 @@
 // models for company data
 const { model, Schema } = require("mongoose");
 
-
 const CompanySchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
       ref: "user",
+    },
+    profile: {
+      type: Schema.Types.ObjectId,
+      ref: "profile",
+    },
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: "category",
+      required: true,
+    },
+    tags: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "tags",
+      },
+    ],
+    verified: {
+      type: Boolean,
+      default: false,
+    },
+    image: {
+      type: String,
+      default: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
     },
     email: {
       type: String,
@@ -29,9 +51,6 @@ const CompanySchema = new Schema(
       type: String,
     },
     short_pitch: {
-      type: String,
-    },
-    status: {
       type: String,
     },
     tax_document: {
@@ -61,8 +80,21 @@ const CompanySchema = new Schema(
     company_instagram: {
       type: String,
     },
+    raising_fund: {
+      type: Boolean,
+      default: true,
+    },
+    fund_raised: {
+      type: Number,
+      default: 0,
+    },
+    fund_goal: {
+      type: Number,
+      default: 0,
+    }
   },
   { timestamps: true }
 );
 
-module.exports = model("company", CompanySchema);
+const Company = model("company", CompanySchema);
+module.exports = Company;

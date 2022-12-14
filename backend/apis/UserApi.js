@@ -9,6 +9,8 @@ const sendMail = require("../functions/email-sender");
 const DOMAIN = "http://127.0.0.1:5000/";
 const RegisterValidations = require("../validators/user-validators");
 const validator = require("../middlewares/validator-middleware");
+const userAuth = require("../middlewares/auth-guard");
+const { body } = require("express-validator");
 
 /**
  * @description To create a new User Account
@@ -97,7 +99,8 @@ router.post("/api/login", LoginValidations, validator, async (req, res) => {
     if (user.verified != true) {
       return res.status(401).json({
         success: false,
-        message: "Unauthorized access. Please verify your account.",
+        message:
+          "Unauthorized access. Please verify your account email has been sent.",
       });
     }
     if (!(await user.comparePassword(password))) {
@@ -127,6 +130,12 @@ router.post("/api/login", LoginValidations, validator, async (req, res) => {
  * @access PUBLIC <Only Via email>
  * @type GET
  */
+
+
+// dockstring
+
+
+
 router.get("/verify-now/:verificationCode", async (req, res) => {
   try {
     let { verificationCode } = req.params;
@@ -148,5 +157,70 @@ router.get("/verify-now/:verificationCode", async (req, res) => {
     return res.sendFile(join(__dirname, "../templates/errors.html"));
   }
 });
+
+/**
+ * @description To update a user
+ * @api /users/api/update-user
+ * @access PRIVATE
+ * @type PUT
+ * */
+
+router.put("/api/update-user", userAuth, async (req, res) => {
+  try {
+    let user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+    const updateUser = await User.findByIdAndUpdate(req.user._id, {
+      isFirstTime: false,
+    });
+    return res.status(200).json({
+      updateUser,
+      success: true,
+      message: "Hurray! Your account has been updated.",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To get number of users
+ * @api /users/api/get-no-users
+ * @access PRIVATE
+ * @type GET
+ * */
+
+router.get("/api/get-no-users", userAuth, async (req, res) => {
+  try {
+    let user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+    const noUsers = await User.countDocuments();
+    return res.status(200).json({
+      noUsers,
+      success: true,
+      message: "Hurray! Your account has been updated.",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
 
 module.exports = router;

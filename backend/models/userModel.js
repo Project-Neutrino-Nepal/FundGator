@@ -20,6 +20,14 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    admin: {
+      type: Boolean,
+      default: false,
+    },
+    isFirstTime: {
+      type: Boolean,
+      default: true,
+    },
     verified: {
       type: Boolean,
       default: false,
@@ -66,8 +74,15 @@ UserSchema.methods.generatePasswordReset = function () {
 };
 
 UserSchema.methods.getUserInfo = function () {
-  return pick(this, ["_id", "name", "email", "verified"]);
+  return pick(this, [
+    "_id",
+    "name",
+    "email",
+    "verified",
+    "admin",
+    "isFirstTime",
+  ]);
 };
 
-const User = model("users", UserSchema);
+const User = model("user", UserSchema);
 module.exports = User;
