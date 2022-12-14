@@ -65,7 +65,7 @@ function Settings() {
  
     return (
       <Wrapper>
-        <div className="left-container">
+        <div className="left-container" id="SettingsPage">
           <p>Account</p>
           <p>Investor Limits</p>
           <p>Publice Profile</p>
@@ -118,7 +118,7 @@ function Settings() {
               placeholder={country}
             />
 
-          {/* <UserInput
+            {/* <UserInput
             name={"TaxID"}
             value={tax_ID_No}
             question={"Whats your Tax Id ?"}

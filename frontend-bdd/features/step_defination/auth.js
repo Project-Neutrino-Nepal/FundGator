@@ -3,7 +3,8 @@ const { Given, When, Then, Before, After } = require("@cucumber/cucumber");
 const { Builder, By, Key, until, sleep } = require("selenium-webdriver");
 
 const delay = 5000;
-Given("Test registration functionality", { timeout: 30000 }, async function () {
+
+Given("I am on the registration page", { timeout: 30000 }, async function () {
   let driver = await new Builder().forBrowser("chrome").build();
   await driver.get("http://localhost:3000/signup");
   await driver.findElement(By.id("name")).sendKeys("test");
@@ -15,10 +16,9 @@ Given("Test registration functionality", { timeout: 30000 }, async function () {
 
   await driver.wait(until.elementLocated(By.id("registerForm")), 30000);
   expect(await driver.wait(until.elementLocated(By.id("registerForm"))));
-  // await driver.quit();
+  await driver.quit();
 });
-
-Given("Test login functionality", { timeout: 30000 }, async function () {
+Given("I am on the login page", { timeout: 30000 }, async function () {
   let driver = await new Builder().forBrowser("chrome").build();
   await driver.get("http://localhost:3000/signin");
   await driver.findElement(By.id("email")).sendKeys("test@gmail.com");
@@ -28,7 +28,5 @@ Given("Test login functionality", { timeout: 30000 }, async function () {
 
   await driver.wait(until.elementLocated(By.id("loginForm")), 30000);
   expect(await driver.wait(until.elementLocated(By.id("loginForm"))));
-  // await driver.quit();
+  await driver.quit();
 });
-
-

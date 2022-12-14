@@ -3,10 +3,10 @@ import ProfilePage from "./ProfilePage/ProfilePage";
 import UserProfilePage from "./UserProfilePage/UserProfilePage";
 import WelcomePage from "./WelcomePage/WelcomePage";
 import ExplorePage from "./ExplorePage/ExplorePage";
-import DetailPage from "./DetailPage/DetailPage";
+import Details from "./DetailsPage/DetailsPage";
 import RaisePage from "./RaisePage/RaisePage";
 import CompanyRegisterPage from "./CompanyRegisterPage/CompanyRegisterPage";
-
+import FooterLayout from "./FooterLayout/FooterLayout";
 
 export {
   LandingPage,
@@ -14,7 +14,8 @@ export {
   UserProfilePage,
   WelcomePage,
   ExplorePage,
-  DetailPage,
+  Details,
   RaisePage,
-  CompanyRegisterPage
+  CompanyRegisterPage,
+  FooterLayout
 };

@@ -1,33 +1,35 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  padding-block: 30px;
-  padding-bottom:120px;
+  padding-block: 100px;
+  padding-bottom: 120px;
   background-color: white;
 
   & > .form-section {
-    & > .form-content {
-      max-width: 600px;
-      padding-inline: 2%;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
+    & > .form-child {
+      & > .form-content {
+        max-width: 600px;
+        padding-inline: 2%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
 
-      & > label {
-        margin-top: 25px;
-        color: black;
-      }
+        & > label {
+          margin-top: 25px;
+          color: black;
+        }
 
-      & > .btn-addlink {
-        width: max-content;
-        border: none;
-        margin-top: 10px;
-        background-color: transparent;
-        color: blue;
-      }
+        & > .btn-addlink {
+          width: max-content;
+          border: none;
+          margin-top: 10px;
+          background-color: transparent;
+          color: blue;
+        }
 
-      & > .d-none {
-        display: none;
+        & > .d-none {
+          display: none;
+        }
       }
     }
   }
@@ -70,7 +72,7 @@ const Wrapper = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
-   
+
     & > button {
       background-color: #2dae87;
       color: white;
@@ -78,7 +80,7 @@ const Wrapper = styled.div`
       border: none;
       height: 40px;
       width: 175px;
-      transform: translateX(calc(100px + 7.5vw) );
+      transform: translateX(calc(100px + 7.5vw));
     }
   }
 `;
