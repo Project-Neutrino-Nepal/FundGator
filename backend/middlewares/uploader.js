@@ -12,7 +12,11 @@ const filter = (req, file, next) => {
     file.mimetype === "image/png" ||
     file.mimetype === "image/jpg" ||
     file.mimetype === "video/mp4" ||
-    file.mimetype === "video/gif"
+    file.mimetype === "video/gif" ||
+    file.mimetype === "video/avi" ||
+    file.mimetype === "video/webm" ||
+    file.mimetype === "video/mkv"
+
   ) {
     next(null, true);
   } else {
