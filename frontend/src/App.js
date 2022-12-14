@@ -11,13 +11,20 @@ import Home from "./components/admin/pages/Home";
 import InvestorAdmin from "./components/admin/pages/investor";
 import Profile from "./components/admin/pages/Profile";
 import Homepage from "./components/homepage";
+
 import Navbar from "./components/navbar.js";
 import Signup from "./components/Signup";
 import Signin from "./components/singin";
 import {
-  CompanyRegisterPage, Details, ExplorePage, FooterLayout, LandingPage,
-  ProfilePage, UserProfilePage,
-  WelcomePage
+  CompanyRegisterPage,
+  Details,
+  ExplorePage,
+  FooterLayout,
+  LandingPage,
+  PaymentPage,
+  ProfilePage,
+  UserProfilePage,
+  WelcomePage,
 } from "./pages";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
 
@@ -41,6 +48,9 @@ function App() {
         <Route path="/category" element={<Categories />}></Route>
         <Route path="/raise" element={<FooterLayout />}>
           <Route index element={<RaisePage />} />
+        </Route>
+        <Route path="/payment/:id" element={<FooterLayout />}>
+          <Route index element={<PaymentPage />} />
         </Route>
         <Route
           path="/CompanyRegister/:id"

@@ -5,6 +5,7 @@ const userAuth = require("../middlewares/auth-guard");
 const { find } = require("../models/companyModel");
 const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
+const Portfolio = require("../models/portfolioModel");
 const uploadCompanyVideo =
   require("../middlewares/uploader").uploadCompanyVideo;
 const uploadCompanyImage =
@@ -76,7 +77,7 @@ router.put(
   async (req, res) => {
     try {
       let { name } = req.params;
-      let {file} = req;
+      let { file } = req;
       console.log(file);
       if (file === undefined || file === null) {
         filename = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
@@ -149,20 +150,56 @@ router.put("/api/update-company/:id", userAuth, async (req, res) => {
 });
 
 /**
+ * @description To update Company content by company name
+ * @api /company/api/update-companycontent/:id
+ * @access PRIVATE
+ * @type PUT
+ */
+
+router.put("/api/update-companycontent/:id", userAuth, async (req, res) => {
+  try {
+    let { body } = req;
+    let company = await Company.findOne({ name: req.params.id });
+    if (!company) {
+      return res.status(400).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+    company = await Company.findOneAndUpdate(
+      { name: req.params.id },
+      { ...body },
+      { new: true }
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Company Updated Successfully",
+      company,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
  * @description To update Company image with company name by the company owner
  * @api /company/api/update-companyimage/:name
  * @access PRIVATE
  * @type PUT
  */
 
- router.put(
+router.put(
   "/api/upload-companyimage/:name",
   userAuth,
   uploadCompanyImage.single("image"),
   async (req, res) => {
     try {
       let { name } = req.params;
-      let {file} = req;
+      let { file } = req;
       if (file === undefined || file === null) {
         filename = DOMAIN + "uploads/assets/" + "default_company.svg";
       } else {
@@ -177,6 +214,7 @@ router.put("/api/update-company/:id", userAuth, async (req, res) => {
       }
       company = await Company.findOneAndUpdate(
         { name: name, user: req.user._id },
+
         {
           image: filename,
         },
@@ -404,7 +442,7 @@ router.get("/api/get-no-companies", userAuth, async (req, res) => {
 });
 
 /**
- * @description To get company by id
+ * @description To get company details by id
  * @api /company/api/company/:id
  * @access Private
  * @type GET
@@ -412,7 +450,9 @@ router.get("/api/get-no-companies", userAuth, async (req, res) => {
 
 router.get("/api/company/:id", userAuth, async (req, res) => {
   try {
-    let company = await Company.findOne({ _id: req.params.id });
+    let company = await Company.findOne({ _id: req.params.id })
+      .populate("user")
+      .exec();
     if (!company) {
       return res.status(400).json({
         success: false,
@@ -493,6 +533,45 @@ router.put("/api/reject-company/:id", async (req, res) => {
       success: true,
       message: "Company Rejected Successfully",
       updatedCompany,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To Get all investors of a company
+ * @api /events/api/get-investors/:id
+ * @access Public
+ * @type GET
+ */
+
+router.get("/api/get-investors/:id", async (req, res) => {
+  try {
+    let company = await Company.findOne({ _id: req.params.id });
+    if (!company) {
+      return res.status(400).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+    let investors = await Portfolio.find({ company: req.params.id })
+      .populate("profile")
+      .exec();
+    if (!investors) {
+      return res.status(400).json({
+        success: false,
+        message: "No Investors Found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Investors Retrieved Successfully",
+      investors,
     });
   } catch (err) {
     console.log(err);

@@ -1,15 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
-import Wrapper from "./wrapper/DetailPage";
-
 import axios from "axios";
+import KhaltiCheckout from "khalti-checkout-web";
+import React, { useEffect, useRef, useState } from "react";
 import {
   AiFillFacebook,
+  AiFillInstagram,
   AiFillTwitterSquare,
-  AiOutlineHeart
+  AiOutlineHeart,
 } from "react-icons/ai";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { FaPlay, FaShare } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import khalticonfig from "../../components/Khalti/KhaltiConfig";
 import {
   AskAQuestion,
   Detail,
@@ -17,15 +20,17 @@ import {
   LeadInvestor,
   Overview,
   Update,
-  WhatInvestorSay
+  WhatInvestorSay,
 } from "./component";
 import tabs from "./utils/tab";
-
+import Wrapper from "./wrapper/DetailPage";
 const Details = () => {
   const videoRef = useRef(null);
   const [play, setplay] = useState(false);
   const [activeindex, setActiveIndex] = useState(1);
   let { id } = useParams();
+  let checkout = new KhaltiCheckout(khalticonfig);
+  const [amount, setAmount] = useState(0);
 
   const onplay = () => {
     if (!play) {
@@ -56,6 +61,7 @@ const Details = () => {
   const [status, setStatus] = useState("");
   const [tags, setTags] = useState("");
   const [ID, setID] = useState("");
+  const [investors, setInvestors] = useState([]);
 
   const config = {
     headers: {
@@ -72,8 +78,7 @@ const Details = () => {
         let company = res.data.company;
         setName(company.name);
         setImage(company.image);
-        setVideo(company.video);
-        setWebsite(company.website);
+        setVideo(company.company_video);
         setFacebook(company.facebook);
         setTwitter(company.twitter);
         setLinkedin(company.linkedin);
@@ -88,6 +93,24 @@ const Details = () => {
         setStatus(company.status);
         setTags(company.tags);
         setID(company._id);
+        setInvestors(company.investors);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  // get reason details using id from params
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/reason/api/get-reasons/" + id, config)
+      .then((res) => {
+        let reason = res.data.reason;
+        setFacebook(reason.facebook);
+        setTwitter(reason.twitter);
+        setLinkedin(reason.linkedin);
+        setWebsite(reason.companylink);
       })
       .catch((err) => {
         console.log(err);
@@ -96,6 +119,8 @@ const Details = () => {
 
   return (
     <Wrapper>
+      <ToastContainer />
+
       <div className="left-container" id="detailPage">
         <section className="one">
           <div className="header">
@@ -109,6 +134,7 @@ const Details = () => {
           </div>
           <div className="video-container">
             <video
+              autoPlay
               ref={videoRef}
               onClick={onplay}
               loop
@@ -131,7 +157,7 @@ const Details = () => {
           <div className="invest">
             <div className="invest-info">
               <p>Invest</p>
-              <p>min$100</p>
+              <p>minRs.1000</p>
             </div>
             <div className="invest-input">
               <BsCurrencyDollar />
@@ -151,12 +177,15 @@ const Details = () => {
             <Link>{website}</Link>
             <span>{address}</span>
 
-            <Link className="icon">
+            <Link className="icon" to={facebook}>
               <AiFillFacebook />
             </Link>
 
-            <Link className="icon">
+            <Link className="icon" to={twitter}>
               <AiFillTwitterSquare />
+            </Link>
+            <Link className="icon" to={instagram}>
+              <AiFillInstagram />
             </Link>
           </div>
 
@@ -211,25 +240,39 @@ const Details = () => {
           <div className="line"></div>
           <div className="price">
             <p>Rs.{fund_goal}</p>
-            <p>Raised money from 200 investor</p>
+            <p>Raised money from {investors.length} investor</p>
           </div>
           <div className="invest">
             <div className="invest-info">
               <p>Invest</p>
-              <p>min$100</p>
+              <p>min Rs.1000</p>
             </div>
             <div className="invest-input">
-              <BsCurrencyDollar />
-              <input type="number" placeholder="0" />
+            Rs.
+              <input
+                type="number"
+                placeholder="0"
+                onChange={(e) => setAmount(e.target.value)}
+              />
             </div>
           </div>
-          <button className="btn-invest">Invest</button>
+          <button
+            className="btn-invest"
+            onClick={() =>
+              checkout.show({
+                amount: amount * 100,
+                productIdentity: id,
+                productName: name,
+                productUrl: "http://localhost:3000/detail/" + id,
+              })
+            }
+          >
+            Invest
+          </button>
           <button className="btn-bookmark">
             <AiOutlineHeart />
             <span>Watch for updates</span>
           </button>
-          <InvestmentTerm />
-          <LeadInvestor />
         </section>
       </div>
     </Wrapper>

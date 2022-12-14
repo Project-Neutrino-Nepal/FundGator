@@ -96,6 +96,13 @@ router.post("/api/login", LoginValidations, validator, async (req, res) => {
         message: "Invalid Credentials.",
       });
     }
+    if (user.status != true) {
+      return res.status(401).json({
+        success: false,
+        message:
+          "Your account is suspended, Please contact Admin to Reactivate your Account.",
+      });
+    }
     if (user.verified != true) {
       return res.status(401).json({
         success: false,
@@ -131,8 +138,6 @@ router.post("/api/login", LoginValidations, validator, async (req, res) => {
  * @type GET
  */
 
-// dockstring
-
 router.get("/verify-now/:verificationCode", async (req, res) => {
   try {
     let { verificationCode } = req.params;
@@ -162,18 +167,26 @@ router.get("/verify-now/:verificationCode", async (req, res) => {
  * @type PUT
  * */
 
-router.put("/api/update-user", userAuth, async (req, res) => {
+router.put("/api/update-user/:name", async (req, res) => {
   try {
-    let user = await User.findById(req.user._id);
+    let { name } = req.params;
+    let profile = await Profile.findOne({
+      name,
+    });
+    const user = profile.user;
     if (!user) {
       return res.status(404).json({
         success: false,
         message: "User not found.",
       });
     }
-    const updateUser = await User.findByIdAndUpdate(req.user._id, {
-      isFirstTime: false,
-    });
+    let updateUser = await User.findByIdAndUpdate(
+      user,
+      {
+        isFirstTime: false,
+      },
+      { new: true }
+    );
     return res.status(200).json({
       updateUser,
       success: true,

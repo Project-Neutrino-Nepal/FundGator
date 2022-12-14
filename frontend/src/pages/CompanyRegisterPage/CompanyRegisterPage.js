@@ -6,6 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import upload from "../../assets/image/uploadpic.svg";
 import { useNavigate, useNavigation, useParams } from "react-router-dom";
+const parse = require("html-react-parser");
 
 const CompanyRegisterPage = () => {
   const { id } = useParams();
@@ -49,6 +50,10 @@ const CompanyRegisterPage = () => {
     linktype: "",
     companyurl: "",
     content: "",
+    vimage:"",
+    vvideo:"",
+    vaudio:"",
+    vpdf:"",
   };
 
   const navigate = useNavigate();
@@ -89,7 +94,11 @@ const CompanyRegisterPage = () => {
     setValue({ ...values, content: content });
   };
 
-  console.log(values.content);
+  const contentdata = {
+    content: values.content,
+  };
+
+  
 
   const teamChange = (e, index, name) => {
     var teams = values.teams;
@@ -198,21 +207,22 @@ const CompanyRegisterPage = () => {
         }
       }
     } else {
-      const formData = new FormData();
-      formData.append("content", values.content);
       try {
         axios
           .put(
             "http://localhost:5000/company/api/update-companycontent/" +
               formvalue.companyname,
-            formData,
+            contentdata,
             config
           )
           .then((res) => {
             if (res.data.success) {
-              toast.success("Company created Successfully",setTimeout(() => {
-                navigate("/homepage");
-              }, 1200));
+              toast.success(
+                "Company created Successfully",
+                setTimeout(() => {
+                  navigate("/homepage");
+                }, 1200)
+              );
             }
           });
       } catch (error) {
@@ -223,7 +233,7 @@ const CompanyRegisterPage = () => {
   return (
     <Wrapper>
       <ToastContainer />
-      <section className="tabs-container" id="RaiseFund" style={{ marginTop: 80 }}>
+      <section className="tabs-container" id="RaiseFund">
         {tabs.map((item, index) => {
           return (
             <div
