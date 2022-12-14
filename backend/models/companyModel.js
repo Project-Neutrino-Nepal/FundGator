@@ -1,71 +1,68 @@
 // models for company data
+const { model, Schema } = require("mongoose");
 
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const CompanySchema = new Schema({
+const CompanySchema = new Schema(
+  {
     user: {
-
-        type: Schema.Types.ObjectId,
-        ref: 'user'
+      type: Schema.Types.ObjectId,
+      ref: "user",
     },
     email: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     avatar: {
-        type: String
+      type: String,
     },
     phone: {
-        type: String
+      type: String,
     },
     tax_ID_No: {
-        type: String
+      type: String,
     },
     address: {
-        type: String
+      type: String,
     },
     short_pitch: {
-        type: String
+      type: String,
     },
     status: {
-        type: String
+      type: String,
     },
     tax_document: {
-        type: String
+      type: String,
     },
     company_document: {
-        type: String
+      type: String,
     },
     company_logo: {
-        type: String
+      type: String,
     },
     company_video: {
-        type: String
+      type: String,
     },
     company_website: {
-        type: String
+      type: String,
     },
     company_facebook: {
-        type: String
+      type: String,
     },
     company_twitter: {
-        type: String
+      type: String,
     },
     company_linkedin: {
-        type: String
+      type: String,
     },
     company_instagram: {
-        type: String
+      type: String,
     },
+  },
+  { timestamps: true }
+);
 
-    skills: {
-        type: String
-    }
-}, { timestamps: true });
-
-module.exports = mongoose.model('company', CompanySchema);
+module.exports = model("company", CompanySchema);

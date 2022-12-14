@@ -7,6 +7,7 @@ import Accordion4 from "./component/Accordion4";
 
 import { Howto, Footer } from "./component";
 import howtolst from "../../utils/howtolst";
+import { Link } from "react-router-dom";
 
 const LandingPage = () => {
   const [show, setshow] = useState(false);
@@ -24,7 +25,9 @@ const LandingPage = () => {
             Access investment oppurtunities in the small business you belive in
           </p>
           <div className="btn-container">
-            <button className="btn-started">Get Started</button>
+            <Link className="btn-started button text-decoration-none text-center" to="signup">
+              Get Started
+            </Link>
             <button className="btn-works">How it Works</button>
           </div>
         </div>

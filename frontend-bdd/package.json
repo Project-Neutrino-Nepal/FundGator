@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "test": "node_modules/.bin/cucumber-js features/"
+  },
+  "dependencies": {
+    "@cucumber/cucumber": "^8.7.0",
+    "chai": "^4.3.7",
+    "chromedriver": "^107.0.3",
+    "selenium-webdriver": "^4.6.0"
+  }
+}

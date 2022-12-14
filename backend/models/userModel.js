@@ -53,7 +53,6 @@ UserSchema.methods.comparePassword = async function (password) {
 
 UserSchema.methods.generateJWT = async function () {
   let payload = {
-    username: this.username,
     email: this.email,
     name: this.name,
     id: this._id,
@@ -67,7 +66,7 @@ UserSchema.methods.generatePasswordReset = function () {
 };
 
 UserSchema.methods.getUserInfo = function () {
-  return pick(this, ["_id", "username", "email", "name", "verified"]);
+  return pick(this, ["_id", "name", "email", "verified"]);
 };
 
 const User = model("users", UserSchema);
