@@ -1,30 +1,23 @@
-import React, { useEffect, useRef, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Wrapper from "./wrapper/DetailPage";
-
 import { Button, Space } from "antd";
 import axios from "axios";
-import {
-  AiFillFacebook,
-  AiFillTwitterSquare,
-  AiOutlineHeart
-} from "react-icons/ai";
-import { BsCurrencyDollar } from "react-icons/bs";
+import React, { useEffect, useRef, useState } from "react";
+import { AiFillFacebook, AiFillTwitterSquare } from "react-icons/ai";
 import { FaPlay, FaShare } from "react-icons/fa";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   AskAQuestion,
   Detail,
-  InvestmentTerm,
-  LeadInvestor,
   Overview,
   Update,
-  WhatInvestorSay
+  WhatInvestorSay,
 } from "./component";
 import tabs from "./utils/tab";
+import Wrapper from "./wrapper/DetailPage";
 
 const MyCompanyProfile = () => {
+  const navigateTo = useNavigate();
   const videoRef = useRef(null);
   const [play, setplay] = useState(false);
   const [activeindex, setActiveIndex] = useState(1);
@@ -97,8 +90,6 @@ const MyCompanyProfile = () => {
       });
   }, []);
 
-
-
   return (
     <Wrapper>
       <ToastContainer />
@@ -129,29 +120,9 @@ const MyCompanyProfile = () => {
           </div>
         </section>
         <section className="two">
-          <span>almost sold out</span>
-          <div className="line"></div>
-          <div className="price">
-            <p>$2,000,000</p>
-            <p>Raised money from 200 investor</p>
-          </div>
-          <div className="invest">
-            <div className="invest-info">
-              <p>Invest</p>
-              <p>min$100</p>
-            </div>
-            <div className="invest-input">
-              <BsCurrencyDollar />
-              <input type="number" placeholder="0" />
-            </div>
-          </div>
-          <button className="btn-invest">Invest</button>
-          <button className="btn-bookmark">
-            <AiOutlineHeart />
-            <span>Watch for updates</span>
-          </button>
-          <InvestmentTerm />
-          <LeadInvestor />
+          <Space wrap>
+            <Button type="primary">Edit Company</Button>
+          </Space>
         </section>
         <section className="three">
           <div className="links">
@@ -217,10 +188,12 @@ const MyCompanyProfile = () => {
           <Space wrap>
             <Button
               type="primary"
+              onClick={() => {
+                navigateTo("/company/edit/" + name);
+              }}
             >
               Edit Company
             </Button>
-            
           </Space>
         </section>
       </div>

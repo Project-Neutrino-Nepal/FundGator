@@ -74,6 +74,8 @@ const Overview = (ID) => {
   if (reasons8 != null) {
     reasons.push(reasons8);
   }
+  const validReasons = reasons.filter((reason) => reason !== ""); 
+  reasons = reasons.slice(0, validReasons.length);
 
   return (
     <Wrapper>
@@ -100,6 +102,8 @@ const Overview = (ID) => {
               image={team.image}
               email={team.email}
               position={team.position}
+              facebook={team.userfblink}
+              linkedin={team.userlinkedinlink}
             />
           ))}
         </div>

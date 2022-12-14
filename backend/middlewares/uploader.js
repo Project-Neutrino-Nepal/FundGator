@@ -12,7 +12,11 @@ const filter = (req, file, next) => {
     file.mimetype === "image/png" ||
     file.mimetype === "image/jpg" ||
     file.mimetype === "video/mp4" ||
-    file.mimetype === "video/gif"
+    file.mimetype === "video/gif" ||
+    file.mimetype === "video/avi" ||
+    file.mimetype === "video/webm" ||
+    file.mimetype === "video/mkv"
+
   ) {
     next(null, true);
   } else {
@@ -63,6 +67,16 @@ const uploadCompanyImage = multer({
   }),
   fileFilter: filter,
 });
+
+// const uploadmultipleCompanyImage = uploadCompanyImage.fields([
+//   { name: "registration_card", maxCount: 1 },
+//   { name: "pan_card", maxCount: 1 },
+//   { name: "citizenship_front", maxCount: 1 },
+//   { name: "citizenship_back", maxCount: 1 },
+
+// ]);
+
+
 
 const uploadCompanyVideo = multer({
   storage: multer.diskStorage({

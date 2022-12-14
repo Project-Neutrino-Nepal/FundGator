@@ -24,7 +24,7 @@ function Navbar() {
       .get("http://localhost:5000/profile/api/my-profile", config)
       .then((res) => {
         let program = res.data.profile;
-        setName(program.name);
+        setName(program.legal_name);
         setPreview({ ...image, preview: program.avatar });
       });
   });

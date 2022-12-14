@@ -8,6 +8,7 @@ import { useQuill } from "react-quilljs";
 
 import "quill/dist/quill.snow.css";
 import UploadField from "./UploadField";
+import { Form } from "react-router-dom";
 
 const Visiblity = ({ handleChange, values, setcontent }) => {
   const { quill, quillRef } = useQuill();
@@ -28,56 +29,47 @@ const Visiblity = ({ handleChange, values, setcontent }) => {
 
   return (
     <Wrapper className="form-content">
-      {/* <JoditEditor
-        ref={editor}
-        value={content}
-        // preferred to use only this option to update the content for performance reasons
-        onChange={(newContent) => {
-          setContent(newContent);
-        }}
-      /> */}
-      {/* <ReactQuill
-        theme="snow"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      /> */}
       <section
         style={{ width: "clac(550px + 400px)", height: 400 }}
-        className="quill"
+        className="quill" 
       >
         <div ref={quillRef} />
       </section>
 
       <section className="fuploads  p-2 w-100 ">
+        <h4 className="fw-semibold">Please upload your document here!</h4 >
+        <form action="" enctype="multipart/form-data" method="post">
+
         <div className="d-flex gap-2">
           <UploadField
-            label={"Photo"}
-            name={"vimage"}
+            label={"Company registration card"}
+            name={"registration_card"}
             accept="image/*"
             handleChange={handleChange}
           />
           <UploadField
-            label={"Video"}
-            name={"vvideo"}
-            accept="video/*"
+            label={"PAN card"}
+            name={"pan_card"}
+            accept="image/*"
             handleChange={handleChange}
           />
         </div>
 
         <div className="d-flex gap-2 mt-2">
           <UploadField
-            label={"Audio"}
-            name={"vaudio"}
-            accept="audio/*"
+            label={"Citizenship card(Front side)"}
+            name={"citizenship_front"}
+            accept="image/*"
             handleChange={handleChange}
           />
           <UploadField
-            label={"PDF"}
-            name={"vpdf"}
-            accept="application/pdf"
+            label={"Citizenship card(Back side)"}
+            name={"citizenship_back"}
+            accept="image/*"
             handleChange={handleChange}
           />
         </div>
+        </form>
       </section>
     </Wrapper>
   );

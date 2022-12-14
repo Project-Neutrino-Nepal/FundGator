@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { Basic, Visiblity, Story, Team } from "./component";
-import Wrapper from "./wrapper/CompanyRegisterPage";
-import tabs from "./utils/tab";
-import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import upload from "../../assets/image/uploadpic.svg";
-import { useNavigate, useNavigation, useParams } from "react-router-dom";
+import { Basic, Story, Team, Visiblity } from "./component";
+import tabs from "./utils/tab";
+import Wrapper from "./wrapper/CompanyRegisterPage";
 const parse = require("html-react-parser");
 
 const CompanyRegisterPage = () => {
@@ -50,10 +50,10 @@ const CompanyRegisterPage = () => {
     linktype: "",
     companyurl: "",
     content: "",
-    vimage:"",
-    vvideo:"",
-    vaudio:"",
-    vpdf:"",
+    registration_card: "",
+    pan_card: "",
+    citizenship_front: "",
+    citizenship_back: "",
   };
 
   const navigate = useNavigate();
@@ -96,9 +96,12 @@ const CompanyRegisterPage = () => {
 
   const contentdata = {
     content: values.content,
+    registration_card: values.registration_card,
+    pan_card: values.pan_card,
+    citizenship_front: values.citizenship_front,
+    citizenship_back: values.citizenship_back,
   };
-
-  
+  console.log(values.registration_card);
 
   const teamChange = (e, index, name) => {
     var teams = values.teams;
@@ -147,6 +150,7 @@ const CompanyRegisterPage = () => {
       [name]: blobURL,
     });
   };
+
   const onsave = (e) => {
     e.preventDefault();
 
@@ -190,6 +194,8 @@ const CompanyRegisterPage = () => {
       } else if (activeindex === 3) {
         const formData = new FormData();
         formData.append("company_video", videouploads);
+        console.log(formData);
+
         try {
           axios
             .put(
@@ -208,11 +214,18 @@ const CompanyRegisterPage = () => {
       }
     } else {
       try {
+        const formData = new FormData();
+        formData.append("registration_card", values.registration_card);
+        formData.append("pan_card", values.pan_card);
+        formData.append("citizenship_front", values.citizenship_front);
+        formData.append("citizenship_back", values.citizenship_back);
+        formData.append("content", values.content);
+        console.log(formData);
         axios
           .put(
-            "http://localhost:5000/company/api/update-companycontent/" +
+            "http://localhost:5000/company/api/multipleimages/" +
               formvalue.companyname,
-            contentdata,
+            formData,
             config
           )
           .then((res) => {
@@ -226,14 +239,14 @@ const CompanyRegisterPage = () => {
             }
           });
       } catch (error) {
-        console.log(error.response.data.message);
+        console.log(error);
       }
     }
   };
   return (
     <Wrapper>
       <ToastContainer />
-      <section className="tabs-container" id="RaiseFund">
+      <section className="tabs-container mt-5" id="RaiseFund">
         {tabs.map((item, index) => {
           return (
             <div

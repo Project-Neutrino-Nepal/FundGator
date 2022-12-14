@@ -55,12 +55,21 @@ const CompanySchema = new Schema(
     short_pitch: {
       type: String,
     },
-    tax_document: {
+    registration_card: {
       type: String,
     },
-    company_document: {
+
+    pan_card: {
       type: String,
     },
+
+    citizenship_front: {
+      type: String,
+    },
+    citizenship_back: {
+      type: String,
+    },
+
     company_video: {
       type: String,
     },

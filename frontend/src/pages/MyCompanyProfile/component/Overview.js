@@ -73,7 +73,8 @@ const Overview = (ID) => {
   if (reasons8 != null) {
     reasons.push(reasons8);
   }
-
+const validReasons = reasons.filter((reason) => reason !== "");
+reasons = reasons.slice(0, validReasons.length);
   return (
     <Wrapper>
       <section className="lists">
