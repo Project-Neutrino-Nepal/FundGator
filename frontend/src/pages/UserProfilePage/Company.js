@@ -23,7 +23,6 @@ const Company = (
     >
       <Meta
         title={company.name}
-        description={company.short_pitch}
       />
     </Card>
   );

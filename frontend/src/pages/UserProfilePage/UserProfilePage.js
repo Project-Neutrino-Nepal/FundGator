@@ -31,7 +31,7 @@ const UserProfilePage = () => {
       .then((res) => {
         console.log(res.data.profile);
         let program = res.data.profile;
-        setName(program.name);
+        setName(program.legal_name);
         setEmail(program.email);
         setBio(program.bio);
         setAddress(program.address);

@@ -23,9 +23,9 @@ import {
   LandingPage,
   PaymentPage,
   ProfilePage,
+  ProtectedRoute,
   UserProfilePage,
   WelcomePage,
-  ProtectedRoute,
 } from "./pages";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
 
@@ -39,7 +39,14 @@ function App() {
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/signin" element={<Signin />}></Route>
         <Route path="/" element={<LandingPage />}></Route>
-        <Route path="/welcome" element={<WelcomePage />}></Route>
+        <Route
+          path="/welcome"
+          element={
+            <ProtectedRoute>
+              <WelcomePage />
+            </ProtectedRoute>
+          }
+        ></Route>
         <Route
           path="/homepage"
           element={

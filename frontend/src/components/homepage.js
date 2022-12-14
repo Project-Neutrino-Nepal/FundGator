@@ -6,8 +6,8 @@ import Basenav from "./basenav";
 import Feeds from "./feeds";
 
 import { BsCardImage } from "react-icons/bs";
+import { IoCloseCircleSharp, IoDocumentTextSharp } from "react-icons/io5";
 import { RiVideoFill } from "react-icons/ri";
-import { IoDocumentTextSharp, IoCloseCircleSharp } from "react-icons/io5";
 
 const Homepage = () => {
   const [name, setName] = useState("");
@@ -25,7 +25,7 @@ const Homepage = () => {
     img: "",
     vid: "",
     doc: "",
-    description:""
+    description: "",
   });
 
   const handleChange = (e) => {
@@ -36,12 +36,11 @@ const Homepage = () => {
     }
   };
 
-  const clearpreview = (name)=>{
-    console.log(name)
-    setValue({...values,[name]:""})
+  const clearpreview = (name) => {
+    console.log(name);
+    setValue({ ...values, [name]: "" });
     setPreviews({ ...preview, [name]: "" });
-
-  }
+  };
 
   const fileSelection = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -64,7 +63,7 @@ const Homepage = () => {
       .get("http://localhost:5000/profile/api/my-profile", config)
       .then((res) => {
         let program = res.data.profile;
-        setName(program.name);
+        setName(program.legal_name);
         setPreview({ ...image, preview: program.avatar });
       });
   });
@@ -190,7 +189,7 @@ const Homepage = () => {
             <div className="modal-body">
               <div className="d-flex align-items-center gap-2">
                 <img
-                  src="https://images.unsplash.com/photo-1611601322175-ef8ec8c85f01?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=464&q=80"
+                  src={image.preview}
                   className="rounded rounded-5 img-circle"
                   alt=""
                   style={{ width: 40, height: 40 }}
