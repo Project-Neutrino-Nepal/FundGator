@@ -36,6 +36,13 @@ const Homepage = () => {
     }
   };
 
+  const clearpreview = (name)=>{
+    console.log(name)
+    setValue({...values,[name]:""})
+    setPreviews({ ...preview, [name]: "" });
+
+  }
+
   const fileSelection = (e) => {
     if (e.target.files && e.target.files[0]) {
       let file = e.target.files[0];
@@ -188,7 +195,7 @@ const Homepage = () => {
                   alt=""
                   style={{ width: 40, height: 40 }}
                 />
-                <span>John Doe</span>
+                <span className="text-dark fw-bold">{name}</span>
               </div>
 
               <div className="form-floating">
@@ -206,18 +213,33 @@ const Homepage = () => {
 
               <div className="d-flex gap-2">
                 <div className={preview.img ? "position-relative " : "d-none"}>
-                  <img src={preview.img} alt="" height={100} width={80} />
+                  <img
+                    src={preview.img}
+                    alt=""
+                    height={100}
+                    width={80}
+                    style={{ objectFit: "cover" }}
+                  />
                   <IoCloseCircleSharp
-                    className="position-absolute top-0 end-0 fs-3"
+                    className="position-absolute top-0 end-0 fs-3 bg-white rounded-circle shadow shadow-sm"
+                    name="img"
                     style={{ transform: "translate(9px , -9px) " }}
+                    onClick={() => clearpreview("img")}
                   />
                 </div>
 
                 <div className={preview.vid ? "position-relative " : "d-none"}>
-                  <video src={preview.vid} alt="" height={100} width={80} style={{objectFit:"cover"}} />
+                  <video
+                    src={preview.vid}
+                    alt=""
+                    height={100}
+                    width={80}
+                    style={{ objectFit: "cover" }}
+                  />
                   <IoCloseCircleSharp
                     className="position-absolute top-0 end-0 fs-3 bg-white rounded-circle shadow shadow-sm "
                     style={{ transform: "translate(9px , -9px) " }}
+                    onClick={() => clearpreview("vid")}
                   />
                 </div>
               </div>
@@ -257,7 +279,6 @@ const Homepage = () => {
                 </button>
               </div>
             </div>
-           
           </div>
         </div>
       </div>
