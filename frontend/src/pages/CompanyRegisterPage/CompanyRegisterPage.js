@@ -20,9 +20,9 @@ const CompanyRegisterPage = () => {
     twitter: "",
     youtube: "",
     blog: "",
-    amount:"",
-    category:"",
-    tag:"",
+    amount: "",
+    category: "",
+    tag: "",
     reason0: "",
     reason1: "",
     reason2: "",
@@ -71,12 +71,9 @@ const CompanyRegisterPage = () => {
       authorization: localStorage.getItem("token"),
     },
   };
-  console.log(values.amount);
-  console.log(values.category);
-  console.log(values.tag);
 
   const data = {
-    amount:values.amount,
+    amount: values.amount,
     reason0: values.reason0,
     reason1: values.reason1,
     reason2: values.reason2,
@@ -118,7 +115,7 @@ const CompanyRegisterPage = () => {
     var newTeam = values.teams;
     newTeam.push({
       id: 0,
-	  image: "",
+      image: "",
       name: name,
       email: email,
       position: "CEO",
