@@ -7,7 +7,7 @@ const Card = ({
   short_pitch,
   address,
   image,
-  avatar,
+  profile,
   phone,
   tax_ID_No,
   tax_document,
@@ -29,7 +29,7 @@ const Card = ({
         <img src={image} alt="" />
 
         <div className="info-container">
-          <img src={avatar} alt="" className="profile-pic" />
+          <img src={profile.avatar} alt="" className="profile-pic" />
           <h4>{name}</h4>
           <h6 style={{ textTransform: "none" }}>{email}</h6>
           <p>{address}</p>
