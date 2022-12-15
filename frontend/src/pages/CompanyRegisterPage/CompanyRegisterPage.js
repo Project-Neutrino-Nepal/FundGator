@@ -94,14 +94,6 @@ const CompanyRegisterPage = () => {
     setValue({ ...values, content: content });
   };
 
-  const contentdata = {
-    content: values.content,
-    registration_card: values.registration_card,
-    pan_card: values.pan_card,
-    citizenship_front: values.citizenship_front,
-    citizenship_back: values.citizenship_back,
-  };
-  console.log(values.registration_card);
 
   const teamChange = (e, index, name) => {
     var teams = values.teams;
@@ -120,7 +112,7 @@ const CompanyRegisterPage = () => {
     var newTeam = values.teams;
     newTeam.push({
       id: 0,
-      image: "",
+	  image: "",
       name: name,
       email: email,
       position: "CEO",
