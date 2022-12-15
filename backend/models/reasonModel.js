@@ -5,6 +5,14 @@ const ReasonSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "company",
   },
+  category:{
+    type:Schema.Types.ObjectId,
+    ref:"category"
+  },
+  tag:{
+    type:Schema.Types.ObjectId,
+    ref:"tag"
+  },
 
   reason0: {
     type: String,
@@ -56,8 +64,10 @@ const ReasonSchema = new Schema({
   },
   description: {
     type: String,
-    },
-   
+  },
+  amount: {
+    type: Number,
+  },
   teams: [
     {
       image: {

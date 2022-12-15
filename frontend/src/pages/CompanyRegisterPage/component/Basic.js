@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Labelinput from "./Labelinput";
 import UnderlineInput from "./UnderlineInput";
-import { TbWorld } from "react-icons/tb";
+import { TbCurrencyRupee, TbWorld } from "react-icons/tb";
 import { IoLocationSharp } from "react-icons/io5";
 import { AiFillFacebook } from "react-icons/ai";
+import Dropdown from "react-bootstrap/Dropdown";
+
 import {
   FaInstagramSquare,
   FaTwitterSquare,
@@ -15,6 +17,7 @@ import { useParams } from "react-router-dom";
 const Basic = ({ values, handleChange }) => {
   const [addlink, setlink] = useState(0);
   const [show, setShow] = useState(false);
+  const [category, setCategory] = useState();
   const { id } = useParams();
   const list = [
     {
@@ -78,13 +81,63 @@ const Basic = ({ values, handleChange }) => {
   };
   return (
     <div className="form-content">
-      <Labelinput 
+      <Labelinput
         type={"text"}
         placeholder={"Enter Company Name"}
         label={"Company Name"}
         value={id}
+        // handleChange={handleChange}
+        name={"name"}
+      />
+
+      <div className="d-flex flex-wrap justify-content-between mt-3 fw-semibold fs-6 ">
+        <div>
+          <label htmlFor="" className="text-dark mb-1 ">
+            Categories
+          </label>{" "}
+          <br />
+          <select
+            id="dropdown"
+            type={"text"}
+            value={values.category}
+            defaultValue={values.category}
+            handleChange={handleChange}
+            className="border border-dark rounded-3 p-2"
+          >
+            <option value="Select Category">Select Category</option>
+            <option value="Fintech">Fintech</option>
+            <option value="IT">IT</option>
+          </select>
+          <h1>{values.category}</h1>
+        </div>
+        <div>
+          <label htmlFor="" className="text-dark mb-1 ">
+            Tags
+          </label>{" "}
+          <br />
+          <select
+            id="dropdown"
+            value={values.tag}
+            type={"text"}
+            defaultValue={values.tag}
+            className="border border-dark rounded-3 p-2"
+            handleChange={handleChange}
+          >
+            <option value="Select Category">Select Tags</option>
+            <option value="Fintech">Fintech</option>
+            <option value="IT">IT</option>
+          </select>
+        </div>
+      </div>
+
+      <label htmlFor=""> Fund amount *</label>
+      <UnderlineInput
+        type={"number"}
+        index={<TbCurrencyRupee />}
+        placeholder={"Raise fund amount"}
+        value={values.amount}
         handleChange={handleChange}
-        name={"name"} 
+        name={"amount"}
       />
 
       <label htmlFor="">The Top Reason to Invest</label>
