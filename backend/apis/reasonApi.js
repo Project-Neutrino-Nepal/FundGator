@@ -60,7 +60,7 @@ router.post("/api/create-reason/:name", userAuth, async (req, res) => {
  */
 router.put(
   "/api/update-reason/:name",
-  userAuth,uploadCompanyImage.single("image"),
+  userAuth,
   async (req, res) => {
     try {
       const { body } = req;
@@ -80,6 +80,7 @@ router.put(
         });
       }
       let file = req.file;
+      console.log(file);
       if (file === undefined || file === null) {
         filename = DOMAIN + "uploads/assets/" + "default_company.svg";
       } else {
@@ -87,15 +88,67 @@ router.put(
       }
       const reason = await Reason.findOneAndUpdate(
         { company: companyID },
-        { $set:body,
-          image: filename,
-        },
+        { $set: body, 
+          // teams: { image: filename }
+         },
 
         { new: true }
       );
       res.status(200).json({
         success: true,
         message: "Reason updated successfully",
+        reason,
+      });
+    } catch (error) {
+      res.status(500).json({
+        error,
+        success: false,
+        message: "Internal server error",
+      });
+    }
+  }
+);
+
+// route to update team member image for a company having nested data
+router.put(
+  "/api/update-teamimage/:name",
+  uploadCompanyImage.array("image", 10),
+  async (req, res) => {
+    try {
+      const { body } = req;
+      const company = await Company.findOne({ name: req.params.name });
+      const companyID = company._id;
+      if (!company) {
+        return res.status(404).json({
+          success: false,
+          message: "Company not found",
+        });
+      }
+      const reasons = await Reason.findOne({ company: companyID });
+      if (!reasons) {
+        return res.status(400).json({
+          success: false,
+          message: "Reasons not found",
+        });
+      }
+      let file = req.file;
+      console.log(file);
+      if (file === undefined || file === null) {
+        filename = DOMAIN + "uploads/assets/" + "default_company.svg";
+      } else {
+        filename = DOMAIN + "uploads/company-images/" + file.filename;
+      }
+      const reason = await Reason.findOneAndUpdate(
+        { company: companyID },
+
+        // { ...body},
+        { teams: { image: filename } },
+
+        { new: true }
+      );
+      res.status(200).json({
+        success: true,
+        message: "team image updated successfully",
         reason,
       });
     } catch (error) {
@@ -141,7 +194,7 @@ router.get("/api/get-reasons/:id", async (req, res) => {
 
 router.get("/api/get-reason/:id", async (req, res) => {
   try {
-    const company = await Company.findOne({name: req.params.id });
+    const company = await Company.findOne({ name: req.params.id });
     if (!company) {
       return res.status(404).json({
         success: false,
