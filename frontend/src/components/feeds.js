@@ -244,6 +244,7 @@ const Feeds = ({ feed }) => {
           </div>
         </div>
       </div>
+      <br />
     </>
   );
 };

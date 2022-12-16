@@ -139,8 +139,7 @@ router.put(
       let file1 = req.files.pan_card[0];
       let file2 = req.files.citizenship_front[0];
       let file3 = req.files.citizenship_back[0];
-      console.log(file);
-      console.log(file1);
+      
       if (file === undefined || file === null) {
         filename = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
       } else {
