@@ -5,8 +5,6 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import {
-  BankandCards,
-  Cash,
   Notification,
   Portfolio,
   Settings,
@@ -74,18 +72,14 @@ const ProfilePage = () => {
   useEffect(() => {
     if (id === "Portoflio") {
       setActive(1);
-    } else if (id === "Cash") {
-      setActive(2);
-    } else if (id === "BankCards") {
-      setActive(3);
     } else if (id === "TaxDocuments") {
-      setActive(4);
+      setActive(2);
     } else if (id === "Watchlist") {
-      setActive(5);
+      setActive(3);
     } else if (id === "Settings") {
-      setActive(6);
+      setActive(4);
     } else if (id === "Notifications") {
-      setActive(7);
+      setActive(5);
     }
   }, []);
   const [name, setName] = useState("");
@@ -196,12 +190,10 @@ const ProfilePage = () => {
 
       <section className="content">
         {activeindex === 1 ? <Portfolio /> : null}
-        {activeindex === 2 ? <Cash /> : null}
-        {activeindex === 3 ? <BankandCards /> : null}
-        {activeindex === 4 ? <TaxDocument /> : null}
-        {activeindex === 5 ? <Watchlist /> : null}
-        {activeindex === 6 ? <Settings /> : null}
-        {activeindex === 7 ? <Notification /> : null}
+        {activeindex === 2 ? <TaxDocument /> : null}
+        {activeindex === 3 ? <Watchlist /> : null}
+        {activeindex === 4 ? <Settings /> : null}
+        {activeindex === 5 ? <Notification /> : null}
       </section>
     </Wrapper>
   );
