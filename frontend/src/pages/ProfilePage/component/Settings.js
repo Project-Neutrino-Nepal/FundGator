@@ -1,9 +1,8 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import Wrapper from "../wrapper/Setting";
 import UserInput from "./smallcomponent/UserInput";
-
 
 //backend integration of profile page
 function Settings() {
@@ -11,18 +10,13 @@ function Settings() {
   const [email, setEmail] = useState("");
   const [bio, setBio] = useState("");
   const [country, setCountry] = useState("");
-  // const [website, setWebsite] = useState("");
-  // const [tax_ID_No, setTax_ID_No] = useState("");
-  // const [passport_No, setPassport_No] = useState("");
-  // const [passport_Expiry, setPassport_Expiry] = useState("");
-  // const [passport_Issue_country, setPassport_Issue_country] = useState("");
-  // const [passport_Issue_date, setPassport_Issue_date] = useState("");
-  // const [address, setAddress] = useState("");
-  // const [status, setStatus] = useState("");
-  // const [skills, setSkills] = useState("");
-  // const [legal_name, setLegal_name] = useState("");
-  // const [phone, setPhone] = useState("");
-
+  const [website, setWebsite] = useState("");
+  const [panNo, setPanNo] = useState("");
+  const [address, setAddress] = useState("");
+  const [status, setStatus] = useState("");
+  const [skills, setSkills] = useState("");
+  const [legal_name, setLegal_name] = useState("");
+  const [phone, setPhone] = useState("");
 
   const [formvalue, setform] = useState();
   const onsave = ({ name, value }) => {
@@ -36,134 +30,145 @@ function Settings() {
     },
   };
 
-  useEffect(() => { 
-    axios.get("http://localhost:5000/profile/api/my-profile",config).then((res) => {
-      const profile = res.data.profile;
-      setform(profile);
-      setEmail(profile.email);
-      setBio(profile.bio);
-      setCountry(profile.country)
-      setName(profile.legal_name);
-      // setWebsite(profile.website);
-      // setTax_ID_No(profile.tax_ID_No);
-      // setPassport_No(profile.passport_No);
-      // setPassport_Expiry(profile.passport_Expiry);
-      // setPassport_Issue_country(profile.passport_Issue_country);
-      // setPassport_Issue_date(profile.passport_Issue_date);
-      // setAddress(profile.address);
-      // setStatus(profile.status);
-      // setSkills(profile.skills);
-      // setLegal_name(profile.legal_name);
-      // setPhone(profile.phone);
-
-      
-    });
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/profile/api/my-profile", config)
+      .then((res) => {
+        const profile = res.data.profile;
+        setform(profile);
+        setEmail(profile.email);
+        setBio(profile.bio);
+        setCountry(profile.country);
+        setName(profile.name);
+        setWebsite(profile.website);
+        setPanNo(profile.pan_No);
+        setAddress(profile.address);
+        setStatus(profile.status);
+        setSkills(profile.skills);
+        setLegal_name(profile.legal_name);
+        setPhone(profile.phone);
+      });
   }, [formvalue]);
 
-
-
- 
-    return (
-      <Wrapper>
-        <div className="left-container" id="SettingsPage">
-          <p>Account</p>
-          <p>Investor Limits</p>
-          <p>Publice Profile</p>
-          <p>Public Profile</p>
-        </div>
-        <div className="right-container">
-          <section className="account">
-            <h1>Account</h1>
-            <UserInput
-              name={"email"}
-              value={email}
-              question={"whats your Email?"}
-              onsave={onsave}
-              type={"email"}
-              placeholder={email}
-            />
-            <div className="passwordreset hover">
-              <span>Password</span>
-              <span>Reset</span>
-            </div>
-            <div className="btn-delete hover">
-              <span>Delete Account</span>
-            </div>
-          </section>
-          <section className="investorinfo">
-            <h4>Investorinfo</h4>
-            <UserInput
-              name={"Legal Name"}
-              value={name}
-              question={"whats your Name ?"}
-              onsave={onsave}
-              type={"text"}
-              placeholder={name}
-            />
-            <UserInput
-              name={"bio"}
-              value={bio}
-              question={"Share your bio?"}
-              onsave={onsave}
-              type={"text"}
-              placeholder={bio}
-            />
-
-            <UserInput
-              name={"country"}
-              value={country}
-              question={"Contry of country?"}
-              onsave={onsave}
-              type={"text"}
-              placeholder={country}
-            />
-
-            {/* <UserInput
-            name={"TaxID"}
-            value={tax_ID_No}
-            question={"Whats your Tax Id ?"}
+  return (
+    <Wrapper>
+      <div className="left-container" id="SettingsPage">
+        <p>Account</p>
+        <p>Investor Limits</p>
+        <p>Investor Info</p>
+        <p>Public Profile</p>
+      </div>
+      <div className="right-container">
+        <section className="account">
+          <h1>Account</h1>
+          <UserInput
+            name={"email"}
+            value={email}
+            question={"whats your Email?"}
+            onsave={onsave}
+            type={"email"}
+            placeholder={email}
+          />
+          <div className="passwordreset hover">
+            <span>Password</span>
+            <span>Reset</span>
+          </div>
+          <div className="btn-delete hover">
+            <span>Delete Account</span>
+          </div>
+        </section>
+        <section className="investorinfo">
+          <h4>Investor Info</h4>
+          <UserInput
+            name={"Legal Name"}
+            value={legal_name}
+            question={"whats your Name ?"}
             onsave={onsave}
             type={"text"}
-            placeholder={tax_ID_No}
+            placeholder={legal_name}
           />
           <UserInput
-            name={"passwordNo"} 
-            name1={"passport_No"}
-            name2={"pissuingcountry"}
-            name3={"pissuedate"}
-            value={passport_No}
-            value1={passport_Issue_country}
-            value2={passport_Issue_date}
-            value3={passport_Expiry}
-            onsave={onsave}
-          /> */}
-          </section>
-          {/* <section className="investorlimit">
-            <h4>Investor Limits</h4>
-            <UserInput
-            name={"AnnualIncome"}
-            value={formvalue.AnnualIncome}
-            question={"Whats your Annual Income ?"}
+            name={"bio"}
+            value={bio}
+            question={"Share your bio?"}
             onsave={onsave}
             type={"text"}
-            placeholder={"Enter AnnualIncom"}
+            placeholder={bio}
+          />
+
+          <UserInput
+            name={"country"}
+            value={country}
+            question={"Contry of country?"}
+            onsave={onsave}
+            type={"text"}
+            placeholder={country}
+          />
+
+          <UserInput
+            name={"pan_No"}
+            value={panNo}
+            question={"Whats your Pan ID?"}
+            onsave={onsave}
+            type={"Number"}
+            placeholder={panNo}
+          />
+        </section>
+
+        <section className="publicprofile">
+          <h4>Public Info</h4>
+          <UserInput
+            name={"name"}
+            value={name}
+            question={"whats your name?"}
+            onsave={onsave}
+            type={"name"}
+            placeholder={name}
           />
           <UserInput
-            name={"NetWorth"}
-            value={formvalue.NetWorth}
-            question={"Whats your NetWorth ?"}
+            name={"email"}
+            value={email}
+            question={"whats your Email?"}
             onsave={onsave}
-            type={"text"}
-            placeholder={"Enter NetWorth"}
+            type={"email"}
+            placeholder={email}
           />
-          </section> */}
-          <section className="publicprofile"></section>
-        </div>
-      </Wrapper>
-    );
-  }
-
-  
-
+          <UserInput
+            name={"address"}
+            value={address}
+            question={"whats your Address?"}
+            onsave={onsave}
+            type={"address"}
+            placeholder={address}
+          />
+          <UserInput
+            name={"skills"}
+            value={skills}
+            question={"whats your skills?"}
+            onsave={onsave}
+            type={"skills"}
+            placeholder={skills}
+          />
+          <UserInput
+            name={"phone"}
+            value={phone}
+            question={"whats your phone?"}
+            onsave={onsave}
+            type={"phone"}
+            placeholder={phone}
+          />
+          <UserInput
+            name={"website"}
+            value={website}
+            question={"whats your website?"}
+            onsave={onsave}
+            type={"website"}
+            placeholder={website}
+          />
+        </section>
+      </div>
+    </Wrapper>
+  );
+}
 
 export default Settings;

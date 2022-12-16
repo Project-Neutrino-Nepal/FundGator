@@ -32,18 +32,6 @@ const ProfileSchema = new Schema(
     pan_No: {
       type: String,
     },
-    passport_No: {
-      type: String,
-    },
-    passport_Expiry: {
-      type: String,
-    },
-    passport_Issue_country: {
-      type: String,
-    },
-    passport_Issue_date: {
-      type: String,
-    },
     address: {
       type: String,
     },
@@ -62,4 +50,4 @@ const ProfileSchema = new Schema(
 );
 
 const Profile = model("profile", ProfileSchema);
-module.exports   = Profile;
+module.exports = Profile;

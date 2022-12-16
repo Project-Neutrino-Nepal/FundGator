@@ -67,13 +67,7 @@ const WelcomePage = () => {
       .put("http://localhost:5000/users/api/update-user/" + name, config)
       .then((res) => {
         if (res.data.success) {
-          console.log(res.data);
-          toast.success(
-            res.data.message,
-            setTimeout(function () {
-              window.location.href = "/homepage";
-            }, 2000)
-          );
+          console.log(res.data.message);
         }
       });
   };
@@ -98,7 +92,11 @@ const WelcomePage = () => {
               toast.success(
                 response.data.message,
                 setTimeout(function () {
-                  window.location.href = "/homepage";
+                  if (localStorage.getItem("admin") === "true") {
+                    window.location.href = "/dashboard";
+                  } else {
+                    window.location.href = "/homepage";
+                  }
                 }, 2000)
               );
             }
