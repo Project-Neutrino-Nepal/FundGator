@@ -104,7 +104,8 @@ router.get("/api/get-all-posts", userAuth, async (req, res) => {
     let profile = await Profile.findOne({ user: req.user._id });
 
     let posts = await Post.find()
-      .populate("profile", ["legal_name", "avatar"])
+      .populate("profile")
+      .populate("comments.profile")
       .sort({ date: -1 });
     return res.status(200).json({
       success: true,
@@ -208,32 +209,51 @@ router.get("/api/search-post-by-name/:name", userAuth, async (req, res) => {
 router.put("/api/like-post/:id", userAuth, async (req, res) => {
   try {
     let post = await Post.findById(req.params.id);
-    if (!post) {
-      return res.status(400).json({
-        success: false,
-        message: "Post not found",
+    if (!post.likes.includes(req.user._id)) {
+      await post.updateOne({ $push: { likes: req.user._id } });
+      return res.status(200).json({
+        success: true,
+        message: "Post liked successfully",
+        post,
+      });
+    } else {
+      await post.updateOne({ $pull: { likes: req.user._id } });
+      return res.status(200).json({
+        success: true,
+        message: "Post unliked successfully",
+        post,
       });
     }
-    let user = await User.findById(req.user._id);
-    if (!user) {
-      return res.status(400).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-    // update post with user id and likes count
-    let postLiked = await Post.findByIdAndUpdate(
-      req.params.id,
-      {
-        $push: { likes: req.user._id },
-      },
-      { new: true }
-    );
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
 
+/**
+ * @description To comment on post
+ * @api /posts/api/comment-post/:id
+ * @access PRIVATE
+ * @type PUT
+ * */
+
+router.put("/api/comment-post/:id", userAuth, async (req, res) => {
+  try {
+    let post = await Post.findById(req.params.id);
+    let profile = await Profile.findOne({ user: req.user._id });
+    post.comments.push({
+      user: req.user._id,
+      profile: profile._id,
+      text: req.body.text,
+    });
+    await post.save();
     return res.status(200).json({
       success: true,
-      message: "Post liked successfully",
-      postLiked,
+      message: "Comment added successfully",
+      post,
     });
   } catch (err) {
     console.log(err);

@@ -19,14 +19,10 @@ const PostsSchema = new Schema({
   video: {
     type: String,
   },
-  likes: [
-    {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: "user",
-      },
-    },
-  ],
+  likes: {
+    type: Array,
+    default: [],
+  },
   comments: [
     {
       user: {
@@ -37,11 +33,9 @@ const PostsSchema = new Schema({
         type: String,
         required: true,
       },
-      name: {
-        type: String,
-      },
-      avatar: {
-        type: String,
+      profile: {
+        type: Schema.Types.ObjectId,
+        ref: "profile",
       },
       date: {
         type: Date,

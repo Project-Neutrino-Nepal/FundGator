@@ -16,6 +16,7 @@ const adminRouter3 = require("./apis/admin/TagsApi");
 const portfolioRouter = require("./apis/PortfolioApi");
 const reasonRouter=require("./apis/reasonApi");
 const khaltiRouter = require("./apis/KhaltiApi");
+const postRouter = require("./apis/PostApi");
 //const chatRouter = require("./apis/chatApi");
 const messageRouter = require("./apis/messageApi");
 const conversationRouter = require("./apis/conversationApi");
