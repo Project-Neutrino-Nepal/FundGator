@@ -4,7 +4,6 @@ import UnderlineInput from "./UnderlineInput";
 import { TbCurrencyRupee, TbWorld } from "react-icons/tb";
 import { IoLocationSharp } from "react-icons/io5";
 import { AiFillFacebook } from "react-icons/ai";
-import Dropdown from "react-bootstrap/Dropdown";
 
 import {
   FaInstagramSquare,
@@ -17,7 +16,6 @@ import { useParams } from "react-router-dom";
 const Basic = ({ values, handleChange }) => {
   const [addlink, setlink] = useState(0);
   const [show, setShow] = useState(false);
-  const [category, setCategory] = useState();
   const { id } = useParams();
   const list = [
     {
@@ -86,29 +84,28 @@ const Basic = ({ values, handleChange }) => {
         placeholder={"Enter Company Name"}
         label={"Company Name"}
         value={id}
-        // handleChange={handleChange}
+        handleChange={handleChange}
         name={"name"}
       />
 
       <div className="d-flex flex-wrap justify-content-between mt-3 fw-semibold fs-6 ">
         <div>
-          <label htmlFor="" className="text-dark mb-1 ">
+          <label  className="text-dark mb-1 ">
             Categories
           </label>{" "}
           <br />
           <select
             id="dropdown"
-            type={"text"}
             value={values.category}
             defaultValue={values.category}
-            handleChange={handleChange}
+            onChange={handleChange}
+            name="category"
             className="border border-dark rounded-3 p-2"
           >
             <option value="Select Category">Select Category</option>
             <option value="Fintech">Fintech</option>
             <option value="IT">IT</option>
           </select>
-          <h1>{values.category}</h1>
         </div>
         <div>
           <label htmlFor="" className="text-dark mb-1 ">
@@ -118,10 +115,10 @@ const Basic = ({ values, handleChange }) => {
           <select
             id="dropdown"
             value={values.tag}
-            type={"text"}
             defaultValue={values.tag}
+            onChange={handleChange}
+            name="tag"
             className="border border-dark rounded-3 p-2"
-            handleChange={handleChange}
           >
             <option value="Select Category">Select Tags</option>
             <option value="Fintech">Fintech</option>

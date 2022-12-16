@@ -20,7 +20,7 @@ const postRouter = require("./apis/PostApi");
 //const chatRouter = require("./apis/chatApi");
 const messageRouter = require("./apis/messageApi");
 const conversationRouter = require("./apis/conversationApi");
-
+const postRouter = require("./apis/PostApi");
 
 
 
