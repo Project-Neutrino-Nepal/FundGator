@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Labelinput from "./Labelinput";
 import UnderlineInput from "./UnderlineInput";
 import { TbCurrencyRupee, TbWorld } from "react-icons/tb";
@@ -13,6 +13,7 @@ import {
   FaBlogger,
 } from "react-icons/fa";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 const Basic = ({ values, handleChange }) => {
   const [addlink, setlink] = useState(0);
   const [show, setShow] = useState(false);
@@ -77,6 +78,22 @@ const Basic = ({ values, handleChange }) => {
       setlink((addlink) => addlink + 1);
     }
   };
+  const config = {
+    headers: {
+      authorization: localStorage.getItem("token"),
+    },
+  };
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/admin/api/get-all-categories", config)
+      .then((res) => {
+        let category = res.data.categories;
+        setCategories(category);
+      });
+  });
+
   return (
     <div className="form-content">
       <Labelinput
@@ -90,10 +107,7 @@ const Basic = ({ values, handleChange }) => {
 
       <div className="d-flex flex-wrap justify-content-between mt-3 fw-semibold fs-6 ">
         <div>
-          <label  className="text-dark mb-1 ">
-            Categories
-          </label>{" "}
-          <br />
+          <label className="text-dark mb-1 ">Categories</label> <br />
           <select
             id="dropdown"
             value={values.category}
@@ -102,9 +116,15 @@ const Basic = ({ values, handleChange }) => {
             name="category"
             className="border border-dark rounded-3 p-2"
           >
-            <option value="Select Category">Select Category</option>
+          {categories.map((category) => {
+            return (
+              <option value={category.name} >{category.name}</option>
+            );
+          })}
+            
+            {/* <option value="Select Category">Select Category</option>
             <option value="Fintech">Fintech</option>
-            <option value="IT">IT</option>
+            <option value="IT">IT</option> */}
           </select>
         </div>
         <div>

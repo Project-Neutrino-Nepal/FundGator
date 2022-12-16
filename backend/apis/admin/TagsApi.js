@@ -114,7 +114,30 @@ router.delete("/api/delete-tags/:id", userAuth, async (req, res) => {
  * @access Private
  * @type GET
  * */
+ router.get("/api/get-tags",userAuth,async(req,res)=>{
+    try {
+        let tags = await Tags.find();
+        console.log(tags);
+        if(!tags){
+            return res.status(404).json({
+                success:false,
+                message:"Tags not found"
+            })
+        }
 
+        res.status(200).json({
+            success:true,
+            message:"Tags fetched successfully",
+            tags
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+ })
 
 
 

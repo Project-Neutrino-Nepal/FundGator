@@ -106,4 +106,33 @@ router.delete("/api/delete-category/:id", userAuth, async (req, res) => {
   }
 });
 
+/**
+ * @description To Get All Categories
+ * @api /admin/api/get-all-categories
+ * @access private
+ * @type GET
+ * */
+ 
+router.get ("/api/get-all-categories", userAuth, async (req, res) => {
+  try {
+    let categories = await Category.find();
+    res.status(200).json({
+      success: true,
+      message: "Categories fetched successfully",
+      categories,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
+
+
+
+
+
 module.exports = router;
