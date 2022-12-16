@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import "../css/homepage.css";
 import Basenav from "./basenav";
 
@@ -73,17 +74,20 @@ const Homepage = () => {
     const formData = new FormData();
     formData.append("img", values.img);
     formData.append("vid", values.vid);
-    formData.append("doc", values.doc);
     formData.append("description", values.description);
     try {
       axios
         .post("http://localhost:5000/posts/api/create-post", formData, config)
         .then((res) => {
-          alert("Post created successfully");
-          console.log(res.data);
+          toast.success(
+            res.data.message,
+            setTimeout(function () {
+              window.location.reload();
+            }, 2000)
+          );
         });
     } catch (err) {
-      alert("Error in creating post");
+      toast.error("Post Creation Failed");
       console.log(err);
     }
   };
@@ -96,6 +100,7 @@ const Homepage = () => {
         .get("http://localhost:5000/posts/api/get-all-posts", config)
         .then((res) => {
           setFeeds(res.data.posts);
+          console.log(res.data.posts);
         });
     } catch (err) {
       console.log(err);
@@ -104,6 +109,7 @@ const Homepage = () => {
 
   return (
     <>
+      <ToastContainer />
       <div className="basenav">
         <Basenav />
       </div>

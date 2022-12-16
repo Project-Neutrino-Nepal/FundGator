@@ -55,6 +55,7 @@ const Signin = () => {
                   if (res.data.user.admin === true) {
                     window.location.href = "/dashboard";
                     localStorage.setItem("token", res.data.token);
+                    localStorage.setItem("id", res.data.user._id);
                     localStorage.setItem("admin", res.data.user.admin);
                   } else {
                     if (res.data.user.isFirstTime === true) {
