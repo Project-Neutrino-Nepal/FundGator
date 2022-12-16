@@ -181,7 +181,7 @@ const Homepage = () => {
             </Link>
           </li>
           <li>
-            <Link to="/profile/Portfolio" className="nav-link text-white">
+            <Link to="/watchlist" className="nav-link text-white">
               <i className="fa fa-bookmark" />
               <span className="ms-2">My Watchlist</span>
             </Link>

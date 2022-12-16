@@ -6,11 +6,11 @@ const { find } = require("../models/companyModel");
 const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
 const Portfolio = require("../models/portfolioModel");
+const Watchlist = require("../models/watchlistModel");
 const uploadCompanyVideo =
   require("../middlewares/uploader").uploadCompanyVideo;
 const uploadCompanyImage =
   require("../middlewares/uploader").uploadCompanyImage;
-
 
 const DOMAIN = "http://127.0.0.1:5000/";
 
@@ -654,6 +654,94 @@ router.get("/api/get-investors/:id", async (req, res) => {
       success: true,
       message: "Investors Retrieved Successfully",
       investors,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To put company in watchlist
+ * @api /events/api/watchlist/:id
+ * @access Private
+ * @type PUT
+ **/
+
+router.put("/api/watchlist/:id", userAuth, async (req, res) => {
+  try {
+    let investor = await User.findOne({ _id: req.user._id });
+    if (!investor) {
+      return res.status(400).json({
+        success: false,
+        message: "Investor not found",
+      });
+    }
+    let company = await Company.findOne({ _id: req.params.id });
+    if (!company) {
+      return res.status(400).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+    let watchlist = await Watchlist.findOne({
+      user: req.user._id,
+      company: req.params.id,
+    });
+    if (watchlist) {
+      return res.status(400).json({
+        success: false,
+        message: "Company already in watchlist",
+      });
+    }
+    let newWatchlist = new Watchlist({
+      user: req.user._id,
+      company: req.params.id,
+    });
+    await newWatchlist.save();
+    return res.status(200).json({
+      success: true,
+      message: "Company added to watchlist",
+      newWatchlist,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To Get all watchlist of investor
+ * @api /events/api/get-watchlist/:id
+ * @access Private
+ * @type GET
+ **/
+
+router.get("/api/get-watchlist/", userAuth, async (req, res) => {
+  try {
+    let investor = await User.findOne({ _id: req.user._id });
+    if (!investor) {
+      return res.status(400).json({
+        success: false,
+        message: "Investor not found",
+      });
+    }
+
+    // check user id in watchlist
+    let watchlist = await Watchlist.find({ user: req.user._id })
+      .populate("company")
+      .exec();
+
+    return res.status(200).json({
+      success: true,
+      message: "Companies Retrieved Successfully",
+      watchlist,
     });
   } catch (err) {
     console.log(err);

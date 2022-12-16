@@ -9,7 +9,7 @@ import {
 } from "react-icons/ai";
 import { FaPlay, FaShare } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import khalticonfig from "../../components/Khalti/KhaltiConfig";
 import {
@@ -110,6 +110,28 @@ const Details = () => {
         console.log(err);
       });
   }, []);
+
+  // watchlist handler
+  const watchlistHandler = () => {
+    if (!localStorage.getItem("token")) {
+      toast.error("Please login to add to watchlist");
+      return;
+    }
+    axios
+      .put("http://localhost:5000/company/api/watchlist/" + id, id, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        toast.success(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data.message);
+      });
+  };
 
   return (
     <Wrapper>
@@ -267,7 +289,12 @@ const Details = () => {
           >
             Invest
           </button>
-          <button className="btn-bookmark">
+          <button
+            className="btn-bookmark"
+            onClick={() => {
+              watchlistHandler();
+            }}
+          >
             <AiOutlineHeart />
             <span>Watch for updates</span>
           </button>
