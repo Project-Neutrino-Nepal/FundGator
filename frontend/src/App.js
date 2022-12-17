@@ -12,6 +12,7 @@ import InvestorAdmin from "./components/admin/pages/investor";
 import Profile from "./components/admin/pages/Profile";
 import Homepage from "./components/homepage";
 
+
 import Navbar from "./components/navbar.js";
 import Signup from "./components/Signup";
 import Signin from "./components/singin";
@@ -30,6 +31,7 @@ import {
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
 
 import RaisePage from "./pages/RaisePage/RaisePage";
+import Messenger from "./components/message/messenger/Messenger";
 
 function App() {
   return (
@@ -132,6 +134,7 @@ function App() {
             </ProtectedRoute>
           }
         >
+         <Route path="/chat" element={<Messenger/>}/>
           <Route path="" element={<Home />} />
 
           {/* There is no need of tables for now */}
@@ -145,6 +148,8 @@ function App() {
           />
 
           {/* Add others routes of dashboard below */}
+         
+
         </Route>
       </Routes>
     </BrowserRouter>
