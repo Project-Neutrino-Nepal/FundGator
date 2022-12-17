@@ -14,13 +14,12 @@ const adminRouter = require("./apis/admin/AuthApi");
 const adminRouter2 = require("./apis/admin/CategoryApi");
 const adminRouter3 = require("./apis/admin/TagsApi");
 const portfolioRouter = require("./apis/PortfolioApi");
-const reasonRouter=require("./apis/reasonApi");
+const reasonRouter = require("./apis/reasonApi");
 const khaltiRouter = require("./apis/KhaltiApi");
 const postRouter = require("./apis/PostApi");
 //const chatRouter = require("./apis/chatApi");
 const messageRouter = require("./apis/messageApi");
 const conversationRouter = require("./apis/conversationApi");
-
 
 // Import passport middleware
 require("./middlewares/passport-middleware");
@@ -37,12 +36,12 @@ app.use('/uploads', express.static('uploads'));
 // Inject Sub router and apis
 app.use("/users", userRouter);
 app.use("/company", companyRouter);
-app.use("/reason",reasonRouter);
+app.use("/reason", reasonRouter);
 app.use("/profile", profileRouter);
 app.use("/admin", adminRouter, adminRouter2, adminRouter3);
 app.use("/portfolio", portfolioRouter);
 app.use("/khalti", khaltiRouter);
-app.use("/posts",postRouter);
+app.use("/posts", postRouter);
 //app.use("/chat", chatRouter);
 app.use("/message", messageRouter);
 app.use("/conversation", conversationRouter);

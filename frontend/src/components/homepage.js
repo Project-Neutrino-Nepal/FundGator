@@ -1,13 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import "../css/homepage.css";
 import Basenav from "./basenav";
-import Feeds from "./feeds";
 
 import { BsCardImage } from "react-icons/bs";
 import { IoCloseCircleSharp, IoDocumentTextSharp } from "react-icons/io5";
 import { RiVideoFill } from "react-icons/ri";
+import Feeds from "./feeds";
 
 const Homepage = () => {
   const [name, setName] = useState("");
@@ -73,23 +74,42 @@ const Homepage = () => {
     const formData = new FormData();
     formData.append("img", values.img);
     formData.append("vid", values.vid);
-    formData.append("doc", values.doc);
     formData.append("description", values.description);
     try {
       axios
         .post("http://localhost:5000/posts/api/create-post", formData, config)
         .then((res) => {
-          alert("Post created successfully");
-          console.log(res.data);
+          toast.success(
+            res.data.message,
+            setTimeout(function () {
+              window.location.reload();
+            }, 2000)
+          );
         });
     } catch (err) {
-      alert("Error in creating post");
+      toast.error("Post Creation Failed");
       console.log(err);
     }
   };
 
+  // get feeds from API
+  const [feeds, setFeeds] = useState([]);
+  useEffect(() => {
+    try {
+      axios
+        .get("http://localhost:5000/posts/api/get-all-posts", config)
+        .then((res) => {
+          setFeeds(res.data.posts);
+          console.log(res.data.posts);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
   return (
     <>
+      <ToastContainer />
       <div className="basenav">
         <Basenav />
       </div>
@@ -161,7 +181,7 @@ const Homepage = () => {
             </Link>
           </li>
           <li>
-            <Link to="/profile/Portfolio" className="nav-link text-white">
+            <Link to="/watchlist" className="nav-link text-white">
               <i className="fa fa-bookmark" />
               <span className="ms-2">My Watchlist</span>
             </Link>
@@ -181,10 +201,9 @@ const Homepage = () => {
         </ul>
       </div>
       <div className="container-fluid col-9 mt-2  " id="feeds-position">
-        <Feeds />
-        <Feeds />
-
-        {/* </div> */}
+        {feeds.map((feed) => {
+          return <Feeds key={feed._id} feed={feed} />;
+        })}
       </div>
       <div
         className="modal fade"

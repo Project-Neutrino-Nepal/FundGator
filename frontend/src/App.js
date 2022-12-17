@@ -16,6 +16,7 @@ import Homepage from "./components/homepage";
 import Navbar from "./components/navbar.js";
 import Signup from "./components/Signup";
 import Signin from "./components/singin";
+import WatchList from "./components/watchlist";
 import {
   CompanyRegisterPage,
   Details,
@@ -29,6 +30,7 @@ import {
   WelcomePage,
 } from "./pages";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
+import { Watchlist } from "./pages/ProfilePage/component";
 
 import RaisePage from "./pages/RaisePage/RaisePage";
 import Messenger from "./components/message/messenger/Messenger";
@@ -57,6 +59,15 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
+        <Route
+          path="/watchlist"
+          element={
+            <ProtectedRoute>
+              <WatchList />
+            </ProtectedRoute>
+          }
+        ></Route>
+
         <Route
           path="/profile"
           element={
@@ -139,12 +150,37 @@ function App() {
 
           {/* There is no need of tables for now */}
           {/* <Route path="/dashboard/tables" element={<Tables />} /> */}
-          <Route path="/dashboard/profile" element={<Profile />} />
-          <Route path="/dashboard/company_admin" element={<CompanyAdmin />} />
-          <Route path="/dashboard/investor_admin" element={<InvestorAdmin />} />
+          <Route
+            path="/dashboard/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/company_admin"
+            element={
+              <ProtectedRoute>
+                <CompanyAdmin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/investor_admin"
+            element={
+              <ProtectedRoute>
+                <InvestorAdmin />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/dashboard/company-details/:id"
-            element={<CompanyDetails />}
+            element={
+              <ProtectedRoute>
+                <CompanyDetails />
+              </ProtectedRoute>
+            }
           />
 
           {/* Add others routes of dashboard below */}
@@ -153,7 +189,6 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
-    
   );
 }
 

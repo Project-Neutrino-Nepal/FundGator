@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Labelinput from "./Labelinput";
 import UnderlineInput from "./UnderlineInput";
-import { TbWorld } from "react-icons/tb";
+import { TbCurrencyRupee, TbWorld } from "react-icons/tb";
 import { IoLocationSharp } from "react-icons/io5";
 import { AiFillFacebook } from "react-icons/ai";
+
 import {
   FaInstagramSquare,
   FaTwitterSquare,
@@ -12,6 +13,7 @@ import {
   FaBlogger,
 } from "react-icons/fa";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 const Basic = ({ values, handleChange }) => {
   const [addlink, setlink] = useState(0);
   const [show, setShow] = useState(false);
@@ -76,15 +78,83 @@ const Basic = ({ values, handleChange }) => {
       setlink((addlink) => addlink + 1);
     }
   };
+  const config = {
+    headers: {
+      authorization: localStorage.getItem("token"),
+    },
+  };
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/admin/api/get-all-categories", config)
+      .then((res) => {
+        let category = res.data.categories;
+        setCategories(category);
+      });
+  });
+
   return (
     <div className="form-content">
-      <Labelinput 
+      <Labelinput
         type={"text"}
         placeholder={"Enter Company Name"}
         label={"Company Name"}
         value={id}
         handleChange={handleChange}
-        name={"name"} 
+        name={"name"}
+      />
+
+      <div className="d-flex flex-wrap justify-content-between mt-3 fw-semibold fs-6 ">
+        <div>
+          <label className="text-dark mb-1 ">Categories</label> <br />
+          <select
+            id="dropdown"
+            value={values.category}
+            defaultValue={values.category}
+            onChange={handleChange}
+            name="category"
+            className="border border-dark rounded-3 p-2"
+          >
+          {categories.map((category) => {
+            return (
+              <option value={category.name} >{category.name}</option>
+            );
+          })}
+            
+            {/* <option value="Select Category">Select Category</option>
+            <option value="Fintech">Fintech</option>
+            <option value="IT">IT</option> */}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="" className="text-dark mb-1 ">
+            Tags
+          </label>{" "}
+          <br />
+          <select
+            id="dropdown"
+            value={values.tag}
+            defaultValue={values.tag}
+            onChange={handleChange}
+            name="tag"
+            className="border border-dark rounded-3 p-2"
+          >
+            <option value="Select Category">Select Tags</option>
+            <option value="Fintech">Fintech</option>
+            <option value="IT">IT</option>
+          </select>
+        </div>
+      </div>
+
+      <label htmlFor=""> Fund amount *</label>
+      <UnderlineInput
+        type={"number"}
+        index={<TbCurrencyRupee />}
+        placeholder={"Raise fund amount"}
+        value={values.amount}
+        handleChange={handleChange}
+        name={"amount"}
       />
 
       <label htmlFor="">The Top Reason to Invest</label>

@@ -20,6 +20,12 @@ const ProfileSchema = new Schema(
       type: String,
       default: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
     },
+    cit_front: {
+      type: String,
+    },
+    cit_back: {
+      type: String,
+    },
     phone: {
       type: String,
     },
@@ -30,18 +36,6 @@ const ProfileSchema = new Schema(
       type: String,
     },
     pan_No: {
-      type: String,
-    },
-    passport_No: {
-      type: String,
-    },
-    passport_Expiry: {
-      type: String,
-    },
-    passport_Issue_country: {
-      type: String,
-    },
-    passport_Issue_date: {
       type: String,
     },
     address: {
@@ -62,4 +56,4 @@ const ProfileSchema = new Schema(
 );
 
 const Profile = model("profile", ProfileSchema);
-module.exports   = Profile;
+module.exports = Profile;

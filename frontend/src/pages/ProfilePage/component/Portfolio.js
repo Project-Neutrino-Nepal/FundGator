@@ -50,7 +50,7 @@ const Portfolio = () => {
               </div>
               {/* add card that has amount invested, date of investment, and button to withdraw */}
 
-              <div className="card w-50 justify-content-center">
+              <div className="card w-75 justify-content-center">
                 <div className="card-body">
                   <p className="fs-5">
                     Amount Invested
@@ -62,11 +62,13 @@ const Portfolio = () => {
                       :&nbsp;{new Date(portfolio.date).toLocaleDateString()}
                     </span>
                   </p>
-                  <div className="d-flex flex-nowrap">
-                    <button className="btn btn-success m-2" 
-                    style={{backgroundColor: "green"}}
-                    >Withdraw</button>
-                    <button className="btn btn-primary m-2">Re Invest</button>
+                  <div className="d-flex flex-nowrap justify-content-center ">
+                  <div
+                        className="btn btn-success m-2"
+                        style={{ backgroundColor: "green" }}
+                      >
+                        Withdraw
+                      </div><div className="btn btn-primary m-2 ">Re Invest</div>
                   </div>
                 </div>
               </div>

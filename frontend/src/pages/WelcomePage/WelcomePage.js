@@ -12,6 +12,8 @@ const WelcomePage = () => {
   const [website, setWebsite] = useState("");
   const [skills, setSkills] = useState("");
   const [name, setName] = useState("");
+  const [imageFront, setImageFront] = useState("");
+  const [imageBack, setImageBack] = useState("");
 
   const config = {
     headers: {
@@ -67,13 +69,7 @@ const WelcomePage = () => {
       .put("http://localhost:5000/users/api/update-user/" + name, config)
       .then((res) => {
         if (res.data.success) {
-          console.log(res.data);
-          toast.success(
-            res.data.message,
-            setTimeout(function () {
-              window.location.href = "/homepage";
-            }, 2000)
-          );
+          console.log(res.data.message);
         }
       });
   };
@@ -97,9 +93,13 @@ const WelcomePage = () => {
             if (response.data.success) {
               toast.success(
                 response.data.message,
-                setTimeout(function () {
-                  window.location.href = "/homepage";
-                }, 2000)
+                // setTimeout(function () {
+                //   if (localStorage.getItem("admin") === "true") {
+                //     window.location.href = "/dashboard";
+                //   } else {
+                //     window.location.href = "/homepage";
+                //   }
+                // }, 2000)
               );
             }
           });
@@ -108,11 +108,38 @@ const WelcomePage = () => {
       }
     }
   };
+  // Upload Images
+  const UpdateProfileImage = (e) => {
+    e.preventDefault();
+    let Imagedata = new FormData();
+    Imagedata.append("cit_front", imageFront);
+    Imagedata.append("cit_back", imageBack);
+    console.log(imageFront);
+    if (validate()) {
+      try {
+        axios
+          .put(
+            "http://localhost:5000/profile/api/update-cit-image",
+            Imagedata,
+            config
+          )
+          .then((response) => {
+            if (response.data.success) {
+              console.log(response.data.message);
+            }
+          });
+      } catch (error) {
+        console.log(error.response.data.message);
+      }
+    }
+  };
 
   return (
     <Wrapper>
       <ToastContainer />
-      <form id="profileUpdate" style={{ margin: "80px" }}>
+      <form id="profileUpdate" style={{ margin: "80px" }}
+      method="POST" encType="multipart/form-data">
+      
         <div className="welcome mt-5">
           <h2 className="heading" id="InfoText">
             Investor Information
@@ -159,6 +186,34 @@ const WelcomePage = () => {
                 setAddress(e.target.value);
               }}
             />
+            <div className="image-input m-2">
+              <label htmlFor="image">
+                Citizen Validation Card Front:&nbsp;&nbsp; &emsp; &nbsp;
+              </label>
+              <input
+                type="file"
+                name="image"
+                id="image"
+                accept="image/*"
+                onChange={(e) => {
+                  setImageFront(e.target.files[0]);
+                }}
+              />
+            </div>
+            <div className="image-input m-2">
+              <label htmlFor="image">
+                Citizen Validation Card Back:&nbsp;&nbsp; &emsp; &nbsp;
+              </label>
+              <input
+                type="file"
+                name="image"
+                id="image"
+                accept="image/*"
+                onChange={(e) => {
+                  setImageBack(e.target.files[0]);
+                }}
+              />
+            </div>
           </div>
 
           <p>
@@ -201,6 +256,7 @@ const WelcomePage = () => {
               onClick={(e) => {
                 UpdateProfiles(e);
                 UpdateUser(e);
+                UpdateProfileImage(e);
               }}
             >
               SAVE & CONTINUE
