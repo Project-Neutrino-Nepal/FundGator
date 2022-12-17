@@ -12,6 +12,7 @@ import InvestorAdmin from "./components/admin/pages/investor";
 import Profile from "./components/admin/pages/Profile";
 import Homepage from "./components/homepage";
 
+
 import Navbar from "./components/navbar.js";
 import Signup from "./components/Signup";
 import Signin from "./components/singin";
@@ -181,6 +182,8 @@ function App() {
           />
 
           {/* Add others routes of dashboard below */}
+         
+
         </Route>
       </Routes>
     </BrowserRouter>
