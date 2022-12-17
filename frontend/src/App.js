@@ -33,7 +33,6 @@ import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
 import { Watchlist } from "./pages/ProfilePage/component";
 
 import RaisePage from "./pages/RaisePage/RaisePage";
-import Messenger from "./components/message/messenger/Messenger";
 
 function App() {
   return (
@@ -145,7 +144,6 @@ function App() {
             </ProtectedRoute>
           }
         >
-         <Route path="/chat" element={<Messenger/>}/>
           <Route path="" element={<Home />} />
 
           {/* There is no need of tables for now */}
