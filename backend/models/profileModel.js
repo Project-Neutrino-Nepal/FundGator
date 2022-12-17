@@ -20,6 +20,12 @@ const ProfileSchema = new Schema(
       type: String,
       default: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
     },
+    cit_front: {
+      type: String,
+    },
+    cit_back: {
+      type: String,
+    },
     phone: {
       type: String,
     },

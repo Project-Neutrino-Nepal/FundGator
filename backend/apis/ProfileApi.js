@@ -46,7 +46,6 @@ router.put(
         },
         { new: true }
       );
-      console.log(filename);
 
       res.status(200).json({
         success: true,
@@ -57,7 +56,66 @@ router.put(
       res.status(500).json({
         success: false,
         message: "Internal server error",
-        error: error.message,
+      });
+    }
+  }
+);
+
+/**
+ * @description To update multiple CIT Image of authenticated user profile
+ * @api /users/api/update-cit-image
+ * @access PRIVATE
+ * @type PUT <multipart-form> request
+ */
+
+router.put(
+  "/api/update-cit-image",
+  userAuth,
+  uploadProfileImage.fields([
+    { name: "cit_front", maxCount: 1 },
+    { name: "cit_back", maxCount: 1 },
+  ]),
+  async (req, res) => {
+    try {
+      let cit_front = req.files.cit_front[0];
+      let cit_back = req.files.cit_back[0];
+      const user = await User.findById(req.user._id);
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+      if (cit_front === undefined || cit_front === null) {
+        cit_front = DOMAIN + "uploads/assets/" + "default_cit_front.png";
+      } else {
+        cit_front = DOMAIN + "uploads/profile-images/" + cit_front.filename;
+      }
+
+      if (cit_back === undefined || cit_back === null) {
+        cit_back = DOMAIN + "uploads/assets/" + "default_cit_back.png";
+      } else {
+        cit_back = DOMAIN + "uploads/profile-images/" + cit_back.filename;
+      }
+
+      const updatedProfile = await Profile.findOneAndUpdate(
+        { user: req.user._id },
+        {
+          cit_front,
+          cit_back,
+        },
+        { new: true }
+      );
+
+      res.status(200).json({
+        success: true,
+        message: "Profile updated successfully with image",
+        data: updatedProfile,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
       });
     }
   }
@@ -140,7 +198,13 @@ router.get("/api/get-profiles", userAuth, async (req, res) => {
         message: "User not found.",
       });
     }
-    let profiles = await Profile.find().populate("user", ["name", "email","admin","status","createdAt"]);
+    let profiles = await Profile.find().populate("user", [
+      "name",
+      "email",
+      "admin",
+      "status",
+      "createdAt",
+    ]);
     if (!profiles) {
       return res.status(400).json({
         success: false,
@@ -160,6 +224,5 @@ router.get("/api/get-profiles", userAuth, async (req, res) => {
     });
   }
 });
-
 
 module.exports = router;

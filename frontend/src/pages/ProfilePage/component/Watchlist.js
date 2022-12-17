@@ -32,7 +32,7 @@ function Watchlist() {
 
       <div className="d-flex flex-wrap   ">
         {companies.map((company) => (
-          <Link to={`/company/${company._id}`}>
+          <Link to={`/detail/${company._id}`}>
             <Company key={company._id} company={company} />
           </Link>
         ))}

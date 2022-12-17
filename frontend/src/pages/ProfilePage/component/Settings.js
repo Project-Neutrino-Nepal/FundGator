@@ -1,3 +1,4 @@
+import { Card } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
@@ -17,6 +18,8 @@ function Settings() {
   const [skills, setSkills] = useState("");
   const [legal_name, setLegal_name] = useState("");
   const [phone, setPhone] = useState("");
+  const [imageFront, setImageFront] = useState("");
+  const [imageBack, setImageBack] = useState("");
 
   const [formvalue, setform] = useState();
   const onsave = ({ name, value }) => {
@@ -47,6 +50,8 @@ function Settings() {
         setSkills(profile.skills);
         setLegal_name(profile.legal_name);
         setPhone(profile.phone);
+        setImageFront(profile.cit_front);
+        setImageBack(profile.cit_back);
       });
   }, [formvalue]);
 
@@ -95,7 +100,6 @@ function Settings() {
             type={"text"}
             placeholder={bio}
           />
-
           <UserInput
             name={"country"}
             value={country}
@@ -104,7 +108,6 @@ function Settings() {
             type={"text"}
             placeholder={country}
           />
-
           <UserInput
             name={"pan_No"}
             value={panNo}
@@ -113,9 +116,29 @@ function Settings() {
             type={"Number"}
             placeholder={panNo}
           />
+          <div className="pancard d-flex justify-content-between mt-2">
+            <div
+              className="pancard-front img-fluid"
+              style={{ height: "100%", width: "100%" }}
+            >
+              <label htmlFor="">PAN Card Front</label>
+              <Card className="border border-2">
+                <img src={imageFront} alt="front" />
+              </Card>
+            </div>
+            <div
+              className="pancard-back img-fluid"
+              style={{ height: "100%", width: "100%" }}
+            >
+              <label htmlFor="">PAN Card Back</label>
+              <Card className="border border-2">
+                <img src={imageBack} alt="Back" />
+              </Card>
+            </div>
+          </div>
         </section>
 
-        <section className="publicprofile">
+        <section className="publicprofile mt-5">
           <h4>Public Info</h4>
           <UserInput
             name={"name"}
