@@ -30,6 +30,9 @@ router.post("/api/create-reason/:name", userAuth, async (req, res) => {
       let tag = await Tags.findOne({ name: body.tag[i] });
       tagID.push(tag._id);
     }
+
+    console.log(tagID);
+    console.log(categoryID);
     const company = await Company.findOne({ name: req.params.name });
     if (!company) {
       return res.status(404).json({
