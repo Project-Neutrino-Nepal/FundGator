@@ -107,6 +107,7 @@ const Feeds = ({ feed }) => {
                 <img
                   src={feed.profile.avatar}
                   width={50}
+                  height={50}
                   className="rounded-circle"
                 />
                 <div className="d-flex flex-column ms-2">
