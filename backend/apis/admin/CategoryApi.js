@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Category = require("../../models/categoryModel");
 const userAuth = require("../../middlewares/auth-guard");
+const User = require("../../models/userModel");
 
 /**
  * @description To Create Category
@@ -13,6 +14,13 @@ const userAuth = require("../../middlewares/auth-guard");
 router.post("/api/create-category", userAuth, async (req, res) => {
   try {
     let { body } = req;
+    let user = await User.findOne({ _id: req.user._id });
+    if (!user.admin) {
+      return res.status(400).json({
+        success: false,
+        message: "You are not an admin",
+      });
+    }
     let category = await Category.findOne({ name: body.name });
     if (category) {
       return res.status(400).json({
@@ -112,8 +120,8 @@ router.delete("/api/delete-category/:id", userAuth, async (req, res) => {
  * @access private
  * @type GET
  * */
- 
-router.get ("/api/get-all-categories", userAuth, async (req, res) => {
+
+router.get("/api/get-all-categories", userAuth, async (req, res) => {
   try {
     let categories = await Category.find();
     res.status(200).json({
@@ -129,10 +137,5 @@ router.get ("/api/get-all-categories", userAuth, async (req, res) => {
     });
   }
 });
-
-
-
-
-
 
 module.exports = router;
