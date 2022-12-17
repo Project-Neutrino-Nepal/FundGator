@@ -93,13 +93,13 @@ const WelcomePage = () => {
             if (response.data.success) {
               toast.success(
                 response.data.message,
-                // setTimeout(function () {
-                //   if (localStorage.getItem("admin") === "true") {
-                //     window.location.href = "/dashboard";
-                //   } else {
-                //     window.location.href = "/homepage";
-                //   }
-                // }, 2000)
+                setTimeout(function () {
+                  if (localStorage.getItem("admin") === "true") {
+                    window.location.href = "/dashboard";
+                  } else {
+                    window.location.href = "/homepage";
+                  }
+                }, 2000)
               );
             }
           });
