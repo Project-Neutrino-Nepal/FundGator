@@ -9,10 +9,10 @@ const ReasonSchema = new Schema({
     type:Schema.Types.ObjectId,
     ref:"category"
   },
-  tag:{
+  tag:[{
     type:Schema.Types.ObjectId,
     ref:"tag"
-  },
+  }],
 
   reason0: {
     type: String,
