@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import { useState } from "react";
 import Conversation from "../conversation/conversation";
 import Message from "../Message/Message";
-// import "./messenger.scss";
 import axios from "axios";
 import { io } from "socket.io-client";
 const Messenger = () => {
