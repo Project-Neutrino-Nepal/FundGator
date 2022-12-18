@@ -1,44 +1,23 @@
 const { model, Schema } = require("mongoose");
 
-const MessageSchema = new Schema({
-
-    
-    conversationId: {
-      type: String,
-    },
+const MessageSchema = new Schema(
+  {
     sender: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
-    text: {
+    content: {
       type: String,
+      trim: true,
     },
-    postdatetime: {
-      type: String,
-    },
+    chat: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Chat",
+      },
+    ],
   },
   { timestamps: true }
-
-    // sender:{
-    //     type: Schema.Types.ObjectId,
-    //     ref: "User",
-    // },
-    // // receiver:{
-    // //     type: Schema.Types.ObjectId,
-    // //     ref: "user",
-    // // },
-    // content: {
-    //     type: String,
-    // },
-    // chat: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: "chat",
-    // },
-    // date: {
-    //     type: Date,
-    //     default: Date.now,
-    // },
-
-
 );
 
 const Message = model("Message", MessageSchema);
