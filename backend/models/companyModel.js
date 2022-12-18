@@ -94,6 +94,12 @@ const CompanySchema = new Schema(
         ref: "user",
       },
     ],
+    watchlist: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
   },
   { timestamps: true }
 );

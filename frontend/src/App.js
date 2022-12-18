@@ -147,7 +147,7 @@ function App() {
             </ProtectedRoute>
           }
         >
-        
+          <Route path="" element={<Home />} />
 
           {/* There is no need of tables for now */}
           {/* <Route path="/dashboard/tables" element={<Tables />} /> */}

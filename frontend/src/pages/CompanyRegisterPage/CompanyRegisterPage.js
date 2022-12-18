@@ -22,7 +22,7 @@ const CompanyRegisterPage = () => {
     blog: "",
     amount: "",
     category: "",
-    tag: "",
+    tag: [],
     reason0: "",
     reason1: "",
     reason2: "",
@@ -71,8 +71,12 @@ const CompanyRegisterPage = () => {
       authorization: localStorage.getItem("token"),
     },
   };
+  console.log(values.category);
+  console.log(values.tag);
 
   const data = {
+    category: values.category,
+    tag: values.tag,
     amount: values.amount,
     reason0: values.reason0,
     reason1: values.reason1,
@@ -111,6 +115,7 @@ const CompanyRegisterPage = () => {
       setValue({ ...values, teams: teams });
     }
   };
+
   const Addteam = (name, email) => {
     var newTeam = values.teams;
     newTeam.push({
@@ -134,6 +139,10 @@ const CompanyRegisterPage = () => {
     } else {
       setValue({ ...values, [e.target.name]: e.target.value });
     }
+  };
+
+  const handleTags = (e) => {
+    setValue({ ...values, tag: e });
   };
 
   const fileChange = (e, name) => {
@@ -163,10 +172,14 @@ const CompanyRegisterPage = () => {
             )
             .then((res) => {
               if (res.data.success) {
+                toast.success(
+                  res.data.message,
+                  
+                );
               }
             });
         } catch (error) {
-          console.log(error.response.data.message);
+          toast.error(error.response.data.message);
         }
       }
       // updating reasons and adding team members
@@ -238,6 +251,7 @@ const CompanyRegisterPage = () => {
       }
     }
   };
+
   return (
     <Wrapper>
       <ToastContainer />
@@ -265,7 +279,11 @@ const CompanyRegisterPage = () => {
 
       <section className="form-section">
         <div className={activeindex === 1 ? "form-child" : "d-none"}>
-          <Basic values={values} handleChange={handleChange} />
+          <Basic
+            values={values}
+            handleChange={handleChange}
+            handleTags={handleTags}
+          />
         </div>
         <div className={activeindex === 4 ? "form-child" : "d-none"}>
           <Visiblity

@@ -99,7 +99,7 @@ const Feeds = ({ feed }) => {
   console.log(feed.comments);
   return (
     <>
-      <div className="row d-flex align-items-center justify-content-center">
+      <div className="row d-flex align-items-center justify-content-center mb-2">
         <div className="col-md-7">
           <div className="card">
             <div className="d-flex justify-content-between p-2 px-3">
@@ -107,6 +107,7 @@ const Feeds = ({ feed }) => {
                 <img
                   src={feed.profile.avatar}
                   width={50}
+                  height={50}
                   className="rounded-circle"
                 />
                 <div className="d-flex flex-column ms-2">
@@ -176,13 +177,6 @@ const Feeds = ({ feed }) => {
                 </div>
                 <div className=" ">
                   <span>
-                    <Link className="btn btn-border-none">
-                      <i className="fa fa-heart  "></i> &nbsp; favorite
-                    </Link>
-                  </span>
-                </div>
-                <div className=" ">
-                  <span>
                     <Button
                       onClick={() => setModalShow(true)}
                       className="bg-none"
@@ -192,6 +186,7 @@ const Feeds = ({ feed }) => {
 
                     <MyVerticallyCenteredModal
                       show={modalShow}
+                      feed={feed}
                       onHide={() => setModalShow(false)}
                     />
                   </span>
@@ -244,7 +239,6 @@ const Feeds = ({ feed }) => {
           </div>
         </div>
       </div>
-      <br />
     </>
   );
 };

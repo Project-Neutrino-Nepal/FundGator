@@ -14,7 +14,7 @@ const Company = ({ company }) => {
         width: 300,
       }}
       cover={
-        <img alt="example" src={company.company.image} style={{ height: "25em" }} />
+        <img alt="example" src={company.image} style={{ height: "25em" }} />
       }
       actions={[
         <SettingOutlined key="setting" />,
@@ -22,7 +22,7 @@ const Company = ({ company }) => {
         <EllipsisOutlined key="ellipsis" />,
       ]}
     >
-      <Meta title={company.company.name} />
+      <Meta title={company.name} />
     </Card>
   );
 };

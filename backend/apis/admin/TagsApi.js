@@ -117,7 +117,6 @@ router.delete("/api/delete-tags/:id", userAuth, async (req, res) => {
  router.get("/api/get-tags",userAuth,async(req,res)=>{
     try {
         let tags = await Tags.find();
-        console.log(tags);
         if(!tags){
             return res.status(404).json({
                 success:false,

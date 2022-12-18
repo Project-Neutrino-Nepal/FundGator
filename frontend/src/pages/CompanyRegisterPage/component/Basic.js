@@ -4,6 +4,7 @@ import UnderlineInput from "./UnderlineInput";
 import { TbCurrencyRupee, TbWorld } from "react-icons/tb";
 import { IoLocationSharp } from "react-icons/io5";
 import { AiFillFacebook } from "react-icons/ai";
+import Multiselect from "multiselect-react-dropdown";
 
 import {
   FaInstagramSquare,
@@ -14,7 +15,7 @@ import {
 } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-const Basic = ({ values, handleChange }) => {
+const Basic = ({ values, handleChange,handleTags}) => {
   const [addlink, setlink] = useState(0);
   const [show, setShow] = useState(false);
   const { id } = useParams();
@@ -84,6 +85,8 @@ const Basic = ({ values, handleChange }) => {
     },
   };
   const [categories, setCategories] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [multipleSelect, setMultipleSelect] = useState([]);
 
   useEffect(() => {
     axios
@@ -91,6 +94,15 @@ const Basic = ({ values, handleChange }) => {
       .then((res) => {
         let category = res.data.categories;
         setCategories(category);
+      });
+  });
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/admin/api/get-tags", config)
+      .then((res) => {
+        let tag = res.data.tags;
+        setTags(tag);
       });
   });
 
@@ -105,47 +117,40 @@ const Basic = ({ values, handleChange }) => {
         name={"name"}
       />
 
-      <div className="d-flex flex-wrap justify-content-between mt-3 fw-semibold fs-6 ">
+      <div
+      >
         <div>
-          <label className="text-dark mb-1 ">Categories</label> <br />
+          <label className="text-dark mb-3 mt-3">Select Category</label> &emsp;
           <select
             id="dropdown"
             value={values.category}
-            defaultValue={values.category}
             onChange={handleChange}
             name="category"
             className="border border-dark rounded-3 p-2"
           >
-          {categories.map((category) => {
-            return (
-              <option value={category.name} >{category.name}</option>
-            );
+            {categories.map((category) => {
+              return <option value={category.name}>{category.name}</option>;
+            })}
+          </select>
+        </div>
+
+        <label htmlFor="" className="text-dark mb-1 ">
+          Choose Tags 1 or more
+        </label>
+        <Multiselect
+          isObject={false}
+          onKeyPressFn={function noRefCheck() {}}
+          onRemove={function noRefCheck() {}}
+          placeholder="Select Tags"
+          tag={multipleSelect}
+          options={tags.map((tag) => {
+            return tag.name;
           })}
-            
-            {/* <option value="Select Category">Select Category</option>
-            <option value="Fintech">Fintech</option>
-            <option value="IT">IT</option> */}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="" className="text-dark mb-1 ">
-            Tags
-          </label>{" "}
-          <br />
-          <select
-            id="dropdown"
-            value={values.tag}
-            defaultValue={values.tag}
-            onChange={handleChange}
-            name="tag"
-            className="border border-dark rounded-3 p-2"
-          >
-            <option value="Select Category">Select Tags</option>
-            <option value="Fintech">Fintech</option>
-            <option value="IT">IT</option>
-          </select>
-        </div>
+          
+          onSelect={handleTags}
+        />
       </div>
+      <h1>{multipleSelect}</h1>
 
       <label htmlFor=""> Fund amount *</label>
       <UnderlineInput
@@ -159,7 +164,6 @@ const Basic = ({ values, handleChange }) => {
 
       <label htmlFor="">The Top Reason to Invest</label>
       {list.map((item, index) => {
-        console.log(list);
         return (
           <UnderlineInput
             key={index}

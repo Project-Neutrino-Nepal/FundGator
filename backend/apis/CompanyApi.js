@@ -6,7 +6,6 @@ const { find } = require("../models/companyModel");
 const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
 const Portfolio = require("../models/portfolioModel");
-const Watchlist = require("../models/watchlistModel");
 const uploadCompanyVideo =
   require("../middlewares/uploader").uploadCompanyVideo;
 const uploadCompanyImage =
@@ -139,7 +138,7 @@ router.put(
       let file1 = req.files.pan_card[0];
       let file2 = req.files.citizenship_front[0];
       let file3 = req.files.citizenship_back[0];
-      
+
       if (file === undefined || file === null) {
         filename = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
       } else {
@@ -665,20 +664,13 @@ router.get("/api/get-investors/:id", async (req, res) => {
 
 /**
  * @description To put company in watchlist
- * @api /events/api/watchlist/:id
+ * @api /company/api/watchlist/:id
  * @access Private
  * @type PUT
  **/
 
 router.put("/api/watchlist/:id", userAuth, async (req, res) => {
   try {
-    let investor = await User.findOne({ _id: req.user._id });
-    if (!investor) {
-      return res.status(400).json({
-        success: false,
-        message: "Investor not found",
-      });
-    }
     let company = await Company.findOne({ _id: req.params.id });
     if (!company) {
       return res.status(400).json({
@@ -686,25 +678,22 @@ router.put("/api/watchlist/:id", userAuth, async (req, res) => {
         message: "Company not found",
       });
     }
-    let watchlist = await Watchlist.findOne({
-      user: req.user._id,
-      company: req.params.id,
-    });
+    let watchlist = await Company.findOneBy({ watchlist: req.user._id });
     if (watchlist) {
       return res.status(400).json({
         success: false,
         message: "Company already in watchlist",
       });
     }
-    let newWatchlist = new Watchlist({
-      user: req.user._id,
-      company: req.params.id,
-    });
-    await newWatchlist.save();
+    let updatedCompany = await Company.findOneAndUpdate(
+      { _id: req.params.id },
+      { $push: { watchlist: req.user._id } },
+      { new: true }
+    );
     return res.status(200).json({
       success: true,
-      message: "Company added to watchlist",
-      newWatchlist,
+      message: "Company Added to Watchlist Successfully",
+      updatedCompany,
     });
   } catch (err) {
     console.log(err);
@@ -716,27 +705,63 @@ router.put("/api/watchlist/:id", userAuth, async (req, res) => {
 });
 
 /**
- * @description To Get all watchlist of investor
- * @api /events/api/get-watchlist/:id
+ * @description To remove company from watchlist
+ * @api /events/api/watchlist/:id
  * @access Private
- * @type GET
- **/
+ * @type PUT
+ * */
 
-router.get("/api/get-watchlist/", userAuth, async (req, res) => {
+router.put("/api/remove-watchlist/:id", userAuth, async (req, res) => {
   try {
-    let investor = await User.findOne({ _id: req.user._id });
-    if (!investor) {
+    let company = await Company.findOne({ _id: req.params.id });
+    if (!company) {
       return res.status(400).json({
         success: false,
-        message: "Investor not found",
+        message: "Company not found",
       });
     }
+    let watchlist = await Company.findOne({ watchlist: req.user._id });
+    if (!watchlist) {
+      return res.status(400).json({
+        success: false,
+        message: "Company not in watchlist",
+      });
+    }
+    let updatedCompany = await Company.findOneAndUpdate(
+      { _id: req.params.id },
+      { $pull: { watchlist: req.user._id } },
+      { new: true }
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Company Removed from Watchlist Successfully",
+      updatedCompany,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
 
-    // check user id in watchlist
-    let watchlist = await Watchlist.find({ user: req.user._id })
-      .populate("company")
-      .exec();
+/**
+ * @description To get all companies in watchlist
+ * @api /events/api/watchlist
+ * @access Private
+ * @type GET
+ * */
 
+router.get("/api/get-watchlist", userAuth, async (req, res) => {
+  try {
+    let watchlist = await Company.find({ watchlist: req.user._id });
+    if (!watchlist) {
+      return res.status(400).json({
+        success: false,
+        message: "No Companies in Watchlist",
+      });
+    }
     return res.status(200).json({
       success: true,
       message: "Companies Retrieved Successfully",

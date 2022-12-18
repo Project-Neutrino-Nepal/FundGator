@@ -8,6 +8,8 @@ import {
   LinkedinShareButton,
 } from "react-share";
 function MyVerticallyCenteredModal(props) {
+  let feed = props.feed;
+  console.log(feed);
   return (
     <Modal
       {...props}
@@ -19,7 +21,10 @@ function MyVerticallyCenteredModal(props) {
         <Modal.Title id="contained-modal-title-vcenter">Share Post</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <FacebookShareButton url={""} quote={"test"}>
+        <FacebookShareButton
+          url={"http://localhost:3000/" + feed._id}
+          quote={feed.text}
+        >
           <FacebookIcon size={32} round /> Facebook
         </FacebookShareButton>
         <br />
