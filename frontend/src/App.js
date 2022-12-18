@@ -33,13 +33,15 @@ import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
 import { Watchlist } from "./pages/ProfilePage/component";
 
 import RaisePage from "./pages/RaisePage/RaisePage";
-import Messenger from "./components/message/messenger/Messenger";
 
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
+
       <Routes>
+     
+       {/* <Route path="" element={<Home />} /> */}
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/signin" element={<Signin />}></Route>
         <Route path="/" element={<LandingPage />}></Route>
@@ -145,8 +147,7 @@ function App() {
             </ProtectedRoute>
           }
         >
-         <Route path="/chat" element={<Messenger/>}/>
-          <Route path="" element={<Home />} />
+        
 
           {/* There is no need of tables for now */}
           {/* <Route path="/dashboard/tables" element={<Tables />} /> */}
