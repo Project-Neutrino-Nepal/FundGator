@@ -1,5 +1,5 @@
 import "antd/dist/antd.min.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import "./components/admin/assets/styles/main.css";
 import "./components/admin/assets/styles/responsive.css";
@@ -11,7 +11,6 @@ import Home from "./components/admin/pages/Home";
 import InvestorAdmin from "./components/admin/pages/investor";
 import Profile from "./components/admin/pages/Profile";
 import Homepage from "./components/homepage";
-
 
 import Navbar from "./components/navbar.js";
 import Signup from "./components/Signup";
@@ -30,13 +29,13 @@ import {
   WelcomePage,
 } from "./pages";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
-import { Watchlist } from "./pages/ProfilePage/component";
 
+import Chat from "./pages/Chat";
 import RaisePage from "./pages/RaisePage/RaisePage";
 
 function App() {
   return (
-    <BrowserRouter>
+    <>
       <Navbar />
       <Routes>
         <Route path="/signup" element={<Signup />}></Route>
@@ -66,7 +65,9 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
-
+        <Route path="/chats" element={<Chat />} />
+        {/* This is route for Not found */}
+        {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
         <Route
           path="/profile"
           element={
@@ -182,11 +183,9 @@ function App() {
           />
 
           {/* Add others routes of dashboard below */}
-         
-
         </Route>
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 
