@@ -1,5 +1,6 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import "antd/dist/antd.min.css";
+import ChatProvider from "./context/ChatProvider";
 
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
