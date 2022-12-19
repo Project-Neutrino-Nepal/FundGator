@@ -15,8 +15,7 @@ import {
 } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-const BasicEdit = ({ values, handleChange,handleTags}) => {
-let [reasons, setReasons] = useState([]);
+const BasicEdit = ({ values, handleChange, handleTags }) => {
 
   const [addlink, setlink] = useState(0);
   const [show, setShow] = useState(false);
@@ -30,49 +29,49 @@ let [reasons, setReasons] = useState([]);
     {
       id: 1,
 
-      value: reasons.reason1,
+      value: values.reason1,
       name: "reason1",
     },
     {
       id: 2,
 
-      value: reasons.reason2,
+      value: values.reason2,
       name: "reason2",
     },
     {
       id: 3,
 
-      value: reasons.reason3,
+      value: values.reason3,
       name: "reason3",
     },
     {
       id: 4,
 
-      value: reasons.reason4,
+      value: values.reason4,
       name: "reason4",
     },
     {
       id: 5,
 
-      value: reasons.reason5,
+      value: values.reason5,
       name: "reason5",
     },
     {
       id: 6,
 
-      value: reasons.reason6,
+      value: values.reason6,
       name: "reason6",
     },
     {
       id: 7,
 
-      value: reasons.reason7,
+      value: values.reason7,
       name: "reason7",
     },
     {
       id: 8,
 
-      value: reasons.reason8,
+      value: values.reason8,
       name: "reason8",
     },
   ].filter((item) => item.id <= addlink);
@@ -107,18 +106,7 @@ let [reasons, setReasons] = useState([]);
       });
   });
 
-  // fetch data from reason model
-useEffect(() => {
-  axios
-    .get("http://localhost:5000/reason/api/get-reason/"+id, config)
-    .then((res) => {
-      let reasons = res.data.reasons;
-      setReasons( reasons);
-    });
-});
-console.log(reasons);
-
-
+  
 
   return (
     <div className="form-content">
@@ -129,13 +117,9 @@ console.log(reasons);
         value={id}
         handleChange={handleChange}
         name={"name"}
-        
-            
-        
       />
 
-      <div
-      >
+      <div>
         <div>
           <label className="text-dark mb-3 mt-3">Select Category</label> &emsp;
           <select
@@ -158,12 +142,12 @@ console.log(reasons);
           isObject={false}
           onKeyPressFn={function noRefCheck() {}}
           onRemove={function noRefCheck() {}}
-          placeholder="Select Tags"
           options={tags.map((tag) => {
             return tag.name;
           })}
-          
           onSelect={handleTags}
+          value={values.tag}
+          name="tag"
         />
       </div>
 
@@ -232,16 +216,6 @@ console.log(reasons);
       <div className={show ? "" : "d-none"}>
         <UnderlineInput
           type={"text"}
-          index={<FaInstagramSquare />}
-          placeholder={"Enter Instagram Link"}
-          value={values.instagram}
-          handleChange={handleChange}
-          name={"instagram"}
-        />
-      </div>
-      <div className={show ? "" : "d-none"}>
-        <UnderlineInput
-          type={"text"}
           index={<FaTwitterSquare />}
           placeholder={"Enter Twitter Link"}
           value={values.twitter}
@@ -257,26 +231,6 @@ console.log(reasons);
           value={values.linkedin}
           handleChange={handleChange}
           name={"linkedin"}
-        />
-      </div>
-      <div className={show ? "" : "d-none"}>
-        <UnderlineInput
-          type={"text"}
-          index={<FaYoutube />}
-          placeholder={"Enter Youtube Link"}
-          value={values.youtube}
-          handleChange={handleChange}
-          name={"youtube"}
-        />
-      </div>
-      <div className={show ? "" : "d-none"}>
-        <UnderlineInput
-          type={"text"}
-          index={<FaBlogger />}
-          placeholder={"Enter Blog Link"}
-          value={values.blog}
-          handleChange={handleChange}
-          name={"blog"}
         />
       </div>
     </div>
