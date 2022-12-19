@@ -1,7 +1,5 @@
-import "antd/dist/antd.min.css";
 import { ChakraProvider } from "@chakra-ui/react";
-import ChatProvider from "./context/ChatProvider";
-
+import "antd/dist/antd.min.css";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import "./components/admin/assets/styles/main.css";
@@ -34,6 +32,7 @@ import {
 import EditCompanyPage from "./pages/CompanyRegisterPage/EditCompanyPage";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
 
+import ChatProvider from "./context/ChatProvider";
 import Chat from "./pages/Chat";
 import RaisePage from "./pages/RaisePage/RaisePage";
 
@@ -43,7 +42,6 @@ function App() {
       <Navbar />
 
       <Routes>
-        {/* <Route path="" element={<Home />} /> */}
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/signin" element={<Signin />}></Route>
         <Route path="/" element={<LandingPage />}></Route>
