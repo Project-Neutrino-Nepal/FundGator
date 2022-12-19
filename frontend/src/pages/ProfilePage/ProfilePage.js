@@ -1,24 +1,16 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { AiFillCamera } from "react-icons/ai";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import {
-  Notification,
-  Portfolio,
-  Settings,
-  Watchlist,
-} from "./component";
+import { Notification, Portfolio, Settings, Watchlist } from "./component";
 import tabs from "./utils/tabs";
 import Wrapper from "./wrapper/ProfilePage";
 
 const ProfilePage = () => {
-  const options = {
-    dropdown: false,
-    tab: "tax document",
-    activeindex: 0,
-  };
+  const loaddata = useRef(true);
+
   const [activeindex, setActive] = useState(1);
   const [dropdown, setDropdown] = useState(false);
   const [image, setPreview] = useState({
@@ -68,34 +60,40 @@ const ProfilePage = () => {
   };
 
   const { id } = useParams();
-  useEffect(() => {
-    if (id === "Portoflio") {
-      setActive(1);
-    }else if (id === "Watchlist") {
-      setActive(2);
-    } else if (id === "Settings") {
-      setActive(3);
-    } else if (id === "Notifications") {
-      setActive(4);
-    }
-  }, []);
+
   const [name, setName] = useState("");
 
   // fetching Profile data from API
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/profile/api/my-profile", config)
-      .then((res) => {
-        let program = res.data.profile;
-        setName(program.name);
-        setPreview({ ...image, preview: program.avatar });
-      });
-  });
+    if (loaddata.current === true) {
+      axios
+        .get("http://localhost:5000/profile/api/my-profile", config)
+        .then((res) => {
+          let program = res.data.profile;
+          setName(program.name);
+          setPreview({ ...image, preview: program.avatar });
+        });
+    }
+    if (id === "Portfolio") {
+      setActive(1);
+      
+    }
+    if (id === "Watchlist") {
+      setActive(2);
+    }
+    if (id === "Settings") {
+      setActive(3);
+    }
+    if (id === "Notifications") {
+      setActive(4);
+    }
+    return () => (loaddata.current = false);
+  }, [config, id]);
 
   return (
     <Wrapper>
       <ToastContainer />
-      <section className="infocontainer mt-5" id="SettingPage">
+      <section className="infocontainer " id="SettingPage">
         <div className="userinfo">
           <div className="edit-img">
             <img
@@ -131,7 +129,7 @@ const ProfilePage = () => {
           </div>
 
           <div className="info">
-            <h5>{name}</h5>
+            <h5 color="text-white">{name}</h5>
 
             <p onClick={editprofile}>Edit Profile</p>
           </div>
@@ -158,7 +156,7 @@ const ProfilePage = () => {
           {tabs.map((item, index) => {
             return (
               <Link
-                to={`/profile/${item.text}`}
+                to={`/homepage/profile/${item.text}`}
                 className={activeindex === item.id ? "tabs active" : "tabs"}
                 key={item.id}
                 onClick={() => closedropdown(item.text, item.id)}
