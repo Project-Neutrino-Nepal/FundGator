@@ -2,8 +2,15 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
+    "@chakra-ui/icons": "^2.0.11",
+    "@chakra-ui/react": "^2.3.6",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "framer-motion": "^7.6.1",
+    "lottie-react": "^2.3.1",
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
@@ -39,9 +46,9 @@
     "react-slick": "^0.29.0",
     "react-toastify": "^9.1.1",
     "sass": "^1.56.2",
-    "socket.io-client": "^4.5.4",
     "styled-components": "^5.3.6",
     "timeago.js": "^4.0.2",
+    "socket.io-client": "^4.5.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
