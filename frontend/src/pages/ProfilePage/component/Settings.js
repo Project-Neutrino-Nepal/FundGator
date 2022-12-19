@@ -57,12 +57,7 @@ function Settings() {
 
   return (
     <Wrapper>
-      <div className="left-container" id="SettingsPage">
-        <p>Account</p>
-        <p>Investor Limits</p>
-        <p>Investor Info</p>
-        <p>Public Profile</p>
-      </div>
+      
       <div className="right-container">
         <section className="account">
           <h1>Account</h1>
@@ -119,7 +114,7 @@ function Settings() {
           <div className="pancard d-flex justify-content-between mt-2">
             <div
               className="pancard-front img-fluid"
-              style={{ height: "100%", width: "100%" }}
+              style={{ height: "10vh", width: "100%" }}
             >
               <label htmlFor="">PAN Card Front</label>
               <Card className="border border-2">
@@ -128,7 +123,7 @@ function Settings() {
             </div>
             <div
               className="pancard-back img-fluid"
-              style={{ height: "100%", width: "100%" }}
+              style={{ height: "10vh", width: "100%" }}
             >
               <label htmlFor="">PAN Card Back</label>
               <Card className="border border-2">

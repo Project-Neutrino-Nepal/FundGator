@@ -76,7 +76,6 @@ const ProfilePage = () => {
     }
     if (id === "Portfolio") {
       setActive(1);
-      
     }
     if (id === "Watchlist") {
       setActive(2);
@@ -93,7 +92,11 @@ const ProfilePage = () => {
   return (
     <Wrapper>
       <ToastContainer />
-      <section className="infocontainer " id="SettingPage">
+      <section
+        className="infocontainer "
+        style={{ marginTop: "72px", }}
+        id="SettingPage"
+      >
         <div className="userinfo">
           <div className="edit-img">
             <img
