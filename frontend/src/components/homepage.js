@@ -10,6 +10,13 @@ import { IoCloseCircleSharp, IoDocumentTextSharp } from "react-icons/io5";
 import { RiVideoFill } from "react-icons/ri";
 import Feeds from "./feeds";
 
+import Col from 'react-bootstrap/Col';
+import Nav from 'react-bootstrap/Nav';
+import Row from 'react-bootstrap/Row';
+import Tab from 'react-bootstrap/Tab';
+
+
+
 const Homepage = () => {
   const [name, setName] = useState("");
   const [image, setPreview] = useState({
@@ -107,6 +114,8 @@ const Homepage = () => {
     }
   }, []);
 
+  let key;
+
   return (
     <>
       <ToastContainer />
@@ -159,6 +168,7 @@ const Homepage = () => {
           </ul>
         </div>
         <hr />
+       
         <ul className="nav nav-pills flex-column mb-auto">
           <li className="nav-item">
             <Link to="/homepage" className="nav-link active">

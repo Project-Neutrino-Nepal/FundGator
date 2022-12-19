@@ -29,6 +29,7 @@ import {
   UserProfilePage,
   WelcomePage,
 } from "./pages";
+import EditCompanyPage from "./pages/CompanyRegisterPage/EditCompanyPage";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
 import { Watchlist } from "./pages/ProfilePage/component";
 
@@ -132,7 +133,7 @@ function App() {
 
         <Route
           path="/company/edit/:id"
-          element={<CompanyRegisterPage />}
+          element={<EditCompanyPage />}
         ></Route>
 
         {/* DASHBOARD ROUTES */}

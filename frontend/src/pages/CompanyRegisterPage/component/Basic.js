@@ -15,7 +15,7 @@ import {
 } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-const Basic = ({ values, handleChange,handleTags}) => {
+const Basic = ({ values, handleChange, handleTags }) => {
   const [addlink, setlink] = useState(0);
   const [show, setShow] = useState(false);
   const { id } = useParams();
@@ -86,16 +86,6 @@ const Basic = ({ values, handleChange,handleTags}) => {
   };
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
-  const [multipleSelect, setMultipleSelect] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/admin/api/get-all-categories", config)
-      .then((res) => {
-        let category = res.data.categories;
-        setCategories(category);
-      });
-  });
 
   useEffect(() => {
     axios
@@ -117,8 +107,7 @@ const Basic = ({ values, handleChange,handleTags}) => {
         name={"name"}
       />
 
-      <div
-      >
+      <div>
         <div>
           <label className="text-dark mb-3 mt-3">Select Category</label> &emsp;
           <select
@@ -142,15 +131,12 @@ const Basic = ({ values, handleChange,handleTags}) => {
           onKeyPressFn={function noRefCheck() {}}
           onRemove={function noRefCheck() {}}
           placeholder="Select Tags"
-          tag={multipleSelect}
           options={tags.map((tag) => {
             return tag.name;
           })}
-          
           onSelect={handleTags}
         />
       </div>
-      <h1>{multipleSelect}</h1>
 
       <label htmlFor=""> Fund amount *</label>
       <UnderlineInput
