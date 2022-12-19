@@ -206,8 +206,7 @@ const Feeds = ({ feed }) => {
                         <span className="name">
                           {comment.profile.legal_name}
                         </span>
-                        <small className="comment-text">
-                        </small>
+                        <small className="comment-text">{comment.text}</small>
                         <div className="d-flex flex-row align-items-center status">
                           <small>{moment(comment.date).fromNow()}</small>
                         </div>

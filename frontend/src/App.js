@@ -1,5 +1,5 @@
-import "antd/dist/antd.min.css";
 import { ChakraProvider } from "@chakra-ui/react";
+import "antd/dist/antd.min.css";
 
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
@@ -35,6 +35,7 @@ import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
 
 import Chat from "./pages/Chat";
 import RaisePage from "./pages/RaisePage/RaisePage";
+import ChatProvider from "./context/ChatProvider";
 
 function App() {
   return (
@@ -42,7 +43,6 @@ function App() {
       <Navbar />
 
       <Routes>
-        {/* <Route path="" element={<Home />} /> */}
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/signin" element={<Signin />}></Route>
         <Route path="/" element={<LandingPage />}></Route>
@@ -74,13 +74,16 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
-        <Route path="/chats" element={
-        <ChakraProvider>
-        
-        <Chat />
-
-        </ChakraProvider>
-        } />
+        <Route
+          path="/chats"
+          element={
+            <ChatProvider>
+              <ChakraProvider>
+                <Chat />
+              </ChakraProvider>
+            </ChatProvider>
+          }
+        />
         {/* This is route for Not found */}
         {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
         <Route
