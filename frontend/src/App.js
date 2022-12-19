@@ -11,8 +11,8 @@ import Home from "./components/admin/pages/Home";
 import InvestorAdmin from "./components/admin/pages/investor";
 import Profile from "./components/admin/pages/Profile";
 import Homepage from "./components/homepage";
-
-
+import feeds from "./components/feeds";
+import Feed from "./components/Feed";
 import Navbar from "./components/navbar.js";
 import Signup from "./components/Signup";
 import Signin from "./components/singin";
@@ -34,12 +34,15 @@ import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
 import { Watchlist } from "./pages/ProfilePage/component";
 
 import RaisePage from "./pages/RaisePage/RaisePage";
+import Feeds from "./components/feeds";
 
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
+
       <Routes>
+        {/* <Route path="" element={<Home />} /> */}
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/signin" element={<Signin />}></Route>
         <Route path="/" element={<LandingPage />}></Route>
@@ -58,7 +61,11 @@ function App() {
               <Homepage />
             </ProtectedRoute>
           }
-        ></Route>
+        >
+          <Route index element={<Feed />} />
+
+          <Route path="profile/:id" element={<ProfilePage />} />
+        </Route>
         <Route
           path="/watchlist"
           element={
@@ -183,8 +190,6 @@ function App() {
           />
 
           {/* Add others routes of dashboard below */}
-         
-
         </Route>
       </Routes>
     </BrowserRouter>

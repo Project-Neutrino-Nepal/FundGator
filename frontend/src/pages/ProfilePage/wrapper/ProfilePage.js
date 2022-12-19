@@ -9,6 +9,7 @@ const Wrapper = styled.div`
   position: relative;
   background-color: white;
   overflow: hidden;
+ 
 
   .infocontainer {
     background-color: #0a4fa3;
@@ -71,7 +72,7 @@ const Wrapper = styled.div`
 
       & > .info {
         & > p {
-          color: var(--primary-color);
+          color: white;
           font-size: 11px;
           font-weight: 600;
           letter-spacing: 2px;
@@ -116,15 +117,15 @@ const Wrapper = styled.div`
       text-transform: capitalize;
       text-align: center;
       text-decoration: none;
-      color: var(--h-color);
+      color: whitesmoke;
 
       &.active {
-        color: var(--primary-color);
-        border-bottom: 1px solid var(--primary-color);
+        color: white;
+        border-bottom: 1px solid white;
       }
 
       &:hover {
-        color: var(--primary-color);
+        color: black;
         background-color: whitesmoke;
       }
     }
