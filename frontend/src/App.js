@@ -1,5 +1,6 @@
 import "antd/dist/antd.min.css";
 import { ChakraProvider } from "@chakra-ui/react";
+import ChatProvider from "./context/ChatProvider";
 
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
@@ -74,13 +75,16 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
-        <Route path="/chats" element={
-        <ChakraProvider>
-        
-        <Chat />
-
-        </ChakraProvider>
-        } />
+        <Route
+          path="/chats"
+          element={
+            <ChatProvider>
+              <ChakraProvider>
+                <Chat />
+              </ChakraProvider>
+            </ChatProvider>
+          }
+        />
         {/* This is route for Not found */}
         {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
         <Route
