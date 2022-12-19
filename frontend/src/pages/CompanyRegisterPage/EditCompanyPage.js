@@ -11,6 +11,7 @@ const parse = require("html-react-parser");
 
 const EditCompanyPage = () => {
   const { id } = useParams();
+  const [reasons, setReasons] = useState([]);
 
   const formvalue = {
     companyname: id,
@@ -174,10 +175,7 @@ const EditCompanyPage = () => {
             )
             .then((res) => {
               if (res.data.success) {
-                toast.success(
-                  res.data.message,
-                  
-                );
+                toast.success(res.data.message);
               }
             });
         } catch (error) {
@@ -254,12 +252,40 @@ const EditCompanyPage = () => {
     }
   };
 
-
-
- 
-
-
-
+  // fetch data from reason model
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/reason/api/get-reason/" + id, config)
+      .then((res) => {
+        let reasons = res.data.reasons;
+        setReasons(reasons);
+        formvalue.reason0 = reasons.reason0;
+        formvalue.reason1 = reasons.reason1;
+        formvalue.reason2 = reasons.reason2;
+        formvalue.reason3 = reasons.reason3;
+        formvalue.reason4 = reasons.reason4;
+        formvalue.reason5 = reasons.reason5;
+        formvalue.reason6 = reasons.reason6;
+        formvalue.reason7 = reasons.reason7;
+        formvalue.reason8 = reasons.reason8;
+        formvalue.amount = reasons.amount;
+        formvalue.city = reasons.city;
+        formvalue.facebook = reasons.facebook;
+        formvalue.linkedin = reasons.linkedin;
+        formvalue.twitter = reasons.twitter;
+        formvalue.companylink = reasons.companylink;
+        formvalue.category = reasons.category.name;
+         let tagarr=[];
+        reasons.tag.map((item)=>{
+          tagarr.push(item.name);
+        }
+        )
+        // console.log(tagarr);
+        formvalue.tag=tagarr;
+      });
+  });
+  console.log(reasons);
+  console.log(reasons.tag);
 
   return (
     <Wrapper>
@@ -292,7 +318,7 @@ const EditCompanyPage = () => {
             values={values}
             handleChange={handleChange}
             handleTags={handleTags}
-           />
+          />
         </div>
         <div className={activeindex === 4 ? "form-child" : "d-none"}>
           <Visiblity

@@ -1,4 +1,4 @@
-import { ChakraProvider } from "@chakra-ui/react";
+// import { ChakraProvider } from "@chakra-ui/react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -13,9 +13,8 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ChatProvider>
-        <ChakraProvider>
           <App />
-        </ChakraProvider>
+        
       </ChatProvider>
     </BrowserRouter>
   </React.StrictMode>
