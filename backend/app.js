@@ -61,7 +61,6 @@ io.on("connection", (socket) => {
   console.log("Connected to socket.io");
 
   socket.on("setup", (userData) => {
-    console.log("User connected to socket.io" + userData);
     socket.join(userData._id);
     socket.emit("connected");
   });
@@ -82,21 +81,8 @@ io.on("connection", (socket) => {
 
     chat.users.forEach((user) => {
       if (user._id === newMessageRecieved.sender._id) {
-        console.log(
-          "sender:" +
-            newMessageRecieved.sender._id +
-            "Sender is  same as the receiver" +
-            "reciever:" +
-            user._id
-        );
+        return;
       } else if (user._id !== newMessageRecieved.sender._id) {
-        console.log(
-          "sender:" +
-            newMessageRecieved.sender._id +
-            "Sender is not the same as the receiver" +
-            "reciever:" +
-            user._id
-        );
         socket.in(user._id).emit("message recieved", newMessageRecieved);
       }
     });

@@ -196,18 +196,27 @@ const Feeds = ({ feed }) => {
               <div className="comments">
                 {feed.comments.map((comment) => {
                   return (
-                    <div className="d-flex flex-row mb-2 card card-border">
-                      <img
-                        src={comment.profile.avatar}
-                        width={40}
-                        className="rounded-image"
-                      />
-                      <div className="d-flex flex-column ms-2">
-                        <span className="name">
-                          {comment.profile.legal_name}
-                        </span>
-                        <small className="comment-text">{comment.text}</small>
-                        <div className="d-flex flex-row align-items-center status">
+                    <div className="mb-2">
+                      <div className="d-flex justify-content-between">
+                        <div className="d-flex">
+                          <div>
+                            <img
+                              src={comment.profile.avatar}
+                              width={40}
+                              className="rounded-image"
+                            />
+                          </div>
+                          <div className="d-flex flex-column ms-2">
+                            <span className="name">
+                              {comment.profile.legal_name}
+                            </span>
+                            <small className="comment-text">
+                              {comment.text}
+                            </small>
+                          </div>
+                        </div>
+
+                        <div className="d-flex flex-row status">
                           <small>{moment(comment.date).fromNow()}</small>
                         </div>
                       </div>
