@@ -11,6 +11,7 @@ const parse = require("html-react-parser");
 
 const EditCompanyPage = () => {
   const { id } = useParams();
+  const [reasons, setReasons] = useState([]);
 
   const formvalue = {
     companyname: id,
@@ -254,7 +255,18 @@ const EditCompanyPage = () => {
     }
   };
 
-
+  // fetch data from reason model
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/reason/api/get-reason/"+id, config)
+      .then((res) => {
+        let reasons = res.data.reasons;
+        setReasons( reasons);
+        formvalue.reason0 = reasons.reason0;
+         
+    });
+  });
+  console.log(reasons);
 
  
 

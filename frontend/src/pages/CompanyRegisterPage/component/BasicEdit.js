@@ -24,55 +24,55 @@ let [reasons, setReasons] = useState([]);
   const list = [
     {
       id: 0,
-      value: reasons.reason0,
+      value: values.reason0,
       name: "reason0",
     },
     {
       id: 1,
 
-      value: values.reason1,
+      value: reasons.reason1,
       name: "reason1",
     },
     {
       id: 2,
 
-      value: values.reason2,
+      value: reasons.reason2,
       name: "reason2",
     },
     {
       id: 3,
 
-      value: values.reason3,
+      value: reasons.reason3,
       name: "reason3",
     },
     {
       id: 4,
 
-      value: values.reason4,
+      value: reasons.reason4,
       name: "reason4",
     },
     {
       id: 5,
 
-      value: values.reason5,
+      value: reasons.reason5,
       name: "reason5",
     },
     {
       id: 6,
 
-      value: values.reason6,
+      value: reasons.reason6,
       name: "reason6",
     },
     {
       id: 7,
 
-      value: values.reason7,
+      value: reasons.reason7,
       name: "reason7",
     },
     {
       id: 8,
 
-      value: values.reason8,
+      value: reasons.reason8,
       name: "reason8",
     },
   ].filter((item) => item.id <= addlink);
