@@ -1,7 +1,5 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import "antd/dist/antd.min.css";
-import ChatProvider from "./context/ChatProvider";
-
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import "./components/admin/assets/styles/main.css";
@@ -34,9 +32,9 @@ import {
 import EditCompanyPage from "./pages/CompanyRegisterPage/EditCompanyPage";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
 
+import ChatProvider from "./context/ChatProvider";
 import Chat from "./pages/Chat";
 import RaisePage from "./pages/RaisePage/RaisePage";
-import ChatProvider from "./context/ChatProvider";
 
 function App() {
   return (
