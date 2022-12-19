@@ -29,9 +29,9 @@ app.use(cors());
 app.use(json());
 app.use(passport.initialize());
 app.use(bodyParser.json({ limit: "50mb" }));
-app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" })); 
-app.use('/uploads',express.static(__dirname + '/uploads'));// so please use this code to fetch images form the server
-app.use('/uploads', express.static('uploads'));
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
+app.use("/uploads", express.static(__dirname + "/uploads")); // so please use this code to fetch images form the server
+app.use("/uploads", express.static("uploads"));
 // Inject Sub router and apis
 app.use("/users", userRouter);
 app.use("/company", companyRouter);
@@ -43,26 +43,8 @@ app.use("/khalti", khaltiRouter);
 app.use("/posts", postRouter);
 app.use("/chat", chatRouter);
 app.use("/message", messageRouter);
-// ----------------------------------------------- //
-
-// --------------------------DEPLOYMENT------------------------------
-
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "./client/build")));
-
-  app.get("*", (req, res) => {
-    return res.sendFile(
-      path.resolve(__dirname, "client", "build", "index.html")
-    );
-  });
-} else {
-  app.get("/", (req, res) => {
-    res.send("API is running");
-  });
-}
 
 // --------------------------DEVELOPMENT------------------------------
-
 
 const server = app.listen(process.env.PORT, () =>
   console.log(`Server started on PORT ${process.env.PORT}`)
@@ -79,6 +61,7 @@ io.on("connection", (socket) => {
   console.log("Connected to socket.io");
 
   socket.on("setup", (userData) => {
+    console.log("User connected to socket.io" + userData);
     socket.join(userData._id);
     socket.emit("connected");
   });
@@ -98,9 +81,24 @@ io.on("connection", (socket) => {
     if (!chat.users) return console.log("chat.users not defined");
 
     chat.users.forEach((user) => {
-      if (user._id === newMessageRecieved.sender._id) return;
-
-      socket.in(user._id).emit("message recieved", newMessageRecieved);
+      if (user._id === newMessageRecieved.sender._id) {
+        console.log(
+          "sender:" +
+            newMessageRecieved.sender._id +
+            "Sender is  same as the receiver" +
+            "reciever:" +
+            user._id
+        );
+      } else if (user._id !== newMessageRecieved.sender._id) {
+        console.log(
+          "sender:" +
+            newMessageRecieved.sender._id +
+            "Sender is not the same as the receiver" +
+            "reciever:" +
+            user._id
+        );
+        socket.in(user._id).emit("message recieved", newMessageRecieved);
+      }
     });
   });
 

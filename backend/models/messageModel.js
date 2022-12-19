@@ -4,7 +4,7 @@ const MessageSchema = new Schema(
   {
     sender: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user",
     },
     content: {
       type: String,
@@ -13,12 +13,12 @@ const MessageSchema = new Schema(
     chat: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Chat",
+        ref: "chat",
       },
-    ],
+    ]
   },
   { timestamps: true }
 );
 
-const Message = model("Message", MessageSchema);
+const Message = model("message", MessageSchema);
 module.exports = Message;

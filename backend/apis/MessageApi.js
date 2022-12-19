@@ -1,5 +1,7 @@
 const express = require("express");
+const { model } = require("mongoose");
 const userAuth = require("../middlewares/auth-guard");
+const Chat = require("../models/chatModel");
 const router = new express.Router();
 const Message = require("../models/messageModel");
 
@@ -25,14 +27,21 @@ router.post("/api/create", userAuth, async (req, res) => {
       content,
       chat: chatId,
     });
-
     message = await (
-      await message.populate("sender", "name pic")
+      await message.populate({
+        path: "sender",
+        select: "name",
+        model: "user",
+      })
     ).populate({
       path: "chat",
       select: "chatName isGroupChat users",
-      model: "Chat",
-      populate: { path: "users", select: "name email pic", model: "User" },
+      model: "chat",
+      populate: {
+        path: "users",
+        select: "name email",
+        model: "user",
+      },
     });
 
     // Update latest message
@@ -58,8 +67,17 @@ router.post("/api/create", userAuth, async (req, res) => {
 router.get("/api/getAll/:chatId", userAuth, async (req, res) => {
   try {
     const messages = await Message.find({ chat: req.params.chatId })
-      .populate("sender", "name pic email")
-      .populate("chat");
+      .populate("sender", "name email")
+      .populate({
+        path: "chat",
+        select: "chatName isGroupChat users",
+        model: "chat",
+        populate: {
+          path: "users",
+          select: "name email",
+          model: "user",
+        },
+      });
 
     res.status(200).json(messages);
   } catch (error) {

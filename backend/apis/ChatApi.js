@@ -1,4 +1,5 @@
 const express = require("express");
+const userAuth = require("../middlewares/auth-guard");
 const router = express.Router();
 const Chat = require("../models/chatModel");
 const User = require("../models/userModel");
@@ -9,15 +10,16 @@ const User = require("../models/userModel");
  * @type POST
  * */
 
-router.post("/api/chat", async (req, res) => {
+router.post("/api/chat/:userID", userAuth, async (req, res) => {
   try {
-    const { userId } = req.body;
+    const userId = req.params.userID;
     if (!userId) {
       return res.status(400).json({
         success: false,
         message: "All fields are required.",
       });
     }
+
     // Check if chat already exists
     let chatExists = await Chat.find({
       isGroupChat: false, // 'isGroupChat' will be false as it is one-to-one chat
@@ -29,7 +31,6 @@ router.post("/api/chat", async (req, res) => {
     })
       .populate("users", "-password") // Return 'users' without 'password'
       .populate("latestMessage"); // Return 'latestMessage'
-
     chatExists = await User.populate(chatExists, {
       path: "latestMessage.sender",
       select: "name pic email", // Fields we want to populate
@@ -53,17 +54,16 @@ router.post("/api/chat", async (req, res) => {
         );
         res.status(200).json(FullChat);
       } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
           success: false,
-          message: "Failed to create new chat",
+          message: "Failed to create New Chat",
         });
       }
     }
   } catch (error) {
     return res.status(400).json({
       success: false,
-      statusCode: 400,
-      message: "Failed to create new chat",
+      message: "Failed to vodfkm vekrgcreate New Chat",
     });
   }
 });
@@ -75,7 +75,7 @@ router.post("/api/chat", async (req, res) => {
  * @type GET
  * */
 
-router.get("/api/chat", async (req, res) => {
+router.get("/api/chat", userAuth, async (req, res) => {
   try {
     let results = await Chat.find({
       users: { $elemMatch: { $eq: req.user._id } },
@@ -108,7 +108,7 @@ router.get("/api/chat", async (req, res) => {
  * @type POST
  * */
 
-router.post("/api/group", async (req, res) => {
+router.post("/api/group", userAuth, async (req, res) => {
   if (!req.body.users || !req.body.name) {
     return res.status(400).json({
       success: false,
