@@ -8,7 +8,15 @@ import Basenav from "./basenav";
 import { BsCardImage } from "react-icons/bs";
 import { IoCloseCircleSharp, IoDocumentTextSharp } from "react-icons/io5";
 import { RiVideoFill } from "react-icons/ri";
-import Feeds from "./feeds";
+
+import { Outlet } from "react-router-dom";
+
+import Col from 'react-bootstrap/Col';
+import Nav from 'react-bootstrap/Nav';
+import Row from 'react-bootstrap/Row';
+import Tab from 'react-bootstrap/Tab';
+
+
 
 const Homepage = () => {
   const [name, setName] = useState("");
@@ -107,6 +115,8 @@ const Homepage = () => {
     }
   }, []);
 
+  let key;
+
   return (
     <>
       <ToastContainer />
@@ -159,15 +169,32 @@ const Homepage = () => {
           </ul>
         </div>
         <hr />
+       
         <ul className="nav nav-pills flex-column mb-auto">
           <li className="nav-item">
-            <Link to="/homepage" className="nav-link active">
+            <Link
+              to="/homepage"
+              className={
+                window.location.pathname === "/homepage"
+                  ? "nav-link active"
+                  : "nav-link text-white"
+              }
+              aria-selected="true"
+            >
               <i className="fa fa-home" />
               <span className="ms-2">Feeds</span>
             </Link>
           </li>
-          <li>
-            <Link to="/profile/Portfolio" className="nav-link text-white">
+          <li className="nav-item">
+            <Link
+              to="/homepage/profile/Portfolio"
+              className={
+                window.location.pathname === "/homepage/profile/Portfolio"
+                  ? "nav-link active"
+                  : "nav-link text-white"
+              }
+              aria-selected="false"
+            >
               <i className="fa fa-dashboard" />
 
               <span className="ms-2">My Investment</span>
@@ -181,7 +208,14 @@ const Homepage = () => {
             </Link>
           </li>
           <li>
-            <Link to="/watchlist" className="nav-link text-white">
+            <Link
+              to="/homepage/profile/Watchlist"
+              className={
+                window.location.pathname === "/homepage/profile/Watchlist"
+                  ? "nav-link active"
+                  : "nav-link text-white"
+              }
+            >
               <i className="fa fa-bookmark" />
               <span className="ms-2">My Watchlist</span>
             </Link>
@@ -200,15 +234,16 @@ const Homepage = () => {
           </li>
         </ul>
       </div>
-      <div className="container-fluid col-9 mt-2  " id="feeds-position">
-        {feeds.map((feed) => {
+      <div className="container-fluid col-10 mt-2  " id="feeds-position">
+        <Outlet />
+        {/* {feeds.map((feed) => {
           return <Feeds key={feed._id} feed={feed} />;
-        })}
+        })} */}
       </div>
       <div
         className="modal fade"
         id="exampleModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >

@@ -10,8 +10,8 @@ import CompanyDetails from "./components/admin/pages/companyDetails/companyDetai
 import Home from "./components/admin/pages/Home";
 import InvestorAdmin from "./components/admin/pages/investor";
 import Profile from "./components/admin/pages/Profile";
+import Feed from "./components/Feed";
 import Homepage from "./components/homepage";
-
 import Navbar from "./components/navbar.js";
 import Signup from "./components/Signup";
 import Signin from "./components/singin";
@@ -28,6 +28,7 @@ import {
   UserProfilePage,
   WelcomePage,
 } from "./pages";
+import EditCompanyPage from "./pages/CompanyRegisterPage/EditCompanyPage";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
 
 import Chat from "./pages/Chat";
@@ -37,7 +38,9 @@ function App() {
   return (
     <>
       <Navbar />
+
       <Routes>
+        {/* <Route path="" element={<Home />} /> */}
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/signin" element={<Signin />}></Route>
         <Route path="/" element={<LandingPage />}></Route>
@@ -56,7 +59,11 @@ function App() {
               <Homepage />
             </ProtectedRoute>
           }
-        ></Route>
+        >
+          <Route index element={<Feed />} />
+
+          <Route path="profile/:id" element={<ProfilePage />} />
+        </Route>
         <Route
           path="/watchlist"
           element={
@@ -131,10 +138,7 @@ function App() {
           }
         ></Route>
 
-        <Route
-          path="/company/edit/:id"
-          element={<CompanyRegisterPage />}
-        ></Route>
+        <Route path="/company/edit/:id" element={<EditCompanyPage />}></Route>
 
         {/* DASHBOARD ROUTES */}
         <Route
