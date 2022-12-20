@@ -177,6 +177,12 @@ const CompanyRegisterPage = () => {
     });
   };
 
+  const clearfile=(name)=>{
+
+    setValue({...values,[name]:""})
+
+  }
+
   const onsave = (e) => {
     e.preventDefault();
     const {
@@ -193,7 +199,7 @@ const CompanyRegisterPage = () => {
       category,
       tag,
       reason0,
-      teams,
+     
       imageupload,
       videoupload,
     } = values;
@@ -365,6 +371,25 @@ const CompanyRegisterPage = () => {
     }
   };
 
+
+  const onregistrationcard = ()=>{
+    console.log('cardregister')
+  }
+
+  const onpancard = () => {
+    console.log("pan card submit");
+  };
+
+  const oncitizenfrontcard = () => {
+    console.log("citizenfront card submit");
+  };
+
+    const oncitizenbackcard = () => {
+      console.log("citizenback card submit");
+    };
+
+
+
   return (
     <Wrapper>
       <ToastContainer />
@@ -403,6 +428,11 @@ const CompanyRegisterPage = () => {
             handleChange={handleChange}
             values={values}
             setcontent={setcontent}
+            clearfile ={clearfile}
+            onregistrationcard={onregistrationcard}
+            onpancard = {onpancard}
+            oncitizenfrontcard={oncitizenfrontcard}
+            oncitizenbackcard={oncitizenbackcard}
           />
         </div>
         <div className={activeindex === 3 ? "form-child" : "d-none"}>
