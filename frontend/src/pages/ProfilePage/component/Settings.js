@@ -57,7 +57,6 @@ function Settings() {
 
   return (
     <Wrapper>
-      
       <div className="right-container">
         <section className="account">
           <h1>Account</h1>
@@ -73,8 +72,78 @@ function Settings() {
             <span>Password</span>
             <span>Reset</span>
           </div>
-          <div className="btn-delete hover">
-            <span>Delete Account</span>
+          <div
+            className="btn-delete hover"
+            // make modal on click to delete account
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            <span>
+              Delete Account &nbsp; &nbsp;
+              <i className="fas fa-trash-alt"></i>
+            </span>
+          </div>
+          <div
+            class="modal fade"
+            id="exampleModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1
+                    class="modal-title text-danger fs-5"
+                    id="exampleModalLabel"
+                  >
+                    Delete Account
+                  </h1>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to delete your account ? you will lose
+                  all your data, and you will not be able to recover it.
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    onClick={() => {
+                      axios
+                        .delete(
+                          "http://localhost:5000/users/api/delete-user/",
+                          config
+                        )
+                        .then((res) => {
+                          localStorage.clear();
+                          sessionStorage.clear();
+
+                          console.log(res);
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                        });
+                    }}
+                  >
+                    Delete &nbsp; &nbsp;
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
         <section className="investorinfo">

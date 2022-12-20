@@ -50,6 +50,7 @@ function Navbar() {
     sessionStorage.clear();
     window.location.assign("/signin");
   };
+  
 
   if (localStorage.getItem("token") === null) {
     return (
@@ -226,12 +227,14 @@ function Navbar() {
                     aria-expanded="false"
                   >
                     <img
-                      src={image.preview}
+                      src={image.preview ? image.preview : image}
                       alt=""
                       width={55}
                       height={55}
+                      name  ={name}
                       className="rounded-circle me-2 ms-3 border border-grey border-2"
                     />
+
                     <strong>{name} </strong>
                   </a>
                   <ul
