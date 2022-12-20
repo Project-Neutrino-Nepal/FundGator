@@ -16,6 +16,7 @@ const Editpost = () => {
     preview: "https://github.com/mdo.png",
     file: "",
   });
+  
 
   const [preview, setPreviews] = useState({
     img: "",
@@ -26,7 +27,7 @@ const Editpost = () => {
     img: "",
     vid: "",
     doc: "",
-    text: "",
+    description: "",
   });
 
   const handleChange = (e) => {
@@ -68,7 +69,7 @@ const Editpost = () => {
   
   useEffect(() => {
 
-    let ismounted = true;
+   
     axios
       .get("http://localhost:5000/posts/api/get-post/" + id, config)
       .then((res) => {
@@ -104,7 +105,7 @@ const Editpost = () => {
     formData.append("img", values.img);
     formData.append("vid", values.vid);
     // formData.append("doc", values.doc);
-    formData.append("text", values.text);
+    formData.append("description", values.description);
 
     axios
       .put(

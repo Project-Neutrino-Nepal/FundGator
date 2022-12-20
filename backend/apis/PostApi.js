@@ -299,6 +299,35 @@ router.put("/api/comment-post/:id", userAuth, async (req, res) => {
   }
 });
 
+//to update posts of respective user
+
+// router.put("/api/updatepost/:id", userAuth, async (req, res) => {
+//   try {
+//     let post = await Post.findById(req.params.id);
+//     if (post.user != req.user.id) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "You are not authorized to update this post",
+//       });
+//     }
+//     await post.updateOne({ $set: req
+//     .body });
+//     return res.status(200).json({
+//       success: true,
+//       message: "Post updated successfully",
+//       post,
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(500).json({
+//       success: false,
+//       message: "An error occurred.",
+//     });
+//   }
+// });
+
+
+
 
 
 
@@ -344,7 +373,6 @@ async (req, res) => {
         vidPath = DOMAIN + "uploads/posts-images/" + video.filename;
       }
     }
-  
 
   try {
     let post = await Post.findById({_id:req.params.id});
@@ -371,12 +399,21 @@ async (req, res) => {
     if(text) {
       post.text = body.description;
     }
-    await post.save();
-    return res.status(200).json({
-      success: true,
-      message: "Post updated successfully",
-      post,
+    await post.updateOne({ 
+      $set: { image: imagePath, video: vidPath, text: body.description }
+  
     });
+      return res.status(200).json({
+        success: true,
+        message: "Post updated successfully",
+        post,
+      });
+    // await post.save();
+    // return res.status(200).json({
+    //   success: true,
+    //   message: "Post updated successfully",
+    //   post,
+    // });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
