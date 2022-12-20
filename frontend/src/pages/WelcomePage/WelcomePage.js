@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Wrapper from "./wrapper/WelcomePage";
@@ -11,7 +11,6 @@ const WelcomePage = () => {
   const [bio, setBio] = useState("");
   const [website, setWebsite] = useState("");
   const [skills, setSkills] = useState("");
-  const [name, setName] = useState("");
   const [imageFront, setImageFront] = useState("");
   const [imageBack, setImageBack] = useState("");
 
@@ -28,45 +27,59 @@ const WelcomePage = () => {
       address === "" &&
       bio === "" &&
       website === "" &&
-      skills === ""
+      skills === "" &&
+      imageFront === "" &&
+      imageBack === ""
     ) {
       toast.error("All fields are Required.");
       return false;
     }
     if (legalName === "") {
       toast.error("Legal Name is required");
+      return false;
     }
     if (country === "") {
       toast.error("Country is required");
+      return false;
     }
     if (address === "") {
       toast.error("Address is required");
+      return false;
     }
     if (bio === "") {
       toast.error("Bio is required");
+      return false;
     }
     if (website === "") {
       toast.error("Website is required");
+      return false;
     }
     if (skills === "") {
       toast.error("Skills is required");
+      return false;
+    }
+    if (imageFront === "") {
+      toast.error("Image Front is required");
+      return false;
+    }
+    if (imageBack === "") {
+      toast.error("Image Back is required");
+      return false;
     }
     return true;
   };
 
-  // fetching Profile data from API
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/profile/api/my-profile", config)
-      .then((res) => {
-        let program = res.data.profile;
-        setName(program.name);
-      });
-  });
-
   const UpdateUser = async (e) => {
+    e.preventDefault();
     await axios
-      .put("http://localhost:5000/users/api/update-user/" + name, config)
+      .put(
+        "http://localhost:5000/users/api/update-user/",
+        {
+          legalName,
+          country,
+        },
+        config
+      )
       .then((res) => {
         if (res.data.success) {
           console.log(res.data.message);
@@ -137,9 +150,12 @@ const WelcomePage = () => {
   return (
     <Wrapper>
       <ToastContainer />
-      <form id="profileUpdate" style={{ margin: "80px" }}
-      method="POST" encType="multipart/form-data">
-      
+      <form
+        id="profileUpdate"
+        style={{ margin: "80px" }}
+        method="POST"
+        encType="multipart/form-data"
+      >
         <div className="welcome mt-5">
           <h2 className="heading" id="InfoText">
             Investor Information

@@ -1,6 +1,7 @@
 import { Card } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 import Wrapper from "../wrapper/Setting";
 import UserInput from "./smallcomponent/UserInput";
@@ -57,6 +58,8 @@ function Settings() {
 
   return (
     <Wrapper>
+      <ToastContainer />
+
       <div className="right-container">
         <section className="account">
           <h1>Account</h1>
@@ -116,13 +119,22 @@ function Settings() {
                     class="btn btn-danger"
                     onClick={() => {
                       axios
-                        .delete(
-                          "http://localhost:5000/users/api/delete-user/",
+                        .put(
+                          "http://localhost:5000/users/api/suspend/" +
+                            JSON.parse(localStorage.getItem("userInfo")).user
+                              ._id,
+
                           config
                         )
                         .then((res) => {
                           localStorage.clear();
                           sessionStorage.clear();
+                          toast.info(
+                            "Your account has been deleted successfully",
+                            setTimeout(() => {
+                              window.location.replace("/");
+                            }, 1000)
+                          );
 
                           console.log(res);
                         })

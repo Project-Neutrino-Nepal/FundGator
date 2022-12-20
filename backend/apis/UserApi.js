@@ -173,19 +173,16 @@ router.get("/verify-now/:verificationCode", async (req, res) => {
  * @type PUT
  * */
 
-router.put("/api/update-user/:name", async (req, res) => {
+router.put("/api/update-user/", userAuth, async (req, res) => {
   try {
-    let { name } = req.params;
-    let profile = await Profile.findOne({
-      name,
-    });
-    const user = profile.user;
+    let user = await User.findById(req.user._id);
     if (!user) {
       return res.status(404).json({
         success: false,
         message: "User not found.",
       });
     }
+
     let updateUser = await User.findByIdAndUpdate(
       user,
       {
@@ -291,49 +288,6 @@ router.put("/api/activate/:userId", async (req, res) => {
     console.log(err);
     return res.status(500).json({
       err,
-      success: false,
-      message: "An error occurred.",
-    });
-  }
-});
-
-/**
- * @description To delete user and all related data
- * @api /users/api/delete-user/
- * @access PRIVATE
- * @type DELETE
- * */
-
-router.delete("/api/delete-user/", userAuth, async (req, res) => {
-  try {
-    let user = await User.findById(req.user._id);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found.",
-      });
-    }
-    // Delete all related data
-    await Profile.findOneAndDelete({ user: user._id });
-    await Post.deleteMany({ user: user._id });
-    await Chat.deleteMany({ user: user._id });
-    // find company of the user
-    const company = await Company.findOne({ user: user._id });
-    await Company.deleteMany({ user: user._id });
-    await Reason.deleteMany({ company: company._id });
-    await Portfolio.deleteMany({ user: user._id });
-    await Message.deleteMany({ sender: user._id });
-    await Chat.deleteMany({ $or: [{ users: user._id }] });
-
-    await user.remove();
-
-    return res.status(200).json({
-      success: true,
-      message: "Your account has been deleted.",
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({
       success: false,
       message: "An error occurred.",
     });
