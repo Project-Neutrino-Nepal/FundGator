@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import upload from "../../assets/image/uploadpic.svg";
@@ -21,7 +21,7 @@ const CompanyRegisterPage = () => {
     youtube: "",
     blog: "",
     amount: "",
-    category: "",
+    category: ["ff"],
     tag: [],
     reason0: "",
     reason1: "",
@@ -36,8 +36,8 @@ const CompanyRegisterPage = () => {
       {
         id: 0,
         image: "",
-        name: "name",
-        email: "email",
+        name: "",
+        email: "",
         position: "CEO",
         accomplished: "",
         userfblink: "",
@@ -48,7 +48,7 @@ const CompanyRegisterPage = () => {
     ],
     imageupload: "",
     videoupload: "",
-    imageuploadpreview: upload,
+    imageuploadpreview: "",
     videouploadpreview: "",
     linktype: "",
     companyurl: "",
@@ -63,6 +63,28 @@ const CompanyRegisterPage = () => {
 
   const [activeindex, setActive] = useState(1);
   const [values, setValue] = useState(formvalue);
+
+  const membervalidation = () => {
+    let team = values.teams;
+    let valid = false;
+    for (let i = 0; i < team.length; i++) {
+      if (
+        values.teams[i].name &&
+        team[i].email &&
+        team[i].foundertype &&
+        team[i].position &&
+        team[i].jobtype &&
+        (team[i].userfblink || team[i].userlinkedinlink)
+      ) {
+        valid = true;
+      } else {
+        valid = false;
+        return valid;
+      }
+    }
+    console.log(valid);
+    return valid;
+  };
 
   const videouploads = values.videoupload;
 
@@ -155,69 +177,116 @@ const CompanyRegisterPage = () => {
     });
   };
 
+  const clearfile=(name)=>{
+
+    setValue({...values,[name]:""})
+
+  }
+
   const onsave = (e) => {
     e.preventDefault();
+    const {
+      companyname,
+      city,
+      facebook,
+      linkedin,
+      instagram,
+      companylink,
+      twitter,
+      youtube,
+      blog,
+      amount,
+      category,
+      tag,
+      reason0,
+     
+      imageupload,
+      videoupload,
+    } = values;
 
     if (activeindex <= 3) {
-      setActive((prev) => prev + 1);
       // creating reasons
       if (activeindex === 1) {
-        try {
-          axios
-            .post(
-              "http://localhost:5000/reason/api/create-reason/" +
-                formvalue.companyname,
-              data,
-              config
-            )
-            .then((res) => {
-              if (res.data.success) {
-                toast.success(
-                  res.data.message,
-                  
-                );
-              }
-            });
-        } catch (error) {
-          toast.error(error.response.data.message);
+        if (
+          companyname &&
+          city &&
+          (facebook ||
+            linkedin ||
+            instagram ||
+            companylink ||
+            twitter ||
+            youtube ||
+            blog) &&
+          amount &&
+          category &&
+          tag.length > 0 &&
+          reason0
+        ) {
+          console.log("step2");
+          setActive((prev) => prev + 1);
+
+          try {
+            axios
+              .post(
+                "http://localhost:5000/reason/api/create-reason/" +
+                  formvalue.companyname,
+                data,
+                config
+              )
+              .then((res) => {
+                if (res.data.success) {
+                  toast.success(res.data.message);
+                }
+              });
+          } catch (error) {
+            toast.error(error.response.data.message);
+          }
         }
       }
       // updating reasons and adding team members
       else if (activeindex === 2) {
-        try {
-          axios
-            .put(
-              "http://localhost:5000/reason/api/update-reason/" +
-                formvalue.companyname,
-              teamsdata,
-              config
-            )
-            .then((res) => {
-              if (res.data.success) {
-              }
-            });
-        } catch (error) {
-          console.log(error.response.data.message);
+        if (membervalidation()) {
+          setActive((prev) => prev + 1);
+
+          try {
+            axios
+              .put(
+                "http://localhost:5000/reason/api/update-reason/" +
+                  formvalue.companyname,
+                teamsdata,
+                config
+              )
+              .then((res) => {
+                if (res.data.success) {
+                }
+              });
+          } catch (error) {
+            console.log(error.response.data.message);
+          }
         }
       } else if (activeindex === 3) {
-        const formData = new FormData();
-        formData.append("company_video", videouploads);
-        console.log(formData);
+        if (imageupload && videoupload) {
+          setActive((prev) => prev + 1);
 
-        try {
-          axios
-            .put(
-              "http://localhost:5000/company/api/upload-video/" +
-                formvalue.companyname,
-              formData,
-              config
-            )
-            .then((res) => {
-              if (res.data.success) {
-              }
-            });
-        } catch (error) {
-          console.log(error.response.data.message);
+          const formData = new FormData();
+          formData.append("company_video", videouploads);
+          console.log(formData);
+
+          try {
+            axios
+              .put(
+                "http://localhost:5000/company/api/upload-video/" +
+                  formvalue.companyname,
+                formData,
+                config
+              )
+              .then((res) => {
+                if (res.data.success) {
+                }
+              });
+          } catch (error) {
+            console.log(error.response.data.message);
+          }
         }
       }
     } else {
@@ -252,6 +321,75 @@ const CompanyRegisterPage = () => {
     }
   };
 
+  const ontabchange = (index) => {
+    const {
+      companyname,
+      city,
+      facebook,
+      linkedin,
+      instagram,
+      companylink,
+      twitter,
+      youtube,
+      blog,
+      amount,
+      category,
+      tag,
+      reason0,
+      teams,
+      imageupload,
+      videoupload,
+    } = values;
+    if (index === 1) {
+      setActive(index);
+    } else if (index === 2) {
+      if (
+        companyname &&
+        city &&
+        (facebook ||
+          linkedin ||
+          instagram ||
+          companylink ||
+          twitter ||
+          youtube ||
+          blog) &&
+        amount &&
+        category &&
+        tag.length > 0 &&
+        reason0
+      ) {
+        setActive(index);
+      }
+    } else if (index === 3) {
+      if (membervalidation()) {
+        setActive(index);
+      }
+    } else if (index === 4) {
+      if (imageupload && videoupload) {
+        setActive(index);
+      }
+    }
+  };
+
+
+  const onregistrationcard = ()=>{
+    console.log('cardregister')
+  }
+
+  const onpancard = () => {
+    console.log("pan card submit");
+  };
+
+  const oncitizenfrontcard = () => {
+    console.log("citizenfront card submit");
+  };
+
+    const oncitizenbackcard = () => {
+      console.log("citizenback card submit");
+    };
+
+
+
   return (
     <Wrapper>
       <ToastContainer />
@@ -261,7 +399,7 @@ const CompanyRegisterPage = () => {
             <div
               className="singletab"
               key={item.id}
-              onClick={() => setActive(item.id)}
+              onClick={() => ontabchange(item.id)}
             >
               <div
                 className={activeindex === item.id ? "tas active" : "tas"}
@@ -290,6 +428,11 @@ const CompanyRegisterPage = () => {
             handleChange={handleChange}
             values={values}
             setcontent={setcontent}
+            clearfile ={clearfile}
+            onregistrationcard={onregistrationcard}
+            onpancard = {onpancard}
+            oncitizenfrontcard={oncitizenfrontcard}
+            oncitizenbackcard={oncitizenbackcard}
           />
         </div>
         <div className={activeindex === 3 ? "form-child" : "d-none"}>

@@ -5,7 +5,6 @@ import { AiFillFacebook } from "react-icons/ai";
 import { FaLinkedin } from "react-icons/fa";
 import upload from "../../../assets/image/uploadpic.svg";
 
-
 const Member = React.memo(({ item, handleChange, index }) => {
   const [preview, setPreview] = useState(upload);
   const {
@@ -29,12 +28,10 @@ const Member = React.memo(({ item, handleChange, index }) => {
     }
   };
 
-  
-
   return (
-        <section className="users-form">
-          <div className="info">
-            {/* <div className="image-upload me-2">
+    <section className="users-form">
+      <div className="info">
+        {/* <div className="image-upload me-2">
               <label htmlFor={`flie-input${index}`} className="f-input">
                 <img src={preview} alt="" />
                 <input
@@ -46,104 +43,114 @@ const Member = React.memo(({ item, handleChange, index }) => {
               </label>
             </div> */}
 
-            <div className="short-info">
-              <h5>{name}</h5>
-              <input
-                type="text"
-                placeholder="Enter email"
-                name={`email`}
-                value={email}
-                onChange={(e) => handleChange(e, index, e.target.name)}
-              />
-            </div>
-          </div>
+        <div className="short-info">
           <Labelinput
             type={"text"}
-            label={"Title"}
-            placeholder={"CEO"}
-            name={`position`}
+            label={"Name"}
+            placeholder={"Enter Name"}
+            name={`name`}
             handleChange={(e) => handleChange(e, index, e.target.name)}
-            value={position}
+            value={name}
           />
-          <div className="mt-2"></div>
+          {/* <h5>{name}</h5> */}
 
           <Labelinput
             type={"text"}
-            label={"Most Impressive accomplishment"}
-            placeholder={"I 've accomplished"}
-            name={`accomplished`}
+            label={"Email"}
+            placeholder={"Enter email"}
+            name={`email`}
             handleChange={(e) => handleChange(e, index, e.target.name)}
-            value={accomplished}
+            value={email}
           />
-          <UnderlineInput
-            type={"text"}
-            label={"Title"}
-            placeholder={"http://Linkedin.com/your_username"}
-            index={<FaLinkedin />}
-            name={`userlinkedinlink`}
-            handleChange={(e) => handleChange(e, index, e.target.name)}
-            value={userlinkedinlink}
-          />
+        </div>
+      </div>
+      <Labelinput
+        type={"text"}
+        label={"Title"}
+        placeholder={"CEO"}
+        name={`position`}
+        handleChange={(e) => handleChange(e, index, e.target.name)}
+        value={position}
+      />
+      <div className="mt-2"></div>
 
-          <UnderlineInput
-            type={"text"}
-            label={"Title"}
-            placeholder={"http://facebook.com/your_username"}
-            index={<AiFillFacebook />}
-            name={`userfblink`}
-            handleChange={(e) => handleChange(e, index, e.target.name)}
-            value={userfblink}
-          />
-          <div className="radio">
-            <div className="radio-input">
-              <input
-                type="radio"
-                name={`foundertype`}
-                id=""
-                value={"Founder"}
-                checked={foundertype === "Founder" ? true : false}
-                onChange={(e) => handleChange(e, index, e.target.name)}
-              />
-              <label htmlFor="">Founder</label>
-            </div>
-            <div className="radio-input ms-2">
-              <input
-                type="radio"
-                name={`foundertype`}
-                id=""
-                value={"Co-Founder"}
-                checked={foundertype === "Co-Founder" ? true : false}
-                onChange={(e) => handleChange(e, index, e.target.name)}
-              />
-              <label htmlFor="">Co-Founder</label>
-            </div>
-          </div>
+      <Labelinput
+        type={"text"}
+        label={"Most Impressive accomplishment"}
+        placeholder={"I 've accomplished"}
+        name={`accomplished`}
+        handleChange={(e) => handleChange(e, index, e.target.name)}
+        value={accomplished}
+      />
+      <UnderlineInput
+        type={"text"}
+        label={"Title"}
+        placeholder={"http://Linkedin.com/your_username"}
+        index={<FaLinkedin />}
+        name={`userlinkedinlink`}
+        handleChange={(e) => handleChange(e, index, e.target.name)}
+        value={userlinkedinlink}
+      />
 
-          <div className="radio">
-            <div className="radio-input">
-              <input
-                type="radio"
-                name="jobtype"
-                id=""
-                value={"Part-Time"}
-                checked={jobtype === "Part-Time" ? true : false}
-                onChange={(e) => handleChange(e, index, e.target.name)}
-              />
-              <label htmlFor="">Part-Time</label>
-            </div>
-            <div className="radio-input">
-              <input
-                type="radio"
-                name="jobtype"
-                id=""
-                value={"Full-Time"}
-                checked={jobtype === "Full-Time" ? true : false}
-                onChange={(e) => handleChange(e, index, e.target.name)}
-              />
-              <label htmlFor="">Full-Time</label>
-            </div>
-          </div>
-        </section>
+      <UnderlineInput
+        type={"text"}
+        label={"Title"}
+        placeholder={"http://facebook.com/your_username"}
+        index={<AiFillFacebook />}
+        name={`userfblink`}
+        handleChange={(e) => handleChange(e, index, e.target.name)}
+        value={userfblink}
+      />
+      <div className="radio">
+        <div className="radio-input">
+          <input
+            type="radio"
+            name={`foundertype`}
+            id=""
+            value={"Founder"}
+            checked={foundertype === "Founder" ? true : false}
+            onChange={(e) => handleChange(e, index, e.target.name)}
+          />
+          <label htmlFor="">Founder</label>
+        </div>
+        <div className="radio-input ms-2">
+          <input
+            type="radio"
+            name={`foundertype`}
+            id=""
+            value={"Co-Founder"}
+            checked={foundertype === "Co-Founder" ? true : false}
+            onChange={(e) => handleChange(e, index, e.target.name)}
+          />
+          <label htmlFor="">Co-Founder</label>
+        </div>
+      </div>
+
+      <div className="radio">
+        <div className="radio-input">
+          <input
+            type="radio"
+            name="jobtype"
+            id=""
+            value={"Part-Time"}
+            checked={jobtype === "Part-Time" ? true : false}
+            onChange={(e) => handleChange(e, index, e.target.name)}
+          />
+          <label htmlFor="">Part-Time</label>
+        </div>
+        <div className="radio-input">
+          <input
+            type="radio"
+            name="jobtype"
+            id=""
+            value={"Full-Time"}
+            checked={jobtype === "Full-Time" ? true : false}
+            onChange={(e) => handleChange(e, index, e.target.name)}
+          />
+          <label htmlFor="">Full-Time</label>
+        </div>
+      </div>
+    </section>
   );
 });
 
