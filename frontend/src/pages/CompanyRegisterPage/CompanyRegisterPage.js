@@ -315,6 +315,56 @@ const CompanyRegisterPage = () => {
     }
   };
 
+  const ontabchange = (index) => {
+    const {
+      companyname,
+      city,
+      facebook,
+      linkedin,
+      instagram,
+      companylink,
+      twitter,
+      youtube,
+      blog,
+      amount,
+      category,
+      tag,
+      reason0,
+      teams,
+      imageupload,
+      videoupload,
+    } = values;
+    if (index === 1) {
+      setActive(index);
+    } else if (index === 2) {
+      if (
+        companyname &&
+        city &&
+        (facebook ||
+          linkedin ||
+          instagram ||
+          companylink ||
+          twitter ||
+          youtube ||
+          blog) &&
+        amount &&
+        category &&
+        tag.length > 0 &&
+        reason0
+      ) {
+        setActive(index);
+      }
+    } else if (index === 3) {
+      if (membervalidation()) {
+        setActive(index);
+      }
+    } else if (index === 4) {
+      if (imageupload && videoupload) {
+        setActive(index);
+      }
+    }
+  };
+
   return (
     <Wrapper>
       <ToastContainer />
@@ -324,7 +374,7 @@ const CompanyRegisterPage = () => {
             <div
               className="singletab"
               key={item.id}
-              onClick={() => setActive(item.id)}
+              onClick={() => ontabchange(item.id)}
             >
               <div
                 className={activeindex === item.id ? "tas active" : "tas"}
