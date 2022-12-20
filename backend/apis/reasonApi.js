@@ -78,6 +78,18 @@ router.post("/api/create-reason/:name", userAuth, async (req, res) => {
 router.put("/api/update-reason/:name", userAuth, async (req, res) => {
   try {
     const { body } = req;
+
+    let category = await Category.findOne({ name: body.category });
+    let categoryID = category._id;
+
+    let tagID = [];
+    for (let i = 0; i < body.tag.length; i++) {
+      let tag = await Tags.findOne({
+        name: body.tag[i],
+      });
+      tagID.push(tag._id);
+    }
+
     const company = await Company.findOne({ name: req.params.name });
     const companyID = company._id;
     if (!company) {
@@ -93,18 +105,13 @@ router.put("/api/update-reason/:name", userAuth, async (req, res) => {
         message: "Reasons not found",
       });
     }
-    let file = req.file;
-    console.log(file);
-    if (file === undefined || file === null) {
-      filename = DOMAIN + "uploads/assets/" + "default_company.svg";
-    } else {
-      filename = DOMAIN + "uploads/company-images/" + file.filename;
-    }
+
     const reason = await Reason.findOneAndUpdate(
       { company: companyID },
       {
         $set: body,
-        // teams: { image: filename }
+        category: categoryID,
+        tag: tagID,
       },
 
       { new: true }
@@ -206,6 +213,8 @@ router.get("/api/get-reasons/:id", async (req, res) => {
   }
 });
 
+// route to get reasons for a company by name
+
 router.get("/api/get-reason/:id", async (req, res) => {
   try {
     const company = await Company.findOne({ name: req.params.id });
@@ -215,7 +224,10 @@ router.get("/api/get-reason/:id", async (req, res) => {
         message: "Company not found",
       });
     }
-    const reasons = await Reason.findOne({ company: company._id });
+    const reasons = await Reason.findOne({ company: company._id })
+      .populate("category")
+      .populate("tag")
+      .exec();
     if (!reasons) {
       return res.status(404).json({
         success: false,

@@ -49,6 +49,8 @@ const Signin = () => {
             if (res.data.success) {
               localStorage.setItem("token", res.data.token);
               localStorage.setItem("admin", res.data.user.admin);
+              localStorage.setItem("userInfo", JSON.stringify(res.data));
+
               toast.success(
                 res.data.message,
                 setTimeout(function () {
@@ -57,10 +59,10 @@ const Signin = () => {
                       window.location.href = "/welcome";
                       localStorage.setItem("token", res.data.token);
                     } else {
-                    window.location.href = "/dashboard";
-                    localStorage.setItem("token", res.data.token);
-                    localStorage.setItem("id", res.data.user._id);
-                    localStorage.setItem("admin", res.data.user.admin);
+                      window.location.href = "/dashboard";
+                      localStorage.setItem("token", res.data.token);
+                      localStorage.setItem("id", res.data.user._id);
+                      localStorage.setItem("admin", res.data.user.admin);
                     }
                   } else {
                     if (res.data.user.isFirstTime === true) {

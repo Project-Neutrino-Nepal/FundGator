@@ -225,4 +225,29 @@ router.get("/api/get-profiles", userAuth, async (req, res) => {
   }
 });
 
+/**
+ * @description To Get or Search All users
+ * @api /users/api/get-users
+ * @access PRIVATE
+ * @type GET
+ * */
+
+router.get("/api/get-users", userAuth, async (req, res) => {
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+
+  // Find and return users except current user
+  const userExists = await User.find(keyword)
+    .find({ _id: { $ne: req.user._id } })
+    .exec();
+
+  return res.status(200).json(userExists);
+});
+
 module.exports = router;
