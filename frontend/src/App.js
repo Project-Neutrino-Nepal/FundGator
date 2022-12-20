@@ -11,6 +11,7 @@ import Home from "./components/admin/pages/Home";
 import InvestorAdmin from "./components/admin/pages/investor";
 import Profile from "./components/admin/pages/Profile";
 import Homepage from "./components/homepage";
+import Editpost from "./pages/DetailsPage/component/Editpostcard"
 
 
 import Navbar from "./components/navbar.js";
@@ -69,6 +70,8 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
+        
+        <Route path="/editpost/:id" element={<Editpost />}></Route>
 
         <Route
           path="/profile"
