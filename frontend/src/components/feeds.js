@@ -109,6 +109,7 @@ const Feeds = ({ feed }) => {
                   width={50}
                   height={50}
                   className="rounded-circle"
+                  alt=""
                 />
                 <div className="d-flex flex-column ms-2">
                   <span className="font-weight-bold">
@@ -119,7 +120,45 @@ const Feeds = ({ feed }) => {
               </div>
               <div className="d-flex flex-row mt-1 ellipsis">
                 <small className="me-2">{time} &nbsp;</small>
-                <i className="fa fa-ellipsis-h" />
+
+                <div className="dropdown border-start  ">
+                  <a
+                    href="#"
+                    className="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                    id="dropdownUser1"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+
+                  >
+                    <i class="fad fa-ellipsis-h"></i>
+                  </a>
+                  <ul
+                    className="dropdown-menu dropdown-menu-dark text-small shadow"
+                    aria-labelledby="dropdownUser1"
+                  >
+                    <li>
+                      <Link
+                        className="dropdown-item"
+                        aria-current="page"
+                         to={`/editpost/${feed._id}`}
+                       // to={"/editpost"}
+                      >
+                        Edit
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="dropdown-item"
+                        aria-current="page"
+                        to="deletepost"
+                      >
+                        Delete
+                      </Link>
+                    </li>
+                   
+                    
+                  </ul>
+                </div>
               </div>
             </div>
             <div className="p-2 ">

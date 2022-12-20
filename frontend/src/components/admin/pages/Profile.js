@@ -71,7 +71,7 @@ function Profile() {
 
         setPreview({ ...image, preview: program.avatar });
       });
-  });
+  },[]);
 
   // fetching company data from api thoruogh userid
   useEffect(() => {

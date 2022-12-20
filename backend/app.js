@@ -1,5 +1,6 @@
 // requirements for express application
 const express = require("express");
+//const morgan = require("morgan");
 require("dotenv").config();
 require("./Database/conf");
 const cors = require("cors");
@@ -27,6 +28,7 @@ const app = express();
 // Apply Application Middlewares
 app.use(cors());
 app.use(json());
+//app.use(morgan("dev"));
 app.use(passport.initialize());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));

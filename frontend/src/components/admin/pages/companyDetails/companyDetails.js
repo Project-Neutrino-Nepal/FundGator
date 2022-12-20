@@ -108,7 +108,7 @@ const CompanyDetails = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [id]);
 
   // Verify company by admin
   const admin = localStorage.getItem("admin");
