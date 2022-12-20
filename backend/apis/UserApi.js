@@ -2,6 +2,12 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
+const Post = require("../models/postModel");
+const Chat = require("../models/chatModel");
+const Message = require("../models/messageModel");
+const Portfolio = require("../models/portfolioModel");
+const Company = require("../models/companyModel");
+const Reason = require("../models/reasonModel");
 const { randomBytes } = require("crypto");
 const { join } = require("path");
 // const DOMAIN = require("../constants/index") || "http://127.0.0.1:5000/";
@@ -285,6 +291,49 @@ router.put("/api/activate/:userId", async (req, res) => {
     console.log(err);
     return res.status(500).json({
       err,
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To delete user and all related data
+ * @api /users/api/delete-user/
+ * @access PRIVATE
+ * @type DELETE
+ * */
+
+router.delete("/api/delete-user/", userAuth, async (req, res) => {
+  try {
+    let user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+    // Delete all related data
+    await Profile.findOneAndDelete({ user: user._id });
+    await Post.deleteMany({ user: user._id });
+    await Chat.deleteMany({ user: user._id });
+    // find company of the user
+    const company = await Company.findOne({ user: user._id });
+    await Company.deleteMany({ user: user._id });
+    await Reason.deleteMany({ company: company._id });
+    await Portfolio.deleteMany({ user: user._id });
+    await Message.deleteMany({ sender: user._id });
+    await Chat.deleteMany({ $or: [{ users: user._id }] });
+
+    await user.remove();
+
+    return res.status(200).json({
+      success: true,
+      message: "Your account has been deleted.",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
       success: false,
       message: "An error occurred.",
     });
