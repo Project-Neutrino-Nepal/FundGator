@@ -708,13 +708,14 @@ router.put("/api/watchlist/:id", userAuth, async (req, res) => {
         message: "Company not found",
       });
     }
-    let watchlist = await Company.findOneBy({ watchlist: req.user._id });
+    let watchlist = company.watchlist.includes(req.user._id);
     if (watchlist) {
       return res.status(400).json({
         success: false,
         message: "Company already in watchlist",
       });
     }
+
     let updatedCompany = await Company.findOneAndUpdate(
       { _id: req.params.id },
       { $push: { watchlist: req.user._id } },

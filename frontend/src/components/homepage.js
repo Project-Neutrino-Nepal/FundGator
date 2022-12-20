@@ -11,13 +11,6 @@ import { RiVideoFill } from "react-icons/ri";
 
 import { Outlet } from "react-router-dom";
 
-import Col from 'react-bootstrap/Col';
-import Nav from 'react-bootstrap/Nav';
-import Row from 'react-bootstrap/Row';
-import Tab from 'react-bootstrap/Tab';
-
-
-
 const Homepage = () => {
   const [name, setName] = useState("");
   const [image, setPreview] = useState({
@@ -83,6 +76,15 @@ const Homepage = () => {
     formData.append("img", values.img);
     formData.append("vid", values.vid);
     formData.append("description", values.description);
+    if (!values.img && !values.vid && !values.description) {
+      toast.error("You can't post empty post");
+      return;
+    }
+    if (values.img && values.vid) {
+      toast.error("You can only upload one file at a time");
+      return;
+    }
+
     try {
       axios
         .post("http://localhost:5000/posts/api/create-post", formData, config)
@@ -121,7 +123,7 @@ const Homepage = () => {
     <>
       <ToastContainer />
       <div className="basenav">
-        <Basenav />
+        <Basenav user={image.preview} />
       </div>
       {/* <div className="d-flex flex-wrap"> */}
       <div
@@ -169,7 +171,7 @@ const Homepage = () => {
           </ul>
         </div>
         <hr />
-       
+
         <ul className="nav nav-pills flex-column mb-auto">
           <li className="nav-item">
             <Link
@@ -357,6 +359,8 @@ const Homepage = () => {
             </div>
           </div>
         </div>
+
+        
       </div>
     </>
   );

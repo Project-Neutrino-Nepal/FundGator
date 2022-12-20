@@ -80,6 +80,40 @@ router.post(
   }
 );
 
+
+
+
+//to get post of authenticated user
+router.get("/api/get-post/:id", userAuth, async (req, res) => {
+  try {
+   
+    let post = await Post.findById(req.params.id); 
+    if (!post) {
+      return res.status(400).json({
+        success: false,
+        message: "Post not found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Post fetched successfully",
+      post,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+
+
+
+
+  
+
 /**
  * @description To Get All Posts
  * @api /posts/api/get-all-posts
@@ -152,6 +186,7 @@ router.get("/api/get-post-by-name/:name", userAuth, async (req, res) => {
  * @access PRIVATE
  * @type GET
  * */
+
 
 router.get("/api/get-post-of-auth-user", userAuth, async (req, res) => {
   try {
@@ -259,4 +294,131 @@ router.put("/api/comment-post/:id", userAuth, async (req, res) => {
   }
 });
 
+//to update posts of respective user
+
+// router.put("/api/updatepost/:id", userAuth, async (req, res) => {
+//   try {
+//     let post = await Post.findById(req.params.id);
+//     if (post.user != req.user.id) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "You are not authorized to update this post",
+//       });
+//     }
+//     await post.updateOne({ $set: req
+//     .body });
+//     return res.status(200).json({
+//       success: true,
+//       message: "Post updated successfully",
+//       post,
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(500).json({
+//       success: false,
+//       message: "An error occurred.",
+//     });
+//   }
+// });
+
+
+
+
+
+
+//to update posts
+
+router.put("/api/update-post/:id", userAuth, 
+ uploadPostsImage.fields([
+    { name: "img", maxCount: 1 },
+    { name: "vid", maxCount: 1 },
+  ]),
+async (req, res) => {
+  const { body } = req;
+    let image = "";
+    let video = "";
+    let imagePath,
+      vidPath = "";
+    if (req.files) {
+      if (req.files.img == undefined) {
+        return res.status(400).json({
+          success: false,
+          message: "Please select an image",
+        });
+      }
+      if (req.files.img == null) {
+        imagePath = "";
+      }
+      if (req.files.img) {
+        image = req.files.img[0];
+        imagePath = DOMAIN + "uploads/posts-images/" + image.filename;
+      }
+
+      if (req.files.vid == undefined) {
+        return res.status(400).json({
+          success: false,
+          message: "Please select a video",
+        });
+      }
+      if (req.files.vid == null) {
+        vidPath = "";
+      }
+      if (req.files.vid) {
+        video = req.files.vid[0];
+        vidPath = DOMAIN + "uploads/posts-images/" + video.filename;
+      }
+    }
+
+  try {
+    let post = await Post.findById({_id:req.params.id});
+    if (!post) {
+      return res.status(400).json({
+        success: false,
+        message: "Post not found",
+      });
+    }
+    if (post.user.toString() !== req.user._id.toString()) {
+      return res.status(400).json({ 
+        success: false,
+        message: "You are not authorized to update this post",
+      });
+    }
+
+    let { image, video, text } = req.body;
+    if (image) {
+      post.image = imagePath;
+    }
+    if (video) {
+      post.video = vidPath;
+    }
+    if(text) {
+      post.text = body.description;
+    }
+    await post.updateOne({ 
+      $set: { image: imagePath, video: vidPath, text: body.description }
+  
+    });
+      return res.status(200).json({
+        success: true,
+        message: "Post updated successfully",
+        post,
+      });
+    // await post.save();
+    // return res.status(200).json({
+    //   success: true,
+    //   message: "Post updated successfully",
+    //   post,
+    // });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+
+      message: "An error occurred.",
+    });
+  }
+});
+
+
 module.exports = router;
+

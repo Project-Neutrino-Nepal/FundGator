@@ -1,5 +1,6 @@
 // requirements for express application
 const express = require("express");
+//const morgan = require("morgan");
 require("dotenv").config();
 require("./Database/conf");
 const cors = require("cors");
@@ -27,6 +28,7 @@ const app = express();
 // Apply Application Middlewares
 app.use(cors());
 app.use(json());
+//app.use(morgan("dev"));
 app.use(passport.initialize());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
@@ -61,7 +63,6 @@ io.on("connection", (socket) => {
   console.log("Connected to socket.io");
 
   socket.on("setup", (userData) => {
-    console.log("User connected to socket.io" + userData);
     socket.join(userData._id);
     socket.emit("connected");
   });
@@ -82,21 +83,8 @@ io.on("connection", (socket) => {
 
     chat.users.forEach((user) => {
       if (user._id === newMessageRecieved.sender._id) {
-        console.log(
-          "sender:" +
-            newMessageRecieved.sender._id +
-            "Sender is  same as the receiver" +
-            "reciever:" +
-            user._id
-        );
+        return;
       } else if (user._id !== newMessageRecieved.sender._id) {
-        console.log(
-          "sender:" +
-            newMessageRecieved.sender._id +
-            "Sender is not the same as the receiver" +
-            "reciever:" +
-            user._id
-        );
         socket.in(user._id).emit("message recieved", newMessageRecieved);
       }
     });

@@ -2,6 +2,12 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
+const Post = require("../models/postModel");
+const Chat = require("../models/chatModel");
+const Message = require("../models/messageModel");
+const Portfolio = require("../models/portfolioModel");
+const Company = require("../models/companyModel");
+const Reason = require("../models/reasonModel");
 const { randomBytes } = require("crypto");
 const { join } = require("path");
 // const DOMAIN = require("../constants/index") || "http://127.0.0.1:5000/";
@@ -167,19 +173,16 @@ router.get("/verify-now/:verificationCode", async (req, res) => {
  * @type PUT
  * */
 
-router.put("/api/update-user/:name", async (req, res) => {
+router.put("/api/update-user/", userAuth, async (req, res) => {
   try {
-    let { name } = req.params;
-    let profile = await Profile.findOne({
-      name,
-    });
-    const user = profile.user;
+    let user = await User.findById(req.user._id);
     if (!user) {
       return res.status(404).json({
         success: false,
         message: "User not found.",
       });
     }
+
     let updateUser = await User.findByIdAndUpdate(
       user,
       {

@@ -36,6 +36,8 @@ import ChatProvider from "./context/ChatProvider";
 import Chat from "./pages/Chat";
 import RaisePage from "./pages/RaisePage/RaisePage";
 
+import Editpost from "./pages/DetailsPage/component/Editpostcard";
+
 function App() {
   return (
     <>
@@ -83,6 +85,8 @@ function App() {
             </ChatProvider>
           }
         />
+            
+         <Route path="/editpost/:id" element={<Editpost />}></Route>
         {/* This is route for Not found */}
         {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
         <Route

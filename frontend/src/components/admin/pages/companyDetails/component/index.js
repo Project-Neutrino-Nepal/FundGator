@@ -7,6 +7,7 @@ import SingleComment from "./SingleComment";
 import AskAQuestion from "./AskAQuestion";
 import OurFounder from "./OurFounder";
 import Update from "./Update";
+import About from "./About";
 
 export {
   LeadInvestor,
@@ -17,5 +18,6 @@ export {
   SingleComment,
   AskAQuestion,
   OurFounder,
-  Update
+  Update,
+  About
 };
