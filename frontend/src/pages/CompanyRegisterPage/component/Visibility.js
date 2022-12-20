@@ -38,7 +38,7 @@ const Visiblity = ({ handleChange, values, setcontent }) => {
 
       <section className="fuploads  p-2 w-100 ">
         <h4 className="fw-semibold">Please upload your document here!</h4 >
-        <form action="" enctype="multipart/form-data" method="post">
+        <form action="" encType="multipart/form-data" method="post">
 
         <div className="d-flex gap-2">
           <UploadField
