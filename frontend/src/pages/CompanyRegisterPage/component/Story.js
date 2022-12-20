@@ -7,7 +7,6 @@ const Story = ({ handleChange, imgpreview, vdpreview }) => {
 
 
 const [image, setPreview] = useState(null);
-  const [vpreview, setvPreview] = useState(null);
   const {id}=useParams();
 
   const config={

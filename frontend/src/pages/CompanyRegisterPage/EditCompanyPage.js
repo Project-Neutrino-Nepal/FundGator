@@ -94,13 +94,11 @@ const EditCompanyPage = () => {
     twitter: values.twitter,
     companylink: values.companylink,
   };
-  console.log(data);
   //to pass variable to add teams data
   const teamsdata = {
     teams: values.teams,
   };
 
-  console.log(values.teams);
 
   const setcontent = (content) => {
     setValue({ ...values, content: content });
@@ -278,13 +276,43 @@ const EditCompanyPage = () => {
         formvalue.twitter = reasons.twitter;
         formvalue.companylink = reasons.companylink;
         formvalue.category = reasons.category.name;
-        
+        const teamsdata = [];
+        reasons.teams.map((item) => {
+          teamsdata.push({
+            ...item,
 
-
+            // id: item.id,
+            // image: item.image,
+            // name: item.name,
+            // email: item.email,
+            // position: item.position,
+            // accomplished: item.accomplished,
+            // userfblink: item.userfblink,
+            // userlinkedinlink: item.userlinkedinlink,
+            // foundertype: item.foundertype,
+            // jobtype: item.jobtype,
+          });
+        });
+        formvalue.teams = teamsdata;
       });
   });
 
-  console.log(reasons.teams);
+  // fetch data from company model
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/company/api/get-company/" + id, config)
+      .then((res) => {  
+        console.log(res);
+        let company = res.data.company;
+        formvalue.content = company.content;
+        formvalue.registration_card = company.registration_card;
+        formvalue.pan_card = company.pan_card;
+        formvalue.citizenship_front = company.citizenship_front;
+        formvalue.citizenship_back = company.citizenship_back;
+        formvalue.videoupload=company.company_video;
+        formvalue.imageupload=company.image;
+      });
+  }, []);
 
   return (
     <Wrapper>
