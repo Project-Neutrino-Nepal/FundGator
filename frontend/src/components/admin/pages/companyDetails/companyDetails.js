@@ -20,11 +20,22 @@ import {
   LeadInvestor,
   Overview,
   Update,
-  WhatInvestorSay
+  WhatInvestorSay,
+  About
 } from "./component";
 import tabs from "./utils/tab";
 
 const CompanyDetails = () => {
+   const tab2 = [
+     { id: 1, text: "OVERVIEW" },
+     { id: 2, text: "DETAILS" },
+     { id: 6, text: "About" },
+
+     { id: 5, text: "ASK A QUESTION" },
+   ];
+   const isadmin = localStorage.getItem("admin");
+   const tablst = isadmin ? tab2 : tabs;
+
   const videoRef = useRef(null);
   const [play, setplay] = useState(false);
   const [activeindex, setActiveIndex] = useState(1);
@@ -221,7 +232,7 @@ const CompanyDetails = () => {
         </section>
 
         <section className="four tab">
-          {tabs.map((item, index) => {
+          {tablst.map((item, index) => {
             return (
               <span
                 key={item.id}
@@ -235,14 +246,14 @@ const CompanyDetails = () => {
         </section>
 
         <section className="five">
-          <div className="content">
+          {/* <div className="content">
             <div className="content-one">
               <div className="content-one-left">
                 <h3>Company</h3>
                 <p>{content}</p>
               </div>
             </div>
-            </div>
+          </div> */}
           {activeindex === 1 ? (
             <Overview
               // pass company ID as props
@@ -262,6 +273,7 @@ const CompanyDetails = () => {
           {activeindex === 3 ? <Update /> : null}
           {activeindex === 4 ? <WhatInvestorSay /> : null}
           {activeindex === 5 ? <AskAQuestion /> : null}
+          {activeindex === 6 ? <About /> : null}
         </section>
       </div>
       <div className="right-container">
