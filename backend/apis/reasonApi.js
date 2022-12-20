@@ -70,26 +70,15 @@ router.post("/api/create-reason/:name", userAuth, async (req, res) => {
 });
 
 /**
- * @description To update reason for adding team information
- * @api /reason/api/update-reason/:name
+ * @description To add team member for a company
+ * @api /reason/api/update-team/:name
  * @access PRIVATE
  * @type POST
  */
-router.put("/api/update-reason/:name", userAuth, async (req, res) => {
+
+router.put("/api/update-team/:name", userAuth, async (req, res) => {
   try {
     const { body } = req;
-
-    let category = await Category.findOne({ name: body.category });
-    let categoryID = category._id;
-
-    let tagID = [];
-    for (let i = 0; i < body.tag.length; i++) {
-      let tag = await Tags.findOne({
-        name: body.tag[i],
-      });
-      tagID.push(tag._id);
-    }
-
     const company = await Company.findOne({ name: req.params.name });
     const companyID = company._id;
     if (!company) {
@@ -98,6 +87,7 @@ router.put("/api/update-reason/:name", userAuth, async (req, res) => {
         message: "Company not found",
       });
     }
+
     const reasons = await Reason.findOne({ company: companyID });
     if (!reasons) {
       return res.status(400).json({
@@ -108,20 +98,113 @@ router.put("/api/update-reason/:name", userAuth, async (req, res) => {
 
     const reason = await Reason.findOneAndUpdate(
       { company: companyID },
-      {
-        $set: body,
-        category: categoryID,
-        tag: tagID,
-      },
-
+      { ...body },
       { new: true }
     );
-    res.status(200).json({
+
+    return res.status(200).json({
       success: true,
-      message: "Reason updated successfully",
+      message: "Team updated successfully",
       reason,
     });
   } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error,
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
+/**
+ * @description To update reason for updating reason for a company
+ * @api /reason/api/update-reason/:name
+ * @access PRIVATE
+ * @type POST
+ */
+router.put("/api/update-reason/:name", userAuth, async (req, res) => {
+  try {
+    const { body } = req;
+    const company = await Company.findOne({ name: req.params.name });
+    const category = await Category.findOne({ name: body.category });
+    const categoryID = category._id;
+
+    let tag = body.tag;
+
+    const companyID = company._id;
+    if (!company) {
+      return res.status(404).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+
+    const reasons = await Reason.findOne({ company: companyID });
+    if (!reasons) {
+      return res.status(400).json({
+        success: false,
+        message: "Reasons not found",
+      });
+    }
+
+    if (tag.length === 0) {
+      const reason = await Reason.findOneAndUpdate(
+        { company: companyID },
+
+        {
+          reason0: body.reason0,
+          reason1: body.reason1,
+          reason2: body.reason2,
+          reason3: body.reason3,
+          reason4: body.reason4,
+          reason5: body.reason5,
+          reason6: body.reason6,
+          reason7: body.reason7,
+          reason8: body.reason8,
+          amount: body.amount,
+          city: body.city,
+          companyLink: body.companyLink,
+          facebook: body.facebook,
+          twitter: body.twitter,
+          linkedin: body.linkedin,
+          category: categoryID,
+        },
+
+        { new: true }
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: "Reason updated successfully",
+        reason,
+      });
+    } else {
+      let tagID = [];
+      for (let i = 0; i < body.tag.length; i++) {
+        const tag = await Tags.findOne({
+          name: body.tag[i],
+        });
+
+        tagID.push(tag._id);
+      }
+      console.log(tagID);
+
+      const reason = await Reason.findOneAndUpdate(
+        { company: companyID },
+        { ...body, category: categoryID, tag: tagID },
+
+        { new: true }
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: "Reason updated successfully",
+        reason,
+      });
+    }
+  } catch (error) {
+    console.log(error);
     res.status(500).json({
       error,
       success: false,
