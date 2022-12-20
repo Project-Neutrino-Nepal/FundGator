@@ -64,6 +64,28 @@ const CompanyRegisterPage = () => {
   const [activeindex, setActive] = useState(1);
   const [values, setValue] = useState(formvalue);
 
+  const membervalidation = () => {
+    let team = values.teams;
+    let valid = false;
+    for (let i = 0; i < team.length; i++) {
+      if (
+        values.teams[i].name &&
+        team[i].email &&
+        team[i].foundertype &&
+        team[i].position &&
+        team[i].jobtype &&
+        (team[i].userfblink || team[i].userlinkedinlink)
+      ) {
+        valid = true;
+      } else {
+        valid = false;
+        return valid;
+      }
+    }
+    console.log(valid);
+    return valid;
+  };
+
   const videouploads = values.videoupload;
 
   const config = {
@@ -217,7 +239,7 @@ const CompanyRegisterPage = () => {
       }
       // updating reasons and adding team members
       else if (activeindex === 2) {
-        if (teams[0].name && teams[0].email) {
+        if (membervalidation()) {
           setActive((prev) => prev + 1);
 
           try {
@@ -237,14 +259,13 @@ const CompanyRegisterPage = () => {
           }
         }
       } else if (activeindex === 3) {
-        if(imageupload && videoupload){
+        if (imageupload && videoupload) {
           setActive((prev) => prev + 1);
-
 
           const formData = new FormData();
           formData.append("company_video", videouploads);
           console.log(formData);
-  
+
           try {
             axios
               .put(
