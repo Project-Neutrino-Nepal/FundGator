@@ -7,16 +7,13 @@ import { AiFillFacebook } from "react-icons/ai";
 import Multiselect from "multiselect-react-dropdown";
 
 import {
-  FaInstagramSquare,
   FaTwitterSquare,
   FaLinkedin,
-  FaYoutube,
-  FaBlogger,
+  
 } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 const BasicEdit = ({ values, handleChange, handleTags }) => {
-
   const [addlink, setlink] = useState(0);
   const [show, setShow] = useState(false);
   const { id } = useParams();
@@ -105,8 +102,16 @@ const BasicEdit = ({ values, handleChange, handleTags }) => {
         setTags(tag);
       });
   });
+  const [tagarr, setTagarr] = useState([]);
 
-  
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/reason/api/get-reason/" + id, config)
+      .then((res) => {
+        let reasons = res.data.reasons;
+        setTagarr(reasons.tag);
+      });
+  });
 
   return (
     <div className="form-content">
@@ -118,7 +123,7 @@ const BasicEdit = ({ values, handleChange, handleTags }) => {
         handleChange={handleChange}
         name={"name"}
       />
-
+ 
       <div>
         <div>
           <label className="text-dark mb-3 mt-3">Select Category</label> &emsp;
@@ -138,6 +143,16 @@ const BasicEdit = ({ values, handleChange, handleTags }) => {
         <label htmlFor="" className="text-dark mb-1 ">
           Choose Tags 1 or more
         </label>
+        
+        <p className="fs-5 "> Saved tags:{" "}
+          <small className="fw-semibold">
+            {tagarr.map((tag) => {
+              return tag.name +  ",";
+            })
+            }
+          </small>
+        </p>
+            
         <Multiselect
           isObject={false}
           onKeyPressFn={function noRefCheck() {}}
@@ -145,9 +160,9 @@ const BasicEdit = ({ values, handleChange, handleTags }) => {
           options={tags.map((tag) => {
             return tag.name;
           })}
+          placeholder={"Select tags"}
+         
           onSelect={handleTags}
-          value={values.tag}
-          name="tag"
         />
       </div>
 

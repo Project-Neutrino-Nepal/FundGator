@@ -74,9 +74,7 @@ const EditCompanyPage = () => {
       authorization: localStorage.getItem("token"),
     },
   };
-  console.log(values.category);
-  console.log(values.tag);
-
+console.log(values.content);
   const data = {
     category: values.category,
     tag: values.tag,
@@ -100,6 +98,7 @@ const EditCompanyPage = () => {
   const teamsdata = {
     teams: values.teams,
   };
+
 
   const setcontent = (content) => {
     setValue({ ...values, content: content });
@@ -167,7 +166,7 @@ const EditCompanyPage = () => {
       if (activeindex === 1) {
         try {
           axios
-            .post(
+            .put(
               "http://localhost:5000/reason/api/update-reason/" +
                 formvalue.companyname,
               data,
@@ -175,11 +174,10 @@ const EditCompanyPage = () => {
             )
             .then((res) => {
               if (res.data.success) {
-                toast.success(res.data.message);
               }
             });
         } catch (error) {
-          toast.error(error.response.data.message);
+          console.log(error.response.data.message);
         }
       }
       // updating reasons and adding team members
@@ -187,16 +185,19 @@ const EditCompanyPage = () => {
         try {
           axios
             .put(
-              "http://localhost:5000/reason/api/update-reason/" +
+              "http://localhost:5000/reason/api/update-team/" +
                 formvalue.companyname,
               teamsdata,
               config
             )
             .then((res) => {
               if (res.data.success) {
+                toast.success(res.data.message);
+                console.log(res.data.message);
               }
             });
         } catch (error) {
+          toast.error(error.response.data.message);
           console.log(error.response.data.message);
         }
       } else if (activeindex === 3) {
@@ -239,7 +240,7 @@ const EditCompanyPage = () => {
           .then((res) => {
             if (res.data.success) {
               toast.success(
-                "Company created Successfully",
+                "Company Updated Successfully",
                 setTimeout(() => {
                   navigate("/homepage");
                 }, 1200)
@@ -275,17 +276,43 @@ const EditCompanyPage = () => {
         formvalue.twitter = reasons.twitter;
         formvalue.companylink = reasons.companylink;
         formvalue.category = reasons.category.name;
-         let tagarr=[];
-        reasons.tag.map((item)=>{
-          tagarr.push(item.name);
-        }
-        )
-        // console.log(tagarr);
-        formvalue.tag=tagarr;
+        const teamsdata = [];
+        reasons.teams.map((item) => {
+          teamsdata.push({
+            ...item,
+
+            // id: item.id,
+            // image: item.image,
+            // name: item.name,
+            // email: item.email,
+            // position: item.position,
+            // accomplished: item.accomplished,
+            // userfblink: item.userfblink,
+            // userlinkedinlink: item.userlinkedinlink,
+            // foundertype: item.foundertype,
+            // jobtype: item.jobtype,
+          });
+        });
+        formvalue.teams = teamsdata;
       });
   });
-  console.log(reasons);
-  console.log(reasons.tag);
+
+  // fetch data from company model
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/company/api/get-company/" + id, config)
+      .then((res) => {  
+        console.log(res);
+        let company = res.data.company;
+        formvalue.content = company.content;
+        formvalue.registration_card = company.registration_card;
+        formvalue.pan_card = company.pan_card;
+        formvalue.citizenship_front = company.citizenship_front;
+        formvalue.citizenship_back = company.citizenship_back;
+        formvalue.videoupload=company.company_video;
+        formvalue.imageupload=company.image;
+      });
+  }, []);
 
   return (
     <Wrapper>

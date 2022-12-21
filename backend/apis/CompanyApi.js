@@ -378,6 +378,36 @@ router.get("/api/get-my-companies", userAuth, async (req, res) => {
     });
   }
 });
+/**
+ * @description To get  company by company name
+ * @api /company/api/get-company/:name
+ * @access PRIVATE
+ * @type GET
+ */
+
+router.get("/api/get-company/:name", userAuth, async (req, res) => {
+  try {
+    let company = await Company.findOne({ name: req.params.name });
+
+    if (!company) {
+      return res.status(400).json({
+        success: false,
+        message: "No Companies Found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Companies Retrieved Successfully",
+      company,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
 
 /**
  * @description To get all verified Companies and their owners
