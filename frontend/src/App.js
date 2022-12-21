@@ -37,6 +37,7 @@ import Chat from "./pages/Chat";
 import RaisePage from "./pages/RaisePage/RaisePage";
 
 import Editpost from "./pages/DetailsPage/component/Editpostcard";
+import ResetPassword from "./pages/resetPassword";
 
 function App() {
   return (
@@ -75,6 +76,8 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
+        <Route path="/reset-password" element={<ResetPassword />} />
+
         <Route
           path="/chats"
           element={
@@ -85,8 +88,8 @@ function App() {
             </ChatProvider>
           }
         />
-            
-         <Route path="/editpost/:id" element={<Editpost />}></Route>
+
+        <Route path="/editpost/:id" element={<Editpost />}></Route>
         {/* This is route for Not found */}
         {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
         <Route

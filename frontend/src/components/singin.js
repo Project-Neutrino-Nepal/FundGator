@@ -144,7 +144,7 @@ const Signin = () => {
               </button>
               <br />
               <p className="btn btn-border-0 mt-2 text-primary fw-light ">
-                Forgot password?
+                <Link to="/reset-password">Forgot password?</Link>
               </p>
             </div>
           </form>

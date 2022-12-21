@@ -2,12 +2,6 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
-const Post = require("../models/postModel");
-const Chat = require("../models/chatModel");
-const Message = require("../models/messageModel");
-const Portfolio = require("../models/portfolioModel");
-const Company = require("../models/companyModel");
-const Reason = require("../models/reasonModel");
 const { randomBytes } = require("crypto");
 const { join } = require("path");
 // const DOMAIN = require("../constants/index") || "http://127.0.0.1:5000/";
@@ -16,7 +10,7 @@ const DOMAIN = "http://127.0.0.1:5000/";
 const RegisterValidations = require("../validators/user-validators");
 const validator = require("../middlewares/validator-middleware");
 const userAuth = require("../middlewares/auth-guard");
-const { body } = require("express-validator");
+const Validator = require("../middlewares/validator-middleware");
 
 /**
  * @description To create a new User Account
@@ -305,7 +299,7 @@ router.put("/api/change-password", userAuth, function (req, res) {
   const userID = req.user._id;
   const oldPassword = req.body.oldPassword;
   const newPassword = req.body.newPassword;
-   console.log  (userID, oldPassword, newPassword);
+  console.log(userID, oldPassword, newPassword);
   User.findById(userID, function (err, user) {
     if (err) {
       return res.status(500).json({
@@ -339,6 +333,131 @@ router.put("/api/change-password", userAuth, function (req, res) {
       });
     });
   });
+});
+
+/**
+ * @description To initiate the password reset process
+ * @api /users/api/reset-password
+ * @access Public
+ * @type POST
+ */
+router.put(
+  "/api/reset-password",
+  ResetPassword,
+  Validator,
+  async (req, res) => {
+    try {
+      let { email } = req.body;
+      let user = await User.findOne({ email });
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User with the email is not found.",
+        });
+      }
+      user.generatePasswordReset();
+      await user.save();
+      // Sent the password reset Link in the email.
+      let html = `
+        <div>
+            <h1>Hello, ${user.name}</h1>
+            <p>Please click the following link to reset your password.</p>
+            <p>If this password reset request is not created by your then you can inore this email.</p>
+            <a href="${DOMAIN}users/reset-password-now/${user.resetPasswordToken}">Verify Now</a>
+        </div>
+      `;
+      await sendMail(
+        user.email,
+        "Reset Password",
+        "Please reset your password.",
+        html
+      );
+      return res.status(200).json({
+        success: true,
+        message: "Password reset link is sent your email.",
+      });
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred.",
+      });
+    }
+  }
+);
+
+/**
+ * @description To resnder reset password page
+ * @api /users/reset-password/:resetPasswordToken
+ * @access Restricted via email
+ * @type GET
+ */
+router.get("/reset-password-now/:resetPasswordToken", async (req, res) => {
+  try {
+    let { resetPasswordToken } = req.params;
+    let user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpiresIn: { $gt: Date.now() },
+    });
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Password reset token is invalid or has expired.",
+      });
+    }
+    return res.sendFile(join(__dirname, "../templates/password-reset.html"));
+  } catch (err) {
+    return res.sendFile(join(__dirname, "../templates/errors.html"));
+  }
+});
+
+/**
+ * @description To reset the password
+ * @api /users/api/reset-password-now
+ * @access Restricted via email
+ * @type POST
+ */
+router.post("/api/reset-password-now", async (req, res) => {
+  try {
+    let { resetPasswordToken, password } = req.body;
+    let user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpiresIn: { $gt: Date.now() },
+    });
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Password reset token is invalid or has expired.",
+      });
+    }
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpiresIn = undefined;
+    await user.save();
+    // Send notification email about the password reset successfull process
+    let html = `
+        <div>
+            <h1>Hello, ${user.name}</h1>
+            <p>Your password is resetted successfully.</p>
+            <p>If this rest is not done by you then you can contact our team.</p>
+        </div>
+      `;
+    await sendMail(
+      user.email,
+      "Reset Password Successful",
+      "Your password is changed.",
+      html
+    );
+    return res.status(200).json({
+      success: true,
+      message:
+        "Your password reset request is complete and your password is resetted successfully. Login into your account with your new password.",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      sucess: false,
+      message: "Something went wrong.",
+    });
+  }
 });
 
 module.exports = router;
