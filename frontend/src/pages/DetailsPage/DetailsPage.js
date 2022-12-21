@@ -76,11 +76,9 @@ const Details = () => {
         setName(company.name);
         setImage(company.image);
         setVideo(company.company_video);
-        setShort_pitch(company.short_pitch);
         setEmail(company.email);
         setPhone(company.phone);
         setAddress(company.address);
-        setFund_goal(company.fund_goal);
         setFund_raised(company.fund_raised);
         setCategory(company.category);
         setStatus(company.status);
@@ -104,6 +102,8 @@ const Details = () => {
         setTwitter(reasons.twitter);
         setLinkedin(reasons.linkedin);
         setWebsite(reasons.companylink);
+        setFund_goal(reasons.amount);
+        setShort_pitch(reasons.description);
         console.log(reasons);
       })
       .catch((err) => {
