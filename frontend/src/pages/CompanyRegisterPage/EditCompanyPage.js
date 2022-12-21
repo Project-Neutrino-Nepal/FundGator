@@ -174,6 +174,7 @@ console.log(values.content);
             )
             .then((res) => {
               if (res.data.success) {
+                toast.success(res.data.message);
               }
             });
         } catch (error) {
@@ -193,7 +194,6 @@ console.log(values.content);
             .then((res) => {
               if (res.data.success) {
                 toast.success(res.data.message);
-                console.log(res.data.message);
               }
             });
         } catch (error) {
@@ -215,6 +215,7 @@ console.log(values.content);
             )
             .then((res) => {
               if (res.data.success) {
+                toast.success("video uploaded successfully");
               }
             });
         } catch (error) {
