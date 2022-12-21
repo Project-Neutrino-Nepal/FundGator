@@ -327,9 +327,6 @@ const Homepage = () => {
                   <label htmlFor="vid">
                     <RiVideoFill />
                   </label>
-                  <label htmlFor="doc">
-                    <IoDocumentTextSharp />
-                  </label>
                 </div>
 
                 <div className="d-none">
