@@ -141,9 +141,9 @@ const MyCompanyProfile = () => {
             <div className="info">
               <h3>Invest in {name}</h3>
               <h1>
-                {short_pitch.length > 200
+                {/* {short_pitch.length > 200
                   ? short_pitch.substring(0, 200) + "..."
-                  : short_pitch}
+                  : short_pitch} */}
               </h1>
             </div>
             <div className="share">
