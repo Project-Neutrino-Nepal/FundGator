@@ -12,7 +12,7 @@ const Wrapper = styled.div`
     align-items: center;
     padding-top: 5%;
     min-height: 80vh;
-    position: sticky;
+    position: static;
     top: 10px;
     left: 0;
     z-index: 3;
