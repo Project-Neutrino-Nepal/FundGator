@@ -5,7 +5,6 @@ import "./App.css";
 import "./components/admin/assets/styles/main.css";
 import "./components/admin/assets/styles/responsive.css";
 import Main from "./components/admin/components/layout/Main";
-import Categories from "./components/admin/pages/categories";
 import CompanyAdmin from "./components/admin/pages/company";
 import CompanyDetails from "./components/admin/pages/companyDetails/companyDetails";
 import Home from "./components/admin/pages/Home";
@@ -38,6 +37,8 @@ import RaisePage from "./pages/RaisePage/RaisePage";
 
 import Editpost from "./pages/DetailsPage/component/Editpostcard";
 import ResetPassword from "./pages/resetPassword";
+import Category from "./components/admin/pages/Category";
+import Tag from "./components/admin/pages/Tag";
 
 function App() {
   return (
@@ -125,7 +126,7 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
-        <Route path="/category" element={<Categories />}></Route>
+        
         <Route
           path="/raise"
           element={
@@ -194,6 +195,24 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/dashboard/categoryPage"
+            element={
+              <ProtectedRoute>
+                <Category/>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/tagPage"
+            element={
+              <ProtectedRoute>
+                <Tag/>
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/dashboard/company-details/:id"
             element={
