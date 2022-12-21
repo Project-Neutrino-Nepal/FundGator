@@ -3,6 +3,7 @@ import Wrapper from "../wrapper/Story";
 import upload from "../../../assets/image/uploadpic.svg";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 const Story = ({ handleChange, imgpreview, vdpreview }) => {
   const [image, setPreview] = useState(null);
   const [vpreview, setvPreview] = useState(null);
@@ -31,7 +32,9 @@ const Story = ({ handleChange, imgpreview, vdpreview }) => {
           formData,
           config
         )
-        .then((res) => {})
+        .then((res) => {
+          toast.success("Image uploaded successfully");
+        })
         .catch((err) => {
           console.log(err);
         });
@@ -73,7 +76,7 @@ const Story = ({ handleChange, imgpreview, vdpreview }) => {
       <p>
         Please keep it simple with short description of your company: recording
         yourself with an overview of the company may brings difference on
-        FundGator.
+        FundGator
       </p>
 
       <label htmlFor="video-file" className="vfile btn btn-primary">

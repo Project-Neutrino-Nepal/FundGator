@@ -222,7 +222,6 @@ const CompanyRegisterPage = () => {
           tag.length > 0 &&
           reason0
         ) {
-          console.log("step2");
           setActive((prev) => prev + 1);
 
           try {
@@ -258,9 +257,12 @@ const CompanyRegisterPage = () => {
               )
               .then((res) => {
                 if (res.data.success) {
+                  
+                  toast.success("teams added successfully");
                 }
               });
           } catch (error) {
+            toast.error(error.response.data.message);
             console.log(error.response.data.message);
           }
         }
@@ -282,6 +284,7 @@ const CompanyRegisterPage = () => {
               )
               .then((res) => {
                 if (res.data.success) {
+                  toast.success("video uploaded successfully");
                 }
               });
           } catch (error) {
@@ -310,7 +313,7 @@ const CompanyRegisterPage = () => {
               toast.success(
                 "Company created Successfully",
                 setTimeout(() => {
-                  navigate("/homepage");
+                  window.location.href = `/profile`;
                 }, 1200)
               );
             }
