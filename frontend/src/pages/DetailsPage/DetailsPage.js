@@ -56,7 +56,7 @@ const Details = () => {
   const [fund_raised, setFund_raised] = useState("");
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("");
-  const [tags, setTags] = useState("");
+  const [tags, setTags] = useState([]);
   const [ID, setID] = useState("");
   const [investors, setInvestors] = useState([]);
 
@@ -76,13 +76,12 @@ const Details = () => {
         setName(company.name);
         setImage(company.image);
         setVideo(company.company_video);
+        setShort_pitch(company.content);
         setEmail(company.email);
         setPhone(company.phone);
         setAddress(company.address);
         setFund_raised(company.fund_raised);
-        setCategory(company.category);
         setStatus(company.status);
-        setTags(company.tags);
         setID(company._id);
         setInvestors(company.investors);
       })
@@ -103,7 +102,7 @@ const Details = () => {
         setLinkedin(reasons.linkedin);
         setWebsite(reasons.companylink);
         setFund_goal(reasons.amount);
-        setShort_pitch(reasons.description);
+        setTags(reasons.tag);
         console.log(reasons);
       })
       .catch((err) => {
@@ -142,7 +141,11 @@ const Details = () => {
           <div className="header">
             <div className="info">
               <h3>Invest in {name}</h3>
-              <h1>{short_pitch}</h1>
+              <h1>
+                {short_pitch.length > 200
+                  ? short_pitch.substring(0, 200) + "..."
+                  : short_pitch}
+              </h1>
             </div>
             <div className="share">
               <FaShare />
@@ -164,11 +167,21 @@ const Details = () => {
           </div>
         </section>
         <section className="two">
-          <span>almost sold out</span>
+          <span>
+            {fund_goal - fund_raised < 10000 ? (
+              <p className="text-danger">
+                {fund_goal - fund_raised} Left to reach goal
+              </p>
+            ) : (
+              <p className="text-success">
+                {fund_goal - fund_raised} Left to reach goal
+              </p>
+            )}
+          </span>
           <div className="line"></div>
           <div className="price">
-            <p>$2,000,000</p>
-            <p>Raised money from 200 investor</p>
+            <p>Rs.{fund_goal}</p>
+            <p>Raised money from {investors.length} investor</p>
           </div>
           <div className="invest">
             <div className="invest-info">
@@ -200,7 +213,6 @@ const Details = () => {
             >
               <AiFillFacebook />
             </Link>
-
             <Link className="icon" to={twitter}>
               <AiFillTwitterSquare />
             </Link>
@@ -208,16 +220,16 @@ const Details = () => {
               <AiFillInstagram />
             </Link>
           </div>
-
           <div className="category">
-            <span>{}</span>
-            <span>Fintech & Finance</span>
-            <span>Y Combinator</span>
-            <span>B2B</span>
-            <span>Saas</span>
+            {tags.map((item, index) => {
+              return (
+                <span key={index} className="tag">
+                  {item.name}
+                </span>
+              );
+            })}
           </div>
         </section>
-
         <section className="four tab">
           {tabs.map((item, index) => {
             return (
@@ -235,8 +247,8 @@ const Details = () => {
         <section className="five">
           {activeindex === 1 ? (
             <Overview
-              // pass company ID as props
-              company={ID}
+              // pass company content as props
+              content={short_pitch}
             />
           ) : null}
           {activeindex === 2 ? (
@@ -256,7 +268,17 @@ const Details = () => {
       </div>
       <div className="right-container">
         <section className="two">
-          <span>almost sold out</span>
+          <span>
+            {fund_goal - fund_raised < 10000 ? (
+              <p className="text-danger">
+                {fund_goal - fund_raised} Left to reach goal
+              </p>
+            ) : (
+              <p className="text-success">
+                {fund_goal - fund_raised} Left to reach goal
+              </p>
+            )}
+          </span>
           <div className="line"></div>
           <div className="price">
             <p>Rs.{fund_goal}</p>

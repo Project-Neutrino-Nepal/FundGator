@@ -1,11 +1,16 @@
-import { Button, Space } from "antd";
 import axios from "axios";
+import KhaltiCheckout from "khalti-checkout-web";
 import React, { useEffect, useRef, useState } from "react";
-import { AiFillFacebook, AiFillTwitterSquare } from "react-icons/ai";
+import {
+  AiFillFacebook,
+  AiFillInstagram,
+  AiFillTwitterSquare,
+} from "react-icons/ai";
 import { FaPlay, FaShare } from "react-icons/fa";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { Link, useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import khalticonfig from "../../components/Khalti/KhaltiConfig";
 import {
   AskAQuestion,
   Detail,
@@ -15,13 +20,13 @@ import {
 } from "./component";
 import tabs from "./utils/tab";
 import Wrapper from "./wrapper/DetailPage";
-
 const MyCompanyProfile = () => {
-  const navigateTo = useNavigate();
   const videoRef = useRef(null);
   const [play, setplay] = useState(false);
   const [activeindex, setActiveIndex] = useState(1);
   let { id } = useParams();
+  let checkout = new KhaltiCheckout(khalticonfig);
+  const [amount, setAmount] = useState(0);
 
   const onplay = () => {
     if (!play) {
@@ -50,8 +55,9 @@ const MyCompanyProfile = () => {
   const [fund_raised, setFund_raised] = useState("");
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("");
-  const [tags, setTags] = useState("");
+  const [tags, setTags] = useState([]);
   const [ID, setID] = useState("");
+  const [investors, setInvestors] = useState([]);
 
   const config = {
     headers: {
@@ -68,38 +74,77 @@ const MyCompanyProfile = () => {
         let company = res.data.company;
         setName(company.name);
         setImage(company.image);
-        setVideo(company.video);
-        setWebsite(company.website);
-        setFacebook(company.facebook);
-        setTwitter(company.twitter);
-        setLinkedin(company.linkedin);
-        setInstagram(company.instagram);
-        setShort_pitch(company.short_pitch);
+        setVideo(company.company_video);
+        setShort_pitch(company.content);
         setEmail(company.email);
         setPhone(company.phone);
         setAddress(company.address);
-        setFund_goal(company.fund_goal);
         setFund_raised(company.fund_raised);
-        setCategory(company.category);
         setStatus(company.status);
-        setTags(company.tags);
         setID(company._id);
+        setInvestors(company.investors);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
+  // get reason details using id from params
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/reason/api/get-reasons/" + id, config)
+      .then((res) => {
+        let reasons = res.data.reasons;
+        setFacebook(reasons.facebook);
+        setTwitter(reasons.twitter);
+        setLinkedin(reasons.linkedin);
+        setWebsite(reasons.companylink);
+        setFund_goal(reasons.amount);
+        setTags(reasons.tag);
+        console.log(reasons);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  // watchlist handler
+  const watchlistHandler = () => {
+    if (!localStorage.getItem("token")) {
+      toast.error("Please login to add to watchlist");
+      return;
+    }
+    axios
+      .put("http://localhost:5000/company/api/watchlist/" + id, id, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        toast.success(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data.message);
+      });
+  };
+
   return (
     <Wrapper>
       <ToastContainer />
 
-      <div className="left-container" id="CompanyProfile">
+      <div className="left-container" id="detailPage">
         <section className="one">
           <div className="header">
             <div className="info">
               <h3>Invest in {name}</h3>
-              <h1>{short_pitch}</h1>
+              <h1>
+                {short_pitch.length > 200
+                  ? short_pitch.substring(0, 200) + "..."
+                  : short_pitch}
+              </h1>
             </div>
             <div className="share">
               <FaShare />
@@ -107,6 +152,7 @@ const MyCompanyProfile = () => {
           </div>
           <div className="video-container">
             <video
+              autoPlay
               ref={videoRef}
               onClick={onplay}
               loop
@@ -120,33 +166,43 @@ const MyCompanyProfile = () => {
           </div>
         </section>
         <section className="two">
-          <Space wrap>
-            <Button type="primary">Edit Company</Button>
-          </Space>
+          <div className="edit">
+            <Link to={`/company/edit/${name}`}>
+              <button className="btn btn-primary">Edit</button>
+            </Link>
+          </div>
         </section>
         <section className="three">
           <div className="links">
             <Link>{website}</Link>
             <span>{address}</span>
 
-            <Link className="icon">
+            <Link
+              className="icon"
+              to={{
+                pathname: `https://www.facebook.com/${facebook}`,
+              }}
+              target="_blank"
+            >
               <AiFillFacebook />
             </Link>
-
-            <Link className="icon">
+            <Link className="icon" to={twitter}>
               <AiFillTwitterSquare />
             </Link>
+            <Link className="icon" to={instagram}>
+              <AiFillInstagram />
+            </Link>
           </div>
-
           <div className="category">
-            <span>{}</span>
-            <span>Fintech & Finance</span>
-            <span>Y Combinator</span>
-            <span>B2B</span>
-            <span>Saas</span>
+            {tags.map((item, index) => {
+              return (
+                <span key={index} className="tag">
+                  {item.name}
+                </span>
+              );
+            })}
           </div>
         </section>
-
         <section className="four tab">
           {tabs.map((item, index) => {
             return (
@@ -164,8 +220,8 @@ const MyCompanyProfile = () => {
         <section className="five">
           {activeindex === 1 ? (
             <Overview
-              // pass company ID as props
-              company={ID}
+              // pass company content as props
+              content={short_pitch}
             />
           ) : null}
           {activeindex === 2 ? (
@@ -185,16 +241,11 @@ const MyCompanyProfile = () => {
       </div>
       <div className="right-container">
         <section className="two">
-          <Space wrap>
-            <Button
-              type="primary"
-              onClick={() => {
-                navigateTo("/company/edit/" + name);
-              }}
-            >
-              Edit Company
-            </Button>
-          </Space>
+          <div className="edit">
+            <Link to={`/company/edit/${name}`}>
+              <button className="btn btn-primary">Edit</button>
+            </Link>
+          </div>
         </section>
       </div>
     </Wrapper>
