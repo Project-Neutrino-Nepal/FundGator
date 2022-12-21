@@ -5,8 +5,9 @@ import Wrapper from "../wrapper/Visibility";
 
 import { useQuill } from "react-quilljs";
 // or const { useQuill } = require('react-quilljs');
-
+import ReactQuill from "react-quill";
 import "quill/dist/quill.snow.css";
+
 import UploadField from "./UploadField";
 
 const Visiblity = ({
@@ -19,30 +20,35 @@ const Visiblity = ({
   oncitizenfrontcard,
   oncitizenbackcard,
 }) => {
-  const { quill, quillRef } = useQuill();
+  // const { quill, quillRef } = useQuill();
 
-  React.useEffect(() => {
-    if (quill) {
-      quill.on("text-change", (delta, oldDelta, source) => {
-        console.log("Text change!");
-        console.log(quill.getText()); // Get text only
-        console.log(quill.getContents()); // Get delta contents
-        console.log(quillRef.current.firstChild.innerHTML);
+  // React.useEffect(() => {
+  //   if (quill) {
+  //     quill.on("text-change", (delta, oldDelta, source) => {
+  //       console.log("Text change!");
+  //       console.log(quill.getText()); // Get text only
+  //       console.log(quill.getContents()); // Get delta contents
+  //       console.log(quillRef.current.firstChild.innerHTML);
 
-        // setcontent(quill.root.innerHTML); // Get innerHTML using quillRef
-        setcontent(quillRef.current.firstChild.innerHTML);
-      });
-    }
-  }, [quill, quillRef]);
+  //       // setcontent(quill.root.innerHTML); // Get innerHTML using quillRef
+  //       setcontent(quillRef.current.firstChild.innerHTML);
+  //     });
+  //   }
+  // }, [quill, quillRef]);
 
   return (
     <Wrapper className="form-content">
-      <section
-        style={{ width: "clac(550px + 400px)", height: 400 }}
-        className="quill"
-      >
-        <div ref={quillRef} />
-      </section>
+      <div>
+      <h4 className="fw-semibold">Write short description of your company?</h4>
+        <textarea
+          class="form-control"
+          id="exampleFormControlTextarea3"
+          rows={5}
+          name="content"
+          value={values.content}
+          onChange={handleChange}
+        ></textarea>
+      </div>
 
       <section className="fuploads  p-2 w-100 ">
         <h4 className="fw-semibold">Please upload your document here!</h4>
