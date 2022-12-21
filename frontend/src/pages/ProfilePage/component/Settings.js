@@ -71,15 +71,127 @@ function Settings() {
             type={"email"}
             placeholder={email}
           />
-          <div className="passwordreset hover">
+          <div
+            className="passwordreset hover"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModalChange"
+          >
             <span>Password</span>
-            <span>Reset</span>
+            <span>Change</span>
+          </div>
+          <div
+            class="modal fade"
+            id="exampleModalChange"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Change Password
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="mb-3">
+                      <label for="old_password" class="col-form-label">
+                        Old Password:
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="old_password"
+                      ></input>
+                    </div>
+                    <div class="mb-3">
+                      <label for="new_password" class="col-form-label">
+                        New Password:
+                      </label>
+                      <input class="form-control" id="new_password"></input>
+                    </div>
+                    <div class="mb-3">
+                      <label for="confirm_password" class="col-form-label">
+                        Confirm New Password:
+                      </label>
+                      <input class="form-control" id="confirm_password"></input>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    onClick={() => {
+                      // check if new password and confirm password are same
+                      if (
+                        document.getElementById("new_password").value !==
+                        document.getElementById("confirm_password").value
+                      ) {
+                        toast.error("Password does not match");
+                        return;
+                      }
+                      // check if old password in same as new password
+                      if (
+                        document.getElementById("old_password").value ===
+                        document.getElementById("new_password").value
+                      ) {
+                        toast.error("Old and New Password cannot be same");
+                        return;
+                      }
+
+                      axios
+                        .put(
+                          "http://localhost:5000/users/api/change-password",
+                          {
+                            oldPassword:
+                              document.getElementById("old_password").value,
+                            newPassword:
+                              document.getElementById("new_password").value,
+                          },
+                          config
+                        )
+                        .then((res) => {
+                          console.log(res.data);
+                          toast.success(
+                            "Password Changed Successfully",
+                            setTimeout(() => {
+                              localStorage.clear();
+                              sessionStorage.clear();
+                              window.location.reload();
+                            }, 2000)
+                          );
+                        })
+                        .catch((err) => {
+                          toast.error(err.response.data.message);
+                        });
+                    }}
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
           <div
             className="btn-delete hover"
             // make modal on click to delete account
             data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
+            data-bs-target="#exampleModalDactivate"
           >
             <span>
               Delete Account &nbsp; &nbsp;
@@ -88,7 +200,7 @@ function Settings() {
           </div>
           <div
             class="modal fade"
-            id="exampleModal"
+            id="exampleModalDactivate"
             tabindex="-1"
             aria-labelledby="exampleModalLabel"
             aria-hidden="true"
