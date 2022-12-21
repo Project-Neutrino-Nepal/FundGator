@@ -15,6 +15,7 @@ const Wrapper = styled.div`
     position: sticky;
     top: 10px;
     left: 0;
+    z-index: 3;
 
     & > h2 {
       font-weight: bold;
