@@ -276,7 +276,10 @@ router.get("/api/get-reasons/:id", async (req, res) => {
         message: "Company not found",
       });
     }
-    const reasons = await Reason.findOne({ company: company._id });
+    const reasons = await Reason.findOne({ company: company._id })
+      .populate("category")
+      .populate("tag");
+
     if (!reasons) {
       return res.status(404).json({
         success: false,

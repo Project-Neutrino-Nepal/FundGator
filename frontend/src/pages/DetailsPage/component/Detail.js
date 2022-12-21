@@ -138,12 +138,8 @@ const Detail = ({ company }) => {
                   <td>{marketCap}</td>
                 </tr>
                 <tr>
-                  <td>Equity</td>
-                  <td>{company.totalEquity}</td>
-                </tr>
-                <tr>
                   <td>Equity Sold</td>
-                  <td>{company.soldEquity}</td>
+                  <td>{(Revenue / FundGoal) * 100}</td>
                 </tr>
                 <tr>
                   <td>Equity Released</td>

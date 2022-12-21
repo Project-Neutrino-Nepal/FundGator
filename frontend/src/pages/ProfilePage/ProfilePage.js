@@ -94,7 +94,7 @@ const ProfilePage = () => {
       <ToastContainer />
       <section
         className="infocontainer "
-        style={{ marginTop: "72px", }}
+        style={{ marginTop: "72px" }}
         id="SettingPage"
       >
         <div className="userinfo">
@@ -159,7 +159,7 @@ const ProfilePage = () => {
           {tabs.map((item, index) => {
             return (
               <Link
-                to={`/homepage/profile/${item.text}`}
+                to={`/profile/${item.text}`}
                 className={activeindex === item.id ? "tabs active" : "tabs"}
                 key={item.id}
                 onClick={() => closedropdown(item.text, item.id)}

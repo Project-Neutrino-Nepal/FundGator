@@ -11,16 +11,6 @@ const CompanySchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "profile",
     },
-    category: {
-      type: Schema.Types.ObjectId,
-      ref: "category",
-    },
-    tags: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "tags",
-      },
-    ],
     reasons: {
       type: Schema.Types.ObjectId,
       ref: "reason",
@@ -52,9 +42,6 @@ const CompanySchema = new Schema(
     address: {
       type: String,
     },
-    short_pitch: {
-      type: String,
-    },
     registration_card: {
       type: String,
     },
@@ -78,10 +65,6 @@ const CompanySchema = new Schema(
       default: true,
     },
     fund_raised: {
-      type: Number,
-      default: 0,
-    },
-    fund_goal: {
       type: Number,
       default: 0,
     },

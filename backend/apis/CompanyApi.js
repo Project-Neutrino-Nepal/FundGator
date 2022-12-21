@@ -355,7 +355,6 @@ router.delete("/api/delete-company/:id", userAuth, async (req, res) => {
 router.get("/api/get-my-companies", userAuth, async (req, res) => {
   try {
     let companies = await Company.find({ user: req.user._id })
-      .populate("category")
       .populate("profile")
       .exec();
     if (!companies) {
@@ -428,7 +427,6 @@ router.get("/api/companies", async (req, res) => {
     }
     let company = await Company.find({ verified: true })
       .populate("user")
-      .populate("category")
       .populate("profile")
       .exec();
     return res.status(200).json({
@@ -465,7 +463,6 @@ router.get("/api/all-companies", async (req, res) => {
     let company = await Company.find()
 
       .populate("user")
-      .populate("category")
       .populate("profile")
       .exec();
     return res.status(200).json({

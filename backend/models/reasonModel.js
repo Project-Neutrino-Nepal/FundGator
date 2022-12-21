@@ -62,9 +62,6 @@ const ReasonSchema = new Schema({
     type: String,
     required: false,
   },
-  description: {
-    type: String,
-  },
   amount: {
     type: Number,
   },
