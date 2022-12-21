@@ -106,6 +106,14 @@ const Editpost = () => {
     formData.append("vid", values.vid);
     // formData.append("doc", values.doc);
     formData.append("description", values.description);
+    if (!values.img && !values.vid && !values.description) {
+      toast.error("You can't post empty post");
+      return;
+    }
+    if (values.img && values.vid) {
+      toast.error("You can only upload one file at a time");
+      return;
+    }
 
     axios
       .put(
