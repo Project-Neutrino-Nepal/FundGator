@@ -251,7 +251,7 @@ const CompanyRegisterPage = () => {
           try {
             axios
               .put(
-                "http://localhost:5000/reason/api/update-reason/" +
+                "http://localhost:5000/reason/api/update-team/" +
                   formvalue.companyname,
                 teamsdata,
                 config
