@@ -160,7 +160,7 @@ function App() {
           }
         ></Route>
 
-        <Route path="/company/edit/:id" element={<EditCompanyPage />}></Route>
+        <Route path="/company/edit/:id" element={<ProtectedRoute><EditCompanyPage /></ProtectedRoute>}></Route>
 
         {/* DASHBOARD ROUTES */}
         <Route
