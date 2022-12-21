@@ -14,18 +14,20 @@ const OurFounder = ({
   console.log(facebook);
   return (
     <Wrapper>
-      <img src={image} alt={name} />
+      {/* <img src={image} alt={name} /> */}
 
       <div className="info">
         <div className="userinfo">
           <span>{name}</span>
           <span>{email}</span>
         </div>
-        <span>{position}</span>
-        <Link className="icon" to={facebook}>
+        <span
+        className="me-2 fs-5"
+        >{position}</span>
+        <Link className="icon fs-4 me-2" to={facebook}>
           <AiFillFacebook />
         </Link>
-        <Link className="icon" to={linkedin}>
+        <Link className="icon fs-4" to={linkedin}>
           <AiFillLinkedin />
         </Link>
         <p></p>

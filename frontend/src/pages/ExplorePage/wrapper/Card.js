@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  .cardy {
+  & > .cardy {
     height: 550px;
     overflow: hidden;
     border-radius: 25px;
@@ -25,6 +25,7 @@ const Wrapper = styled.div`
       height: 55%;
       transition: 2s;
       background-color: white;
+      width: 100%;
 
       z-index: 2;
 

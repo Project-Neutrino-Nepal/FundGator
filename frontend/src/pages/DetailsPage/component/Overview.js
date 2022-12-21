@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Wrapper from "../wrapper/Overview";
 import OurFounder from "./OurFounder";
 
-const Overview = (ID) => {
-  let id = ID.company;
+const Overview = (short_pitch) => {
+  let content = short_pitch.content;
   const [reasons0, setReasons0] = useState("");
   const [reasons1, setReasons1] = useState("");
   const [reasons2, setReasons2] = useState("");
@@ -14,8 +15,8 @@ const Overview = (ID) => {
   const [reasons6, setReasons6] = useState("");
   const [reasons7, setReasons7] = useState("");
   const [reasons8, setReasons8] = useState("");
-  const [desc, setDescription] = useState("");
   const [teams, setTeams] = useState([]);
+  let { id } = useParams();
   const config = {
     headers: {
       Authorization: localStorage.getItem("token"),
@@ -35,9 +36,7 @@ const Overview = (ID) => {
         setReasons6(reasons.reason6);
         setReasons7(reasons.reason7);
         setReasons8(reasons.reason8);
-        setDescription(reasons.description);
         let team = reasons.teams;
-        console.log(reasons.description);
         console.log(team);
         setTeams(team);
       })
@@ -74,7 +73,7 @@ const Overview = (ID) => {
   if (reasons8 != null) {
     reasons.push(reasons8);
   }
-  const validReasons = reasons.filter((reason) => reason !== ""); 
+  const validReasons = reasons.filter((reason) => reason !== "");
   reasons = reasons.slice(0, validReasons.length);
 
   return (
@@ -111,7 +110,7 @@ const Overview = (ID) => {
 
       <section className="about">
         <h1> About Product</h1>
-        <p>{desc}</p>
+        <p align="justify">{content}</p>
       </section>
     </Wrapper>
   );

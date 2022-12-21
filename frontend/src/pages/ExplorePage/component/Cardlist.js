@@ -42,7 +42,7 @@ const Cardlist = ({ item, heading, to }) => {
 
   const [companies, setCompanies] = useState([]);
 
-  // fetching Profile data from API
+  // fetching companies data from API
   useEffect(() => {
     axios.get("http://localhost:5000/company/api/companies").then((res) => {
       let program = res.data.company;
