@@ -17,6 +17,9 @@ import Navbar from "./components/navbar.js";
 import Signup from "./components/Signup";
 import Signin from "./components/singin";
 import WatchList from "./components/watchlist";
+import BlankPage from "./components/BlankPage";
+import BlankPage2 from "./components/BlankPage2";
+import BlankPage3 from "./components/BlankPage3";
 import {
   CompanyRegisterPage,
   Details,
@@ -66,7 +69,9 @@ function App() {
         >
           <Route index element={<Feed />} />
 
-          <Route path="profile/:id" element={<ProfilePage />} />
+          <Route path="one" element={<BlankPage />} />
+          <Route path="two" element={<BlankPage2 />} />
+          <Route path="three" element={<BlankPage3 />} />
         </Route>
         <Route
           path="/watchlist"

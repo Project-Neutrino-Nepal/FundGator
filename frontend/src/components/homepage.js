@@ -189,9 +189,9 @@ const Homepage = () => {
           </li>
           <li className="nav-item">
             <Link
-              to="/homepage/profile/Portfolio"
+              to="/homepage/one"
               className={
-                window.location.pathname === "/homepage/profile/Portfolio"
+                window.location.pathname === "/homepage/one"
                   ? "nav-link active"
                   : "nav-link text-white"
               }
@@ -203,7 +203,14 @@ const Homepage = () => {
             </Link>
           </li>
           <li>
-            <Link to="/profile/Portfolio" className="nav-link text-white">
+            <Link
+              to="/homepage/two"
+              className={
+                window.location.pathname === "/homepage/one"
+                  ? "nav-link active"
+                  : "nav-link text-white"
+              }
+            >
               <i className="fa fa-first-order" />
 
               <span className="ms-2">By Fundgator</span>
@@ -211,9 +218,9 @@ const Homepage = () => {
           </li>
           <li>
             <Link
-              to="/homepage/profile/Watchlist"
+              to="/homepage/three"
               className={
-                window.location.pathname === "/homepage/profile/Watchlist"
+                window.location.pathname === "/homepage/three"
                   ? "nav-link active"
                   : "nav-link text-white"
               }
@@ -356,8 +363,6 @@ const Homepage = () => {
             </div>
           </div>
         </div>
-
-        
       </div>
     </>
   );
