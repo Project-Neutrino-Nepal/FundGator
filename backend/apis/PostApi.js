@@ -340,30 +340,25 @@ async (req, res) => {
     let imagePath,
       vidPath = "";
     if (req.files) {
-      if (req.files.img == undefined) {
+      if (req.files.img == null) {
+        imagePath = "";
+      } else if (req.files.img == undefined) {
         return res.status(400).json({
           success: false,
           message: "Please select an image",
         });
-      }
-      if (req.files.img == null) {
-        imagePath = "";
-      }
-      if (req.files.img) {
+      } else {
         image = req.files.img[0];
         imagePath = DOMAIN + "uploads/posts-images/" + image.filename;
       }
-
-      if (req.files.vid == undefined) {
+      if (req.files.vid == null) {
+        vidPath = "";
+      } else if (req.files.vid == undefined) {
         return res.status(400).json({
           success: false,
           message: "Please select a video",
         });
-      }
-      if (req.files.vid == null) {
-        vidPath = "";
-      }
-      if (req.files.vid) {
+      } else {
         video = req.files.vid[0];
         vidPath = DOMAIN + "uploads/posts-images/" + video.filename;
       }

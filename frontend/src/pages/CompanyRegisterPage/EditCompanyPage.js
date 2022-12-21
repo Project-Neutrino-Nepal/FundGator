@@ -74,7 +74,7 @@ const EditCompanyPage = () => {
       authorization: localStorage.getItem("token"),
     },
   };
-
+console.log(values.content);
   const data = {
     category: values.category,
     tag: values.tag,
