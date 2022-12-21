@@ -96,6 +96,15 @@ const Basic = ({ values, handleChange, handleTags }) => {
       });
   });
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/admin/api/get-all-categories", config)
+      .then((res) => {
+        let category = res.data.categories;
+        setCategories(category);
+      });
+  });
+
   return (
     <div className="form-content">
       <Labelinput

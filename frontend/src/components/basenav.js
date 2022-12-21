@@ -18,7 +18,7 @@ const Basenav = ({ user }) => {
               <a href="#investment">My Investment</a>
               <a href="#fundgator">By Fundgator</a>
               <a href="#watchlist">My Watchlist</a>
-              <a href="#post">Add Post</a>
+              <a href="#poost">Add Post</a>
               <a href="#raisefund">Raise Fund</a>
             </div>
           </div>
