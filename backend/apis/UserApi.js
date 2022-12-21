@@ -294,4 +294,51 @@ router.put("/api/activate/:userId", async (req, res) => {
   }
 });
 
+/**
+ * @description To change the password by Authenticated user
+ * @api /users/api/change-password
+ * @access Private
+ * @type PUT
+ */
+
+router.put("/api/change-password", userAuth, function (req, res) {
+  const userID = req.user._id;
+  const oldPassword = req.body.oldPassword;
+  const newPassword = req.body.newPassword;
+   console.log  (userID, oldPassword, newPassword);
+  User.findById(userID, function (err, user) {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred.",
+      });
+    }
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+    if (!user.comparePassword(oldPassword)) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid Credentials.",
+      });
+    }
+    user.password = newPassword;
+    user.save(function (err) {
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          message: "An error occurred.",
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Password changed successfully.",
+      });
+    });
+  });
+});
+
 module.exports = router;

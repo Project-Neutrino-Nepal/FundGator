@@ -115,19 +115,13 @@ function Settings() {
                       <label for="new_password" class="col-form-label">
                         New Password:
                       </label>
-                      <input
-                        class="form-control"
-                        id="new_password"
-                      ></input>
+                      <input class="form-control" id="new_password"></input>
                     </div>
                     <div class="mb-3">
                       <label for="confirm_password" class="col-form-label">
                         Confirm New Password:
                       </label>
-                      <input
-                        class="form-control"
-                        id="confirm_password"
-                      ></input>
+                      <input class="form-control" id="confirm_password"></input>
                     </div>
                   </form>
                 </div>
@@ -139,7 +133,54 @@ function Settings() {
                   >
                     Close
                   </button>
-                  <button type="button" class="btn btn-primary">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    onClick={() => {
+                      // check if new password and confirm password are same
+                      if (
+                        document.getElementById("new_password").value !==
+                        document.getElementById("confirm_password").value
+                      ) {
+                        toast.error("Password does not match");
+                        return;
+                      }
+                      // check if old password in same as new password
+                      if (
+                        document.getElementById("old_password").value ===
+                        document.getElementById("new_password").value
+                      ) {
+                        toast.error("Old and New Password cannot be same");
+                        return;
+                      }
+
+                      axios
+                        .put(
+                          "http://localhost:5000/users/api/change-password",
+                          {
+                            oldPassword:
+                              document.getElementById("old_password").value,
+                            newPassword:
+                              document.getElementById("new_password").value,
+                          },
+                          config
+                        )
+                        .then((res) => {
+                          console.log(res.data);
+                          toast.success(
+                            "Password Changed Successfully",
+                            setTimeout(() => {
+                              localStorage.clear();
+                              sessionStorage.clear();
+                              window.location.reload();
+                            }, 2000)
+                          );
+                        })
+                        .catch((err) => {
+                          toast.error(err.response.data.message);
+                        });
+                    }}
+                  >
                     Save
                   </button>
                 </div>
