@@ -206,7 +206,7 @@ const Homepage = () => {
             <Link
               to="/homepage/two"
               className={
-                window.location.pathname === "/homepage/one"
+                window.location.pathname === "/homepage/two"
                   ? "nav-link active"
                   : "nav-link text-white"
               }
