@@ -5,7 +5,6 @@ import "./App.css";
 import "./components/admin/assets/styles/main.css";
 import "./components/admin/assets/styles/responsive.css";
 import Main from "./components/admin/components/layout/Main";
-import Categories from "./components/admin/pages/categories";
 import CompanyAdmin from "./components/admin/pages/company";
 import CompanyDetails from "./components/admin/pages/companyDetails/companyDetails";
 import Home from "./components/admin/pages/Home";
@@ -31,6 +30,7 @@ import {
   ProtectedRoute,
   UserProfilePage,
   WelcomePage,
+  IsloggedIn,
 } from "./pages";
 import EditCompanyPage from "./pages/CompanyRegisterPage/EditCompanyPage";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
@@ -41,6 +41,8 @@ import RaisePage from "./pages/RaisePage/RaisePage";
 
 import Editpost from "./pages/DetailsPage/component/Editpostcard";
 import ResetPassword from "./pages/resetPassword";
+import Category from "./components/admin/pages/Category";
+import Tag from "./components/admin/pages/Tag";
 
 function App() {
   return (
@@ -48,8 +50,22 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path="/signup" element={<Signup />}></Route>
-        <Route path="/signin" element={<Signin />}></Route>
+        <Route
+          path="/signup"
+          element={
+            <IsloggedIn>
+              <Signup />
+            </IsloggedIn>
+          }
+        ></Route>
+        <Route
+          path="/signin"
+          element={
+            <IsloggedIn>
+              <Signin />
+            </IsloggedIn>
+          }
+        ></Route>
         <Route path="/" element={<LandingPage />}></Route>
         <Route
           path="/welcome"
@@ -130,7 +146,7 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
-        <Route path="/category" element={<Categories />}></Route>
+
         <Route
           path="/raise"
           element={
@@ -160,7 +176,14 @@ function App() {
           }
         ></Route>
 
-        <Route path="/company/edit/:id" element={<EditCompanyPage />}></Route>
+        <Route
+          path="/company/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditCompanyPage />
+            </ProtectedRoute>
+          }
+        ></Route>
 
         {/* DASHBOARD ROUTES */}
         <Route
@@ -199,6 +222,24 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/dashboard/categoryPage"
+            element={
+              <ProtectedRoute>
+                <Category />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/tagPage"
+            element={
+              <ProtectedRoute>
+                <Tag />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/dashboard/company-details/:id"
             element={
