@@ -9,6 +9,7 @@ import CompanyRegisterPage from "./CompanyRegisterPage/CompanyRegisterPage";
 import FooterLayout from "./FooterLayout/FooterLayout";
 import PaymentPage from "./PaymentPage/PaymentPage"
 import ProtectedRoute from "./ProtectedRoute";
+import IsloggedIn from "./IsloggedIn"
 export {
   LandingPage,
   ProfilePage,
@@ -20,6 +21,7 @@ export {
   CompanyRegisterPage,
   FooterLayout,
   PaymentPage,
-  ProtectedRoute
+  ProtectedRoute,
+  IsloggedIn
 };
 

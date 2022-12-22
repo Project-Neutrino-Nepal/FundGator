@@ -6,7 +6,7 @@ const IsloggedIn = ({ children }) => {
   if (isadmin) {
     return <Navigate to="/dashboard" />;
   }
-  if (!isadmin) {
+  if (isadmin === false) {
     return <Navigate to="/homepage" />;
   }
   return children;

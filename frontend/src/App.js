@@ -30,6 +30,7 @@ import {
   ProtectedRoute,
   UserProfilePage,
   WelcomePage,
+  IsloggedIn,
 } from "./pages";
 import EditCompanyPage from "./pages/CompanyRegisterPage/EditCompanyPage";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
@@ -49,8 +50,22 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path="/signup" element={<Signup />}></Route>
-        <Route path="/signin" element={<Signin />}></Route>
+        <Route
+          path="/signup"
+          element={
+            <IsloggedIn>
+              <Signup />
+            </IsloggedIn>
+          }
+        ></Route>
+        <Route
+          path="/signin"
+          element={
+            <IsloggedIn>
+              <Signin />
+            </IsloggedIn>
+          }
+        ></Route>
         <Route path="/" element={<LandingPage />}></Route>
         <Route
           path="/welcome"
@@ -131,7 +146,7 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
-        
+
         <Route
           path="/raise"
           element={
@@ -161,7 +176,14 @@ function App() {
           }
         ></Route>
 
-        <Route path="/company/edit/:id" element={<ProtectedRoute><EditCompanyPage /></ProtectedRoute>}></Route>
+        <Route
+          path="/company/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditCompanyPage />
+            </ProtectedRoute>
+          }
+        ></Route>
 
         {/* DASHBOARD ROUTES */}
         <Route
@@ -205,7 +227,7 @@ function App() {
             path="/dashboard/categoryPage"
             element={
               <ProtectedRoute>
-                <Category/>
+                <Category />
               </ProtectedRoute>
             }
           />
@@ -213,7 +235,7 @@ function App() {
             path="/dashboard/tagPage"
             element={
               <ProtectedRoute>
-                <Tag/>
+                <Tag />
               </ProtectedRoute>
             }
           />
