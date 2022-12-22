@@ -28,9 +28,9 @@ function WatchList() {
 
   if (companies.length === 0) {
     return (
-      <div className="container mt-5">
-        <div className="row mt-5">
-          <div className="col-12 mt-5">
+      <div className="container">
+        <div className="row ">
+          <div className="col-12">
             <h1> No Watchlist</h1>
           </div>
         </div>
@@ -38,9 +38,9 @@ function WatchList() {
     );
   } else {
     return (
-      <div className="container mt-5">
-        <div className="row mt-5">
-          <div className="col-12 mt-5">
+      <div className="container">
+        <div className="row">
+          <div className="col-12">
             <h1>Watchlist</h1>
           </div>
         </div>
