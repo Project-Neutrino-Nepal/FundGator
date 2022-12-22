@@ -40,6 +40,10 @@ const companyImageDestination = (req, file, next) => {
   next(null, `${__dirname}/../uploads/company-images`);
 };
 
+const categoryImageDestination = (req, file, next) => {
+  next(null, `${__dirname}/../uploads/category-images`);
+};
+
 const companyVideoDestination = (req, file, next) => {
   next(null, `${__dirname}/../uploads/company-videos`);
 };
@@ -63,6 +67,14 @@ const uploadPostsImage = multer({
 const uploadCompanyImage = multer({
   storage: multer.diskStorage({
     destination: companyImageDestination,
+    filename,
+  }),
+  fileFilter: filter,
+});
+
+const uploadCategoryImage = multer({
+  storage: multer.diskStorage({
+    destination: categoryImageDestination,
     filename,
   }),
   fileFilter: filter,
@@ -96,5 +108,6 @@ module.exports = {
   uploadProfileImage,
   uploadPostsImage,
   uploadCompanyImage,
+  uploadCategoryImage,
   uploadCompanyVideo,
 };

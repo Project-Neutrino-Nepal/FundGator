@@ -110,25 +110,27 @@ function Category() {
       });
   }, []);
 
-  //   image upload
-  const [imgfile, uploadimg] = useState([]);
-  console.log("Image FIles", imgfile);
-  const imgFilehandler = (e) => {
-    if (e.target.files.length !== 0) {
-      uploadimg((imgfile) => [
-        ...imgfile,
-        URL.createObjectURL(e.target.files[0]),
-      ]);
-    }
-  };
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/admin/api/get-all-categories", config)
+      .then((res) => {
+        setCategories(res.data.categories);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
 
-  const [category, setCategory] = useState([]);
+  
   //    add category to database
+  const [categoryName, setCategoryName] = useState();
+  const [imgfile, uploadimg] = useState([]);
   const addCategory = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("name", e.target.name.value);
-    formData.append("image", e.target.image.files[0]);
+    formData.append("name", categoryName);
+    formData.append("image", imgfile);
     try {
       axios
         .post(
@@ -149,24 +151,26 @@ function Category() {
     }
   };
 
-  const comapnyData = company.map((company) => {
-    return {
-      key: company._id,
-      image: <img src={company.image} alt="company" width="50" height="50" />,
-      name: company.name,
 
+  const categoryData = categories.map((category) => {
+    return {
+      key: category._id,
+      image: <img src={category.image} alt="company" width="50" height="50" />,
+      name: category.name,
       action: (
         <div className="d-flex flex-wrap justify-content-evenly">
-          <Link to={`/dashboard/company-details/${company._id}`}>
+          <Link to={`/dashboard/category-details/${category._id}`}>
             <i className="fa-solid fa-eye text-info"></i>
           </Link>
-          <a onClick={() => deleteCompany(company._id)}>
+          <a onClick={() => deleteCompany(category._id)}>
+
             <i className="fa-solid fa-trash text-danger"></i>
           </a>
         </div>
       ),
     };
   });
+
 
   return (
     <>
@@ -186,7 +190,7 @@ function Category() {
                 <Form
                   name="basic"
                   labelCol={{ span: 3 }}
-                  wrapperCol={{ span: 8 }}
+                  wrapperCol={{ span: 10 }}
                   //   initialValues={{ remember: true }}
                   //   onFinish={onFinish}
                   //   onFinishFailed={onFinishFailed}
@@ -196,6 +200,8 @@ function Category() {
                     <Form.Item
                       label="Category Name"
                       name="category"
+                  onChange={(e) => setCategoryName(e.target.value)}
+                      
                       rules={[
                         {
                           required: true,
@@ -211,32 +217,26 @@ function Category() {
                       <div>
                         <h6 className="mb-3 fw-semibold">upload image</h6>
 
-                        <input type="file" onChange={imgFilehandler} />
+                        <input
+                          type="file"
+                          onChange={(e) => uploadimg(e.target.files[0])}
+                        />
                       </div>
 
                       <div>
                         <h6 className="mb-3 fw-semibold">preview</h6>
-
-                        {imgfile.map((elem) => {
-                          return (
-                            <>
-                              <span key={elem}>
-                                <img
-                                  src={elem}
-                                  height="200"
-                                  width="200"
-                                  alt="med1"
-                                />
-                              </span>
-                            </>
-                          );
-                        })}
+                        <img src="" height="200" width="200" alt="" />
                       </div>
                     </div>
                     <hr />
 
                     <Form.Item wrapperCol={{ offset: 1, span: 4 }}>
-                      <Button className="ms-0 m-3 w-50" type="primary" htmlType="submit">
+                      <Button
+                        className="ms-0 m-3 w-50"
+                        type="primary"
+                        htmlType="submit"
+                        onClick={addCategory}
+                      >
                         Submit
                       </Button>
                     </Form.Item>
@@ -247,7 +247,7 @@ function Category() {
               <div className="table-responsive">
                 <Table
                   columns={columns}
-                  dataSource={comapnyData}
+                  dataSource={categoryData}
                   pagination={true}
                   className="ant-border-space"
                 />
