@@ -10,20 +10,19 @@ import CompanyDetails from "./components/admin/pages/companyDetails/companyDetai
 import Home from "./components/admin/pages/Home";
 import InvestorAdmin from "./components/admin/pages/investor";
 import Profile from "./components/admin/pages/Profile";
+import BlankPage from "./components/BlankPage";
 import Feed from "./components/Feed";
 import Homepage from "./components/homepage";
 import Navbar from "./components/navbar.js";
 import Signup from "./components/Signup";
 import Signin from "./components/singin";
-import WatchList from "./components/watchlist";
-import BlankPage from "./components/BlankPage";
-import BlankPage2 from "./components/BlankPage2";
-import BlankPage3 from "./components/BlankPage3";
+import WatchList from "./components/Watchlists";
 import {
   CompanyRegisterPage,
   Details,
   ExplorePage,
   FooterLayout,
+  IsloggedIn,
   LandingPage,
   PaymentPage,
   ProfilePage,
@@ -38,10 +37,11 @@ import ChatProvider from "./context/ChatProvider";
 import Chat from "./pages/Chat";
 import RaisePage from "./pages/RaisePage/RaisePage";
 
-import Editpost from "./pages/DetailsPage/component/Editpostcard";
-import ResetPassword from "./pages/resetPassword";
 import Category from "./components/admin/pages/Category";
 import Tag from "./components/admin/pages/Tag";
+import Portfolio from "./components/Portfolio";
+import Editpost from "./pages/DetailsPage/component/Editpostcard";
+import ResetPassword from "./pages/resetPassword";
 
 function App() {
   return (
@@ -49,8 +49,22 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path="/signup" element={<Signup />}></Route>
-        <Route path="/signin" element={<Signin />}></Route>
+        <Route
+          path="/signup"
+          element={
+            <IsloggedIn>
+              <Signup />
+            </IsloggedIn>
+          }
+        ></Route>
+        <Route
+          path="/signin"
+          element={
+            <IsloggedIn>
+              <Signin />
+            </IsloggedIn>
+          }
+        ></Route>
         <Route path="/" element={<LandingPage />}></Route>
         <Route
           path="/welcome"
@@ -70,18 +84,10 @@ function App() {
         >
           <Route index element={<Feed />} />
 
-          <Route path="one" element={<BlankPage />} />
-          <Route path="two" element={<BlankPage2 />} />
-          <Route path="three" element={<BlankPage3 />} />
+          <Route path="one" element={<Portfolio />} />
+          <Route path="two" element={<BlankPage />} />
+          <Route path="three" element={<WatchList />} />
         </Route>
-        <Route
-          path="/watchlist"
-          element={
-            <ProtectedRoute>
-              <WatchList />
-            </ProtectedRoute>
-          }
-        ></Route>
         <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route
@@ -131,7 +137,7 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
-        
+
         <Route
           path="/raise"
           element={
@@ -161,7 +167,14 @@ function App() {
           }
         ></Route>
 
-        <Route path="/company/edit/:id" element={<ProtectedRoute><EditCompanyPage /></ProtectedRoute>}></Route>
+        <Route
+          path="/company/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditCompanyPage />
+            </ProtectedRoute>
+          }
+        ></Route>
 
         {/* DASHBOARD ROUTES */}
         <Route
@@ -205,7 +218,7 @@ function App() {
             path="/dashboard/categoryPage"
             element={
               <ProtectedRoute>
-                <Category/>
+                <Category />
               </ProtectedRoute>
             }
           />
@@ -213,7 +226,7 @@ function App() {
             path="/dashboard/tagPage"
             element={
               <ProtectedRoute>
-                <Tag/>
+                <Tag />
               </ProtectedRoute>
             }
           />

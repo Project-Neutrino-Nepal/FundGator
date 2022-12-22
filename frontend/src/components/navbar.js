@@ -50,7 +50,6 @@ function Navbar() {
     sessionStorage.clear();
     window.location.assign("/signin");
   };
-  
 
   if (localStorage.getItem("token") === null) {
     return (
@@ -211,9 +210,13 @@ function Navbar() {
                     Raise funding
                   </Link>
                 </li>
-                <li className="nav-item me-2">
-                  <Link className="nav-link active" aria-current="page" to="#">
-                    FAQ
+                <li className="nav-item me-2 fs-4">
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    to="/chats"
+                  >
+                    <i className="fas fa-comment-dots" />
                   </Link>
                 </li>
                 {/* <li className="nav-item border-start ms-2"> */}
@@ -231,7 +234,7 @@ function Navbar() {
                       alt=""
                       width={55}
                       height={55}
-                      name  ={name}
+                      name={name}
                       className="rounded-circle me-2 ms-3 border border-grey border-2"
                     />
 
@@ -348,9 +351,13 @@ function Navbar() {
                     Raise funding
                   </Link>
                 </li>
-                <li className="nav-item me-2">
-                  <Link className="nav-link active" aria-current="page" to="#">
-                    FAQ
+                <li className="nav-item me-2 fs-4">
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    to="/chats"
+                  >
+                    <i className="fas fa-comment-dots" />
                   </Link>
                 </li>
                 {/* <li className="nav-item border-start ms-2"> */}
