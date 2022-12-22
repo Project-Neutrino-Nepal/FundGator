@@ -87,16 +87,8 @@ function App() {
 
           <Route path="one" element={<BlankPage />} />
           <Route path="two" element={<BlankPage2 />} />
-          <Route path="three" element={<BlankPage3 />} />
+          <Route path="three" element={<WatchList />} />
         </Route>
-        <Route
-          path="/watchlist"
-          element={
-            <ProtectedRoute>
-              <WatchList />
-            </ProtectedRoute>
-          }
-        ></Route>
         <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route

@@ -8,13 +8,7 @@ const Card = ({
   address,
   image,
   profile,
-  phone,
   content,
-  tax_ID_No,
-  tax_document,
-  company_document,
-  company_logo,
-  company_video,
   raising_fund,
   fund_raised,
 }) => {
@@ -52,9 +46,15 @@ const Card = ({
           <img src={profile.avatar} alt="" className="profile-pic" />
           <h4>{name}</h4>
           <h6 style={{ textTransform: "none" }}>{email}</h6>
-          <p>{address}</p>
+          <p>{email}</p>
 
-          <p className="desc">{content}</p>
+          <p className="desc">
+            {content
+              ? content.length > 100
+                ? content.substring(0, 100) + "..."
+                : content
+              : ""}
+          </p>
 
           <div className="category">
             <span>
