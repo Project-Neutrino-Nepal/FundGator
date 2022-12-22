@@ -122,6 +122,7 @@ function Category() {
       });
   });
 
+  
   //    add category to database
   const [categoryName, setCategoryName] = useState();
   const [imgfile, uploadimg] = useState([]);
@@ -150,6 +151,7 @@ function Category() {
     }
   };
 
+
   const categoryData = categories.map((category) => {
     return {
       key: category._id,
@@ -161,12 +163,14 @@ function Category() {
             <i className="fa-solid fa-eye text-info"></i>
           </Link>
           <a onClick={() => deleteCompany(category._id)}>
+
             <i className="fa-solid fa-trash text-danger"></i>
           </a>
         </div>
       ),
     };
   });
+
 
   return (
     <>
@@ -196,7 +200,8 @@ function Category() {
                     <Form.Item
                       label="Category Name"
                       name="category"
-                      onChange={(e) => setCategoryName(e.target.value)}
+                  onChange={(e) => setCategoryName(e.target.value)}
+                      
                       rules={[
                         {
                           required: true,
