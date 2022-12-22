@@ -195,8 +195,27 @@ const Details = () => {
               <input type="number" placeholder="0" />
             </div>
           </div>
-          <button className="btn-invest">Invest</button>
-          <button className="btn-bookmark">
+          <button
+            className="btn-invest"
+            onClick={() =>
+              amount < 1000
+                ? toast.info("Minimum amount to invest is Rs.1000")
+                : checkout.show({
+                    amount: amount * 100,
+                    productIdentity: id,
+                    productName: name,
+                    productUrl: "http://localhost:3000/detail/" + id,
+                  })
+            }
+          >
+            Invest
+          </button>
+          <button
+            className="btn-bookmark"
+            onClick={() => {
+              watchlistHandler();
+            }}
+          >
             <AiOutlineHeart />
             <span>Watch for updates</span>
           </button>
@@ -303,12 +322,14 @@ const Details = () => {
           <button
             className="btn-invest"
             onClick={() =>
-              checkout.show({
-                amount: amount * 100,
-                productIdentity: id,
-                productName: name,
-                productUrl: "http://localhost:3000/detail/" + id,
-              })
+              amount < 1000
+                ? toast.info("Minimum amount to invest is Rs.1000")
+                : checkout.show({
+                    amount: amount * 100,
+                    productIdentity: id,
+                    productName: name,
+                    productUrl: "http://localhost:3000/detail/" + id,
+                  })
             }
           >
             Invest
