@@ -10,27 +10,25 @@ import CompanyDetails from "./components/admin/pages/companyDetails/companyDetai
 import Home from "./components/admin/pages/Home";
 import InvestorAdmin from "./components/admin/pages/investor";
 import Profile from "./components/admin/pages/Profile";
+import BlankPage from "./components/BlankPage";
 import Feed from "./components/Feed";
 import Homepage from "./components/homepage";
 import Navbar from "./components/navbar.js";
 import Signup from "./components/Signup";
 import Signin from "./components/singin";
-import WatchList from "./components/watchlist";
-import BlankPage from "./components/BlankPage";
-import BlankPage2 from "./components/BlankPage2";
-import BlankPage3 from "./components/BlankPage3";
+import WatchList from "./components/Watchlists";
 import {
   CompanyRegisterPage,
   Details,
   ExplorePage,
   FooterLayout,
+  IsloggedIn,
   LandingPage,
   PaymentPage,
   ProfilePage,
   ProtectedRoute,
   UserProfilePage,
   WelcomePage,
-  IsloggedIn,
 } from "./pages";
 import EditCompanyPage from "./pages/CompanyRegisterPage/EditCompanyPage";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
@@ -39,10 +37,11 @@ import ChatProvider from "./context/ChatProvider";
 import Chat from "./pages/Chat";
 import RaisePage from "./pages/RaisePage/RaisePage";
 
-import Editpost from "./pages/DetailsPage/component/Editpostcard";
-import ResetPassword from "./pages/resetPassword";
 import Category from "./components/admin/pages/Category";
 import Tag from "./components/admin/pages/Tag";
+import Portfolio from "./components/Portfolio";
+import Editpost from "./pages/DetailsPage/component/Editpostcard";
+import ResetPassword from "./pages/resetPassword";
 
 function App() {
   return (
@@ -85,8 +84,8 @@ function App() {
         >
           <Route index element={<Feed />} />
 
-          <Route path="one" element={<BlankPage />} />
-          <Route path="two" element={<BlankPage2 />} />
+          <Route path="one" element={<Portfolio />} />
+          <Route path="two" element={<BlankPage />} />
           <Route path="three" element={<WatchList />} />
         </Route>
         <Route path="/reset-password" element={<ResetPassword />} />
