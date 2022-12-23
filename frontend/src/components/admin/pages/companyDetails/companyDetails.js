@@ -14,25 +14,18 @@ import {
 import { FaPlay, FaShare } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  About,
-  AskAQuestion,
-  Detail,
-  Overview,
-  Update,
-  WhatInvestorSay,
-} from "./component";
+import { About, AskAQuestion, Detail, Overview } from "./component";
 import tabs from "./utils/tab";
 const CompanyDetails = () => {
-   const tab2 = [
-     { id: 1, text: "OVERVIEW" },
-     { id: 2, text: "DETAILS" },
-     { id: 3, text: "About" },
+  const tab2 = [
+    { id: 1, text: "OVERVIEW" },
+    { id: 2, text: "DETAILS" },
+    { id: 3, text: "About" },
 
-     { id: 4, text: "ASK A QUESTION" },
-   ];
-   const isadmin = localStorage.getItem("admin");
-   const tablst = isadmin ? tab2 : tabs;
+    { id: 4, text: "ASK A QUESTION" },
+  ];
+  const isadmin = localStorage.getItem("admin");
+  const tablst = isadmin ? tab2 : tabs;
 
   const videoRef = useRef(null);
   const [play, setplay] = useState(false);
@@ -69,6 +62,11 @@ const CompanyDetails = () => {
   const [tags, setTags] = useState([]);
   const [ID, setID] = useState("");
   const [investors, setInvestors] = useState([]);
+  const [registration, setRegistration] = useState("");
+  const [pan, setPan] = useState("");
+  const [citFront, setCitFront] = useState("");
+  const [citBack, setCitBack] = useState("");
+  const [verified, setVerified] = useState(false);
 
   const config = {
     headers: {
@@ -94,6 +92,11 @@ const CompanyDetails = () => {
         setStatus(company.status);
         setID(company._id);
         setInvestors(company.investors);
+        setRegistration(company.registration_card);
+        setPan(company.pan_card);
+        setCitFront(company.citizenship_front);
+        setCitBack(company.citizenship_back);
+        setVerified(company.verified);
       })
       .catch((err) => {
         console.log(err);
@@ -145,7 +148,7 @@ const CompanyDetails = () => {
   }, []);
 
   // Delete company
-  const deleteCompany = () => {
+  const rejectCompany = () => {
     if (admin) {
       axios
         .put("http://localhost:5000/company/api/reject-company/" + id, config)
@@ -286,7 +289,17 @@ const CompanyDetails = () => {
               }}
             />
           ) : null}
-          {activeindex === 3 ? <About /> : null}
+          {activeindex === 3 ? (
+            <About
+              // pass company content as props
+              company={{
+                Reg: registration,
+                Cit_front: citFront,
+                Cit_back: citBack,
+                Pan: pan,
+              }}
+            />
+          ) : null}
 
           {activeindex === 4 ? <AskAQuestion /> : null}
         </section>
@@ -294,21 +307,23 @@ const CompanyDetails = () => {
       <div className="right-container">
         <section className="two">
           <Space wrap>
-            <Button
-              type="primary"
-              onClick={() => {
-                verifyCompany();
-              }}
-            >
-              Verify Company
-            </Button>
-            <Button
-              onClick={() => {
-                deleteCompany();
-              }}
-            >
-              Reject Company
-            </Button>
+            {verified ? (
+              <Button
+                onClick={() => {
+                  rejectCompany();
+                }}
+              >
+                Unverify Company
+              </Button>
+            ) : (
+              <Button
+                onClick={() => {
+                  verifyCompany();
+                }}
+              >
+                Verify Company
+              </Button>
+            )}
           </Space>
         </section>
       </div>
