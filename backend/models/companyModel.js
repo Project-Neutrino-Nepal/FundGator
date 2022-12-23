@@ -100,7 +100,16 @@ const CompanySchema = new Schema(
         ref: "user",
       },
     ],
+    question: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "questions",
+      },
+    ],
+  
   },
+
+ 
   { timestamps: true }
 );
 
