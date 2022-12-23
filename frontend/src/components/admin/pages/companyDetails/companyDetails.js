@@ -7,31 +7,29 @@ import { Button, Space } from "antd";
 import axios from "axios";
 import {
   AiFillFacebook,
+  AiFillInstagram,
   AiFillTwitterSquare,
-  AiOutlineHeart
+  AiOutlineHeart,
 } from "react-icons/ai";
-import { BsCurrencyDollar } from "react-icons/bs";
 import { FaPlay, FaShare } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 import {
+  About,
   AskAQuestion,
   Detail,
-  InvestmentTerm,
-  LeadInvestor,
   Overview,
   Update,
   WhatInvestorSay,
-  About
 } from "./component";
 import tabs from "./utils/tab";
-
 const CompanyDetails = () => {
    const tab2 = [
      { id: 1, text: "OVERVIEW" },
      { id: 2, text: "DETAILS" },
-     { id: 6, text: "About" },
+     { id: 3, text: "About" },
 
-     { id: 5, text: "ASK A QUESTION" },
+     { id: 4, text: "ASK A QUESTION" },
    ];
    const isadmin = localStorage.getItem("admin");
    const tablst = isadmin ? tab2 : tabs;
@@ -68,9 +66,9 @@ const CompanyDetails = () => {
   const [fund_raised, setFund_raised] = useState("");
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("");
-  const [tags, setTags] = useState("");
+  const [tags, setTags] = useState([]);
   const [ID, setID] = useState("");
-  const [content, setContent] = useState("");
+  const [investors, setInvestors] = useState([]);
 
   const config = {
     headers: {
@@ -87,28 +85,22 @@ const CompanyDetails = () => {
         let company = res.data.company;
         setName(company.name);
         setImage(company.image);
-        setVideo(company.video);
-        setWebsite(company.website);
-        setFacebook(company.facebook);
-        setTwitter(company.twitter);
-        setLinkedin(company.linkedin);
-        setInstagram(company.instagram);
-        setShort_pitch(company.short_pitch);
+        setVideo(company.company_video);
+        setShort_pitch(company.content);
         setEmail(company.email);
         setPhone(company.phone);
         setAddress(company.address);
-        setFund_goal(company.fund_goal);
         setFund_raised(company.fund_raised);
-        setCategory(company.category);
         setStatus(company.status);
-        setTags(company.tags);
-        setContent(company.content);
         setID(company._id);
+        setInvestors(company.investors);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [id]);
+  }, []);
+
+  // get reason details using id from params
 
   // Verify company by admin
   const admin = localStorage.getItem("admin");
@@ -134,14 +126,29 @@ const CompanyDetails = () => {
     }
   };
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/reason/api/get-reasons/" + id, config)
+      .then((res) => {
+        let reasons = res.data.reasons;
+        setFacebook(reasons.facebook);
+        setTwitter(reasons.twitter);
+        setLinkedin(reasons.linkedin);
+        setWebsite(reasons.companylink);
+        setFund_goal(reasons.amount);
+        setTags(reasons.tag);
+        console.log(reasons);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   // Delete company
   const deleteCompany = () => {
     if (admin) {
       axios
-        .put(
-          "http://localhost:5000/company/api/reject-company/" + id,
-          config
-        )
+        .put("http://localhost:5000/company/api/reject-company/" + id, config)
         .then((res) => {
           toast.success(res.data.message);
           window.location.replace("/dashboard/company_admin");
@@ -158,12 +165,18 @@ const CompanyDetails = () => {
     <Wrapper>
       <ToastContainer />
 
-      <div className="left-container">
+      <div className="left-container" id="detailPage">
         <section className="one">
           <div className="header">
             <div className="info">
               <h3>Invest in {name}</h3>
-              <h1>{short_pitch}</h1>
+              <h1>
+                {short_pitch
+                  ? short_pitch.length > 200
+                    ? short_pitch.substring(0, 200) + "..."
+                    : short_pitch
+                  : null}
+              </h1>
             </div>
             <div className="share">
               <FaShare />
@@ -171,6 +184,7 @@ const CompanyDetails = () => {
           </div>
           <div className="video-container">
             <video
+              autoPlay
               ref={videoRef}
               onClick={onplay}
               loop
@@ -184,19 +198,29 @@ const CompanyDetails = () => {
           </div>
         </section>
         <section className="two">
-          <span>almost sold out</span>
+          <span>
+            {fund_goal - fund_raised < 10000 ? (
+              <p className="text-danger">
+                {fund_goal - fund_raised} Left to reach goal
+              </p>
+            ) : (
+              <p className="text-success">
+                {fund_goal - fund_raised} Left to reach goal
+              </p>
+            )}
+          </span>
           <div className="line"></div>
           <div className="price">
-            <p>$2,000,000</p>
-            <p>Raised money from 200 investor</p>
+            <p>Rs.{fund_goal}</p>
+            <p>Raised money from {investors.length} investor</p>
           </div>
           <div className="invest">
             <div className="invest-info">
               <p>Invest</p>
-              <p>min$100</p>
+              <p>minRs.1000</p>
             </div>
             <div className="invest-input">
-              <BsCurrencyDollar />
+              Rs.
               <input type="number" placeholder="0" />
             </div>
           </div>
@@ -205,8 +229,6 @@ const CompanyDetails = () => {
             <AiOutlineHeart />
             <span>Watch for updates</span>
           </button>
-          <InvestmentTerm />
-          <LeadInvestor />
         </section>
         <section className="three">
           <div className="links">
@@ -216,23 +238,25 @@ const CompanyDetails = () => {
             <Link className="icon">
               <AiFillFacebook />
             </Link>
-
-            <Link className="icon">
+            <Link className="icon" to={twitter}>
               <AiFillTwitterSquare />
             </Link>
+            <Link className="icon" to={instagram}>
+              <AiFillInstagram />
+            </Link>
           </div>
-
           <div className="category">
-            <span>{}</span>
-            <span>Fintech & Finance</span>
-            <span>Y Combinator</span>
-            <span>B2B</span>
-            <span>Saas</span>
+            {tags.map((item, index) => {
+              return (
+                <span key={index} className="tag">
+                  {item.name}
+                </span>
+              );
+            })}
           </div>
         </section>
-
         <section className="four tab">
-          {tablst.map((item, index) => {
+          {tabs.map((item, index) => {
             return (
               <span
                 key={item.id}
@@ -246,18 +270,10 @@ const CompanyDetails = () => {
         </section>
 
         <section className="five">
-          {/* <div className="content">
-            <div className="content-one">
-              <div className="content-one-left">
-                <h3>Company</h3>
-                <p>{content}</p>
-              </div>
-            </div>
-          </div> */}
           {activeindex === 1 ? (
             <Overview
-              // pass company ID as props
-              company={ID}
+              // pass company content as props
+              content={short_pitch}
             />
           ) : null}
           {activeindex === 2 ? (
@@ -270,10 +286,9 @@ const CompanyDetails = () => {
               }}
             />
           ) : null}
-          {activeindex === 3 ? <Update /> : null}
-          {activeindex === 4 ? <WhatInvestorSay /> : null}
-          {activeindex === 5 ? <AskAQuestion /> : null}
-          {activeindex === 6 ? <About /> : null}
+          {activeindex === 3 ? <About /> : null}
+
+          {activeindex === 4 ? <AskAQuestion /> : null}
         </section>
       </div>
       <div className="right-container">

@@ -1,20 +1,19 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 const About = () => {
-    const option = {
-      citizenfront:
-        "https://upload.wikimedia.org/wikipedia/commons/0/0c/Chinese_Service_E-Passport_Passport_Personal_Info_Page.jpg",
-      citizenback:
-        "https://i.insider.com/5e1f671b49878c169c0ece03?width=1000&format=jpeg&auto=webp",
-      registration:
-        "https://upload.wikimedia.org/wikipedia/commons/7/79/Californian_sample_driver%27s_license%2C_c._2019.jpg",
-      pancard: "https://pbs.twimg.com/media/FEssc4TVkAY9JhH.png",
-    };
-    const [previews, setPreview] = useState(option);
-    const [modalimg, setModal] = useState({
-        title:"",
-        img:"",
-    });
-
+  const option = {
+    citizenfront:
+      "https://upload.wikimedia.org/wikipedia/commons/0/0c/Chinese_Service_E-Passport_Passport_Personal_Info_Page.jpg",
+    citizenback:
+      "https://i.insider.com/5e1f671b49878c169c0ece03?width=1000&format=jpeg&auto=webp",
+    registration:
+      "https://upload.wikimedia.org/wikipedia/commons/7/79/Californian_sample_driver%27s_license%2C_c._2019.jpg",
+    pancard: "https://pbs.twimg.com/media/FEssc4TVkAY9JhH.png",
+  };
+  const [previews, setPreview] = useState(option);
+  const [modalimg, setModal] = useState({
+    title: "",
+    img: "",
+  });
 
   return (
     <div className="border border-2 p-2 mb-5">

@@ -39,8 +39,8 @@ import RaisePage from "./pages/RaisePage/RaisePage";
 
 import Category from "./components/admin/pages/Category";
 import Tag from "./components/admin/pages/Tag";
+import Editpost from "./components/Editpostcard";
 import Portfolio from "./components/Portfolio";
-import Editpost from "./pages/DetailsPage/component/Editpostcard";
 import ResetPassword from "./pages/resetPassword";
 
 function App() {
