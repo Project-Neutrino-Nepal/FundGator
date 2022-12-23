@@ -136,15 +136,10 @@ const Feeds = ({ feed }) => {
                     className="dropdown-menu dropdown-menu-dark text-small shadow"
                     aria-labelledby="dropdownUser1"
                   >
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        aria-current="page"
-                         to={`/editpost/${feed._id}`}
-                       // to={"/editpost"}
-                      >
-                        Edit
-                      </Link>
+                    <li className="dropdown-item"
+                        aria-current="page" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                        Edit  
+                     
                     </li>
                     <li>
                       <Link
