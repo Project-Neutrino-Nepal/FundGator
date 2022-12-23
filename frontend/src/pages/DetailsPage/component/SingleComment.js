@@ -43,7 +43,7 @@ const SingleComment = ({ item, profile }) => {
           <span>{user.name}</span>
         </div>
         <div className="option">
-          Oct 16 <BsThreeDots className="icon" onClick={()=> setShow(show => !show)} />
+         <BsThreeDots className="icon" onClick={()=> setShow(show => !show)} />
 
           <div className={show?"options":"options active"}>
             <span>edit</span>

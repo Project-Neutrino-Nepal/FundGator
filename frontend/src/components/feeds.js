@@ -5,8 +5,10 @@ import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import "../css/feeds.css";
 import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal.js";
+import { BsThreeDots } from "react-icons/bs";
 const Feeds = ({ feed }) => {
   const [modalShow, setModalShow] = React.useState(false);
+  const [show, setShow] = useState(false);
 
   let time = new Date(feed.date).toLocaleDateString();
   // calculate min difference
@@ -159,7 +161,26 @@ const Feeds = ({ feed }) => {
                     
                   </ul>
                 </div>
+                
+                 {/* <div className="info">
+                <div className="option">
+                  <BsThreeDots
+                    className="icon"
+                    onClick={() => setShow((show) => !show)}
+                  />
+
+                  <div className={show ? "options" : "options active"}>
+                    <span>edit</span>
+                    <span>delete</span>
+                  </div>
+                </div>
+                </div> */}
+
+
               </div>
+
+              
+
             </div>
             <div className="p-2 ">
               <p className="">
