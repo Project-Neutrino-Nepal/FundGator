@@ -2,12 +2,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import "../DetailsPage/../../../css/homepage.css";
-
+import "../css/homepage.css";
 import { BsCardImage } from "react-icons/bs";
 import { IoCloseCircleSharp, IoDocumentTextSharp } from "react-icons/io5";
 import { RiVideoFill } from "react-icons/ri";
-//import Feeds from "../DetailsPage/../../../components/feeds"
+
 import { useParams } from "react-router-dom";
 
 const Editpost = () => {
@@ -106,20 +105,26 @@ const Editpost = () => {
     formData.append("vid", values.vid);
     // formData.append("doc", values.doc);
     formData.append("description", values.description);
-    if (!values.img && !values.vid && !values.description) {
-      toast.error("You can't post empty post");
-      return;
-    }
-    if (values.img && values.vid) {
-      toast.error("You can only upload one file at a time");
-      return;
-    }
+    // if (!values.img && !values.vid && !values.description) {
+    //   toast.error("You can't post empty post");
+    //   return;
+    // }
+    // if (values.img && values.vid) {
+    //   toast.error("You can only upload one file at a time");
+    //   return;
+    // }
+
+    
+
+ //to send old data and new data in formdata  
 
     axios
+
       .put(
         `http://localhost:5000/posts/api/update-post/${id}`,
         formData,
         config
+
       )
       .then((res) => {
         console.log("res",res);
@@ -137,6 +142,13 @@ const Editpost = () => {
   return (
     <>
     <ToastContainer />
+    {/* <div
+        className="modal fade"
+        id="exampleModal"
+        tabIndex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      > */}
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
@@ -247,6 +259,10 @@ const Editpost = () => {
           </div>
         </div>
       </div>
+    {/* </div> */}
+
+    
+    
     </>
   );
 };
