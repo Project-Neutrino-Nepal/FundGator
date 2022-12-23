@@ -20,6 +20,7 @@ const khaltiRouter = require("./apis/KhaltiApi");
 const postRouter = require("./apis/PostApi");
 const chatRouter = require("./apis/ChatApi");
 const messageRouter = require("./apis/MessageApi");
+const questionRouter = require("./apis/questionApi");
 
 // Import passport middleware
 require("./middlewares/passport-middleware");
@@ -45,6 +46,7 @@ app.use("/khalti", khaltiRouter);
 app.use("/posts", postRouter);
 app.use("/chat", chatRouter);
 app.use("/message", messageRouter);
+app.use("/question", questionRouter);
 
 // --------------------------DEVELOPMENT------------------------------
 

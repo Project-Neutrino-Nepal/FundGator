@@ -225,6 +225,38 @@ router.get("/api/get-profiles", userAuth, async (req, res) => {
   }
 });
 
+//to get single profile
+router.get("/api/get-profile/:id", userAuth, async (req, res) => {
+  try {
+    let user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+    let profile = await Profile.findOne({ user: req.params.id })
+    if (!profile) {
+      return res.status(400).json({
+        success: false,
+        message: "No profile found.",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Profile fetched successfully.",
+      profile,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+
 /**
  * @description To Get or Search All users
  * @api /users/api/get-users
