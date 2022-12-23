@@ -6,6 +6,7 @@ const { find } = require("../models/companyModel");
 const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
 const Portfolio = require("../models/portfolioModel");
+const Reason = require("../models/reasonModel");
 const uploadCompanyVideo =
   require("../middlewares/uploader").uploadCompanyVideo;
 const uploadCompanyImage =
@@ -355,7 +356,6 @@ router.delete("/api/delete-company/:id", userAuth, async (req, res) => {
 router.get("/api/get-my-companies", userAuth, async (req, res) => {
   try {
     let companies = await Company.find({ user: req.user._id })
-      .populate("category")
       .populate("profile")
       .exec();
     if (!companies) {
@@ -428,7 +428,6 @@ router.get("/api/companies", async (req, res) => {
     }
     let company = await Company.find({ verified: true })
       .populate("user")
-      .populate("category")
       .populate("profile")
       .exec();
     return res.status(200).json({
@@ -465,7 +464,6 @@ router.get("/api/all-companies", async (req, res) => {
     let company = await Company.find()
 
       .populate("user")
-      .populate("category")
       .populate("profile")
       .exec();
     return res.status(200).json({
@@ -797,6 +795,53 @@ router.get("/api/get-watchlist", userAuth, async (req, res) => {
       success: true,
       message: "Companies Retrieved Successfully",
       watchlist,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To get sum of all funds invested in a company
+ * @api /company/api/get-fund/
+ * @access Private
+ * @type GET
+ */
+
+router.get("/api/get-fund/", async (req, res) => {
+  try {
+    let company = await Company.find();
+    if (!company) {
+      return res.status(400).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+    let totalFund = 0;
+    company.forEach((company) => {
+      totalFund += company.fund_raised;
+    });
+    // get total amount from Reason Model
+    let reason = await Reason.find();
+    if (!reason) {
+      return res.status(400).json({
+        success: false,
+        message: "Reason not found",
+      });
+    }
+    let totalAmount = 0;
+    reason.forEach((reason) => {
+      totalAmount += reason.amount;
+    });
+    return res.status(200).json({
+      success: true,
+      message: "Fund Retrieved Successfully",
+      totalFund,
+      totalAmount,
     });
   } catch (err) {
     console.log(err);

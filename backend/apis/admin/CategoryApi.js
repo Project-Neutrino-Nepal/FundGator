@@ -3,6 +3,10 @@ const router = express.Router();
 const Category = require("../../models/categoryModel");
 const userAuth = require("../../middlewares/auth-guard");
 const User = require("../../models/userModel");
+const uploadCategoryImage =
+  require("../../middlewares/uploader").uploadCategoryImage;
+
+const DOMAIN = "http://127.0.0.1:5000/";
 
 /**
  * @description To Create Category
@@ -11,9 +15,19 @@ const User = require("../../models/userModel");
  * @type POST
  * */
 
-router.post("/api/create-category", userAuth, async (req, res) => {
+router.post("/api/create-category", userAuth,uploadCategoryImage.single("image"), async (req, res) => {
   try {
     let { body } = req;
+
+    let file = req.file;
+    console.log(file);
+      if (file === undefined || file === null) {
+        filename = DOMAIN + "uploads/assets/" + "default_company.svg";
+      } else {
+        filename = DOMAIN + "uploads/category-images/" + file.filename;
+      }
+     
+
     let user = await User.findOne({ _id: req.user._id });
     if (!user.admin) {
       return res.status(400).json({
@@ -31,9 +45,10 @@ router.post("/api/create-category", userAuth, async (req, res) => {
     category = new Category({
       user: req.user._id,
       ...body,
+      image: filename,
     });
     await category.save();
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: "Category created successfully",
       category,

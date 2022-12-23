@@ -161,11 +161,11 @@ router.post("/api/group", userAuth, async (req, res) => {
  * @type PUT
  * */
 
-router.put("/api/rename", async (req, res) => {
+router.put("/api/rename", userAuth, async (req, res) => {
   const { chatId, chatName } = req.body;
 
   // Check if the requester is admin
-  const isAdmin = await Chat.findOne({ groupAdmin: req.user._id }).exec();
+  const isAdmin = await Chat.findOne({ groupAdmin: req.user._id });
   if (!isAdmin) {
     return res.status(401).json({
       success: false,
@@ -212,7 +212,7 @@ router.put("/api/rename", async (req, res) => {
  * @type PUT
  * */
 
-router.put("/api/add-user", async (req, res) => {
+router.put("/api/add-user", userAuth, async (req, res) => {
   const { chatId, userId } = req.body;
 
   // Check if the requester is admin
@@ -255,7 +255,7 @@ router.put("/api/add-user", async (req, res) => {
  * @type PUT
  * */
 
-router.put("/api/remove-user", async (req, res) => {
+router.put("/api/remove-user", userAuth, async (req, res) => {
   const { chatId, userId } = req.body;
 
   // Check if the requester is admin
@@ -266,6 +266,19 @@ router.put("/api/remove-user", async (req, res) => {
       statusCode: 401,
       message: "You are not authorized",
     });
+  }
+  // if admin is removing himself from the group then delete the group
+  if (req.user._id.toString() === userId) {
+    const deleted = await Chat.findByIdAndDelete(chatId);
+    if (!deleted) {
+      return res.status(404).json({
+        success: false,
+        statusCode: 404,
+        message: "Chat Not Found",
+      });
+    } else {
+      return res.status(200).json(deleted);
+    }
   }
 
   const removed = await Chat.findByIdAndUpdate(

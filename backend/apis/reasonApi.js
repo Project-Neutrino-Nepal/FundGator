@@ -81,6 +81,7 @@ router.put("/api/update-team/:name", userAuth, async (req, res) => {
     const { body } = req;
     const company = await Company.findOne({ name: req.params.name });
     const companyID = company._id;
+    console.log(companyID);
     if (!company) {
       return res.status(404).json({
         success: false,
@@ -275,7 +276,10 @@ router.get("/api/get-reasons/:id", async (req, res) => {
         message: "Company not found",
       });
     }
-    const reasons = await Reason.findOne({ company: company._id });
+    const reasons = await Reason.findOne({ company: company._id })
+      .populate("category")
+      .populate("tag");
+
     if (!reasons) {
       return res.status(404).json({
         success: false,

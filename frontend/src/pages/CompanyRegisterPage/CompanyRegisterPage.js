@@ -1,8 +1,7 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import upload from "../../assets/image/uploadpic.svg";
 import { Basic, Story, Team, Visiblity } from "./component";
 import tabs from "./utils/tab";
 import Wrapper from "./wrapper/CompanyRegisterPage";
@@ -177,11 +176,9 @@ const CompanyRegisterPage = () => {
     });
   };
 
-  const clearfile=(name)=>{
-
-    setValue({...values,[name]:""})
-
-  }
+  const clearfile = (name) => {
+    setValue({ ...values, [name]: "" });
+  };
 
   const onsave = (e) => {
     e.preventDefault();
@@ -199,7 +196,7 @@ const CompanyRegisterPage = () => {
       category,
       tag,
       reason0,
-     
+
       imageupload,
       videoupload,
     } = values;
@@ -222,7 +219,6 @@ const CompanyRegisterPage = () => {
           tag.length > 0 &&
           reason0
         ) {
-          console.log("step2");
           setActive((prev) => prev + 1);
 
           try {
@@ -251,16 +247,19 @@ const CompanyRegisterPage = () => {
           try {
             axios
               .put(
-                "http://localhost:5000/reason/api/update-reason/" +
+                "http://localhost:5000/reason/api/update-team/" +
                   formvalue.companyname,
                 teamsdata,
                 config
               )
               .then((res) => {
                 if (res.data.success) {
+                  
+                  toast.success("teams added successfully");
                 }
               });
           } catch (error) {
+            toast.error(error.response.data.message);
             console.log(error.response.data.message);
           }
         }
@@ -282,6 +281,7 @@ const CompanyRegisterPage = () => {
               )
               .then((res) => {
                 if (res.data.success) {
+                  toast.success("video uploaded successfully");
                 }
               });
           } catch (error) {
@@ -310,7 +310,7 @@ const CompanyRegisterPage = () => {
               toast.success(
                 "Company created Successfully",
                 setTimeout(() => {
-                  navigate("/homepage");
+                  window.location.href = `/profile`;
                 }, 1200)
               );
             }
@@ -371,10 +371,9 @@ const CompanyRegisterPage = () => {
     }
   };
 
-
-  const onregistrationcard = ()=>{
-    console.log('cardregister')
-  }
+  const onregistrationcard = () => {
+    console.log("cardregister");
+  };
 
   const onpancard = () => {
     console.log("pan card submit");
@@ -384,11 +383,9 @@ const CompanyRegisterPage = () => {
     console.log("citizenfront card submit");
   };
 
-    const oncitizenbackcard = () => {
-      console.log("citizenback card submit");
-    };
-
-
+  const oncitizenbackcard = () => {
+    console.log("citizenback card submit");
+  };
 
   return (
     <Wrapper>
@@ -428,9 +425,9 @@ const CompanyRegisterPage = () => {
             handleChange={handleChange}
             values={values}
             setcontent={setcontent}
-            clearfile ={clearfile}
+            clearfile={clearfile}
             onregistrationcard={onregistrationcard}
-            onpancard = {onpancard}
+            onpancard={onpancard}
             oncitizenfrontcard={oncitizenfrontcard}
             oncitizenbackcard={oncitizenbackcard}
           />

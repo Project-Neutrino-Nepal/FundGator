@@ -68,13 +68,34 @@ const GroupChatModal = ({ children }) => {
   };
 
   const handleSubmit = async () => {
-    if (!groupChatName || !selectedUsers) {
+    if (!groupChatName && selectedUsers.length === 0) {
       return toast({
         title: "Please fill all the fields",
         status: "warning",
         duration: 5000,
         isClosable: true,
-        position: "bottom-left",
+        position: "top-right",
+        variant: "solid",
+      });
+    }
+    if (!groupChatName) {
+      return toast({
+        title: "Please fill the group name",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+        variant: "solid",
+      });
+    }
+
+    if (selectedUsers.length === 0) {
+      return toast({
+        title: "Please select atleast one user",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
         variant: "solid",
       });
     }
@@ -119,7 +140,9 @@ const GroupChatModal = ({ children }) => {
 
   const handleDelete = (deletedUser) => {
     setSelectedUsers(
-      selectedUsers.filter((selected) => selected._id !== deletedUser._id)
+      selectedUsers.filter((selected) => selected._id !== deletedUser._id),
+      console.log(selectedUsers + "selectedUsers"),
+      console.log(deletedUser + "deletedUser")
     );
   };
 
