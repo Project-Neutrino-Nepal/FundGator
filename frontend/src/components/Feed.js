@@ -36,7 +36,6 @@ const Feed = () => {
         return <Feeds key={feed._id} feed={feed} idchange={idchange} />;
       })}
 
-      <Editpost id={id ?? feeds[1]._id} />
     </div>
   );
 };

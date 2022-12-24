@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { BsCardImage } from "react-icons/bs";
+import Modal from "react-bootstrap/Modal";
 import { IoCloseCircleSharp, IoDocumentTextSharp } from "react-icons/io5";
 import { RiVideoFill } from "react-icons/ri";
-
-const EditPost = ({id}) => {
+//import Feeds from "../DetailsPage/../../../components/feeds"
+const EditPost = ({id, show, onHide}) => {
   const [name, setName] = useState("");
   const [image, setPreview] = useState({
     preview: "https://github.com/mdo.png",
@@ -109,16 +110,15 @@ const EditPost = ({id}) => {
   return (
     <>
       <ToastContainer />
-      <div
-        className="modal fade"
-        id="exampleModal2"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
+      <Modal
+      show={show}
+      // size="lg"
+      // aria-labelledby="contained-modal-title-vcenter"
+      // centered
+    >
+        {/* <div className="modal-dialog"> */}
+          {/* <div className="modal-content"> */}
+            <div className="modal-header" onClick={onHide}>
               <h5 className="modal-title" id="exampleModalLabel">
                 Edit post
               </h5>
@@ -190,7 +190,9 @@ const EditPost = ({id}) => {
                   <label htmlFor="vid">
                     <RiVideoFill />
                   </label>
-                  
+                  <label htmlFor="doc">
+                    <IoDocumentTextSharp />
+                  </label>
                 </div>
                 <div className="d-none">
                   <input
@@ -217,9 +219,9 @@ const EditPost = ({id}) => {
                 </button>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
+          {/* </div> */}
+        {/* </div> */}
+      </Modal>
     </>
   );
 };
