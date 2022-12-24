@@ -1,6 +1,6 @@
 import { Button, Card, Col, Form, Input, Row, Space, Table } from "antd";
 
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 // Images
 import { SearchOutlined } from "@ant-design/icons";
@@ -8,10 +8,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import moment from "moment";
 
 const columns = [
-  { title: "Image", dataIndex: "image" },
-
   {
     title: "Categories Name",
     dataIndex: "name",
@@ -64,12 +63,14 @@ const columns = [
 
   {
     title: "Date",
-    dataIndex: "fund_raised",
+    dataIndex: "date",
+
     sorter: (a, b) => a.name.localeCompare(b.name),
   },
 
   {
     title: "ACTION",
+    align: "center",
     dataIndex: "action",
   },
 ];
@@ -83,32 +84,20 @@ function Category() {
     },
   };
 
-  const deleteCompany = (id) => {
+  // delete category
+  const deleteCategory = (id) => {
     console.log(id);
     axios
-      .delete("http://localhost:5000/company/api/delete-company/" + id, config)
+
+      .delete("http://localhost:5000/admin/api/delete-category/" + id, config)
       .then((res) => {
         console.log(res);
         toast.success(res.data.message);
-        window.location.reload();
       })
       .catch((err) => {
         toast.error(err.response.data.message);
       });
   };
-
-  // fetching Profile data from API and map multiple times to show in table
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/company/api/all-companies", config)
-      .then((res) => {
-        const companies = res.data.company;
-        setCompany(companies);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
 
   const [categories, setCategories] = useState([]);
   useEffect(() => {
@@ -122,48 +111,81 @@ function Category() {
       });
   });
 
-  
+  const { id } = useParams();
+  // get category by id
+  const [category, setCategory] = useState();
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/admin/api/get-category/" + id, config)
+      .then((res) => {
+        setCategory(res.data.category.name);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+  console.log(category);
+
+  // update category by id
+  const updateCategory = (e) => {
+    e.preventDefault();
+    const data = {
+      name: categoryName,
+    };
+    axios
+      .put(
+        "http://localhost:5000/admin/api/update-category/" + id,
+        data,
+        config
+      )
+      .then((res) => {
+        console.log(res);
+        toast.success(
+          res.data.message,
+          setTimeout(() => {
+            window.location.assign("/dashboard/categoryPage");
+          })
+        );
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  };
+
   //    add category to database
   const [categoryName, setCategoryName] = useState();
-  const [imgfile, uploadimg] = useState([]);
   const addCategory = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("name", categoryName);
-    formData.append("image", imgfile);
+    const data = {
+      name: categoryName,
+    };
     try {
       axios
-        .post(
-          "http://localhost:5000/admin/api/create-category",
-          formData,
-          config
-        )
+        .post("http://localhost:5000/admin/api/create-category", data, config)
         .then((res) => {
           console.log(res);
           toast.success(res.data.message);
-          window.location.reload();
         })
         .catch((err) => {
-          toast.error(err.response.data.message);
+          toast.error("Please enter category name");
         });
     } catch (error) {
       console.log(error);
     }
   };
 
-
   const categoryData = categories.map((category) => {
     return {
       key: category._id,
-      image: <img src={category.image} alt="company" width="50" height="50" />,
       name: category.name,
+      date: moment(category.date).format("DD/MM/YYYY" + " " + "hh:mm:ss"),
       action: (
         <div className="d-flex flex-wrap justify-content-evenly">
-          <Link to={`/dashboard/category-details/${category._id}`}>
-            <i className="fa-solid fa-eye text-info"></i>
+          <Link to={`/dashboard/categoryPage/${category._id}`}>
+            <i className="fa-solid fa-edit text-info"></i>
           </Link>
-          <a onClick={() => deleteCompany(category._id)}>
 
+          <a onClick={() => deleteCategory(category._id)}>
             <i className="fa-solid fa-trash text-danger"></i>
           </a>
         </div>
@@ -171,6 +193,62 @@ function Category() {
     };
   });
 
+  const ids = useParams();
+  // strigify ids
+  const idstring = JSON.stringify(ids);
+  const button = () => {
+    if (idstring.length > 2) {
+      return (
+        <Button type="primary" onClick={updateCategory}>
+          Update Category
+        </Button>
+      );
+    } else {
+      return (
+        <Button type="primary" onClick={addCategory}>
+          Add Category
+        </Button>
+      );
+    }
+  };
+
+  const head = () => {
+    if (idstring.length > 2) {
+      return <h5 className="mb-3 fw-semibold">Update Category here</h5>;
+    } else {
+      return <h5 className="mb-3 fw-semibold">Add Category here</h5>;
+    }
+  };
+
+  const nameValue = () => {
+    if (idstring.length > 2) {
+      return (
+        <Form.Item
+          label="Category Name"
+          name="category"
+          onChange={(e) => setCategoryName(e.target.value)}
+        >
+          <Input placeholder={category} />
+        </Form.Item>
+      );
+    } else {
+      return (
+        <Form.Item
+          label="Category Name"
+          name="category"
+          onChange={(e) => setCategoryName(e.target.value)}
+          rules={[
+            {
+              required: true,
+              message: "Please input category name!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+      );
+    }
+  };
 
   return (
     <>
@@ -185,23 +263,19 @@ function Category() {
             >
               {/* add category field */}
               <div className=" ms-5 m-4">
-                <h5 className="mb-3 fw-semibold">Add Category here</h5>
+                {head()}
 
                 <Form
                   name="basic"
                   labelCol={{ span: 3 }}
                   wrapperCol={{ span: 10 }}
-                  //   initialValues={{ remember: true }}
-                  //   onFinish={onFinish}
-                  //   onFinishFailed={onFinishFailed}
                   autoComplete="off"
                 >
                   <span className="  ">
-                    <Form.Item
+                    {/* <Form.Item
                       label="Category Name"
                       name="category"
-                  onChange={(e) => setCategoryName(e.target.value)}
-                      
+                      onChange={(e) => setCategoryName(e.target.value)}
                       rules={[
                         {
                           required: true,
@@ -210,35 +284,12 @@ function Category() {
                       ]}
                     >
                       <Input />
-                    </Form.Item>
-                    <hr />
-
-                    <div className="d-flex mb-3 ms-5">
-                      <div>
-                        <h6 className="mb-3 fw-semibold">upload image</h6>
-
-                        <input
-                          type="file"
-                          onChange={(e) => uploadimg(e.target.files[0])}
-                        />
-                      </div>
-
-                      <div>
-                        <h6 className="mb-3 fw-semibold">preview</h6>
-                        <img src="" height="200" width="200" alt="" />
-                      </div>
-                    </div>
+                    </Form.Item> */}
+                    {nameValue()}
                     <hr />
 
                     <Form.Item wrapperCol={{ offset: 1, span: 4 }}>
-                      <Button
-                        className="ms-0 m-3 w-50"
-                        type="primary"
-                        htmlType="submit"
-                        onClick={addCategory}
-                      >
-                        Submit
-                      </Button>
+                      {button()}
                     </Form.Item>
                   </span>
                 </Form>

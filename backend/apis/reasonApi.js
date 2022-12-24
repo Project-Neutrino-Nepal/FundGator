@@ -266,7 +266,7 @@ router.put(
   }
 );
 
-//route to get reasons for a company
+//route to get reasons for a company by id
 router.get("/api/get-reasons/:id", async (req, res) => {
   try {
     const company = await Company.findOne({ _id: req.params.id });

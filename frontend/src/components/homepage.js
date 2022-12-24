@@ -110,7 +110,6 @@ const Homepage = () => {
         .get("http://localhost:5000/posts/api/get-all-posts", config)
         .then((res) => {
           setFeeds(res.data.posts);
-          console.log(res.data.posts);
         });
     } catch (err) {
       console.log(err);
