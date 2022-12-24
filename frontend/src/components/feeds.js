@@ -5,8 +5,11 @@ import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import "../css/feeds.css";
 import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal.js";
+import { BsThreeDots } from "react-icons/bs";
+
 const Feeds = ({ feed }) => {
   const [modalShow, setModalShow] = React.useState(false);
+  const [show, setShow] = useState(false);
 
   let time = new Date(feed.date).toLocaleDateString();
   // calculate min difference
@@ -97,6 +100,11 @@ const Feeds = ({ feed }) => {
     setComments(comments + 1);
   };
   console.log(feed.comments);
+
+  // const handleClick = () => {
+  //   setShow(!show);
+  //   <EditPost id={feed._id} />
+  // };
   return (
     <>
       <div className="row d-flex align-items-center justify-content-center mb-2">
@@ -128,7 +136,6 @@ const Feeds = ({ feed }) => {
                     id="dropdownUser1"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
-
                   >
                     <i class="fad fa-ellipsis-h"></i>
                   </a>
@@ -136,15 +143,14 @@ const Feeds = ({ feed }) => {
                     className="dropdown-menu dropdown-menu-dark text-small shadow"
                     aria-labelledby="dropdownUser1"
                   >
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        aria-current="page"
-                         to={`/editpost/${feed._id}`}
-                       // to={"/editpost"}
-                      >
-                        Edit
-                      </Link>
+                    <li
+                      className="dropdown-item"
+                      aria-current="page"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal2"
+
+                    >
+                      Edit
                     </li>
                     <li>
                       <Link
@@ -155,10 +161,22 @@ const Feeds = ({ feed }) => {
                         Delete
                       </Link>
                     </li>
-                   
-                    
                   </ul>
                 </div>
+
+                {/* <div className="info">
+                <div className="option">
+                  <BsThreeDots
+                    className="icon"
+                    onClick={() => setShow((show) => !show)}
+                  />
+
+                  <div className={show ? "options" : "options active"}>
+                    <span>edit</span>
+                    <span>delete</span>
+                  </div>
+                </div>
+                </div> */}
               </div>
             </div>
             <div className="p-2 ">

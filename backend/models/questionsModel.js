@@ -6,13 +6,18 @@ const QuestionsSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "user",
     },
+    company: {
+      type: Schema.Types.ObjectId,
+      ref: "company",
+    },
+    
     question: {
       type: String,
       required: true,
     },
     answer: {
       type: String,
-      required: true,
+     
     },
   },
   { timestamps: true }

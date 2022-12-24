@@ -4,6 +4,17 @@ import Wrapper from "../wrapper/WhatInvestorSay";
 const WhatInvestorSay = () => {
   return (
     <Wrapper>
+      <div className="comment-form">
+
+         
+        <input 
+       
+        type="text" placeholder="Ask a question" />
+        <button
+          type="submit"
+         
+        >Submit</button>
+      </div>
       <h2>What Investors Say</h2>
 
       <div className="comments">
