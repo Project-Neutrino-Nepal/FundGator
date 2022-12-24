@@ -26,7 +26,7 @@ const Feed = () => {
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  }, );
   if (loading) {
     return <div>...Loading</div>;
   }
@@ -35,6 +35,7 @@ const Feed = () => {
       {feeds.map((feed) => {
         return <Feeds key={feed._id} feed={feed} idchange={idchange} />;
       })}
+
       <Editpost id={id ?? feeds[1]._id} />
     </div>
   );

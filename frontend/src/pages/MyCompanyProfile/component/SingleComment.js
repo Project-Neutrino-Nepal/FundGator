@@ -76,7 +76,7 @@ console.log(item);
 
           <div className={show?"options":"options active"}>
           
-            <span>edit</span>
+            <span >edit</span>
             <span>delete</span>
            <span>Report</span>
           </div>
