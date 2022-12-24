@@ -1,28 +1,174 @@
-import React from "react";
-import commentlst from "../utils/commentlst";
-import Wrapper from "../wrapper/WhatInvestorSay";
+import axios from "axios";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import Wrapper from "../wrapper/AskAQuestion";
+
 const WhatInvestorSay = () => {
+  const [feedbacks, setfeedbacks] = useState([]);
+  const [feedback, setfeedback] = useState("");
+  const { id } = useParams();
+
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+
+  // post feedback
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = {
+      feedback,
+    };
+    axios
+      .post(
+        `http://localhost:5000/feedback/api/create-feedback/${id}`,
+        data,
+        config
+      )
+      .then((res) => {
+        toast.success("Feedback posted successfully");
+        setfeedbacks([...feedbacks, res.data.data]);
+        setfeedback("");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data.message);
+      });
+  };
+
+  // post upvote
+  const handleUpvote = (id) => {
+    const data = {
+      id,
+    };
+    axios
+      .put(`http://localhost:5000/feedback/api/upvote/`, data, config)
+      .then((res) => {
+        toast.success("Upvoted successfully");
+        setfeedbacks([...feedbacks, res.data.feedback]);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data.message);
+      });
+  };
+
+  // get feedbacks
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/feedback/api/get-feedbacks/${id}`, config)
+      .then((res) => {
+        const data = res.data.feedbacks;
+        setfeedbacks(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <Wrapper>
+      <ToastContainer />
+
       <h2>What Investors Say</h2>
+      <div className="comment-form">
+        <input
+          type="text"
+          placeholder="Write a comment"
+          value={feedback}
+          onChange={(e) => setfeedback(e.target.value)}
+        />
+        <button type="submit" onClick={handleSubmit}>
+          Submit
+        </button>
+      </div>
 
       <div className="comments">
-          {commentlst.map((item) => {
-            const { profilePicture, id, username } = item;
-            return (
-              <div key={id} className="comment">
-                <img src={profilePicture} alt="" />
-                <div className="info">
-                  <span>{username}</span>
-                  <p>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Culpa
-                    tenetur sequi fugiat placeat, unde quis natus quisquam
-                    perspiciatis doloremque eos cum assumenda.
-                  </p>
-                </div>
-              </div>
-            );
-          })}
+        <div className="comment">
+          {feedbacks ? (
+            feedbacks.map((feedback) => {
+              return (
+                <>
+                  <div className="d-flex flex-wrap justify-content-between mt-4">
+                    <div className="comment d-flex flex-wrap">
+                      <div>
+                        <img
+                          src={feedback.profile.avatar}
+                          style={{
+                            width: "50px",
+                            height: "50px",
+                            borderRadius: "50%",
+                          }}
+                          alt={feedback.user.name}
+                        />
+                      </div>
+                      <div className="info ms-2">
+                        <span className="fs-5 fw-semibold ">
+                          {feedback.user.name}
+                        </span>
+                        <p className="fs-6">{feedback.feedback}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <span className="fs-6">
+                        {moment(feedback.date).format("DD-MM-YYYY")}
+                      </span>
+                      &emsp;
+                      {feedback.upvotes ? (
+                        <button
+                          type="submit"
+                          style={{
+                            backgroundColor: "#4f8bc3",
+                            border: "none",
+                          }}
+                          onClick={""}
+                          className="text-white"
+                        >
+                          <i class="fa-solid fa-arrow-down"></i>
+                          &nbsp; Down Vote
+                        </button>
+                      ) : (
+                        <button
+                          type="submit"
+                          style={{
+                            backgroundColor: "#4f8bc3",
+                            border: "none",
+                          }}
+                          onClick={() => handleUpvote(feedback._id)}
+                          className="text-white"
+                        >
+                          <i class="fa-solid fa-arrow-up"></i>
+                          &nbsp; Up Vote
+                        </button>
+                      )}
+                      <br />
+                      <span className="fs-6">
+                        {moment(feedback.date).format("hh:mm a")}
+                      </span>
+                      &emsp; &emsp;
+                      <span
+                        className="text-white"
+                        style={{
+                          backgroundColor: "#4f8bc3",
+                          border: "none",
+                          height: "30px",
+                        }}
+                      >
+                        {feedback.upvotes.length}Upvotes
+                      </span>
+                    </div>
+                  </div>
+                </>
+              );
+            })
+          ) : (
+            <h4 className="mt-5">No feedbacks yet</h4>
+          )}
+        </div>
       </div>
     </Wrapper>
   );

@@ -1,21 +1,19 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
 import { useParams } from "react-router-dom";
-import commentlst from "../utils/commentlst";
-import SingleComment from "./SingleComment";
+import { toast, ToastContainer } from "react-toastify";
 import Wrapper from "../wrapper/AskAQuestion";
+import SingleComment from "./SingleComment";
 const AskQuestion = () => {
   const [question, setQuestion] = useState("");
- const [questions, setQuestions] = useState([]);
- const [profile, setProfile] = useState({});
+  const [questions, setQuestions] = useState([]);
+  const [profile, setProfile] = useState({});
 
   const { id } = useParams();
-  
+
   const handleChange = (e) => {
     setQuestion(e.target.value);
   };
-
 
   const config = {
     headers: {
@@ -23,8 +21,7 @@ const AskQuestion = () => {
     },
   };
 
-
- // to post question
+  // to post question
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
@@ -34,7 +31,7 @@ const AskQuestion = () => {
       // .post(`http://localhost:5000/question/api/create-qn/:company`, data)
       .post(`http://localhost:5000/question/api/create-qn/${id}`, data, config)
       .then((res) => {
-       // console.log(res);
+        // console.log(res);
         toast.success("Question posted successfully");
         // setQuestion([...question, res.data.data]);
         // setQuestion("");
@@ -45,14 +42,14 @@ const AskQuestion = () => {
       });
   };
 
-   //to get profile
+  //to get profile
   useEffect(() => {
     axios
       .get(`http://localhost:5000/profile/api/get-profiles`, config)
       .then((res) => {
         const data = res.data.profiles;
         //console.log(data.user);
-        const filter = data.filter(item => item.user._id === id)
+        const filter = data.filter((item) => item.user._id === id);
         console.log(filter);
         setProfile(filter);
       })
@@ -60,9 +57,6 @@ const AskQuestion = () => {
         console.log(err);
       });
   }, []);
-
-
-
 
   useEffect(() => {
     axios
@@ -74,27 +68,26 @@ const AskQuestion = () => {
 
         //console.log(res);
         setQuestions(data);
-       // console.log(filter);
+        // console.log(filter);
       })
       .catch((err) => {
         //console.log(err);
       });
   }, [config, id]);
 
-
   return (
     <Wrapper>
       <div className="comment-form">
-
-        <ToastContainer />    
-        <input 
-        onChange={handleChange}
-        value={question}
-        type="text" placeholder="Ask a question" />
-        <button
-          type="submit"
-          onClick={handleSubmit}
-        >Submit</button>
+        <ToastContainer />
+        <input
+          onChange={handleChange}
+          value={question}
+          type="text"
+          placeholder="Ask a question"
+        />
+        <button type="submit" onClick={handleSubmit}>
+          Submit
+        </button>
       </div>
 
       <section className="select-input">
@@ -103,14 +96,12 @@ const AskQuestion = () => {
           <option value="latest"> latest </option>
         </select>
         <div className="comment-list">
-          {questions.map((item,index) => (
+          {questions.map((item, index) => (
             <div key={index}>
-            <SingleComment profile={profile} item={item} />
-
+              <SingleComment profile={profile} item={item} />
             </div>
           ))}
         </div>
-
       </section>
     </Wrapper>
   );
