@@ -74,7 +74,6 @@ const EditCompanyPage = () => {
       authorization: localStorage.getItem("token"),
     },
   };
-console.log(values.content);
   const data = {
     category: values.category,
     tag: values.tag,
@@ -188,7 +187,7 @@ console.log(values.content);
             .put(
               "http://localhost:5000/reason/api/update-team/" +
                 formvalue.companyname,
-              teamsdata,
+              values.teams,
               config
             )
             .then((res) => {
@@ -260,6 +259,7 @@ console.log(values.content);
       .get("http://localhost:5000/reason/api/get-reason/" + id, config)
       .then((res) => {
         let reasons = res.data.reasons;
+        console.log(reasons);
         setReasons(reasons);
         formvalue.reason0 = reasons.reason0;
         formvalue.reason1 = reasons.reason1;
@@ -279,6 +279,7 @@ console.log(values.content);
         formvalue.category = reasons.category.name;
         const teamsdata = [];
         reasons.teams.map((item) => {
+          console.log(item);
           teamsdata.push({
             ...item,
 

@@ -5,7 +5,6 @@ import { toast, ToastContainer } from "react-toastify";
 import { Basic, Story, Team, Visiblity } from "./component";
 import tabs from "./utils/tab";
 import Wrapper from "./wrapper/CompanyRegisterPage";
-const parse = require("html-react-parser");
 
 const CompanyRegisterPage = () => {
   const { id } = useParams();
@@ -68,7 +67,7 @@ const CompanyRegisterPage = () => {
     let valid = false;
     for (let i = 0; i < team.length; i++) {
       if (
-        values.teams[i].name &&
+        team[i].name &&
         team[i].email &&
         team[i].foundertype &&
         team[i].position &&
@@ -237,6 +236,8 @@ const CompanyRegisterPage = () => {
           } catch (error) {
             toast.error(error.response.data.message);
           }
+        } else {
+          toast.error("please fill all the fields ");
         }
       }
       // updating reasons and adding team members
@@ -249,12 +250,11 @@ const CompanyRegisterPage = () => {
               .put(
                 "http://localhost:5000/reason/api/update-team/" +
                   formvalue.companyname,
-                teamsdata,
+                { teams: values.teams },
                 config
               )
               .then((res) => {
                 if (res.data.success) {
-                  
                   toast.success("teams added successfully");
                 }
               });
@@ -289,7 +289,7 @@ const CompanyRegisterPage = () => {
           }
         }
       }
-    } else {
+    } else if (activeindex === 4) {
       try {
         const formData = new FormData();
         formData.append("registration_card", values.registration_card);
@@ -341,8 +341,6 @@ const CompanyRegisterPage = () => {
       videoupload,
     } = values;
     if (index === 1) {
-      setActive(index);
-    } else if (index === 2) {
       if (
         companyname &&
         city &&
@@ -360,15 +358,26 @@ const CompanyRegisterPage = () => {
       ) {
         setActive(index);
       }
-    } else if (index === 3) {
+    } else if (index === 2) {
       if (membervalidation()) {
         setActive(index);
+      } else {
+        toast.error("please fill all the fields ");
       }
-    } else if (index === 4) {
-      if (imageupload && videoupload) {
+    } else if (index === 3) {
+      if (videoupload) {
         setActive(index);
+      } else {
+        toast.error("please upload videos ");
       }
     }
+    // else if (index === 4) {
+    //   if (videoupload) {
+    //     setActive(index);
+    //   } else {
+    //     toast.error("please upload videos ");
+    //   }
+    // }
   };
 
   const onregistrationcard = () => {
@@ -420,6 +429,24 @@ const CompanyRegisterPage = () => {
             handleTags={handleTags}
           />
         </div>
+
+        <div className={activeindex === 2 ? "form-child" : "d-none"}>
+          <Team
+            values={values}
+            handleChange={handleChange}
+            Addteam={Addteam}
+            teamChange={teamChange}
+          />
+        </div>
+
+        <div className={activeindex === 3 ? "form-child" : "d-none"}>
+          <Story
+            handleChange={fileChange}
+            imgpreview={values.imageuploadpreview}
+            vdpreview={values.videouploadpreview}
+          />
+        </div>
+
         <div className={activeindex === 4 ? "form-child" : "d-none"}>
           <Visiblity
             handleChange={handleChange}
@@ -430,21 +457,6 @@ const CompanyRegisterPage = () => {
             onpancard={onpancard}
             oncitizenfrontcard={oncitizenfrontcard}
             oncitizenbackcard={oncitizenbackcard}
-          />
-        </div>
-        <div className={activeindex === 3 ? "form-child" : "d-none"}>
-          <Story
-            handleChange={fileChange}
-            imgpreview={values.imageuploadpreview}
-            vdpreview={values.videouploadpreview}
-          />
-        </div>
-        <div className={activeindex === 2 ? "form-child" : "d-none"}>
-          <Team
-            values={values}
-            handleChange={handleChange}
-            Addteam={Addteam}
-            teamChange={teamChange}
           />
         </div>
       </section>
