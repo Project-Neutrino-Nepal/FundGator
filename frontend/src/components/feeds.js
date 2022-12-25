@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import "../css/feeds.css";
 import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal.js";
 import { BsThreeDots } from "react-icons/bs";
-
+import EditPost from "./Editpostcard";
 const Feeds = ({ feed }) => {
   const [modalShow, setModalShow] = React.useState(false);
   const [show, setShow] = useState(false);
@@ -129,7 +129,7 @@ const Feeds = ({ feed }) => {
               <div className="d-flex flex-row mt-1 ellipsis">
                 <small className="me-2">{time} &nbsp;</small>
 
-                <div className="dropdown border-start  ">
+                <div className="dropdown">
                   <a
                     href="#"
                     className="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
@@ -137,21 +137,36 @@ const Feeds = ({ feed }) => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    <i class="fad fa-ellipsis-h"></i>
+                    <BsThreeDots size={20} color="#111" />
                   </a>
                   <ul
                     className="dropdown-menu dropdown-menu-dark text-small shadow"
                     aria-labelledby="dropdownUser1"
                   >
-                    <li
+                    {/* <li
                       className="dropdown-item"
                       aria-current="page"
                       data-bs-toggle="modal"
                       data-bs-target="#exampleModal2"
+                                           
 
                     >
+                      Edit                     
+                    
+                    </li> */}
+                    <li
+                      className="dropdown-item"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setShow(true)}
+                    >
                       Edit
+                      <EditPost
+                        show={show}
+                        id={feed._id}
+                        onHide={() => setShow(false)}
+                      />
                     </li>
+                    
                     <li>
                       <Link
                         className="dropdown-item"
@@ -249,6 +264,7 @@ const Feeds = ({ feed }) => {
                   </span>
                 </div>
               </div>
+
               <hr />
               <div className="comments">
                 {feed.comments.map((comment) => {
