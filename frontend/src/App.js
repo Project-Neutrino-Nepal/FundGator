@@ -223,7 +223,23 @@ function App() {
             }
           />
           <Route
+            path="/dashboard/categoryPage/:id"
+            element={
+              <ProtectedRoute>
+                <Category />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/dashboard/tagPage"
+            element={
+              <ProtectedRoute>
+                <Tag />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/tagPage/:id"
             element={
               <ProtectedRoute>
                 <Tag />

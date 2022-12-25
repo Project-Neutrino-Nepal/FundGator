@@ -6,9 +6,9 @@ const TagSchema = new Schema({
     type: String,
     required: true,
   },
-  color: {
-    type: String,
-    required: false,
+  date: {
+    type: Date,
+    default: Date.now,
   },
 });
 

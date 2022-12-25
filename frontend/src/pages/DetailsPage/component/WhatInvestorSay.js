@@ -2,7 +2,7 @@ import axios from "axios";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import Wrapper from "../wrapper/AskAQuestion";
 
 const WhatInvestorSay = () => {
@@ -72,8 +72,10 @@ const WhatInvestorSay = () => {
 
   return (
     <Wrapper>
-      <ToastContainer />
-
+      <div className="comment-form">
+        <input type="text" placeholder="Ask a question" />
+        <button type="submit">Submit</button>
+      </div>
       <h2>What Investors Say</h2>
       <div className="comment-form">
         <input
@@ -93,68 +95,67 @@ const WhatInvestorSay = () => {
             feedbacks.map((feedback) => {
               return (
                 <>
-                    <div className="d-flex flex-wrap justify-content-between mt-4">
-                      <div className="comment d-flex flex-wrap">
-                        <div>
-                          <img
-                            src={feedback.profile.avatar}
-                            style={{
-                              width: "50px",
-                              height: "50px",
-                              borderRadius: "50%",
-                            }}
-                            alt={feedback.user.name}
-                          />
-                        </div>
-                        <div className="info ms-2">
-                          <span className="fs-5 fw-semibold ">
-                            {feedback.user.name}
-                          </span>
-                          <p className="fs-6">{feedback.feedback}</p>
-                        </div>
-                      </div>
+                  <div className="d-flex flex-wrap justify-content-between mt-4">
+                    <div className="comment d-flex flex-wrap">
                       <div>
-                        <span className="fs-6">
-                          {moment(feedback.date).format("DD-MM-YYYY")}
+                        <img
+                          src={feedback.profile.avatar}
+                          style={{
+                            width: "50px",
+                            height: "50px",
+                            borderRadius: "50%",
+                          }}
+                          alt={feedback.user.name}
+                        />
+                      </div>
+                      <div className="info ms-2">
+                        <span className="fs-5 fw-semibold ">
+                          {feedback.user.name}
                         </span>
-                        &emsp;
-                        <br />
-                        <span className="fs-6">
-                          {moment(feedback.date).format("hh:mm a")}
-                        </span>
-                        &emsp; &emsp;
-                        <div>
-                          {feedback.upvotes ? (
-                            <button
-                              type="submit"
-                              style={{
-                                backgroundColor: "#4f8bc3",
-                                border: "none",
-                              }}
-                              onClick={""}
-                              className="text-white"
-                            >
-                              <i class="fa-solid fa-arrow-down"></i>
-                              &nbsp; Down Vote
-                            </button>
-                          ) : (
-                            <button
-                              type="submit"
-                              style={{
-                                backgroundColor: "#4f8bc3",
-                                border: "none",
-                              }}
-                              onClick={() => handleUpvote(feedback._id)}
-                              className="text-white"
-                            >
-                              <i class="fa-solid fa-arrow-up"></i>
-                              &nbsp; Up Vote
-                            </button>
-                          )}
-                        </div>
+                        <p className="fs-6">{feedback.feedback}</p>
                       </div>
                     </div>
-                  
+                    <div>
+                      <span className="fs-6">
+                        {moment(feedback.date).format("DD-MM-YYYY")}
+                      </span>
+                      &emsp;
+                      <br />
+                      <span className="fs-6">
+                        {moment(feedback.date).format("hh:mm a")}
+                      </span>
+                      &emsp; &emsp;
+                      <div>
+                        {feedback.upvotes ? (
+                          <button
+                            type="submit"
+                            style={{
+                              backgroundColor: "#4f8bc3",
+                              border: "none",
+                            }}
+                            onClick={""}
+                            className="text-white"
+                          >
+                            <i class="fa-solid fa-arrow-down"></i>
+                            &nbsp; Down Vote
+                          </button>
+                        ) : (
+                          <button
+                            type="submit"
+                            style={{
+                              backgroundColor: "#4f8bc3",
+                              border: "none",
+                            }}
+                            onClick={() => handleUpvote(feedback._id)}
+                            className="text-white"
+                          >
+                            <i class="fa-solid fa-arrow-up"></i>
+                            &nbsp; Up Vote
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </>
               );
             })

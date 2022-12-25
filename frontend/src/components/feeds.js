@@ -2,11 +2,14 @@ import axios from "axios";
 import moment from "moment";
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
+import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import "../css/feeds.css";
+import EditPost from "./Editpostcard";
 import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal.js";
 const Feeds = ({ feed }) => {
   const [modalShow, setModalShow] = React.useState(false);
+  const [show, setShow] = useState(false);
 
   let time = new Date(feed.date).toLocaleDateString();
   // calculate min difference
@@ -95,17 +98,6 @@ const Feeds = ({ feed }) => {
     }
     setComments(comments + 1);
   };
-
-  //       .then((res) => {
-  //         let post = res.data.post;
-  //         setPost(post);
-  //         setCommentText("");
-  //       });
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  //   setComments(comments + 1);
-  // };
   return (
     <>
       <div className="row d-flex align-items-center justify-content-center mb-2">
@@ -130,7 +122,7 @@ const Feeds = ({ feed }) => {
               <div className="d-flex flex-row mt-1 ellipsis">
                 <small className="me-2">{time} &nbsp;</small>
 
-                <div className="dropdown border-start  ">
+                <div className="dropdown">
                   <a
                     href="#"
                     className="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
@@ -138,22 +130,36 @@ const Feeds = ({ feed }) => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    <i class="fad fa-ellipsis-h"></i>
+                    <BsThreeDots size={20} color="#111" />
                   </a>
                   <ul
                     className="dropdown-menu dropdown-menu-dark text-small shadow"
                     aria-labelledby="dropdownUser1"
                   >
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        aria-current="page"
-                        to={`/editpost/${feed._id}`}
-                        // to={"/editpost"}
-                      >
-                        Edit
-                      </Link>
+                    {/* <li
+                      className="dropdown-item"
+                      aria-current="page"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal2"
+                                           
+
+                    >
+                      Edit                     
+                    
+                    </li> */}
+                    <li
+                      className="dropdown-item"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setShow(true)}
+                    >
+                      Edit
+                      <EditPost
+                        show={show}
+                        id={feed._id}
+                        onHide={() => setShow(false)}
+                      />
                     </li>
+
                     <li>
                       <Link
                         className="dropdown-item"
@@ -165,6 +171,20 @@ const Feeds = ({ feed }) => {
                     </li>
                   </ul>
                 </div>
+
+                {/* <div className="info">
+                <div className="option">
+                  <BsThreeDots
+                    className="icon"
+                    onClick={() => setShow((show) => !show)}
+                  />
+
+                  <div className={show ? "options" : "options active"}>
+                    <span>edit</span>
+                    <span>delete</span>
+                  </div>
+                </div>
+                </div> */}
               </div>
             </div>
             <div className="p-2 ">
@@ -241,6 +261,7 @@ const Feeds = ({ feed }) => {
                   </span>
                 </div>
               </div>
+
               <hr />
               <div className="comments">
                 {feed.comments.map((comment) => {

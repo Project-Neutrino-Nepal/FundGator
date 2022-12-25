@@ -39,10 +39,10 @@ router.post('/api/create-qn/:company', userAuth, async (req, res) => {
     
 
     //to reply to question by company
-    router.post('/api/reply-qn/:id', userAuth, async (req, res) => {
+    router.put('/api/reply-qn/:id', userAuth, async (req, res) => {
         try {
             const
-                company = await Company.findById(req.user._id),
+                company = await Company.findById(req.body.company),
                 question = await Questions.findById(req.params.id);
             if (!question) {
                 return res.status(400).json({
@@ -116,6 +116,31 @@ router.get('/api/qn-company/:id', userAuth, async (req, res) => {
         });
     }
 });
+
+//to get answer of praticular question
+router.get('/api/answer/:id', userAuth, async (req, res) => {
+    try {
+        let question = await Questions.findById(req.params.id);
+        if (!question) {
+            return res.status(400).json({
+                success: false,
+                message: "Question not found",
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            message: "Question fetched successfully",
+            question,
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            success: false,
+            message: "An error occurred.",
+        });
+    }
+});
+
 
 
 //to delete question 

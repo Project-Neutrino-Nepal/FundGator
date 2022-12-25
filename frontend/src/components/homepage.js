@@ -102,6 +102,19 @@ const Homepage = () => {
     }
   };
 
+  // get feeds from API
+  const [feeds, setFeeds] = useState([]);
+  useEffect(() => {
+    try {
+      axios
+        .get("http://localhost:5000/posts/api/get-all-posts", config)
+        .then((res) => {
+          setFeeds(res.data.posts);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
 
 
   return (

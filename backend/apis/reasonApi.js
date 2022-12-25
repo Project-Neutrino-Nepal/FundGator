@@ -19,6 +19,7 @@ const DOMAIN = "http://127.0.0.1:5000/";
 router.post("/api/create-reason/:name", userAuth, async (req, res) => {
   try {
     const { body } = req;
+    console.log(body);
     // the categorry name is converted to category id and passed to the reason model
     let category = await Category.findOne({ name: body.category });
     let categoryID = category._id;
@@ -266,7 +267,7 @@ router.put(
   }
 );
 
-//route to get reasons for a company
+//route to get reasons for a company by id
 router.get("/api/get-reasons/:id", async (req, res) => {
   try {
     const company = await Company.findOne({ _id: req.params.id });

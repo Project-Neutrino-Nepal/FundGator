@@ -1,6 +1,6 @@
 import { Button, Card, Col, Form, Input, Row, Space, Table } from "antd";
 
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 // Images
 import { SearchOutlined } from "@ant-design/icons";
@@ -8,12 +8,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import moment from "moment";
 
 const columns = [
-  { title: "Image", dataIndex: "image" },
-
   {
-    title: "Categories Name",
+    title: "Tags Name",
     dataIndex: "name",
     // search company by name
     filterDropdown: ({
@@ -64,12 +63,14 @@ const columns = [
 
   {
     title: "Date",
-    dataIndex: "fund_raised",
+    dataIndex: "date",
+
     sorter: (a, b) => a.name.localeCompare(b.name),
   },
 
   {
     title: "ACTION",
+    align: "center",
     dataIndex: "action",
   },
 ];
@@ -83,51 +84,171 @@ function Tag() {
     },
   };
 
-  const deleteCompany = (id) => {
+  // delete Tag
+  const deleteTags = (id) => {
     console.log(id);
     axios
-      .delete("http://localhost:5000/company/api/delete-company/" + id, config)
+
+      .delete("http://localhost:5000/admin/api/delete-tags/" + id, config)
       .then((res) => {
         console.log(res);
         toast.success(res.data.message);
-        window.location.reload();
       })
       .catch((err) => {
         toast.error(err.response.data.message);
       });
   };
 
-  // fetching Profile data from API and map multiple times to show in table
+  const [Tags, setTags] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:5000/company/api/all-companies", config)
+      .get("http://localhost:5000/admin/api/get-tags", config)
       .then((res) => {
-        const companies = res.data.company;
-        setCompany(companies);
+        setTags(res.data.tags);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  });
 
-  const comapnyData = company.map((company) => {
+  const { id } = useParams();
+  // get tags by id
+  const [Tag, setTag] = useState();
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/admin/api/get-tags/" + id, config)
+      .then((res) => {
+        setTag(res.data.tags.name);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+  console.log(Tag);
+
+  // update Tag by id
+  const updateTag = (e) => {
+    e.preventDefault();
+    const data = {
+      name: TagName,
+    };
+    axios
+      .put(
+        "http://localhost:5000/admin/api/update-tags/" + id,
+        data,
+        config
+      )
+      .then((res) => {
+        console.log(res);
+        toast.success(
+          res.data.message,
+          setTimeout(() => {
+            window.location.assign("/dashboard/tagPage");
+          })
+        );
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  };
+
+  //    add Tag to database
+  const [TagName, setTagName] = useState();
+  const addTag = (e) => {
+    e.preventDefault();
+    const data = {
+      name: TagName,
+    };
+    try {
+      axios
+        .post("http://localhost:5000/admin/api/create-tags", data, config)
+        .then((res) => {
+          console.log(res);
+          toast.success(res.data.message);
+        })
+        .catch((err) => {
+          toast.error("please enter a valid tag name");
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const TagData = Tags.map((Tag) => {
     return {
-      key: company._id,
-      image: <img src={company.image} alt="company" width="50" height="50" />,
-      name: company.name,
-
+      key: Tag._id,
+      name: Tag.name,
+      date: moment(Tag.date).format("DD/MM/YYYY" + " " + "hh:mm:ss"),
       action: (
         <div className="d-flex flex-wrap justify-content-evenly">
-          <Link to={`/dashboard/company-details/${company._id}`}>
-            <i className="fa-solid fa-eye text-info"></i>
+          <Link to={`/dashboard/tagPage/${Tag._id}`}>
+            <i className="fa-solid fa-edit text-info"></i>
           </Link>
-          <a onClick={() => deleteCompany(company._id)}>
+
+          <a onClick={() => deleteTags(Tag._id)}>
             <i className="fa-solid fa-trash text-danger"></i>
           </a>
         </div>
       ),
     };
   });
+
+  const ids = useParams();
+  // strigify ids
+  const idstring = JSON.stringify(ids);
+  const button = () => {
+    if (idstring.length > 2) {
+      return (
+        <Button type="primary" onClick={updateTag}>
+          Update Tag
+        </Button>
+      );
+    } else {
+      return (
+        <Button type="primary" onClick={addTag}>
+          Add Tag
+        </Button>
+      );
+    }
+  };
+
+  const head = () => {
+    if (idstring.length > 2) {
+      return <h5 className="mb-3 fw-semibold">Update Tag here</h5>;
+    } else {
+      return <h5 className="mb-3 fw-semibold">Add Tag here</h5>;
+    }
+  };
+
+  const nameValue = () => {
+    if (idstring.length > 2) {
+      return (
+        <Form.Item
+          label="Tag Name"
+          name="Tag"
+          onChange={(e) => setTagName(e.target.value)}
+        >
+          <Input placeholder={Tag} />
+        </Form.Item>
+      );
+    } else {
+      return (
+        <Form.Item
+          label="Tag Name"
+          name="Tag"
+          onChange={(e) => setTagName(e.target.value)}
+          rules={[
+            {
+              required: true,
+              message: "Please input tag name!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+      );
+    }
+  };
 
   return (
     <>
@@ -137,40 +258,24 @@ function Tag() {
           <Col xs="24" xl={24}>
             <Card
               bordered={false}
-              className="criclebox tablespace mb-24"
-              title="Tags"
+              className="criclebox tablespace mb-4"
+              title="Tag"
             >
-              {/* add category field */}
+              {/* add Tag field */}
               <div className=" ms-5 m-4">
-                <h5 className="mb-3 fw-semibold">Add tags here</h5>
+                {head()}
 
                 <Form
                   name="basic"
-                  labelCol={{ span: 10 }}
-                  wrapperCol={{ span: 14 }}
-                  //   initialValues={{ remember: true }}
-                  //   onFinish={onFinish}
-                  //   onFinishFailed={onFinishFailed}
+                  labelCol={{ span: 3 }}
+                  wrapperCol={{ span: 10 }}
                   autoComplete="off"
                 >
-                  <span className="d-flex  ">
-                    <Form.Item
-                      wrapperCol={{ span: 20 }}
-                      label="Add Tags"
-                      name="tag"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your username!",
-                        },
-                      ]}
-                    >
-                      <Input />
-                    </Form.Item>
-                    <Form.Item wrapperCol={{ offset: 10, span: 10 }}>
-                      <Button type="primary" htmlType="submit">
-                        Add Tags
-                      </Button>
+                  <span className="  ">
+                    {nameValue()}
+                    <hr />
+                    <Form.Item wrapperCol={{ offset: 1, span: 4 }}>
+                      {button()}
                     </Form.Item>
                   </span>
                 </Form>
@@ -179,7 +284,7 @@ function Tag() {
               <div className="table-responsive">
                 <Table
                   columns={columns}
-                  dataSource={comapnyData}
+                  dataSource={TagData}
                   pagination={true}
                   className="ant-border-space"
                 />

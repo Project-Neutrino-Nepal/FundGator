@@ -101,6 +101,7 @@ const Basic = ({ values, handleChange, handleTags }) => {
       .get("http://localhost:5000/admin/api/get-all-categories", config)
       .then((res) => {
         let category = res.data.categories;
+        category.unshift({ name: "Select Category" });
         setCategories(category);
       });
   });
@@ -127,11 +128,12 @@ const Basic = ({ values, handleChange, handleTags }) => {
             className="border border-dark rounded-3 p-2"
           >
             {categories.map((category) => {
+               
               return <option value={category.name}>{category.name}</option>;
             })}
           </select>
         </div>
-
+       
         <label htmlFor="" className="text-dark mb-1 ">
           Choose Tags 1 or more
         </label>
