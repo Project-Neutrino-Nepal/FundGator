@@ -259,7 +259,7 @@ const WelcomePage = () => {
                 />
                 <input
                   type="text"
-                  placeholder="add skills"
+                  placeholder="Add Profession"
                   id="skills"
                   value={skills}
                   onChange={(e) => setSkills(e.target.value)}

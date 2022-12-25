@@ -116,7 +116,7 @@ const Feeds = ({ feed }) => {
                   <span className="font-weight-bold">
                     {feed.profile.legal_name}
                   </span>
-                  <small className="text-primary">Collegues</small>
+                  <small className="text-primary">{feed.profile.skills}</small>
                 </div>
               </div>
               <div className="d-flex flex-row mt-1 ellipsis">
@@ -188,8 +188,12 @@ const Feeds = ({ feed }) => {
               </div>
             </div>
             <div className="p-2 ">
-              <p className="">
-                {feed.text}
+              <p align="justify">
+                {feed.text
+                  ? feed.text.length > 300
+                    ? feed.text.substring(0, 300) + " ...... Read more"
+                    : feed.text
+                  : ""}
                 <span className="btn btn-border-0 text-primary "></span>
               </p>
             </div>

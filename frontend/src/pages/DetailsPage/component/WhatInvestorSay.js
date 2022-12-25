@@ -36,6 +36,7 @@ const WhatInvestorSay = () => {
       .catch((err) => {
         console.log(err);
         toast.error(err.response.data.message);
+        setfeedback("");
       });
   };
 
@@ -72,10 +73,6 @@ const WhatInvestorSay = () => {
 
   return (
     <Wrapper>
-      <div className="comment-form">
-        <input type="text" placeholder="Ask a question" />
-        <button type="submit">Submit</button>
-      </div>
       <h2>What Investors Say</h2>
       <div className="comment-form">
         <input
@@ -125,35 +122,7 @@ const WhatInvestorSay = () => {
                         {moment(feedback.date).format("hh:mm a")}
                       </span>
                       &emsp; &emsp;
-                      <div>
-                        {feedback.upvotes ? (
-                          <button
-                            type="submit"
-                            style={{
-                              backgroundColor: "#4f8bc3",
-                              border: "none",
-                            }}
-                            onClick={""}
-                            className="text-white"
-                          >
-                            <i class="fa-solid fa-arrow-down"></i>
-                            &nbsp; Down Vote
-                          </button>
-                        ) : (
-                          <button
-                            type="submit"
-                            style={{
-                              backgroundColor: "#4f8bc3",
-                              border: "none",
-                            }}
-                            onClick={() => handleUpvote(feedback._id)}
-                            className="text-white"
-                          >
-                            <i class="fa-solid fa-arrow-up"></i>
-                            &nbsp; Up Vote
-                          </button>
-                        )}
-                      </div>
+                     
                     </div>
                   </div>
                 </>
