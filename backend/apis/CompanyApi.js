@@ -135,6 +135,12 @@ router.put(
     try {
       let { name } = req.params;
       let { body } = req;
+      let registration_card = body.registration_card;
+      let pan_card = body.pan_card;
+      let citizenship_front = body.citizenship_front;
+      let citizenship_back = body.citizenship_back;
+      let content = body.content;
+       console.log(registration_card,pan_card,citizenship_front,citizenship_back,content);
       let file = req.files.registration_card[0];
       let file1 = req.files.pan_card[0];
       let file2 = req.files.citizenship_front[0];
@@ -168,6 +174,103 @@ router.put(
           message: "Company not found",
         });
       }
+
+      // if (
+      //   registration_card &&
+      //   pan_card &&
+      //   citizenship_front &&
+      //   citizenship_back &&
+      //   content
+      // ) {
+      //   company = await Company.findOneAndUpdate(
+      //     { name: name, user: req.user._id },
+      //     {
+      //       registration_card: filename,
+      //       pan_card: filename1,
+      //       citizenship_front: filename2,
+      //       citizenship_back: filename3,
+      //       content: content,
+      //     },
+      //     { new: true }
+      //   );
+      //   return res.status(200).json({
+      //     success: true,
+      //     message: "company created successfully",
+      //     company,
+      //   });
+      // } else if (
+      //   !registration_card &&
+      //   !pan_card &&
+      //   !citizenship_front &&
+      //   !citizenship_back
+      // ) {
+      //   company = await Company.findOneAndUpdate(
+      //     { name: name, user: req.user._id },
+      //     {
+      //       content: content,
+      //     },
+      //     { new: true }
+      //   );
+      //   return res.status(200).json({
+      //     success: true,
+      //     message: "company created successfully",
+      //     company,
+      //   });
+      // } else if (registration_card) {
+      //   company = await Company.findOneAndUpdate(
+      //     { name: name, user: req.user._id },
+      //     {
+      //       registration_card: filename,
+      //     },
+      //     { new: true }
+      //   );
+      //   return res.status(200).json({
+      //     success: true,
+      //     message: "company created successfully",
+      //     company,
+      //   });
+      // } else if (pan_card) {
+      //   company = await Company.findOneAndUpdate(
+      //     { name: name, user: req.user._id },
+      //     {
+      //       pan_card: filename1,
+      //     },
+      //     { new: true }
+      //   );
+      //   return res.status(200).json({
+      //     success: true,
+      //     message: "company created successfully",
+      //     company,
+      //   });
+      // } else if (citizenship_front) {
+      //   company = await Company.findOneAndUpdate(
+      //     { name: name, user: req.user._id },
+      //     {
+      //       citizenship_front: filename2,
+      //     },
+      //     { new: true }
+      //   );
+      //   return res.status(200).json({
+      //     success: true,
+      //     message: "company created successfully",
+      //     company,
+      //   });
+      // } else if (citizenship_back) {
+      //   company = await Company.findOneAndUpdate(
+      //     { name: name, user: req.user._id },
+      //     {
+      //       citizenship_back: filename3,
+      //     },
+      //     { new: true }
+      //   );
+      //   return res.status(200).json({
+      //     success: true,
+      //     message: "company created successfully",
+      //     company,
+      //   });
+      // }
+    
+
       company = await Company.findOneAndUpdate(
         { name: name, user: req.user._id },
         {
