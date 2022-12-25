@@ -129,6 +129,7 @@ router.put("/api/upvote/", userAuth, async (req, res) => {
       });
     }
     feedback.upvotes.push(req.user._id);
+    feedback.isupvoted = true;
     await feedback.save();
     res.status(200).json({
       success: true,

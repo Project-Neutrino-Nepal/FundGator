@@ -24,6 +24,10 @@ const FeedBackSchema = new Schema(
         ref: "user",
       },
     ],
+    isupvoted: {
+      type: Boolean,
+      default: false,
+    },
     date: {
       type: Date,
       default: Date.now,
