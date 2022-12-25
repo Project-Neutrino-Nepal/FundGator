@@ -825,6 +825,7 @@ router.get("/api/get-fund/", async (req, res) => {
     company.forEach((company) => {
       totalFund += company.fund_raised;
     });
+
     // get total amount from Reason Model
     let reason = await Reason.find();
     if (!reason) {

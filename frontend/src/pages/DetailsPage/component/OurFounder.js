@@ -11,7 +11,6 @@ const OurFounder = ({
   linkedin,
   facebook,
 }) => {
-  console.log(facebook);
   return (
     <Wrapper>
       {/* <img src={image} alt={name} /> */}

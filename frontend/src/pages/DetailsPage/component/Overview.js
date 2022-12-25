@@ -37,7 +37,6 @@ const Overview = (short_pitch) => {
         setReasons7(reasons.reason7);
         setReasons8(reasons.reason8);
         let team = reasons.teams;
-        console.log(team);
         setTeams(team);
       })
       .catch((err) => {
