@@ -23,6 +23,10 @@ const PostsSchema = new Schema({
     type: Array,
     default: [],
   },
+  isLiked: {
+    type: Boolean,
+    default: false,
+  },
   comments: [
     {
       user: {

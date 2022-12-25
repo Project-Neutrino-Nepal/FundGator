@@ -93,75 +93,68 @@ const WhatInvestorSay = () => {
             feedbacks.map((feedback) => {
               return (
                 <>
-                  <div className="d-flex flex-wrap justify-content-between mt-4">
-                    <div className="comment d-flex flex-wrap">
+                    <div className="d-flex flex-wrap justify-content-between mt-4">
+                      <div className="comment d-flex flex-wrap">
+                        <div>
+                          <img
+                            src={feedback.profile.avatar}
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              borderRadius: "50%",
+                            }}
+                            alt={feedback.user.name}
+                          />
+                        </div>
+                        <div className="info ms-2">
+                          <span className="fs-5 fw-semibold ">
+                            {feedback.user.name}
+                          </span>
+                          <p className="fs-6">{feedback.feedback}</p>
+                        </div>
+                      </div>
                       <div>
-                        <img
-                          src={feedback.profile.avatar}
-                          style={{
-                            width: "50px",
-                            height: "50px",
-                            borderRadius: "50%",
-                          }}
-                          alt={feedback.user.name}
-                        />
-                      </div>
-                      <div className="info ms-2">
-                        <span className="fs-5 fw-semibold ">
-                          {feedback.user.name}
+                        <span className="fs-6">
+                          {moment(feedback.date).format("DD-MM-YYYY")}
                         </span>
-                        <p className="fs-6">{feedback.feedback}</p>
+                        &emsp;
+                        <br />
+                        <span className="fs-6">
+                          {moment(feedback.date).format("hh:mm a")}
+                        </span>
+                        &emsp; &emsp;
+                        <div>
+                          {feedback.upvotes ? (
+                            <button
+                              type="submit"
+                              style={{
+                                backgroundColor: "#4f8bc3",
+                                border: "none",
+                              }}
+                              onClick={""}
+                              className="text-white"
+                            >
+                              <i class="fa-solid fa-arrow-down"></i>
+                              &nbsp; Down Vote
+                            </button>
+                          ) : (
+                            <button
+                              type="submit"
+                              style={{
+                                backgroundColor: "#4f8bc3",
+                                border: "none",
+                              }}
+                              onClick={() => handleUpvote(feedback._id)}
+                              className="text-white"
+                            >
+                              <i class="fa-solid fa-arrow-up"></i>
+                              &nbsp; Up Vote
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
-                    <div>
-                      <span className="fs-6">
-                        {moment(feedback.date).format("DD-MM-YYYY")}
-                      </span>
-                      &emsp;
-                      {feedback.upvotes ? (
-                        <button
-                          type="submit"
-                          style={{
-                            backgroundColor: "#4f8bc3",
-                            border: "none",
-                          }}
-                          onClick={""}
-                          className="text-white"
-                        >
-                          <i class="fa-solid fa-arrow-down"></i>
-                          &nbsp; Down Vote
-                        </button>
-                      ) : (
-                        <button
-                          type="submit"
-                          style={{
-                            backgroundColor: "#4f8bc3",
-                            border: "none",
-                          }}
-                          onClick={() => handleUpvote(feedback._id)}
-                          className="text-white"
-                        >
-                          <i class="fa-solid fa-arrow-up"></i>
-                          &nbsp; Up Vote
-                        </button>
-                      )}
-                      <br />
-                      <span className="fs-6">
-                        {moment(feedback.date).format("hh:mm a")}
-                      </span>
-                      &emsp; &emsp;
-                      <span
-                        className="text-white"
-                        style={{
-                          backgroundColor: "#4f8bc3",
-                          border: "none",
-                          height: "30px",
-                        }}
-                      >
-                        {feedback.upvotes.length}Upvotes
-                      </span>
-                    </div>
-                  </div>
+                  
                 </>
               );
             })
