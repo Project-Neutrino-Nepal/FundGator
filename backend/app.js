@@ -21,6 +21,7 @@ const postRouter = require("./apis/PostApi");
 const chatRouter = require("./apis/ChatApi");
 const messageRouter = require("./apis/MessageApi");
 const questionRouter = require("./apis/questionApi");
+const feedbackRouter = require("./apis/FeedbackApi");
 
 // Import passport middleware
 require("./middlewares/passport-middleware");
@@ -47,6 +48,7 @@ app.use("/posts", postRouter);
 app.use("/chat", chatRouter);
 app.use("/message", messageRouter);
 app.use("/question", questionRouter);
+app.use("/feedback", feedbackRouter);
 
 // --------------------------DEVELOPMENT------------------------------
 

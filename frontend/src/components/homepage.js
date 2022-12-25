@@ -6,15 +6,17 @@ import "../css/homepage.css";
 import Basenav from "./basenav";
 
 import { BsCardImage } from "react-icons/bs";
-import { IoCloseCircleSharp, IoDocumentTextSharp } from "react-icons/io5";
+import { IoCloseCircleSharp } from "react-icons/io5";
 import { RiVideoFill } from "react-icons/ri";
 
 import { Outlet } from "react-router-dom";
 
 const Homepage = () => {
   const [name, setName] = useState("");
+  const [skills, setSkills] = useState("");
   const [image, setPreview] = useState({
-    preview: "https://github.com/mdo.png",
+    preview:
+      "https://www.grovenetworks.com/images/easyblog_shared/July_2018/7-4-18/totw_network_profile_400.jpg",
     file: "",
   });
 
@@ -66,6 +68,7 @@ const Homepage = () => {
       .then((res) => {
         let program = res.data.profile;
         setName(program.legal_name);
+        setSkills(program.skills);
         setPreview({ ...image, preview: program.avatar });
       });
   });
@@ -116,8 +119,6 @@ const Homepage = () => {
     }
   }, []);
 
-  let key;
-
   return (
     <>
       <ToastContainer />
@@ -145,7 +146,21 @@ const Homepage = () => {
               height={65}
               className="rounded-circle me-2 mt-2"
             />
-            <strong>{name}</strong>
+            <div>
+              <strong
+                className=" fs-5 text-white text-truncate text-truncate- en
+              d-block mt-2"
+              >
+                {name}
+              </strong>
+              <p className="">
+                {skills
+                  ? skills.length > 20
+                    ? skills.substring(0, 20) + "..."
+                    : "No skills added"
+                  : "No skills added"}
+              </p>
+            </div>
           </a>
 
           <ul

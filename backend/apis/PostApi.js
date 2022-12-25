@@ -80,14 +80,10 @@ router.post(
   }
 );
 
-
-
-
 //to get post of authenticated user
 router.get("/api/get-post/:id", userAuth, async (req, res) => {
   try {
-   
-    let post = await Post.findById(req.params.id); 
+    let post = await Post.findById(req.params.id);
     if (!post) {
       return res.status(400).json({
         success: false,
@@ -107,12 +103,6 @@ router.get("/api/get-post/:id", userAuth, async (req, res) => {
     });
   }
 });
-
-
-
-
-
-  
 
 /**
  * @description To Get All Posts
@@ -187,7 +177,6 @@ router.get("/api/get-post-by-name/:name", userAuth, async (req, res) => {
  * @type GET
  * */
 
-
 router.get("/api/get-post-of-auth-user", userAuth, async (req, res) => {
   try {
     let posts = await Post.find({ user: req.user.id }).sort({ date: -1 });
@@ -240,7 +229,10 @@ router.put("/api/like-post/:id", userAuth, async (req, res) => {
   try {
     let post = await Post.findById(req.params.id);
     if (!post.likes.includes(req.user._id)) {
-      await post.updateOne({ $push: { likes: req.user._id } });
+      // if post is not liked by user push user id in likes array and set isLiked to true
+      await post.updateOne({ $push: { likes: req.user._id } }); //push user id in likes array
+      await post.updateOne({ $set: { isLiked: true } }); //set isLiked to true
+
       return res.status(200).json({
         success: true,
         message: "Post liked successfully",
@@ -248,6 +240,7 @@ router.put("/api/like-post/:id", userAuth, async (req, res) => {
       });
     } else {
       await post.updateOne({ $pull: { likes: req.user._id } });
+      await post.updateOne({ $set: { isLiked: false } });
       return res.status(200).json({
         success: true,
         message: "Post unliked successfully",
@@ -294,17 +287,17 @@ router.put("/api/comment-post/:id", userAuth, async (req, res) => {
   }
 });
 
-
-
 //to update posts
 
-router.put("/api/update-post/:id", userAuth, 
- uploadPostsImage.fields([
+router.put(
+  "/api/update-post/:id",
+  userAuth,
+  uploadPostsImage.fields([
     { name: "img", maxCount: 1 },
     { name: "vid", maxCount: 1 },
   ]),
-async (req, res) => {
-  const { body } = req;
+  async (req, res) => {
+    const { body } = req;
     let image = "";
     let video = "";
     let imagePath,
@@ -431,4 +424,3 @@ async (req, res) => {
 
 
 module.exports = router;
-

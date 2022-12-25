@@ -9,7 +9,6 @@ import {
 } from "react-share";
 function MyVerticallyCenteredModal(props) {
   let feed = props.feed;
-  console.log(feed);
   return (
     <Modal
       {...props}
