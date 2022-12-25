@@ -1,6 +1,6 @@
 import axios from "axios";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import "../css/feeds.css";
@@ -38,41 +38,36 @@ const Feeds = ({ feed }) => {
   time = showTime;
 
   const [likes, setLike] = useState(feed.likes.length);
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(feed.isLiked);
   const [post, setPost] = useState([]);
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState(feed.comments.length);
 
-  // get current user id
-  const currentUser = localStorage.getItem("id");
-
-  useEffect(() => {
-    setIsLiked(feed.likes.includes(currentUser));
-  }, [currentUser, feed.likes]);
-
-  console.log(isLiked);
-  console.log(feed.likes.includes(currentUser));
+  // like handler to like and unlike post and update likes count and isLiked state
 
   const likeHandler = async () => {
     try {
       await axios
-        .put(
-          "http://localhost:5000/posts/api/like-post/" + feed._id,
-          feed.user,
-          {
-            headers: {
-              Authorization: localStorage.getItem("token"),
-            },
-          }
-        )
+
+        .put("http://localhost:5000/posts/api/like-post/" + feed._id, null, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        })
         .then((res) => {
           let post = res.data.post;
-          setPost(post);
-          console.log(post);
+          // setLike(post.likes.length);
+          // setIsLiked(post.isLiked);
+          // console.log(post);
         });
     } catch (err) {}
-    setLike(isLiked ? likes - 1 : likes + 1);
-    setIsLiked(!isLiked);
+    if (isLiked) {
+      setLike(likes - 1);
+      setIsLiked(false);
+    } else {
+      setLike(likes + 1);
+      setIsLiked(true);
+    }
   };
 
   // comment handler
@@ -87,16 +82,30 @@ const Feeds = ({ feed }) => {
             Authorization: localStorage.getItem("token"),
           },
         })
-        .then((res) => {
-          let post = res.data.post;
-          setPost(post);
-          console.log(post);
-          setCommentText("");
-        });
-    } catch (err) {}
+        .then(
+          (res) => {
+            let post = res.data.post;
+            setPost(post);
+            setCommentText("");
+          },
+          [commentText, setCommentText]
+        );
+    } catch (err) {
+      console.log(err);
+    }
     setComments(comments + 1);
   };
-  console.log(feed.comments);
+
+  //       .then((res) => {
+  //         let post = res.data.post;
+  //         setPost(post);
+  //         setCommentText("");
+  //       });
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  //   setComments(comments + 1);
+  // };
   return (
     <>
       <div className="row d-flex align-items-center justify-content-center mb-2">
@@ -128,7 +137,6 @@ const Feeds = ({ feed }) => {
                     id="dropdownUser1"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
-
                   >
                     <i class="fad fa-ellipsis-h"></i>
                   </a>
@@ -140,8 +148,8 @@ const Feeds = ({ feed }) => {
                       <Link
                         className="dropdown-item"
                         aria-current="page"
-                         to={`/editpost/${feed._id}`}
-                       // to={"/editpost"}
+                        to={`/editpost/${feed._id}`}
+                        // to={"/editpost"}
                       >
                         Edit
                       </Link>
@@ -155,8 +163,6 @@ const Feeds = ({ feed }) => {
                         Delete
                       </Link>
                     </li>
-                   
-                    
                   </ul>
                 </div>
               </div>
@@ -180,7 +186,10 @@ const Feeds = ({ feed }) => {
               <div className="d-flex flex-wrap justify-content-between align-items-center ms-2 me-2 ">
                 <div className=" align-items-center">
                   <span>
-                    {isLiked ? (
+                    {isLiked ||
+                    feed.likes.includes(
+                      JSON.parse(localStorage.getItem("userInfo")).user._id
+                    ) ? (
                       <Link
                         className="btn btn-border-none text-primary bg-light"
                         onClick={() => {
@@ -202,6 +211,7 @@ const Feeds = ({ feed }) => {
                     )}
                   </span>
                 </div>
+
                 <div className=" ">
                   <span>
                     <Link
