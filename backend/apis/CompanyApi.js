@@ -228,32 +228,7 @@ router.put(
     try {
       let { name } = req.params;
       let { body } = req;
-
-      // let file = req.files.registration_card[0];
-      // let file1 = req.files.pan_card[0];
-      // let file2 = req.files.citizenship_front[0];
-      // let file3 = req.files.citizenship_back[0];
-
-      // if (file === undefined || file === null) {
-      //   filename = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
-      // } else {
-      //   filename = DOMAIN + "uploads/company-images/" + file.filename;
-      // }
-      // if (file1 === undefined || file1 === null) {
-      //   filename1 = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
-      // } else {
-      //   filename1 = DOMAIN + "uploads/company-images/" + file1.filename;
-      // }
-      // if (file2 === undefined || file2 === null) {
-      //   filename2 = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
-      // } else {
-      //   filename2 = DOMAIN + "uploads/company-images/" + file2.filename;
-      // }
-      // if (file3 === undefined || file3 === null) {
-      //   filename3 = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
-      // } else {
-      //   filename3 = DOMAIN + "uploads/company-images/" + file3.filename;
-      // }
+      console.log(req.files.registration_card);
 
       let company = await Company.findOne({ name: name, user: req.user._id });
       if (!company) {
@@ -280,12 +255,8 @@ router.put(
           company,
         });
       } else {
-        if (
-          req.files.registration_card[0] !== null ||
-          req.files.registration_card[0] !== undefined
-        ) {
+        if (req.files.registration_card) {
           let file = req.files.registration_card[0];
-
           filename = DOMAIN + "uploads/company-images/" + file.filename;
 
           company = await Company.findOneAndUpdate(
@@ -301,17 +272,68 @@ router.put(
             message: "Company updated successfully",
             company,
           });
-        } else if (
-          req.files.pan_card[0] !== null ||
-          req.files.pan_card[0] !== undefined
-        ) {
+        } else if (req.files.pan_card) {
+          let file = req.files.pan_card[0];
+          filename = DOMAIN + "uploads/company-images/" + file.filename;
+
+          company = await Company.findOneAndUpdate(
+            { name: name, user: req.user._id },
+            {
+              pan_card: filename,
+              content: body.content,
+            },
+            { new: true }
+          );
+          return res.status(200).json({
+            success: true,
+            message: "Company updated successfully",
+            company,
+          });
+        } else if (req.files.citizenship_front) {
+          let file = req.files.citizenship_front[0];
+          filename = DOMAIN + "uploads/company-images/" + file.filename;
+          company = await Company.findOneAndUpdate(
+            { name: name, user: req.user._id },
+            {
+              citizenship_front: filename,
+              content: body.content,
+            },
+            { new: true }
+          );
+          return res.status(200).json({
+            success: true,
+            message: "Company updated successfully",
+            company,
+          });
+        } else if (req.files.citizenship_back) {
+          let file = req.files.citizenship_back[0];
+
+          filename = DOMAIN + "uploads/company-images/" + file.filename;
+
+          company = await Company.findOneAndUpdate(
+            { name: name, user: req.user._id },
+            {
+              citizenship_back: filename,
+              content: body.content,
+            },
+            { new: true }
+          );
+          return res.status(200).json({
+            success: true,
+            message: "Company updated successfully",
+            company,
+          });
+        } else if (req.files.registration_card && req.files.pan_card) {
+          let file = req.files.registration_card[0];
           let file1 = req.files.pan_card[0];
 
+          filename = DOMAIN + "uploads/company-images/" + file.filename;
           filename1 = DOMAIN + "uploads/company-images/" + file1.filename;
 
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
+              registration_card: filename,
               pan_card: filename1,
               content: body.content,
             },
@@ -322,17 +344,130 @@ router.put(
             message: "Company updated successfully",
             company,
           });
-        } else if (
-          req.files.citizenship_front[0] !== null ||
-          req.files.citizenship_front[0] !== undefined
-        ) {
+        } else if (req.files.registration_card && req.files.citizenship_front) {
+          let file = req.files.registration_card[0];
+          let file1 = req.files.citizenship_front[0];
+
+          filename = DOMAIN + "uploads/company-images/" + file.filename;
+          filename1 = DOMAIN + "uploads/company-images/" + file1.filename;
+
+          company = await Company.findOneAndUpdate(
+            { name: name, user: req.user._id },
+            {
+              registration_card: filename,
+              citizenship_front: filename1,
+              content: body.content,
+            },
+            { new: true }
+          );
+          return res.status(200).json({
+            success: true,
+            message: "Company updated successfully",
+            company,
+          });
+        }
+        else if (req.files.registration_card && req.files.citizenship_back) {
+          let file = req.files.registration_card[0];
+          let file1 = req.files.citizenship_back[0];
+
+          filename = DOMAIN + "uploads/company-images/" + file.filename;
+          filename1 = DOMAIN + "uploads/company-images/" + file1.filename;
+
+          company = await Company.findOneAndUpdate(
+            { name: name, user: req.user._id },
+            {
+              registration_card: filename,
+              citizenship_back: filename1,
+              content: body.content,
+            },
+            { new: true }
+          );
+          return res.status(200).json({
+            success: true,
+            message: "Company updated successfully",
+            company,
+          });
+        }
+        else if (req.files.pan_card && req.files.citizenship_front) {
+          let file = req.files.pan_card[0];
+          let file1 = req.files.citizenship_front[0];
+
+          filename = DOMAIN + "uploads/company-images/" + file.filename;
+          filename1 = DOMAIN + "uploads/company-images/" + file1.filename;
+
+          company = await Company.findOneAndUpdate(
+            { name: name, user: req.user._id },
+            {
+              pan_card: filename,
+              citizenship_front: filename1,
+              content: body.content,
+            },
+            { new: true }
+          );
+          return res.status(200).json({
+            success: true,
+            message: "Company updated successfully",
+            company,
+          });
+        }
+        else if (req.files.pan_card && req.files.citizenship_back) {
+          let file = req.files.pan_card[0];
+          let file1 = req.files.citizenship_back[0];
+
+          filename = DOMAIN + "uploads/company-images/" + file.filename;
+          filename1 = DOMAIN + "uploads/company-images/" + file1.filename;
+
+          company = await Company.findOneAndUpdate(
+            { name: name, user: req.user._id },
+            {
+              pan_card: filename,
+              citizenship_back: filename1,
+              content: body.content,
+            },
+            { new: true }
+          );
+          return res.status(200).json({
+            success: true,
+            message: "Company updated successfully",
+            company,
+          });
+        }
+        else if (req.files.citizenship_front && req.files.citizenship_back) {
+          let file = req.files.citizenship_front[0];
+          let file1 = req.files.citizenship_back[0];
+
+          filename = DOMAIN + "uploads/company-images/" + file.filename;
+          filename1 = DOMAIN + "uploads/company-images/" + file1.filename;
+
+          company = await Company.findOneAndUpdate(
+            { name: name, user: req.user._id },
+            {
+              citizenship_front: filename,
+              citizenship_back: filename1,
+              content: body.content,
+            },
+            { new: true }
+          );
+          return res.status(200).json({
+            success: true,
+            message: "Company updated successfully",
+            company,
+          });
+        }
+        else if (req.files.registration_card && req.files.pan_card && req.files.citizenship_front) {
+          let file = req.files.registration_card[0];
+          let file1 = req.files.pan_card[0];
           let file2 = req.files.citizenship_front[0];
 
+          filename = DOMAIN + "uploads/company-images/" + file.filename;
+          filename1 = DOMAIN + "uploads/company-images/" + file1.filename;
           filename2 = DOMAIN + "uploads/company-images/" + file2.filename;
 
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
+              registration_card: filename,
+              pan_card: filename1,
               citizenship_front: filename2,
               content: body.content,
             },
@@ -343,18 +478,22 @@ router.put(
             message: "Company updated successfully",
             company,
           });
-        } else if (
-          req.files.citizenship_back[0] !== null ||
-          req.files.citizenship_back[0] !== undefined
-        ) {
-          let file3 = req.files.citizenship_back[0];
+        }
+        else if (req.files.registration_card && req.files.pan_card && req.files.citizenship_back) {
+          let file = req.files.registration_card[0];
+          let file1 = req.files.pan_card[0];
+          let file2 = req.files.citizenship_back[0];
 
-          filename3 = DOMAIN + "uploads/company-images/" + file3.filename;
+          filename = DOMAIN + "uploads/company-images/" + file.filename;
+          filename1 = DOMAIN + "uploads/company-images/" + file1.filename;
+          filename2 = DOMAIN + "uploads/company-images/" + file2.filename;
 
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
-              citizenship_back: filename3,
+              registration_card: filename,
+              pan_card: filename1,
+              citizenship_back: filename2,
               content: body.content,
             },
             { new: true }
@@ -364,7 +503,58 @@ router.put(
             message: "Company updated successfully",
             company,
           });
-        } else {
+        }
+        else if (req.files.registration_card && req.files.citizenship_front && req.files.citizenship_back) {
+          let file = req.files.registration_card[0];
+          let file1 = req.files.citizenship_front[0];
+          let file2 = req.files.citizenship_back[0];
+
+          filename = DOMAIN + "uploads/company-images/" + file.filename;
+          filename1 = DOMAIN + "uploads/company-images/" + file1.filename;
+          filename2 = DOMAIN + "uploads/company-images/" + file2.filename;
+
+          company = await Company.findOneAndUpdate(
+            { name: name, user: req.user._id },
+            {
+              registration_card: filename,
+              citizenship_front: filename1,
+              citizenship_back: filename2,
+              content: body.content,
+            },
+            { new: true }
+          );
+          return res.status(200).json({
+            success: true,
+            message: "Company updated successfully",
+            company,
+          });
+        }
+        else if (req.files.pan_card && req.files.citizenship_front && req.files.citizenship_back) {
+          let file = req.files.pan_card[0];
+          let file1 = req.files.citizenship_front[0];
+          let file2 = req.files.citizenship_back[0];
+
+          filename = DOMAIN + "uploads/company-images/" + file.filename;
+          filename1 = DOMAIN + "uploads/company-images/" + file1.filename;
+          filename2 = DOMAIN + "uploads/company-images/" + file2.filename;
+
+          company = await Company.findOneAndUpdate(
+            { name: name, user: req.user._id },
+            {
+              pan_card: filename,
+              citizenship_front: filename1,
+              citizenship_back: filename2,
+              content: body.content,
+            },
+            { new: true }
+          );
+          return res.status(200).json({
+            success: true,
+            message: "Company updated successfully",
+            company,
+          });
+        }
+        else {
           let file = req.files.registration_card[0];
           let file1 = req.files.pan_card[0];
           let file2 = req.files.citizenship_front[0];
@@ -392,25 +582,6 @@ router.put(
           });
         }
       }
-
-      // company = await Company.findOneAndUpdate(
-      //   { name: name, user: req.user._id },
-      //   {
-      //     registration_card: filename,
-      //     pan_card: filename1,
-      //     citizenship_front: filename2,
-      //     citizenship_back: filename3,
-
-      //     $set: body,
-      //   },
-      //   { new: true }
-      // );
-
-      // res.status(200).json({
-      //   success: true,
-      //   message: "Video uploaded successfully",
-      //   company,
-      // });
     } catch (error) {
       console.log(error);
       res.status(500).json({
