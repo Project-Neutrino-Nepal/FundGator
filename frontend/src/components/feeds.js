@@ -10,6 +10,13 @@ import EditPost from "./Editpostcard";
 const Feeds = ({ feed }) => {
   const [modalShow, setModalShow] = React.useState(false);
   const [show, setShow] = useState(false);
+  const [userId, setUserId] = useState("");
+
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
 
   let time = new Date(feed.date).toLocaleDateString();
   // calculate min difference
@@ -49,12 +56,19 @@ const Feeds = ({ feed }) => {
   // get current user id
   const currentUser = localStorage.getItem("id");
 
-  useEffect(() => {
-    setIsLiked(feed.likes.includes(currentUser));
-  }, [currentUser, feed.likes]);
+  const getUser = async () => {
+    await axios
+      .get("http://localhost:5000/profile/api/my-profile", config)
+      .then((res) => {
+        let program = res.data.profile;
+        setUserId(program.user);
+      });
+  };
 
-  console.log(isLiked);
-  console.log(feed.likes.includes(currentUser));
+  useEffect(() => {
+    getUser();
+    setIsLiked(feed.likes.includes(currentUser));
+  }, [currentUser, feed.likes, getUser]);
 
   const likeHandler = async () => {
     try {
@@ -99,7 +113,6 @@ const Feeds = ({ feed }) => {
     } catch (err) {}
     setComments(comments + 1);
   };
-  console.log(feed.comments);
 
   // const handleClick = () => {
   //   setShow(!show);
@@ -129,21 +142,22 @@ const Feeds = ({ feed }) => {
               <div className="d-flex flex-row mt-1 ellipsis">
                 <small className="me-2">{time} &nbsp;</small>
 
-                <div className="dropdown">
-                  <a
-                    href="#"
-                    className="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                    id="dropdownUser1"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <BsThreeDots size={20} color="#111" />
-                  </a>
-                  <ul
-                    className="dropdown-menu dropdown-menu-dark text-small shadow"
-                    aria-labelledby="dropdownUser1"
-                  >
-                    {/* <li
+                {userId === feed.user && (
+                  <div className="dropdown">
+                    <a
+                      href="#"
+                      className="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                      id="dropdownUser1"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <BsThreeDots size={20} color="#111" />
+                    </a>
+                    <ul
+                      className="dropdown-menu dropdown-menu-dark text-small shadow"
+                      aria-labelledby="dropdownUser1"
+                    >
+                      {/* <li
                       className="dropdown-item"
                       aria-current="page"
                       data-bs-toggle="modal"
@@ -154,30 +168,31 @@ const Feeds = ({ feed }) => {
                       Edit                     
                     
                     </li> */}
-                    <li
-                      className="dropdown-item"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => setShow(true)}
-                    >
-                      Edit
-                      <EditPost
-                        show={show}
-                        id={feed._id}
-                        onHide={() => setShow(false)}
-                      />
-                    </li>
-                    
-                    <li>
-                      <Link
+                      <li
                         className="dropdown-item"
-                        aria-current="page"
-                        to="deletepost"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setShow(true)}
                       >
-                        Delete
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
+                        Edit
+                        <EditPost
+                          show={show}
+                          id={feed._id}
+                          onHide={() => setModalShow(false)}
+                        />
+                      </li>
+
+                      <li>
+                        <Link
+                          className="dropdown-item"
+                          aria-current="page"
+                          to="deletepost"
+                        >
+                          Delete
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                )}
 
                 {/* <div className="info">
                 <div className="option">

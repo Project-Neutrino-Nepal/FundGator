@@ -68,7 +68,8 @@ const Homepage = () => {
         setName(program.legal_name);
         setPreview({ ...image, preview: program.avatar });
       });
-  });
+  }
+  ,[config, image]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -109,6 +110,7 @@ const Homepage = () => {
       axios
         .get("http://localhost:5000/posts/api/get-all-posts", config)
         .then((res) => {
+          console.log(res?.data?.posts)
           setFeeds(res.data.posts);
         });
     } catch (err) {
