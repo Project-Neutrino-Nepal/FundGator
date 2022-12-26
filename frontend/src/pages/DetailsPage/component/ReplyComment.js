@@ -1,12 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import Wrapper from "../wrapper/SingleComment";
-import { BsThreeDots } from "react-icons/bs";
-import ReplyComment from "./ReplyComment";
 
-const SingleComment = ({ item, profile }) => {
+import Wrapper from "../wrapper/SingleComment";
+
+import { BsThreeDots } from "react-icons/bs";
+
+const ReplyComment = ({ item }) => {
   const [show, setShow] = useState(false);
   const pa = useRef(null);
 
@@ -15,11 +14,10 @@ const SingleComment = ({ item, profile }) => {
       Authorization: localStorage.getItem("token"),
     },
   };
+
   const [user, setuser] = useState({});
   const [vreply, setreply] = useState("");
   const [drop, setdrop] = useState(false);
-
-  const [allreplies, setallreplies] = useState(false);
 
   useEffect(() => {
     axios
@@ -44,7 +42,7 @@ const SingleComment = ({ item, profile }) => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper className="ms-4">
       <div className="info">
         <div className="user-img">
           <img
@@ -70,7 +68,7 @@ const SingleComment = ({ item, profile }) => {
       <div className="comment">
         <p>{item.question}</p>
       </div>
-      <p className="fw-bold"  onClick={() => replytouser(user.name)} role="button">
+      <p onClick={() => replytouser(user.name)} role="button">
         Reply
       </p>
       <div className={drop ? "reply-input" : "d-none"}>
@@ -100,7 +98,6 @@ const SingleComment = ({ item, profile }) => {
           >
             cancel
           </button>
-
           <button
             className="btn border-0 rounded-pill bg-black bg-opacity-10 fw-bold"
             onClick={onreplysubmit}
@@ -109,21 +106,8 @@ const SingleComment = ({ item, profile }) => {
           </button>
         </div>
       </div>
-      <span
-        className="ms-1 text-primary  "
-        role="button"
-        onClick={() => setallreplies((prev) => !prev)}
-      >
-        {!allreplies ? "view all 10 Replies" : "show less"}
-      </span>
-
-      <div className={allreplies ? "" : "d-none"}>
-        {[...Array(8)].map((value) => {
-          return <ReplyComment item={item} />;
-        })}
-      </div>
     </Wrapper>
   );
 };
 
-export default SingleComment;
+export default ReplyComment;
