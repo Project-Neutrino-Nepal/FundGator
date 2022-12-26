@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   margin-top: 20px;
+
   .info {
     display: flex;
     justify-content: space-between;
@@ -95,6 +96,20 @@ const Wrapper = styled.div`
       background-color: #f5f5f5;
       padding-top: 5px;
       padding-inline: 5px;
+    }
+  }
+
+  & > .reply-input {
+    & > .d-flex {
+      & > input:first-letter {
+        color: blue;
+      }
+
+      & > input{
+          word-break: break-all;
+
+      }
+      
     }
   }
 `;
