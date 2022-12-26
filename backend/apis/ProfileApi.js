@@ -33,25 +33,44 @@ router.put(
       }
 
       let file = req.file;
-      if (file === undefined || file === null) {
-        filename = DOMAIN + "uploads/assets/" + "default_userProfile.png";
+      //  if file is not uploaded then dont update the avatar
+      if (file === null) {
+        const updatedProfile = await Profile.findOneAndUpdate(
+          { user: req.user._id },
+          {
+            ...body,
+          },
+          { new: true }
+        );
+
+        return res.status(200).json({
+          success: true,
+          message: "Profile updated successfully",
+          data: updatedProfile,
+        });
+      } else if (file === undefined) {
+        return res.status(400).json({
+          success: true,
+          message: "Profile image format is not supported",
+          data: updatedProfile,
+        });
       } else {
         filename = DOMAIN + "uploads/profile-images/" + file.filename;
-      }
-      const updatedProfile = await Profile.findOneAndUpdate(
-        { user: req.user._id },
-        {
-          ...body,
-          avatar: filename,
-        },
-        { new: true }
-      );
+        const updatedProfile = await Profile.findOneAndUpdate(
+          { user: req.user._id },
+          {
+            ...body,
+            avatar: filename,
+          },
+          { new: true }
+        );
 
-      res.status(200).json({
-        success: true,
-        message: "Profile updated successfully",
-        data: updatedProfile,
-      });
+        return res.status(200).json({
+          success: true,
+          message: "Profile updated successfully",
+          data: updatedProfile,
+        });
+      }
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -235,7 +254,7 @@ router.get("/api/get-profile/:id", userAuth, async (req, res) => {
         message: "User not found.",
       });
     }
-    let profile = await Profile.findOne({ user: req.params.id })
+    let profile = await Profile.findOne({ user: req.params.id });
     if (!profile) {
       return res.status(400).json({
         success: false,
@@ -255,7 +274,6 @@ router.get("/api/get-profile/:id", userAuth, async (req, res) => {
     });
   }
 });
-
 
 /**
  * @description To Get or Search All users

@@ -59,6 +59,7 @@ const Details = () => {
   const [tags, setTags] = useState([]);
   const [ID, setID] = useState("");
   const [investors, setInvestors] = useState([]);
+  const [isInvested, setIsInvested] = useState(false);
 
   const config = {
     headers: {
@@ -84,6 +85,13 @@ const Details = () => {
         setStatus(company.status);
         setID(company._id);
         setInvestors(company.investors);
+        if (
+          company.investors.includes(
+            JSON.parse(localStorage.getItem("userInfo")).user._id
+          )
+        ) {
+          setIsInvested(true);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -103,7 +111,6 @@ const Details = () => {
         setWebsite(reasons.companylink);
         setFund_goal(reasons.amount);
         setTags(reasons.tag);
-        console.log(reasons);
       })
       .catch((err) => {
         console.log(err);
@@ -319,21 +326,41 @@ const Details = () => {
               />
             </div>
           </div>
-          <button
-            className="btn-invest"
-            onClick={() =>
-              amount < 1000
-                ? toast.info("Minimum amount to invest is Rs.1000")
-                : checkout.show({
-                    amount: amount * 100,
-                    productIdentity: id,
-                    productName: name,
-                    productUrl: "http://localhost:3000/detail/" + id,
-                  })
-            }
-          >
-            Invest
-          </button>
+
+          {isInvested ? (
+            <button
+              className="btn-invest"
+              onClick={() =>
+                amount > 200
+                  ? toast.info("Minimum amount to invest is Rs.1000")
+                  : checkout.show({
+                      amount: amount * 100,
+                      productIdentity: id,
+                      productName: name,
+                      productUrl: "http://localhost:3000/detail/" + id,
+                    })
+              }
+            >
+              Invest More
+            </button>
+          ) : (
+            <button
+              className="btn-invest"
+              onClick={() =>
+                amount > 200
+                  ? toast.info("Minimum amount to invest is Rs.1000")
+                  : checkout.show({
+                      amount: amount * 100,
+                      productIdentity: id,
+                      productName: name,
+                      productUrl: "http://localhost:3000/detail/" + id,
+                    })
+              }
+            >
+              Invest
+            </button>
+          )}
+
           <button
             className="btn-bookmark"
             onClick={() => {

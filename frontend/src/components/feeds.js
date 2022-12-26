@@ -1,12 +1,12 @@
 import axios from "axios";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
+import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import "../css/feeds.css";
-import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal.js";
-import { BsThreeDots } from "react-icons/bs";
 import EditPost from "./Editpostcard";
+import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal.js";
 const Feeds = ({ feed }) => {
   const [modalShow, setModalShow] = React.useState(false);
   const [show, setShow] = useState(false);
@@ -48,7 +48,7 @@ const Feeds = ({ feed }) => {
   time = showTime;
 
   const [likes, setLike] = useState(feed.likes.length);
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(feed.isLiked);
   const [post, setPost] = useState([]);
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState(feed.comments.length);
@@ -69,27 +69,31 @@ const Feeds = ({ feed }) => {
     getUser();
     setIsLiked(feed.likes.includes(currentUser));
   }, [currentUser, feed.likes, getUser]);
+  // like handler to like and unlike post and update likes count and isLiked state
 
   const likeHandler = async () => {
     try {
       await axios
-        .put(
-          "http://localhost:5000/posts/api/like-post/" + feed._id,
-          feed.user,
-          {
-            headers: {
-              Authorization: localStorage.getItem("token"),
-            },
-          }
-        )
+
+        .put("http://localhost:5000/posts/api/like-post/" + feed._id, null, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        })
         .then((res) => {
           let post = res.data.post;
-          setPost(post);
-          console.log(post);
+          // setLike(post.likes.length);
+          // setIsLiked(post.isLiked);
+          // console.log(post);
         });
     } catch (err) {}
-    setLike(isLiked ? likes - 1 : likes + 1);
-    setIsLiked(!isLiked);
+    if (isLiked) {
+      setLike(likes - 1);
+      setIsLiked(false);
+    } else {
+      setLike(likes + 1);
+      setIsLiked(true);
+    }
   };
 
   // comment handler
@@ -104,20 +108,21 @@ const Feeds = ({ feed }) => {
             Authorization: localStorage.getItem("token"),
           },
         })
-        .then((res) => {
-          let post = res.data.post;
-          setPost(post);
-          console.log(post);
-          setCommentText("");
-        });
-    } catch (err) {}
+        .then(
+          (res) => {
+            let post = res.data.post;
+            setPost(post);
+            setCommentText("");
+          },
+          [commentText, setCommentText]
+        );
+    } catch (err) {
+      console.log(err);
+    }
     setComments(comments + 1);
   };
 
-  // const handleClick = () => {
-  //   setShow(!show);
-  //   <EditPost id={feed._id} />
-  // };
+  
   return (
     <>
       <div className="row d-flex align-items-center justify-content-center mb-2">
@@ -136,7 +141,7 @@ const Feeds = ({ feed }) => {
                   <span className="font-weight-bold">
                     {feed.profile.legal_name}
                   </span>
-                  <small className="text-primary">Collegues</small>
+                  <small className="text-primary">{feed.profile.skills}</small>
                 </div>
               </div>
               <div className="d-flex flex-row mt-1 ellipsis">
@@ -157,18 +162,22 @@ const Feeds = ({ feed }) => {
                       className="dropdown-menu dropdown-menu-dark text-small shadow"
                       aria-labelledby="dropdownUser1"
                     >
-                      {/* <li
+                     
+                    <li
                       className="dropdown-item"
-                      aria-current="page"
-                      data-bs-toggle="modal"
-                      data-bs-target="#exampleModal2"
-                                           
-
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setShow(true)}
                     >
-                      Edit                     
-                    
-                    </li> */}
-                      <li
+                      Edit
+                      <EditPost
+                        show={show}
+                        id={feed._id}
+                        onHide={() => setShow(false)}
+                      />
+                    </li>
+
+                    <li>
+                      <Link
                         className="dropdown-item"
                         style={{ cursor: "pointer" }}
                         onClick={() => setShow(true)}
@@ -179,6 +188,7 @@ const Feeds = ({ feed }) => {
                           id={feed._id}
                           onHide={() => setModalShow(false)}
                         />
+                        </Link>
                       </li>
 
                       <li>
@@ -194,24 +204,16 @@ const Feeds = ({ feed }) => {
                   </div>
                 )}
 
-                {/* <div className="info">
-                <div className="option">
-                  <BsThreeDots
-                    className="icon"
-                    onClick={() => setShow((show) => !show)}
-                  />
-
-                  <div className={show ? "options" : "options active"}>
-                    <span>edit</span>
-                    <span>delete</span>
-                  </div>
-                </div>
-                </div> */}
+                
               </div>
             </div>
             <div className="p-2 ">
-              <p className="">
-                {feed.text}
+              <p align="justify">
+                {feed.text
+                  ? feed.text.length > 300
+                    ? feed.text.substring(0, 300) + " ...... Read more"
+                    : feed.text
+                  : ""}
                 <span className="btn btn-border-0 text-primary "></span>
               </p>
             </div>
@@ -228,7 +230,10 @@ const Feeds = ({ feed }) => {
               <div className="d-flex flex-wrap justify-content-between align-items-center ms-2 me-2 ">
                 <div className=" align-items-center">
                   <span>
-                    {isLiked ? (
+                    {isLiked ||
+                    feed.likes.includes(
+                      JSON.parse(localStorage.getItem("userInfo")).user._id
+                    ) ? (
                       <Link
                         className="btn btn-border-none text-primary bg-light"
                         onClick={() => {
@@ -250,6 +255,7 @@ const Feeds = ({ feed }) => {
                     )}
                   </span>
                 </div>
+
                 <div className=" ">
                   <span>
                     <Link

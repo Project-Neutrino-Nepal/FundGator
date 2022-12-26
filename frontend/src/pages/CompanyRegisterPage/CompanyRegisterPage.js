@@ -19,7 +19,7 @@ const CompanyRegisterPage = () => {
     youtube: "",
     blog: "",
     amount: "",
-    category: ["ff"],
+    category: "",
     tag: [],
     reason0: "",
     reason1: "",
@@ -91,8 +91,7 @@ const CompanyRegisterPage = () => {
       authorization: localStorage.getItem("token"),
     },
   };
-  console.log(values.category);
-  console.log(values.tag);
+  
 
   const data = {
     category: values.category,
@@ -269,7 +268,6 @@ const CompanyRegisterPage = () => {
 
           const formData = new FormData();
           formData.append("company_video", videouploads);
-          console.log(formData);
 
           try {
             axios

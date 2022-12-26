@@ -89,10 +89,14 @@ const CompanySchema = new Schema(
         ref: "questions",
       },
     ],
-  
+    feedback: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "feedback",
+      },
+    ],
   },
 
- 
   { timestamps: true }
 );
 

@@ -43,7 +43,8 @@ function Profile() {
   const [address, setAddress] = useState("");
 
   const [image, setPreview] = useState({
-    preview: "https://github.com/mdo.png",
+    preview:
+      "https://www.grovenetworks.com/images/easyblog_shared/July_2018/7-4-18/totw_network_profile_400.jpg",
     file: "",
   });
 
