@@ -140,7 +140,13 @@ router.put(
       let citizenship_front = body.citizenship_front;
       let citizenship_back = body.citizenship_back;
       let content = body.content;
-       console.log(registration_card,pan_card,citizenship_front,citizenship_back,content);
+      console.log(
+        registration_card,
+        pan_card,
+        citizenship_front,
+        citizenship_back,
+        content
+      );
       let file = req.files.registration_card[0];
       let file1 = req.files.pan_card[0];
       let file2 = req.files.citizenship_front[0];
@@ -175,102 +181,6 @@ router.put(
         });
       }
 
-      // if (
-      //   registration_card &&
-      //   pan_card &&
-      //   citizenship_front &&
-      //   citizenship_back &&
-      //   content
-      // ) {
-      //   company = await Company.findOneAndUpdate(
-      //     { name: name, user: req.user._id },
-      //     {
-      //       registration_card: filename,
-      //       pan_card: filename1,
-      //       citizenship_front: filename2,
-      //       citizenship_back: filename3,
-      //       content: content,
-      //     },
-      //     { new: true }
-      //   );
-      //   return res.status(200).json({
-      //     success: true,
-      //     message: "company created successfully",
-      //     company,
-      //   });
-      // } else if (
-      //   !registration_card &&
-      //   !pan_card &&
-      //   !citizenship_front &&
-      //   !citizenship_back
-      // ) {
-      //   company = await Company.findOneAndUpdate(
-      //     { name: name, user: req.user._id },
-      //     {
-      //       content: content,
-      //     },
-      //     { new: true }
-      //   );
-      //   return res.status(200).json({
-      //     success: true,
-      //     message: "company created successfully",
-      //     company,
-      //   });
-      // } else if (registration_card) {
-      //   company = await Company.findOneAndUpdate(
-      //     { name: name, user: req.user._id },
-      //     {
-      //       registration_card: filename,
-      //     },
-      //     { new: true }
-      //   );
-      //   return res.status(200).json({
-      //     success: true,
-      //     message: "company created successfully",
-      //     company,
-      //   });
-      // } else if (pan_card) {
-      //   company = await Company.findOneAndUpdate(
-      //     { name: name, user: req.user._id },
-      //     {
-      //       pan_card: filename1,
-      //     },
-      //     { new: true }
-      //   );
-      //   return res.status(200).json({
-      //     success: true,
-      //     message: "company created successfully",
-      //     company,
-      //   });
-      // } else if (citizenship_front) {
-      //   company = await Company.findOneAndUpdate(
-      //     { name: name, user: req.user._id },
-      //     {
-      //       citizenship_front: filename2,
-      //     },
-      //     { new: true }
-      //   );
-      //   return res.status(200).json({
-      //     success: true,
-      //     message: "company created successfully",
-      //     company,
-      //   });
-      // } else if (citizenship_back) {
-      //   company = await Company.findOneAndUpdate(
-      //     { name: name, user: req.user._id },
-      //     {
-      //       citizenship_back: filename3,
-      //     },
-      //     { new: true }
-      //   );
-      //   return res.status(200).json({
-      //     success: true,
-      //     message: "company created successfully",
-      //     company,
-      //   });
-      // }
-    
-
       company = await Company.findOneAndUpdate(
         { name: name, user: req.user._id },
         {
@@ -298,6 +208,219 @@ router.put(
     }
   }
 );
+
+/**
+ * @description To update add document pages in company
+ * @api /company/api/update-document/:name
+ * @access PRIVATE
+ * @type PUT
+ * */
+router.put(
+  "/api/update-document/:name",
+  userAuth,
+  uploadCompanyImage.fields([
+    { name: "registration_card", maxCount: 1 },
+    { name: "pan_card", maxCount: 1 },
+    { name: "citizenship_front", maxCount: 1 },
+    { name: "citizenship_back", maxCount: 1 },
+  ]),
+  async (req, res) => {
+    try {
+      let { name } = req.params;
+      let { body } = req;
+
+      // let file = req.files.registration_card[0];
+      // let file1 = req.files.pan_card[0];
+      // let file2 = req.files.citizenship_front[0];
+      // let file3 = req.files.citizenship_back[0];
+
+      // if (file === undefined || file === null) {
+      //   filename = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
+      // } else {
+      //   filename = DOMAIN + "uploads/company-images/" + file.filename;
+      // }
+      // if (file1 === undefined || file1 === null) {
+      //   filename1 = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
+      // } else {
+      //   filename1 = DOMAIN + "uploads/company-images/" + file1.filename;
+      // }
+      // if (file2 === undefined || file2 === null) {
+      //   filename2 = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
+      // } else {
+      //   filename2 = DOMAIN + "uploads/company-images/" + file2.filename;
+      // }
+      // if (file3 === undefined || file3 === null) {
+      //   filename3 = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
+      // } else {
+      //   filename3 = DOMAIN + "uploads/company-images/" + file3.filename;
+      // }
+
+      let company = await Company.findOne({ name: name, user: req.user._id });
+      if (!company) {
+        return res.status(400).json({
+          success: false,
+          message: "Company not found",
+        });
+      }
+
+      filesLength = JSON.stringify(req.files).length;
+
+      if (filesLength === 2) {
+        company = await Company.findOneAndUpdate(
+          { name: name, user: req.user._id },
+          {
+            content: body.content,
+          },
+          { new: true }
+        );
+
+        return res.status(200).json({
+          success: true,
+          message: "page updated successfully",
+          company,
+        });
+      } else {
+        if (
+          req.files.registration_card[0] !== null ||
+          req.files.registration_card[0] !== undefined
+        ) {
+          let file = req.files.registration_card[0];
+
+          filename = DOMAIN + "uploads/company-images/" + file.filename;
+
+          company = await Company.findOneAndUpdate(
+            { name: name, user: req.user._id },
+            {
+              registration_card: filename,
+              content: body.content,
+            },
+            { new: true }
+          );
+          return res.status(200).json({
+            success: true,
+            message: "Company updated successfully",
+            company,
+          });
+        } else if (
+          req.files.pan_card[0] !== null ||
+          req.files.pan_card[0] !== undefined
+        ) {
+          let file1 = req.files.pan_card[0];
+
+          filename1 = DOMAIN + "uploads/company-images/" + file1.filename;
+
+          company = await Company.findOneAndUpdate(
+            { name: name, user: req.user._id },
+            {
+              pan_card: filename1,
+              content: body.content,
+            },
+            { new: true }
+          );
+          return res.status(200).json({
+            success: true,
+            message: "Company updated successfully",
+            company,
+          });
+        } else if (
+          req.files.citizenship_front[0] !== null ||
+          req.files.citizenship_front[0] !== undefined
+        ) {
+          let file2 = req.files.citizenship_front[0];
+
+          filename2 = DOMAIN + "uploads/company-images/" + file2.filename;
+
+          company = await Company.findOneAndUpdate(
+            { name: name, user: req.user._id },
+            {
+              citizenship_front: filename2,
+              content: body.content,
+            },
+            { new: true }
+          );
+          return res.status(200).json({
+            success: true,
+            message: "Company updated successfully",
+            company,
+          });
+        } else if (
+          req.files.citizenship_back[0] !== null ||
+          req.files.citizenship_back[0] !== undefined
+        ) {
+          let file3 = req.files.citizenship_back[0];
+
+          filename3 = DOMAIN + "uploads/company-images/" + file3.filename;
+
+          company = await Company.findOneAndUpdate(
+            { name: name, user: req.user._id },
+            {
+              citizenship_back: filename3,
+              content: body.content,
+            },
+            { new: true }
+          );
+          return res.status(200).json({
+            success: true,
+            message: "Company updated successfully",
+            company,
+          });
+        } else {
+          let file = req.files.registration_card[0];
+          let file1 = req.files.pan_card[0];
+          let file2 = req.files.citizenship_front[0];
+          let file3 = req.files.citizenship_back[0];
+
+          filename = DOMAIN + "uploads/company-images/" + file.filename;
+          filename1 = DOMAIN + "uploads/company-images/" + file1.filename;
+          filename2 = DOMAIN + "uploads/company-images/" + file2.filename;
+          filename3 = DOMAIN + "uploads/company-images/" + file3.filename;
+          company = await Company.findOneAndUpdate(
+            { name: name, user: req.user._id },
+            {
+              registration_card: filename,
+              pan_card: filename1,
+              citizenship_front: filename2,
+              citizenship_back: filename3,
+              content: body.content,
+            },
+            { new: true }
+          );
+          return res.status(200).json({
+            success: true,
+            message: "Company updated successfully",
+            company,
+          });
+        }
+      }
+
+      // company = await Company.findOneAndUpdate(
+      //   { name: name, user: req.user._id },
+      //   {
+      //     registration_card: filename,
+      //     pan_card: filename1,
+      //     citizenship_front: filename2,
+      //     citizenship_back: filename3,
+
+      //     $set: body,
+      //   },
+      //   { new: true }
+      // );
+
+      // res.status(200).json({
+      //   success: true,
+      //   message: "Video uploaded successfully",
+      //   company,
+      // });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
+  }
+);
+
 /**
  * @description To update Company
  * @api /company/api/update-company
@@ -928,7 +1051,6 @@ router.get("/api/get-fund/", async (req, res) => {
     company.forEach((company) => {
       totalFund += company.fund_raised;
     });
-
     // get total amount from Reason Model
     let reason = await Reason.find();
     if (!reason) {
