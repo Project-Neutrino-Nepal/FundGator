@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Wrapper from "../wrapper/Story";
 import upload from "../../../assets/image/uploadpic.svg";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-const Story = ({ handleChange, imgpreview, vdpreview }) => {
+const Story = ({ handleChange,values, imgpreview, vdpreview }) => {
   const [image, setPreview] = useState(null);
   const [vpreview, setvPreview] = useState(null);
   const { id } = useParams();
@@ -41,6 +41,19 @@ const Story = ({ handleChange, imgpreview, vdpreview }) => {
     }
   };
 
+   // fetch data from company model
+   const[imageupload,setImageupload]=useState()
+   useEffect(() => {
+    axios
+      .get("http://localhost:5000/company/api/get-company/" + id, config)
+      .then((res) => {  
+        
+        let company = res.data.company;
+        setImageupload(company.image)
+         
+      });
+  }, []);
+
   const onuploadvid = (e) => {
     if (e.target.files && e.target.files[0]) {
       let file = e.target.files[0];
@@ -50,7 +63,6 @@ const Story = ({ handleChange, imgpreview, vdpreview }) => {
     }
   };
 
-  console.log(image);
 
   return (
     <Wrapper className="form-content">
@@ -69,7 +81,7 @@ const Story = ({ handleChange, imgpreview, vdpreview }) => {
           onChange={onuploadimg}
           accept="image/*"
         />
-        <img src={image} className="preview-img" alt="" />
+        <img src={imageupload} className="preview-img" alt="" />
       </label>
 
       <h5>Upload a 1-2 minute video</h5>
@@ -82,7 +94,7 @@ const Story = ({ handleChange, imgpreview, vdpreview }) => {
       <label htmlFor="video-file" className="vfile btn btn-primary">
         upload video
       </label>
-      {vpreview ? <video src={vpreview} controls></video> : null}
+      {vpreview ? <video src={vpreview} controls></video> : <video src={values.videoupload} controls></video>}
 
       <input
         type="file"

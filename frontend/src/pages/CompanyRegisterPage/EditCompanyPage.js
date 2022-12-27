@@ -61,7 +61,7 @@ const EditCompanyPage = () => {
     citizenship_front: "",
     citizenship_back: "",
   };
-
+ 
   const navigate = useNavigate();
 
   const [activeindex, setActive] = useState(1);
@@ -232,7 +232,7 @@ const EditCompanyPage = () => {
         console.log(formData);
         axios
           .put(
-            "http://localhost:5000/company/api/multipleimages/" +
+            "http://localhost:5000/company/api/update-document/" +
               formvalue.companyname,
             formData,
             config
@@ -361,6 +361,7 @@ const EditCompanyPage = () => {
             handleChange={fileChange}
             imgpreview={values.imageuploadpreview}
             vdpreview={values.videouploadpreview}
+            values={values}
           />
         </div>
         <div className={activeindex === 2 ? "form-child" : "d-none"}>

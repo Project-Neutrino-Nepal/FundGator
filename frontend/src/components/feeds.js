@@ -122,7 +122,6 @@ const Feeds = ({ feed }) => {
     setComments(comments + 1);
   };
 
-  
   return (
     <>
       <div className="row d-flex align-items-center justify-content-center mb-2">
@@ -162,6 +161,7 @@ const Feeds = ({ feed }) => {
                       className="dropdown-menu dropdown-menu-dark text-small shadow"
                       aria-labelledby="dropdownUser1"
                     >
+<<<<<<< HEAD
                      
                     <li
                       className="dropdown-item"
@@ -178,6 +178,9 @@ const Feeds = ({ feed }) => {
 
                     {/* <li>
                       <Link
+=======
+                      <li
+>>>>>>> db3e7b9cf37a20ca037f457314e05b0313de1d00
                         className="dropdown-item"
                         style={{ cursor: "pointer" }}
                         onClick={() => setShow(true)}
@@ -186,8 +189,22 @@ const Feeds = ({ feed }) => {
                         <EditPost
                           show={show}
                           id={feed._id}
-                          onHide={() => setModalShow(false)}
+                          onHide={() => setShow(false)}
                         />
+                      </li>
+
+                      <li>
+                        <Link
+                          className="dropdown-item"
+                          style={{ cursor: "pointer" }}
+                          onClick={() => setShow(true)}
+                        >
+                          Edit
+                          <EditPost
+                            show={show}
+                            id={feed._id}
+                            onHide={() => setModalShow(false)}
+                          />
                         </Link>
                       </li> */}
 
@@ -203,8 +220,6 @@ const Feeds = ({ feed }) => {
                     </ul>
                   </div>
                 )}
-
-                
               </div>
             </div>
             <div className="p-2 ">
@@ -217,7 +232,12 @@ const Feeds = ({ feed }) => {
                 <span className="btn btn-border-0 text-primary "></span>
               </p>
             </div>
-            <img src={feed.image} className="img-fluid" />
+            {feed.image ? (
+              <img src={feed.image} className="img-fluid" alt="" />
+            ) : (
+              <video src={feed.video} className="img-fluid" controls={true} />
+            )}
+
             <div className="p-1">
               <span
                 className="fs-6 ms-2 "

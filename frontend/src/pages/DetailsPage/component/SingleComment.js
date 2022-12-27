@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import moment from "moment";
 import { useParams } from "react-router-dom";
@@ -8,18 +8,20 @@ import { BsThreeDots } from "react-icons/bs";
 import { useMergeRefs } from "@chakra-ui/react";
 
 const SingleComment = ({ item, profile }) => {
-  
-  const [show,setShow] = useState(false);
-  
-  
- 
+  const [show, setShow] = useState(false);
+  const pa = useRef(null);
+
   const config = {
     headers: {
       Authorization: localStorage.getItem("token"),
     },
   };
   const [user, setuser] = useState({});
-  
+  const [vreply, setreply] = useState("");
+  const [drop, setdrop] = useState(false);
+
+  const [allreplies, setallreplies] = useState(false);
+
   useEffect(() => {
     axios
       .get(`http://localhost:5000/profile/api/get-profile/${item.user}`, config)
@@ -30,8 +32,17 @@ const SingleComment = ({ item, profile }) => {
       .catch((err) => {
         console.log(err);
       });
+    console.log(item);
   }, []);
 
+  const replytouser = (username) => {
+    setdrop((prev) => !prev);
+    setreply(`@${username}`);
+  };
+
+  const onreplysubmit = () => {
+    setdrop(false);
+  };
 
   return (
     <Wrapper>
