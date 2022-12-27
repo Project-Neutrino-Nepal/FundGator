@@ -68,6 +68,7 @@ const AskQuestion = () => {
 
         //console.log(res);
         setQuestions(data);
+        
         // console.log(filter);
       })
       .catch((err) => {
@@ -91,10 +92,7 @@ const AskQuestion = () => {
       </div>
 
       <section className="select-input">
-        <select name="" id="options">
-          <option value="popular">popular</option>
-          <option value="latest"> latest </option>
-        </select>
+        
         <div className="comment-list">
           {questions.map((item, index) => (
             <div key={index}>

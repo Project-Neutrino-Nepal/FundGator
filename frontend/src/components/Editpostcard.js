@@ -202,7 +202,7 @@ const EditPost = ({ id, show, onHide }) => {
               </label>
             </div>
             {/* <div className="d-none"> */}
-            <div >
+            <div  className="d-none">
               <input
                 
                 type="file"

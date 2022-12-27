@@ -176,7 +176,7 @@ const Feeds = ({ feed }) => {
                       />
                     </li>
 
-                    <li>
+                    {/* <li>
                       <Link
                         className="dropdown-item"
                         style={{ cursor: "pointer" }}
@@ -189,7 +189,7 @@ const Feeds = ({ feed }) => {
                           onHide={() => setModalShow(false)}
                         />
                         </Link>
-                      </li>
+                      </li> */}
 
                       <li>
                         <Link
