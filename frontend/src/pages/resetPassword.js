@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState } from "react";
-
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
@@ -10,8 +9,8 @@ function ResetPassword() {
   const [email, setEmail] = useState();
 
   const ResetPassword = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
       // stop the form from reloading the page
       const data = {
         email: email,

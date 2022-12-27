@@ -2,7 +2,7 @@ import React from "react";
 import Wrapper from "./wrapper/ContactPage";
 const ContactPage = () => {
   return (
-    <Wrapper className="  w-100 bg-white d-block d-lg-flex gap-5 justify-content-between px-3 ps-md-5 px-md-0 ">
+    <Wrapper className="  w-100 d-block d-lg-flex gap-5 justify-content-between px-3 ps-md-5 px-md-0 ">
       <section className="left-container container col-lg-4  d-flex flex-column justify-content-center aligin-center ">
         <h1>Contact us</h1>
         <p className="fw-bold fs-6 text-dark">
