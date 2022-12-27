@@ -1218,10 +1218,6 @@ router.get("/api/get-watchlist", userAuth, async (req, res) => {
 
 router.get("/api/get-fund/", userAuth, async (req, res) => {
   try {
-    // let company = await Portfolio.aggregate([
-    //   { $group: { _id: "$company", total: { $sum: "$amount" } } },
-    // ]).populate("company");
-
     let portfolios = await Portfolio.find({ user: req.user._id })
       .select("amount date")
       .populate("company");
@@ -1235,6 +1231,58 @@ router.get("/api/get-fund/", userAuth, async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Companies Retrieved Successfully",
+      portfolios,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To get sum of all fund invested in a company
+ * @api /company/api/get-fund-by-company
+ * @access Private
+ * @type GET
+ */
+
+router.get("/api/get-fund-by-company", userAuth, async (req, res) => {
+  try {
+    // group by company with sum of amount and sort by name of company
+    let portfolios = await Portfolio.aggregate([
+      {
+        $group: {
+          _id: "$company",
+          amount: { $sum: "$amount" },
+        },
+      },
+      {
+        $lookup: {
+          from: "companies",
+          localField: "_id",
+          foreignField: "_id",
+          as: "company",
+        },
+      },
+      {
+        $unwind: "$company",
+      },
+      {
+        $sort: { "company.name": 1 },
+      },
+    ]);
+    if (!portfolios) {
+      return res.status(400).json({
+        success: false,
+        message: "No Companies Found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Portfolios Retrieved Successfully",
       portfolios,
     });
   } catch (err) {

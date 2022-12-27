@@ -6,6 +6,7 @@ const Portfolio = () => {
   const [fund, setFund] = useState([]);
   const [date, setDate] = useState([]);
   const [company, setCompany] = useState([]);
+  const [amount, setAmount] = useState([]);
   // get data from backend
   useEffect(() => {
     try {
@@ -18,7 +19,6 @@ const Portfolio = () => {
         })
         .then((res) => {
           let portfolios = res.data.portfolios;
-          let company = res.data.company;
           setFund(portfolios?.map((portfolio) => portfolio.amount));
           setDate(portfolios?.map((portfolio) => portfolio.date));
         });
@@ -29,7 +29,7 @@ const Portfolio = () => {
 
   const series = [
     {
-      name: "Investment",
+      name: "Investment Rs.",
       data: fund,
     },
   ];
@@ -43,10 +43,30 @@ const Portfolio = () => {
     },
   };
 
+  // get data from backend
+  useEffect(() => {
+    try {
+      axios
+        .get("http://localhost:5000/company/api/get-fund-by-company", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          let portfolios = res.data.portfolios;
+          setAmount(portfolios?.map((portfolios) => portfolios.amount));
+          setCompany(portfolios?.map((portfolios) => portfolios.company.name));
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
   const series2 = [
     {
-      name: "Investment",
-      data: fund,
+      name: "Investment Rs.",
+      data: amount,
     },
   ];
   const options2 = {
@@ -56,7 +76,6 @@ const Portfolio = () => {
     },
   };
 
-
   return (
     <>
       <div className="m-5">
@@ -65,7 +84,17 @@ const Portfolio = () => {
       </div>
       <div className="m-5">
         <h1>Portfolio By Category</h1>
-        <Chart options={options2} series={series2} type="bar" width="950" />
+        <Chart
+          // change bg color of bar chart for each company
+
+          options={{
+            ...options2,
+            colors: "#a103fc",
+          }}
+          series={series2}
+          type="bar"
+          width="950"
+        />
       </div>
     </>
   );
