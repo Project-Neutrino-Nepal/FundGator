@@ -110,6 +110,15 @@ function Navbar() {
                   <Link
                     className="nav-link active"
                     aria-current="page"
+                    to="contactus"
+                  >
+                    Contact Us
+                  </Link>
+                </li>
+                <li className="nav-item me-2">
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
                     to="comProfile"
                   >
                     Raise funding

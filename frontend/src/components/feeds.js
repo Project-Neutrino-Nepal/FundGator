@@ -161,7 +161,22 @@ const Feeds = ({ feed }) => {
                       className="dropdown-menu dropdown-menu-dark text-small shadow"
                       aria-labelledby="dropdownUser1"
                     >
-                      <li
+                     
+                    <li
+                      className="dropdown-item"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setShow(true)}
+                    >
+                      Edit
+                      <EditPost
+                        show={show}
+                        id={feed._id}
+                        onHide={() => setShow(false)}
+                      />
+                    </li>
+
+                    {/* <li>
+                      <Link
                         className="dropdown-item"
                         style={{ cursor: "pointer" }}
                         onClick={() => setShow(true)}
@@ -187,7 +202,7 @@ const Feeds = ({ feed }) => {
                             onHide={() => setModalShow(false)}
                           />
                         </Link>
-                      </li>
+                      </li> */}
 
                       <li>
                         <Link
