@@ -21,7 +21,6 @@ const Feed = () => {
         .then((res) => {
           setFeeds(res.data.posts);
           setloading(false);
-          console.log(res.data.posts);
         });
     } catch (err) {
       console.log(err);

@@ -58,7 +58,6 @@ const EditPost = ({id, show, onHide}) => {
       .then((res) => {
         let post = res.data.post;
         setEditpost(post);
-        console.log(post);
         setValue((values) => ({
           ...values,
           text: post.text,

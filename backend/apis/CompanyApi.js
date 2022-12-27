@@ -812,37 +812,26 @@ router.get("/api/get-watchlist", userAuth, async (req, res) => {
  * @type GET
  */
 
-router.get("/api/get-fund/", async (req, res) => {
+router.get("/api/get-fund/", userAuth, async (req, res) => {
   try {
-    let company = await Company.find();
-    if (!company) {
-      return res.status(400).json({
-        success: false,
-        message: "Company not found",
-      });
-    }
-    let totalFund = 0;
-    company.forEach((company) => {
-      totalFund += company.fund_raised;
-    });
+    // let company = await Portfolio.aggregate([
+    //   { $group: { _id: "$company", total: { $sum: "$amount" } } },
+    // ]).populate("company");
 
-    // get total amount from Reason Model
-    let reason = await Reason.find();
-    if (!reason) {
+    let portfolios = await Portfolio.find({ user: req.user._id })
+      .select("amount date")
+      .populate("company");
+
+    if (!portfolios) {
       return res.status(400).json({
         success: false,
-        message: "Reason not found",
+        message: "No Companies Found",
       });
     }
-    let totalAmount = 0;
-    reason.forEach((reason) => {
-      totalAmount += reason.amount;
-    });
     return res.status(200).json({
       success: true,
-      message: "Fund Retrieved Successfully",
-      totalFund,
-      totalAmount,
+      message: "Companies Retrieved Successfully",
+      portfolios,
     });
   } catch (err) {
     console.log(err);
