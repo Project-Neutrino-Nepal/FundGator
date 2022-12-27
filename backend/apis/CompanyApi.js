@@ -634,34 +634,34 @@ router.put("/api/update-company/:id", userAuth, async (req, res) => {
  * @type PUT
  */
 
-router.put("/api/update-companycontent/:id", userAuth, async (req, res) => {
-  try {
-    let { body } = req;
-    let company = await Company.findOne({ name: req.params.id });
-    if (!company) {
-      return res.status(400).json({
-        success: false,
-        message: "Company not found",
-      });
-    }
-    company = await Company.findOneAndUpdate(
-      { name: req.params.id },
-      { ...body },
-      { new: true }
-    );
-    return res.status(200).json({
-      success: true,
-      message: "Company Updated Successfully",
-      company,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred.",
-    });
-  }
-});
+// router.put("/api/update-companycontent/:id", userAuth, async (req, res) => {
+//   try {
+//     let { body } = req;
+//     let company = await Company.findOne({ name: req.params.id });
+//     if (!company) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Company not found",
+//       });
+//     }
+//     company = await Company.findOneAndUpdate(
+//       { name: req.params.id },
+//       { ...body },
+//       { new: true }
+//     );
+//     return res.status(200).json({
+//       success: true,
+//       message: "Company Updated Successfully",
+//       company,
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(500).json({
+//       success: false,
+//       message: "An error occurred.",
+//     });
+//   }
+// });
 
 /**
  * @description To update Company image with company name by the company owner
