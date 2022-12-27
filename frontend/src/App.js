@@ -29,6 +29,7 @@ import {
   ProtectedRoute,
   UserProfilePage,
   WelcomePage,
+  ContactPage
 } from "./pages";
 import EditCompanyPage from "./pages/CompanyRegisterPage/EditCompanyPage";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
@@ -67,6 +68,8 @@ function App() {
           }
         ></Route>
         <Route path="/" element={<LandingPage />}></Route>
+        <Route path="/contactus" element={<ContactPage />}></Route>
+
         <Route
           path="/welcome"
           element={
