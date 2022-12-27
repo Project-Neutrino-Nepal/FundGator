@@ -12,11 +12,51 @@ const DOMAIN = "http://127.0.0.1:5000/";
  * @description To edit authenticated user profile
  * @api /users/api/update-profile
  * @access PRIVATE
+ * @type PUT
+ */
+
+router.put("/api/update-profile", userAuth, validator, async (req, res) => {
+  try {
+    let { body } = req;
+
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const updatedProfile = await Profile.findOneAndUpdate(
+      { user: req.user._id },
+      {
+        ...body,
+      },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      data: updatedProfile,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
+/**
+ * @description To upload profile of user
+ * @api /users/api/update-profile-image
+ * @access PRIVATE
  * @type PUT <multipart-form> request
  */
 
 router.put(
-  "/api/update-profile",
+  "/api/update-profile-image",
   userAuth,
   uploadProfileImage.single("avatar"),
   validator,
@@ -34,24 +74,10 @@ router.put(
 
       let file = req.file;
       //  if file is not uploaded then dont update the avatar
-      if (file === null) {
-        const updatedProfile = await Profile.findOneAndUpdate(
-          { user: req.user._id },
-          {
-            ...body,
-          },
-          { new: true }
-        );
-
-        return res.status(200).json({
-          success: true,
-          message: "Profile updated successfully",
-          data: updatedProfile,
-        });
-      } else if (file === undefined) {
+      if (file === null || file === undefined) {
         return res.status(400).json({
           success: true,
-          message: "Profile image format is not supported",
+          message: "Image format not supported",
           data: updatedProfile,
         });
       } else {

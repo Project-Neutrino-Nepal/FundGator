@@ -43,7 +43,7 @@ const ProfilePage = () => {
       formData.append("avatar", e.target.files[0]);
       axios
         .put(
-          "http://localhost:5000/profile/api/update-profile",
+          "http://localhost:5000/profile/api/update-profile-image",
           formData,
           config
         )
