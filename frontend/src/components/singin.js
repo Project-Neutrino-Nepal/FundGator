@@ -49,13 +49,21 @@ const Signin = () => {
             if (res.data.success) {
               localStorage.setItem("token", res.data.token);
               localStorage.setItem("admin", res.data.user.admin);
+              localStorage.setItem("userInfo", JSON.stringify(res.data));
+
               toast.success(
                 res.data.message,
                 setTimeout(function () {
                   if (res.data.user.admin === true) {
-                    window.location.href = "/dashboard";
-                    localStorage.setItem("token", res.data.token);
-                    localStorage.setItem("admin", res.data.user.admin);
+                    if (res.data.user.isFirstTime === true) {
+                      window.location.href = "/welcome";
+                      localStorage.setItem("token", res.data.token);
+                    } else {
+                      window.location.href = "/dashboard";
+                      localStorage.setItem("token", res.data.token);
+                      localStorage.setItem("id", res.data.user._id);
+                      localStorage.setItem("admin", res.data.user.admin);
+                    }
                   } else {
                     if (res.data.user.isFirstTime === true) {
                       window.location.href = "/welcome";
@@ -136,7 +144,7 @@ const Signin = () => {
               </button>
               <br />
               <p className="btn btn-border-0 mt-2 text-primary fw-light ">
-                Forgot password?
+                <Link to="/reset-password">Forgot password?</Link>
               </p>
             </div>
           </form>

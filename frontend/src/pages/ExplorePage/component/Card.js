@@ -1,45 +1,68 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Wrapper from "../wrapper/Card";
 const Card = ({
   _id,
   name,
   email,
-  short_pitch,
   address,
   image,
-  avatar,
-  phone,
-  tax_ID_No,
-  tax_document,
-  company_document,
-  company_logo,
-  company_video,
-  company_website,
-  company_facebook,
-  company_twitter,
-  company_linkedin,
-  company_instagram,
+  profile,
+  content,
   raising_fund,
   fund_raised,
-  fund_goal,
 }) => {
+  const [website, setWebsite] = useState("");
+  const [fund_goal, setFund_goal] = useState("");
+  const [tags, setTags] = useState([]);
+
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+
+  // get reason details using id from params
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/reason/api/get-reasons/" + _id, config)
+      .then((res) => {
+        let reasons = res.data.reasons;
+        setWebsite(reasons.companylink);
+        setFund_goal(reasons.amount);
+        setTags(reasons.tag);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <Wrapper className="ca" key={_id}>
-      <div className="cardy">
+      <div className="cardy shadow shadow-sm">
         <img src={image} alt="" />
 
         <div className="info-container">
-          <img src={avatar} alt="" className="profile-pic" />
+          <img src={profile.avatar} alt="" className="profile-pic" />
           <h4>{name}</h4>
           <h6 style={{ textTransform: "none" }}>{email}</h6>
-          <p>{address}</p>
-          <p className="desc">{short_pitch}</p>
+          <p>{email}</p>
+
+          <p className="desc">
+            {content
+              ? content.length > 100
+                ? content.substring(0, 100) + "..."
+                : content
+              : ""}
+          </p>
 
           <div className="category">
-            <span>venture backend</span>
             <span>
               {raising_fund === true ? "Rasing Fund" : "Rasing Closed"}
             </span>
+            {tags.map((tag) => {
+              return <span>{tag.name}</span>;
+            })}
           </div>
           <hr />
           <p className="f-p">

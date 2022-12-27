@@ -24,7 +24,7 @@ let config = {
             "Payment Successful, you will be redirected shortly to Protflio page"
           );
           setTimeout(() => {
-            window.location.href = "http://localhost:3000/profile/Portfolio";
+            window.location.href = "http://localhost:3000/homepage/one";
           }, 3000);
         })
         .catch((error) => {
@@ -33,7 +33,7 @@ let config = {
       const invest = async () => {
         const investData = {
           id: payload.product_identity,
-          amount: payload.amount,
+          amount: payload.amount / 100,
         };
         try {
           await axios

@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Labelinput from "./Labelinput";
 import UnderlineInput from "./UnderlineInput";
-import { TbWorld } from "react-icons/tb";
+import { TbCurrencyRupee, TbWorld } from "react-icons/tb";
 import { IoLocationSharp } from "react-icons/io5";
 import { AiFillFacebook } from "react-icons/ai";
+import Multiselect from "multiselect-react-dropdown";
+
 import {
   FaInstagramSquare,
   FaTwitterSquare,
@@ -12,7 +14,8 @@ import {
   FaBlogger,
 } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-const Basic = ({ values, handleChange }) => {
+import axios from "axios";
+const Basic = ({ values, handleChange, handleTags }) => {
   const [addlink, setlink] = useState(0);
   const [show, setShow] = useState(false);
   const { id } = useParams();
@@ -76,20 +79,88 @@ const Basic = ({ values, handleChange }) => {
       setlink((addlink) => addlink + 1);
     }
   };
+  const config = {
+    headers: {
+      authorization: localStorage.getItem("token"),
+    },
+  };
+  const [categories, setCategories] = useState([]);
+  const [tags, setTags] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/admin/api/get-tags", config)
+      .then((res) => {
+        let tag = res.data.tags;
+        setTags(tag);
+      });
+  });
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/admin/api/get-all-categories", config)
+      .then((res) => {
+        let category = res.data.categories;
+        category.unshift({ name: "Select Category" });
+        setCategories(category);
+      });
+  });
+
   return (
     <div className="form-content">
-      <Labelinput 
+      <Labelinput
         type={"text"}
         placeholder={"Enter Company Name"}
         label={"Company Name"}
         value={id}
         handleChange={handleChange}
-        name={"name"} 
+        name={"name"}
+      />
+
+      <div>
+        <div>
+          <label className="text-dark mb-3 mt-3">Select Category</label> &emsp;
+          <select
+            id="dropdown"
+            value={values.category}
+            onChange={handleChange}
+            name="category"
+            className="border border-dark rounded-3 p-2"
+          >
+            {categories.map((category) => {
+               
+              return <option value={category.name}>{category.name}</option>;
+            })}
+          </select>
+        </div>
+       
+        <label htmlFor="" className="text-dark mb-1 ">
+          Choose Tags 1 or more
+        </label>
+        <Multiselect
+          isObject={false}
+          onKeyPressFn={function noRefCheck() {}}
+          onRemove={function noRefCheck() {}}
+          placeholder="Select Tags"
+          options={tags.map((tag) => {
+            return tag.name;
+          })}
+          onSelect={handleTags}
+        />
+      </div>
+
+      <label htmlFor=""> Fund amount *</label>
+      <UnderlineInput
+        type={"number"}
+        index={<TbCurrencyRupee />}
+        placeholder={"Raise fund amount"}
+        value={values.amount}
+        handleChange={handleChange}
+        name={"amount"}
       />
 
       <label htmlFor="">The Top Reason to Invest</label>
       {list.map((item, index) => {
-        console.log(list);
         return (
           <UnderlineInput
             key={index}

@@ -1,18 +1,24 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import "../css/homepage.css";
 import Basenav from "./basenav";
-import Feeds from "./feeds";
 
 import { BsCardImage } from "react-icons/bs";
-import { IoCloseCircleSharp, IoDocumentTextSharp } from "react-icons/io5";
+import { IoCloseCircleSharp } from "react-icons/io5";
 import { RiVideoFill } from "react-icons/ri";
 
+import { Outlet } from "react-router-dom";
+
 const Homepage = () => {
+  const im = useRef(null);
+  const vi = useRef(null);
   const [name, setName] = useState("");
+  const [skills, setSkills] = useState("");
   const [image, setPreview] = useState({
-    preview: "https://github.com/mdo.png",
+    preview:
+      "https://www.grovenetworks.com/images/easyblog_shared/July_2018/7-4-18/totw_network_profile_400.jpg",
     file: "",
   });
 
@@ -46,8 +52,23 @@ const Homepage = () => {
     if (e.target.files && e.target.files[0]) {
       let file = e.target.files[0];
       let blobURL = URL.createObjectURL(file);
-      handleChange(e);
-      setPreviews({ ...preview, [e.target.name]: blobURL });
+      setValue({ ...values, [e.target.name]: e.target.files[0], vid: "" });
+
+      setPreviews({ ...preview, [e.target.name]: blobURL, vid: "" });
+
+      e.target.value = null;
+    }
+  };
+
+  const vfileSelection = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      let file = e.target.files[0];
+      let blobURL = URL.createObjectURL(file);
+      setValue({ ...values, [e.target.name]: e.target.files[0], img: null });
+
+      setPreviews({ ...preview, [e.target.name]: blobURL, img: "" });
+
+      e.target.value = null;
     }
   };
 
@@ -64,34 +85,63 @@ const Homepage = () => {
       .then((res) => {
         let program = res.data.profile;
         setName(program.legal_name);
+        setSkills(program.skills);
         setPreview({ ...image, preview: program.avatar });
       });
-  });
+  }, [config, image]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("img", values.img);
     formData.append("vid", values.vid);
-    formData.append("doc", values.doc);
     formData.append("description", values.description);
+    if (!values.img && !values.vid && !values.description) {
+      toast.error("You can't post empty post");
+      return;
+    }
+    if (values.img && values.vid) {
+      toast.error("You can only upload one file at a time");
+      return;
+    }
+
     try {
       axios
         .post("http://localhost:5000/posts/api/create-post", formData, config)
         .then((res) => {
-          alert("Post created successfully");
-          console.log(res.data);
+          toast.success(
+            res.data.message,
+            setTimeout(function () {
+              window.location.reload();
+            }, 2000)
+          );
         });
     } catch (err) {
-      alert("Error in creating post");
+      toast.error("Post Creation Failed");
       console.log(err);
     }
   };
 
+  // get feeds from API
+  const [feeds, setFeeds] = useState([]);
+  useEffect(() => {
+    try {
+      axios
+        .get("http://localhost:5000/posts/api/get-all-posts", config)
+        .then((res) => {
+          console.log(res?.data?.posts);
+          setFeeds(res.data.posts);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
   return (
     <>
+      <ToastContainer />
       <div className="basenav">
-        <Basenav />
+        <Basenav user={image.preview} />
       </div>
       {/* <div className="d-flex flex-wrap"> */}
       <div
@@ -114,7 +164,21 @@ const Homepage = () => {
               height={65}
               className="rounded-circle me-2 mt-2"
             />
-            <strong>{name}</strong>
+            <div>
+              <strong
+                className=" fs-5 text-white text-truncate text-truncate- en
+              d-block mt-2"
+              >
+                {name}
+              </strong>
+              <p className="">
+                {skills
+                  ? skills.length > 20
+                    ? skills.substring(0, 20) + "..."
+                    : "No skills added"
+                  : "No skills added"}
+              </p>
+            </div>
           </a>
 
           <ul
@@ -139,29 +203,60 @@ const Homepage = () => {
           </ul>
         </div>
         <hr />
+
         <ul className="nav nav-pills flex-column mb-auto">
           <li className="nav-item">
-            <Link to="/homepage" className="nav-link active">
+            <Link
+              to="/homepage"
+              className={
+                window.location.pathname === "/homepage"
+                  ? "nav-link active"
+                  : "nav-link text-white"
+              }
+              aria-selected="true"
+            >
               <i className="fa fa-home" />
               <span className="ms-2">Feeds</span>
             </Link>
           </li>
-          <li>
-            <Link to="/profile/Portfolio" className="nav-link text-white">
+          <li className="nav-item">
+            <Link
+              to="/homepage/one"
+              className={
+                window.location.pathname === "/homepage/one"
+                  ? "nav-link active"
+                  : "nav-link text-white"
+              }
+              aria-selected="false"
+            >
               <i className="fa fa-dashboard" />
 
               <span className="ms-2">My Investment</span>
             </Link>
           </li>
           <li>
-            <Link to="/profile/Portfolio" className="nav-link text-white">
+            <Link
+              to="/homepage/two"
+              className={
+                window.location.pathname === "/homepage/two"
+                  ? "nav-link active"
+                  : "nav-link text-white"
+              }
+            >
               <i className="fa fa-first-order" />
 
               <span className="ms-2">By Fundgator</span>
             </Link>
           </li>
           <li>
-            <Link to="/profile/Portfolio" className="nav-link text-white">
+            <Link
+              to="/homepage/three"
+              className={
+                window.location.pathname === "/homepage/three"
+                  ? "nav-link active"
+                  : "nav-link text-white"
+              }
+            >
               <i className="fa fa-bookmark" />
               <span className="ms-2">My Watchlist</span>
             </Link>
@@ -180,16 +275,16 @@ const Homepage = () => {
           </li>
         </ul>
       </div>
-      <div className="container-fluid col-9 mt-2  " id="feeds-position">
-        <Feeds />
-        <Feeds />
-
-        {/* </div> */}
+      <div className="container-fluid col-10 mt-2  " id="feeds-position">
+        <Outlet />
+        {/* {feeds.map((feed) => {
+          return <Feeds key={feed._id} feed={feed} />;
+        })} */}
       </div>
       <div
         className="modal fade"
         id="exampleModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
@@ -271,9 +366,6 @@ const Homepage = () => {
                   <label htmlFor="vid">
                     <RiVideoFill />
                   </label>
-                  <label htmlFor="doc">
-                    <IoDocumentTextSharp />
-                  </label>
                 </div>
 
                 <div className="d-none">
@@ -289,7 +381,7 @@ const Homepage = () => {
                     accept="video/*"
                     name="vid"
                     id="vid"
-                    onChange={fileSelection}
+                    onChange={vfileSelection}
                   />
                   <input type="file" accept="image/*" name="doc" id="doc" />
                 </div>

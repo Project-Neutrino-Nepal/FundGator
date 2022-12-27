@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Avatar,
@@ -16,6 +16,9 @@ import { SearchOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import avtar from "../../assets/images/team-2.jpg";
+import { BsBellFill } from "react-icons/bs";
+import { Content } from "antd/lib/layout/layout";
+import SingleNotification from "./SingleNotification";
 
 const ButtonContainer = styled.div`
   .ant-btn-primary {
@@ -217,6 +220,9 @@ function Header({ name, subName, onPress }) {
   // const [sidenavType, setSidenavType] = useState("transparent");
 
   useEffect(() => window.scrollTo(0, 0));
+  const [shownotification, setnotification] = useState(false);
+
+  const [notlst, setnot] = useState([...Array(8)]);
 
   // const showDrawer = () => setVisible(true);
   // const hideDrawer = () => setVisible(false);
@@ -235,18 +241,40 @@ function Header({ name, subName, onPress }) {
           </Breadcrumb>
         </Col>
         <Col span={24} md={18} className="header-control">
-          <Badge size="small" count={4}>
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <a
-                href="#"
-                className="ant-dropdown-link"
-                onClick={(e) => e.preventDefault()}
-              >
-                {bell}
-              </a>
-            </Dropdown>
-          </Badge>
-
+          <div className="position-relative">
+            <div
+              className=" position-relative"
+              onClick={() => setnotification(!shownotification)}
+            >
+              <BsBellFill />
+              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                99+ <span className="visually-hidden">unread messages</span>
+              </span>
+            </div>
+            <div
+              className={
+                shownotification
+                  ? "position-absolute top-0 start-0  bg-white shadow shadow-sm"
+                  : "d-none"
+              }
+              style={{
+                transform: "translateY(37px) translateX(-480px)",
+                zIndex: "2",
+                width: "max-content",
+                maxWidth: "500px",
+                minWidth: "500px",
+                minHeight: "70px",
+              }}
+            >
+              {notlst.length > 0 ? (
+                notlst.map((item) => <SingleNotification />)
+              ) : (
+                <h4 className="w-100  text-center" width={500} height={200}>
+                  no notification
+                </h4>
+              )}
+            </div>
+          </div>
           <Input
             className="header-search"
             placeholder="Type here..."
@@ -257,5 +285,7 @@ function Header({ name, subName, onPress }) {
     </>
   );
 }
+
+
 
 export default Header;

@@ -47,17 +47,19 @@ const Wrapper = styled.div`
         }
   
         & > .short-info {
-          line-height: 2px;
+          /* line-height: 2px;
           & > h5 {
             font-weight: bold;
             margin: 0;
-          }
+          } */
+          width:100%;
   
           & > input {
             height: max-content;
             border: none;
             font-size: 1.2rem;
             margin: 0;
+            width:100%;
   
             &:focus {
               outline: none;

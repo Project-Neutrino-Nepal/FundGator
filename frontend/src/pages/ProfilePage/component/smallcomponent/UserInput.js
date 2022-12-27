@@ -13,28 +13,19 @@ const UserInput = React.memo(
       },
     };
 
-   
     const onSave = (e) => {
       onsave({ name: name, value: assigend });
       const data = {
         [name]: assigend,
       };
       console.log(data);
-      axios.put(
-        "http://localhost:5000/profile/api/update-profile", data, {
-          headers: config.headers
-        }).then((res) => {
-        window.location.reload();
-        
-      });
-
-      
-      
-        
-  
-
-
-    
+      axios
+        .put("http://localhost:5000/profile/api/update-profile", data, {
+          headers: config.headers,
+        })
+        .then((res) => {
+          window.location.reload();
+        });
     };
     const onCancel = (e) => {
       e.stopPropagation();

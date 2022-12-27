@@ -8,7 +8,8 @@ function Navbar() {
   const [companyID, SetCompanyID] = useState("");
   const [companyName, SetCompanyName] = useState("");
   const [image, setPreview] = useState({
-    preview: "https://github.com/mdo.png",
+    preview:
+      "https://www.grovenetworks.com/images/easyblog_shared/July_2018/7-4-18/totw_network_profile_400.jpg",
     file: "",
   });
 
@@ -105,6 +106,15 @@ function Navbar() {
               </form>
 
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li className="nav-item me-2">
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    to="contactus"
+                  >
+                    Contact Us
+                  </Link>
+                </li>
                 <li className="nav-item me-2">
                   <Link
                     className="nav-link active"
@@ -210,9 +220,13 @@ function Navbar() {
                     Raise funding
                   </Link>
                 </li>
-                <li className="nav-item me-2">
-                  <Link className="nav-link active" aria-current="page" to="#">
-                    FAQ
+                <li className="nav-item me-2 fs-4">
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    to="/chats"
+                  >
+                    <i className="fas fa-comment-dots" />
                   </Link>
                 </li>
                 {/* <li className="nav-item border-start ms-2"> */}
@@ -226,12 +240,14 @@ function Navbar() {
                     aria-expanded="false"
                   >
                     <img
-                      src={image.preview}
+                      src={image.preview ? image.preview : image}
                       alt=""
                       width={55}
                       height={55}
+                      name={name}
                       className="rounded-circle me-2 ms-3 border border-grey border-2"
                     />
+
                     <strong>{name} </strong>
                   </a>
                   <ul
@@ -345,9 +361,13 @@ function Navbar() {
                     Raise funding
                   </Link>
                 </li>
-                <li className="nav-item me-2">
-                  <Link className="nav-link active" aria-current="page" to="#">
-                    FAQ
+                <li className="nav-item me-2 fs-4">
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    to="/chats"
+                  >
+                    <i className="fas fa-comment-dots" />
                   </Link>
                 </li>
                 {/* <li className="nav-item border-start ms-2"> */}

@@ -9,7 +9,7 @@ import {
 } from "react-icons/ai";
 import { FaPlay, FaShare } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import khalticonfig from "../../components/Khalti/KhaltiConfig";
 import {
@@ -56,9 +56,10 @@ const Details = () => {
   const [fund_raised, setFund_raised] = useState("");
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("");
-  const [tags, setTags] = useState("");
+  const [tags, setTags] = useState([]);
   const [ID, setID] = useState("");
   const [investors, setInvestors] = useState([]);
+  const [isInvested, setIsInvested] = useState(false);
 
   const config = {
     headers: {
@@ -76,17 +77,21 @@ const Details = () => {
         setName(company.name);
         setImage(company.image);
         setVideo(company.company_video);
-        setShort_pitch(company.short_pitch);
+        setShort_pitch(company.content);
         setEmail(company.email);
         setPhone(company.phone);
         setAddress(company.address);
-        setFund_goal(company.fund_goal);
         setFund_raised(company.fund_raised);
-        setCategory(company.category);
         setStatus(company.status);
-        setTags(company.tags);
         setID(company._id);
         setInvestors(company.investors);
+        if (
+          company.investors.includes(
+            JSON.parse(localStorage.getItem("userInfo")).user._id
+          )
+        ) {
+          setIsInvested(true);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -104,12 +109,35 @@ const Details = () => {
         setTwitter(reasons.twitter);
         setLinkedin(reasons.linkedin);
         setWebsite(reasons.companylink);
-        console.log(reasons);
+        setFund_goal(reasons.amount);
+        setTags(reasons.tag);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+  // watchlist handler
+  const watchlistHandler = () => {
+    if (!localStorage.getItem("token")) {
+      toast.error("Please login to add to watchlist");
+      return;
+    }
+    axios
+      .put("http://localhost:5000/company/api/watchlist/" + id, id, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        toast.success(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data.message);
+      });
+  };
 
   return (
     <Wrapper>
@@ -120,7 +148,13 @@ const Details = () => {
           <div className="header">
             <div className="info">
               <h3>Invest in {name}</h3>
-              <h1>{short_pitch}</h1>
+              <h1>
+                {short_pitch
+                  ? short_pitch.length > 200
+                    ? short_pitch.substring(0, 200) + "..."
+                    : short_pitch
+                  : null}
+              </h1>
             </div>
             <div className="share">
               <FaShare />
@@ -142,11 +176,21 @@ const Details = () => {
           </div>
         </section>
         <section className="two">
-          <span>almost sold out</span>
+          <span>
+            {fund_goal - fund_raised < 10000 ? (
+              <p className="text-danger">
+                {fund_goal - fund_raised} Left to reach goal
+              </p>
+            ) : (
+              <p className="text-success">
+                {fund_goal - fund_raised} Left to reach goal
+              </p>
+            )}
+          </span>
           <div className="line"></div>
           <div className="price">
-            <p>$2,000,000</p>
-            <p>Raised money from 200 investor</p>
+            <p>Rs.{fund_goal}</p>
+            <p>Raised money from {investors.length} investor</p>
           </div>
           <div className="invest">
             <div className="invest-info">
@@ -158,8 +202,27 @@ const Details = () => {
               <input type="number" placeholder="0" />
             </div>
           </div>
-          <button className="btn-invest">Invest</button>
-          <button className="btn-bookmark">
+          <button
+            className="btn-invest"
+            onClick={() =>
+              amount < 1000
+                ? toast.info("Minimum amount to invest is Rs.1000")
+                : checkout.show({
+                    amount: amount * 100,
+                    productIdentity: id,
+                    productName: name,
+                    productUrl: "http://localhost:3000/detail/" + id,
+                  })
+            }
+          >
+            Invest
+          </button>
+          <button
+            className="btn-bookmark"
+            onClick={() => {
+              watchlistHandler();
+            }}
+          >
             <AiOutlineHeart />
             <span>Watch for updates</span>
           </button>
@@ -178,7 +241,6 @@ const Details = () => {
             >
               <AiFillFacebook />
             </Link>
-
             <Link className="icon" to={twitter}>
               <AiFillTwitterSquare />
             </Link>
@@ -186,16 +248,16 @@ const Details = () => {
               <AiFillInstagram />
             </Link>
           </div>
-
           <div className="category">
-            <span>{}</span>
-            <span>Fintech & Finance</span>
-            <span>Y Combinator</span>
-            <span>B2B</span>
-            <span>Saas</span>
+            {tags.map((item, index) => {
+              return (
+                <span key={index} className="tag">
+                  {item.name}
+                </span>
+              );
+            })}
           </div>
         </section>
-
         <section className="four tab">
           {tabs.map((item, index) => {
             return (
@@ -213,8 +275,8 @@ const Details = () => {
         <section className="five">
           {activeindex === 1 ? (
             <Overview
-              // pass company ID as props
-              company={ID}
+              // pass company content as props
+              content={short_pitch}
             />
           ) : null}
           {activeindex === 2 ? (
@@ -234,7 +296,17 @@ const Details = () => {
       </div>
       <div className="right-container">
         <section className="two">
-          <span>almost sold out</span>
+          <span>
+            {fund_goal - fund_raised < 10000 ? (
+              <p className="text-danger">
+                {fund_goal - fund_raised} Left to reach goal
+              </p>
+            ) : (
+              <p className="text-success">
+                {fund_goal - fund_raised} Left to reach goal
+              </p>
+            )}
+          </span>
           <div className="line"></div>
           <div className="price">
             <p>Rs.{fund_goal}</p>
@@ -254,20 +326,47 @@ const Details = () => {
               />
             </div>
           </div>
+
+          {isInvested ? (
+            <button
+              className="btn-invest"
+              onClick={() =>
+                amount > 200
+                  ? toast.info("Minimum amount to invest is Rs.1000")
+                  : checkout.show({
+                      amount: amount * 100,
+                      productIdentity: id,
+                      productName: name,
+                      productUrl: "http://localhost:3000/detail/" + id,
+                    })
+              }
+            >
+              Invest More
+            </button>
+          ) : (
+            <button
+              className="btn-invest"
+              onClick={() =>
+                amount > 200
+                  ? toast.info("Minimum amount to invest is Rs.1000")
+                  : checkout.show({
+                      amount: amount * 100,
+                      productIdentity: id,
+                      productName: name,
+                      productUrl: "http://localhost:3000/detail/" + id,
+                    })
+              }
+            >
+              Invest
+            </button>
+          )}
+
           <button
-            className="btn-invest"
-            onClick={() =>
-              checkout.show({
-                amount: amount * 100,
-                productIdentity: id,
-                productName: name,
-                productUrl: "http://localhost:3000/detail/" + id,
-              })
-            }
+            className="btn-bookmark"
+            onClick={() => {
+              watchlistHandler();
+            }}
           >
-            Invest
-          </button>
-          <button className="btn-bookmark">
             <AiOutlineHeart />
             <span>Watch for updates</span>
           </button>

@@ -11,16 +11,6 @@ const CompanySchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "profile",
     },
-    category: {
-      type: Schema.Types.ObjectId,
-      ref: "category",
-    },
-    tags: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "tags",
-      },
-    ],
     reasons: {
       type: Schema.Types.ObjectId,
       ref: "reason",
@@ -52,9 +42,6 @@ const CompanySchema = new Schema(
     address: {
       type: String,
     },
-    short_pitch: {
-      type: String,
-    },
     registration_card: {
       type: String,
     },
@@ -81,10 +68,6 @@ const CompanySchema = new Schema(
       type: Number,
       default: 0,
     },
-    fund_goal: {
-      type: Number,
-      default: 0,
-    },
     content: {
       type: String,
     },
@@ -94,7 +77,26 @@ const CompanySchema = new Schema(
         ref: "user",
       },
     ],
+    watchlist: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
+    question: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "questions",
+      },
+    ],
+    feedback: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "feedback",
+      },
+    ],
   },
+
   { timestamps: true }
 );
 

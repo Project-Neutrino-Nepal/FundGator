@@ -7,7 +7,6 @@ import upload from "../../../assets/image/uploadpic.svg";
 
 const Member = React.memo(({ item, handleChange, index }) => {
   const [preview, setPreview] = useState(upload);
-
   const {
     id,
     name,
@@ -18,7 +17,6 @@ const Member = React.memo(({ item, handleChange, index }) => {
     userlinkedinlink,
     foundertype,
     jobtype,
-    
   } = item;
 
   const fileSelection = (e) => {
@@ -33,26 +31,36 @@ const Member = React.memo(({ item, handleChange, index }) => {
   return (
     <section className="users-form">
       <div className="info">
-        <div className="image-upload me-2">
-          <label htmlFor={`flie-input${index}`} className="f-input">
-            <img src={preview} alt="" />
-            <input
-              id={`flie-input${index}`}
-              type="file"
-              name="image"
-              onChange={fileSelection}
-            />
-          </label>
-        </div>
+        {/* <div className="image-upload me-2">
+              <label htmlFor={`flie-input${index}`} className="f-input">
+                <img src={preview} alt="" />
+                <input
+                  id={`flie-input${index}`}
+                  type="file"
+                  name="image"
+                  onChange={fileSelection}
+                />
+              </label>
+            </div> */}
 
         <div className="short-info">
-          <h5>{name}</h5>
-          <input
-            type="text"
-            placeholder="Enter email"
+          <Labelinput
+            type={"text"}
+            label={"Name"}
+            placeholder={"Enter Name"}
+            name={`name`}
+            handleChange={(e) => handleChange(e, index, e.target.name)}
+            value={name}
+          />
+          {/* <h5>{name}</h5> */}
+
+          <Labelinput
+            type={"text"}
+            label={"Email"}
+            placeholder={"Enter email"}
             name={`email`}
+            handleChange={(e) => handleChange(e, index, e.target.name)}
             value={email}
-            onChange={(e) => handleChange(e, index, e.target.name)}
           />
         </div>
       </div>

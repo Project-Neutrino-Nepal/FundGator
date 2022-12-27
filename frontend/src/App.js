@@ -1,44 +1,76 @@
+import { ChakraProvider } from "@chakra-ui/react";
 import "antd/dist/antd.min.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import "./components/admin/assets/styles/main.css";
 import "./components/admin/assets/styles/responsive.css";
 import Main from "./components/admin/components/layout/Main";
-import Categories from "./components/admin/pages/categories";
 import CompanyAdmin from "./components/admin/pages/company";
 import CompanyDetails from "./components/admin/pages/companyDetails/companyDetails";
 import Home from "./components/admin/pages/Home";
 import InvestorAdmin from "./components/admin/pages/investor";
 import Profile from "./components/admin/pages/Profile";
+import BlankPage from "./components/BlankPage";
+import Feed from "./components/Feed";
 import Homepage from "./components/homepage";
-
 import Navbar from "./components/navbar.js";
 import Signup from "./components/Signup";
 import Signin from "./components/singin";
+import WatchList from "./components/Watchlists";
 import {
   CompanyRegisterPage,
   Details,
   ExplorePage,
   FooterLayout,
+  IsloggedIn,
   LandingPage,
   PaymentPage,
   ProfilePage,
   ProtectedRoute,
   UserProfilePage,
   WelcomePage,
+  ContactPage
 } from "./pages";
+import EditCompanyPage from "./pages/CompanyRegisterPage/EditCompanyPage";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
 
+import ChatProvider from "./context/ChatProvider";
+import Chat from "./pages/Chat";
 import RaisePage from "./pages/RaisePage/RaisePage";
+
+import Category from "./components/admin/pages/Category";
+import Tag from "./components/admin/pages/Tag";
+import Editpost from "./components/Editpostcard";
+import Portfolio from "./components/Portfolio";
+import ResetPassword from "./pages/resetPassword";
+
+import './css/style.css';
 
 function App() {
   return (
-    <BrowserRouter>
+    <>
       <Navbar />
+
       <Routes>
-        <Route path="/signup" element={<Signup />}></Route>
-        <Route path="/signin" element={<Signin />}></Route>
+        <Route
+          path="/signup"
+          element={
+            <IsloggedIn>
+              <Signup />
+            </IsloggedIn>
+          }
+        ></Route>
+        <Route
+          path="/signin"
+          element={
+            <IsloggedIn>
+              <Signin />
+            </IsloggedIn>
+          }
+        ></Route>
         <Route path="/" element={<LandingPage />}></Route>
+        <Route path="/contactus" element={<ContactPage />}></Route>
+
         <Route
           path="/welcome"
           element={
@@ -54,7 +86,29 @@ function App() {
               <Homepage />
             </ProtectedRoute>
           }
-        ></Route>
+        >
+          <Route index element={<Feed />} />
+
+          <Route path="one" element={<Portfolio />} />
+          <Route path="two" element={<BlankPage />} />
+          <Route path="three" element={<WatchList />} />
+        </Route>
+        <Route path="/reset-password" element={<ResetPassword />} />
+
+        <Route
+          path="/chats"
+          element={
+            <ChatProvider>
+              <ChakraProvider>
+                <Chat />
+              </ChakraProvider>
+            </ChatProvider>
+          }
+        />
+
+        <Route path="/editpost/:id" element={<Editpost />}></Route>
+        {/* This is route for Not found */}
+        {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
         <Route
           path="/profile"
           element={
@@ -88,7 +142,7 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
-        <Route path="/category" element={<Categories />}></Route>
+
         <Route
           path="/raise"
           element={
@@ -120,7 +174,11 @@ function App() {
 
         <Route
           path="/company/edit/:id"
-          element={<CompanyRegisterPage />}
+          element={
+            <ProtectedRoute>
+              <EditCompanyPage />
+            </ProtectedRoute>
+          }
         ></Route>
 
         {/* DASHBOARD ROUTES */}
@@ -136,19 +194,77 @@ function App() {
 
           {/* There is no need of tables for now */}
           {/* <Route path="/dashboard/tables" element={<Tables />} /> */}
-          <Route path="/dashboard/profile" element={<Profile />} />
-          <Route path="/dashboard/company_admin" element={<CompanyAdmin />} />
-          <Route path="/dashboard/investor_admin" element={<InvestorAdmin />} />
+          <Route
+            path="/dashboard/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/company_admin"
+            element={
+              <ProtectedRoute>
+                <CompanyAdmin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/investor_admin"
+            element={
+              <ProtectedRoute>
+                <InvestorAdmin />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/dashboard/categoryPage"
+            element={
+              <ProtectedRoute>
+                <Category />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/categoryPage/:id"
+            element={
+              <ProtectedRoute>
+                <Category />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/tagPage"
+            element={
+              <ProtectedRoute>
+                <Tag />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/tagPage/:id"
+            element={
+              <ProtectedRoute>
+                <Tag />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/dashboard/company-details/:id"
-            element={<CompanyDetails />}
+            element={
+              <ProtectedRoute>
+                <CompanyDetails />
+              </ProtectedRoute>
+            }
           />
 
           {/* Add others routes of dashboard below */}
         </Route>
       </Routes>
-    </BrowserRouter>
-    
+    </>
   );
 }
 

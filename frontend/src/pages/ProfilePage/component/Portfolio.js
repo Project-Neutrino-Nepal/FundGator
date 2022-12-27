@@ -1,80 +1,103 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import folderimg from "../../../assets/image/file.svg";
-import Wrapper from "../wrapper/Portfolio";
-const Portfolio = () => {
-  const [portfolio, setPortfolio] = useState([]);
+import Chart from "react-apexcharts";
 
-  const config = {
-    headers: {
-      Authorization: localStorage.getItem("token"),
+const Portfolio = () => {
+  const [fund, setFund] = useState([]);
+  const [date, setDate] = useState([]);
+  const [company, setCompany] = useState([]);
+  const [amount, setAmount] = useState([]);
+  // get data from backend
+  useEffect(() => {
+    try {
+      axios
+        .get("http://localhost:5000/company/api/get-fund/", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          let portfolios = res.data.portfolios;
+          setFund(portfolios?.map((portfolio) => portfolio.amount));
+          setDate(portfolios?.map((portfolio) => portfolio.date));
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  const series = [
+    {
+      name: "Investment Rs.",
+      data: fund,
+    },
+  ];
+  const options = {
+    chart: { id: "bar-chart" },
+    xaxis: {
+      categories: date.map((date) => {
+        let d = new Date(date);
+        return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+      }),
     },
   };
 
+  // get data from backend
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/portfolio/api/my-portfolio", config)
-      .then((res) => {
-        const portfolio = res.data.portfolio;
-        setPortfolio(portfolio);
-      });
+    try {
+      axios
+        .get("http://localhost:5000/company/api/get-fund-by-company", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          let portfolios = res.data.portfolios;
+          setAmount(portfolios?.map((portfolios) => portfolios.amount));
+          setCompany(portfolios?.map((portfolios) => portfolios.company.name));
+        });
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
-  console.log(portfolio);
-  // portfolio then show this
-  if (portfolio.length === 0) {
-    return (
-      <Wrapper>
-        <img src={folderimg} alt="" className="fileimg" />
-        <p>build your own startup</p>
-        <Link to="/explore">
-          <button>Explore Companies</button>
-        </Link>
-      </Wrapper>
-    );
-  }
-  // if portfolio not found then show this
-  else
-    return (
-      <Wrapper>
-        {portfolio.map((portfolio) => (
-          <div className="post-box-list">
-            <div className="post-box d-flex flex-nowrap ">
-              <img src={portfolio.company.image} alt="" />
-              <div className="user-info border border-0 border-end ">
-                <div className="info">
-                  <span className="username">{portfolio.company.name}</span>
-                </div>
-                <p className="description">{portfolio.company.description}</p>
-              </div>
-              {/* add card that has amount invested, date of investment, and button to withdraw */}
+  const series2 = [
+    {
+      name: "Investment Rs.",
+      data: amount,
+    },
+  ];
+  const options2 = {
+    chart: { id: "bar-chart" },
+    xaxis: {
+      categories: company,
+    },
+  };
 
-              <div className="card w-50 justify-content-center">
-                <div className="card-body">
-                  <p className="fs-5">
-                    Amount Invested
-                    <span className="fs-6">:&nbsp;Rs.{portfolio.amount}</span>
-                  </p>
-                  <p className="fs-5">
-                    Invested On
-                    <span className="fs-6">
-                      :&nbsp;{new Date(portfolio.date).toLocaleDateString()}
-                    </span>
-                  </p>
-                  <div className="d-flex flex-nowrap">
-                    <button className="btn btn-success m-2" 
-                    style={{backgroundColor: "green"}}
-                    >Withdraw</button>
-                    <button className="btn btn-primary m-2">Re Invest</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </Wrapper>
-    );
+  return (
+    <>
+      <div className="m-5">
+        <h1>Overall Portfolio</h1>
+        <Chart options={options} series={series} type="line" width="950" />
+      </div>
+      <div className="m-5">
+        <h1>Portfolio By Category</h1>
+        <Chart
+          // change bg color of bar chart for each company
+
+          options={{
+            ...options2,
+            colors: "#a103fc",
+          }}
+          series={series2}
+          type="bar"
+          width="950"
+        />
+      </div>
+    </>
+  );
 };
 
 export default Portfolio;

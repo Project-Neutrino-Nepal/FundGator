@@ -1,31 +1,21 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { AiFillCamera } from "react-icons/ai";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import {
-  BankandCards,
-  Cash,
-  Notification,
-  Portfolio,
-  Settings,
-  TaxDocument,
-  Watchlist,
-} from "./component";
+import { Notification, Portfolio, Settings, Watchlist } from "./component";
 import tabs from "./utils/tabs";
 import Wrapper from "./wrapper/ProfilePage";
 
 const ProfilePage = () => {
-  const options = {
-    dropdown: false,
-    tab: "tax document",
-    activeindex: 0,
-  };
+  const loaddata = useRef(true);
+
   const [activeindex, setActive] = useState(1);
   const [dropdown, setDropdown] = useState(false);
   const [image, setPreview] = useState({
-    preview: "https://github.com/mdo.png",
+    preview:
+      "https://www.grovenetworks.com/images/easyblog_shared/July_2018/7-4-18/totw_network_profile_400.jpg",
     file: "",
   });
 
@@ -53,7 +43,7 @@ const ProfilePage = () => {
       formData.append("avatar", e.target.files[0]);
       axios
         .put(
-          "http://localhost:5000/profile/api/update-profile",
+          "http://localhost:5000/profile/api/update-profile-image",
           formData,
           config
         )
@@ -71,40 +61,43 @@ const ProfilePage = () => {
   };
 
   const { id } = useParams();
-  useEffect(() => {
-    if (id === "Portoflio") {
-      setActive(1);
-    } else if (id === "Cash") {
-      setActive(2);
-    } else if (id === "BankCards") {
-      setActive(3);
-    } else if (id === "TaxDocuments") {
-      setActive(4);
-    } else if (id === "Watchlist") {
-      setActive(5);
-    } else if (id === "Settings") {
-      setActive(6);
-    } else if (id === "Notifications") {
-      setActive(7);
-    }
-  }, []);
+
   const [name, setName] = useState("");
 
   // fetching Profile data from API
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/profile/api/my-profile", config)
-      .then((res) => {
-        let program = res.data.profile;
-        setName(program.name);
-        setPreview({ ...image, preview: program.avatar });
-      });
-  });
+    if (loaddata.current === true) {
+      axios
+        .get("http://localhost:5000/profile/api/my-profile", config)
+        .then((res) => {
+          let program = res.data.profile;
+          setName(program.name);
+          setPreview({ ...image, preview: program.avatar });
+        });
+    }
+    if (id === "Portfolio") {
+      setActive(1);
+    }
+    if (id === "Watchlist") {
+      setActive(2);
+    }
+    if (id === "Settings") {
+      setActive(3);
+    }
+    if (id === "Notifications") {
+      setActive(4);
+    }
+    return () => (loaddata.current = false);
+  }, [config, id]);
 
   return (
     <Wrapper>
       <ToastContainer />
-      <section className="infocontainer mt-5" id="SettingPage">
+      <section
+        className="infocontainer "
+        style={{ marginTop: "72px" }}
+        id="SettingPage"
+      >
         <div className="userinfo">
           <div className="edit-img">
             <img
@@ -140,7 +133,7 @@ const ProfilePage = () => {
           </div>
 
           <div className="info">
-            <h5>{name}</h5>
+            <h5 color="text-white">{name}</h5>
 
             <p onClick={editprofile}>Edit Profile</p>
           </div>
@@ -196,12 +189,9 @@ const ProfilePage = () => {
 
       <section className="content">
         {activeindex === 1 ? <Portfolio /> : null}
-        {activeindex === 2 ? <Cash /> : null}
-        {activeindex === 3 ? <BankandCards /> : null}
-        {activeindex === 4 ? <TaxDocument /> : null}
-        {activeindex === 5 ? <Watchlist /> : null}
-        {activeindex === 6 ? <Settings /> : null}
-        {activeindex === 7 ? <Notification /> : null}
+        {activeindex === 2 ? <Watchlist /> : null}
+        {activeindex === 3 ? <Settings /> : null}
+        {activeindex === 4 ? <Notification /> : null}
       </section>
     </Wrapper>
   );

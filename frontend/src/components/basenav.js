@@ -1,14 +1,15 @@
 import "../css/basenav.css";
-const Basenav = () => {
+const Basenav = ({ user }) => {
   return (
     <>
       <div className="container-sm-fluid " id="basenav">
         <div className="card " style={{ marginTop: "60px" }}>
           <div className="text-center p-1">
             <img
-              src="https://cdn.dribbble.com/users/3293507/screenshots/14667603/media/d8cbe035a61f64afdf6deabca5182842.jpg?compress=1&resize=400x300&vertical=top"
+              src={user}
               alt="profile"
-              style={{ width: "120px", height: "90px", borderRadius: "70%" }}
+              height={100}
+              width={100}
             />
           </div>
           <div className="text-center">
@@ -17,7 +18,7 @@ const Basenav = () => {
               <a href="#investment">My Investment</a>
               <a href="#fundgator">By Fundgator</a>
               <a href="#watchlist">My Watchlist</a>
-              <a href="#post">Add Post</a>
+              <a href="#poost">Add Post</a>
               <a href="#raisefund">Raise Fund</a>
             </div>
           </div>

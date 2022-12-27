@@ -2,6 +2,11 @@ const express = require("express");
 const router = express.Router();
 const Category = require("../../models/categoryModel");
 const userAuth = require("../../middlewares/auth-guard");
+const User = require("../../models/userModel");
+const uploadCategoryImage =
+  require("../../middlewares/uploader").uploadCategoryImage;
+
+const DOMAIN = "http://127.0.0.1:5000/";
 
 /**
  * @description To Create Category
@@ -13,6 +18,17 @@ const userAuth = require("../../middlewares/auth-guard");
 router.post("/api/create-category", userAuth, async (req, res) => {
   try {
     let { body } = req;
+
+    
+     
+
+    let user = await User.findOne({ _id: req.user._id });
+    if (!user.admin) {
+      return res.status(400).json({
+        success: false,
+        message: "You are not an admin",
+      });
+    }
     let category = await Category.findOne({ name: body.name });
     if (category) {
       return res.status(400).json({
@@ -25,7 +41,7 @@ router.post("/api/create-category", userAuth, async (req, res) => {
       ...body,
     });
     await category.save();
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       message: "Category created successfully",
       category,
@@ -105,5 +121,60 @@ router.delete("/api/delete-category/:id", userAuth, async (req, res) => {
     });
   }
 });
+
+/**
+ * @description To Get All Categories
+ * @api /admin/api/get-all-categories
+ * @access private
+ * @type GET
+ * */
+
+router.get("/api/get-all-categories", userAuth, async (req, res) => {
+  try {
+    let categories = await Category.find();
+    res.status(200).json({
+      success: true,
+      message: "Categories fetched successfully",
+      categories,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
+/**
+ * @description To Get Categories By Id
+ * @api /admin/api/get-category/:id
+ * @access private
+ * @type GET
+ * */
+
+router.get("/api/get-category/:id", userAuth, async (req, res) => {
+  try {
+    let category = await Category.findOne({ _id: req.params.id });
+    if (!category) {
+      return res.status(400).json({
+        success: false,
+        message: "Category not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Category fetched successfully",
+      category,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
 
 module.exports = router;

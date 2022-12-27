@@ -5,6 +5,14 @@ const ReasonSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "company",
   },
+  category:{
+    type:Schema.Types.ObjectId,
+    ref:"category"
+  },
+  tag:[{
+    type:Schema.Types.ObjectId,
+    ref:"tag"
+  }],
 
   reason0: {
     type: String,
@@ -54,15 +62,14 @@ const ReasonSchema = new Schema({
     type: String,
     required: false,
   },
-  description: {
-    type: String,
-    },
+  amount: {
+    type: Number,
+  },
   teams: [
     {
       image: {
         type: String,
-        default:
-          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
+        
       },
       name: {
         type: String,
