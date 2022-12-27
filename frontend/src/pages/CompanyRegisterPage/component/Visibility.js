@@ -61,6 +61,7 @@ const Visiblity = ({
               handleChange={handleChange}
               clearfile={clearfile}
               filesubmit={onregistrationcard}
+              values={values.registration_card}
             />
             <UploadField
               label={"PAN card"}
@@ -69,6 +70,7 @@ const Visiblity = ({
               handleChange={handleChange}
               clearfile={clearfile}
               filesubmit={onpancard}
+              values={values.pan_card}
             />
           </div>
 
@@ -80,6 +82,7 @@ const Visiblity = ({
               handleChange={handleChange}
               clearfile={clearfile}
               filesubmit={oncitizenfrontcard}
+              values={values.citizenship_front}
             />
             <UploadField
               label={"Citizenship card(Back side)"}
@@ -88,6 +91,7 @@ const Visiblity = ({
               handleChange={handleChange}
               clearfile={clearfile}
               filesubmit={oncitizenbackcard}
+              values={values.citizenship_back}
             />
           </div>
         </form>

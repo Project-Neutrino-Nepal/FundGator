@@ -87,19 +87,6 @@ const AskQuestion = () => {
 
   return (
     <Wrapper>
-      <div className="comment-form">
-
-        <ToastContainer />    
-        <input 
-        onChange={handleChange}
-        value={question}
-        type="text" placeholder="Ask a question" />
-        <button
-          type="submit"
-        
-        >Submit</button>
-      </div>
-
       <section className="select-input">
         <div className="comment-list">
           {questions.map((item,index) => (

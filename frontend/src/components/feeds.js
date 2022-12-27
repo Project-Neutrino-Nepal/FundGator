@@ -1,6 +1,6 @@
 import axios from "axios";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
@@ -10,6 +10,13 @@ import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal.js";
 const Feeds = ({ feed }) => {
   const [modalShow, setModalShow] = React.useState(false);
   const [show, setShow] = useState(false);
+  const [userId, setUserId] = useState("");
+
+  const config = {
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
 
   let time = new Date(feed.date).toLocaleDateString();
   // calculate min difference
@@ -46,6 +53,22 @@ const Feeds = ({ feed }) => {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState(feed.comments.length);
 
+  // get current user id
+  const currentUser = localStorage.getItem("id");
+
+  const getUser = async () => {
+    await axios
+      .get("http://localhost:5000/profile/api/my-profile", config)
+      .then((res) => {
+        let program = res.data.profile;
+        setUserId(program.user);
+      });
+  };
+
+  useEffect(() => {
+    getUser();
+    setIsLiked(feed.likes.includes(currentUser));
+  }, [currentUser, feed.likes, getUser]);
   // like handler to like and unlike post and update likes count and isLiked state
 
   const likeHandler = async () => {
@@ -98,6 +121,7 @@ const Feeds = ({ feed }) => {
     }
     setComments(comments + 1);
   };
+
   return (
     <>
       <div className="row d-flex align-items-center justify-content-center mb-2">
@@ -122,31 +146,22 @@ const Feeds = ({ feed }) => {
               <div className="d-flex flex-row mt-1 ellipsis">
                 <small className="me-2">{time} &nbsp;</small>
 
-                <div className="dropdown">
-                  <a
-                    href="#"
-                    className="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                    id="dropdownUser1"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <BsThreeDots size={20} color="#111" />
-                  </a>
-                  <ul
-                    className="dropdown-menu dropdown-menu-dark text-small shadow"
-                    aria-labelledby="dropdownUser1"
-                  >
-                    {/* <li
-                      className="dropdown-item"
-                      aria-current="page"
-                      data-bs-toggle="modal"
-                      data-bs-target="#exampleModal2"
-                                           
-
+                {userId === feed.user && (
+                  <div className="dropdown">
+                    <a
+                      href="#"
+                      className="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                      id="dropdownUser1"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
                     >
-                      Edit                     
-                    
-                    </li> */}
+                      <BsThreeDots size={20} color="#111" />
+                    </a>
+                    <ul
+                      className="dropdown-menu dropdown-menu-dark text-small shadow"
+                      aria-labelledby="dropdownUser1"
+                    >
+                     
                     <li
                       className="dropdown-item"
                       style={{ cursor: "pointer" }}
@@ -160,31 +175,47 @@ const Feeds = ({ feed }) => {
                       />
                     </li>
 
-                    <li>
+                    {/* <li>
                       <Link
                         className="dropdown-item"
-                        aria-current="page"
-                        to="deletepost"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setShow(true)}
                       >
-                        Delete
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
+                        Edit
+                        <EditPost
+                          show={show}
+                          id={feed._id}
+                          onHide={() => setShow(false)}
+                        />
+                      </li>
 
-                {/* <div className="info">
-                <div className="option">
-                  <BsThreeDots
-                    className="icon"
-                    onClick={() => setShow((show) => !show)}
-                  />
+                      <li>
+                        <Link
+                          className="dropdown-item"
+                          style={{ cursor: "pointer" }}
+                          onClick={() => setShow(true)}
+                        >
+                          Edit
+                          <EditPost
+                            show={show}
+                            id={feed._id}
+                            onHide={() => setModalShow(false)}
+                          />
+                        </Link>
+                      </li> */}
 
-                  <div className={show ? "options" : "options active"}>
-                    <span>edit</span>
-                    <span>delete</span>
+                      <li>
+                        <Link
+                          className="dropdown-item"
+                          aria-current="page"
+                          to="deletepost"
+                        >
+                          Delete
+                        </Link>
+                      </li>
+                    </ul>
                   </div>
-                </div>
-                </div> */}
+                )}
               </div>
             </div>
             <div className="p-2 ">
@@ -197,7 +228,12 @@ const Feeds = ({ feed }) => {
                 <span className="btn btn-border-0 text-primary "></span>
               </p>
             </div>
-            <img src={feed.image} className="img-fluid" />
+            {feed.image ? (
+              <img src={feed.image} className="img-fluid" alt="" />
+            ) : (
+              <video src={feed.video} className="img-fluid" controls={true} />
+            )}
+
             <div className="p-1">
               <span
                 className="fs-6 ms-2 "

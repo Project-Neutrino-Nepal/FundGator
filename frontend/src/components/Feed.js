@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Feeds from "./feeds";
-import Editpost from "./Editpost"
+import Editpost from "./Editpostcard"
 const Feed = () => {
   const config = {
     headers: {
@@ -25,7 +25,7 @@ const Feed = () => {
     } catch (err) {
       console.log(err);
     }
-  }, );
+  },[config] );
   if (loading) {
     return <div>...Loading</div>;
   }

@@ -8,6 +8,7 @@ const UploadField = ({
   handleChange,
   clearfile,
   filesubmit,
+  values,
 }) => {
   const [preview, setPreview] = useState("");
   const filestate = useRef(null);
@@ -34,7 +35,7 @@ const UploadField = ({
   };
 
   return (
-    <Wrapper className="d-flex flex-column gap-4 w-100 border border-1 p-2 position-relative">
+    <Wrapper className="d-flex flex-column gap-4 w-100 border border-1 p-2 position-relative"  >
       <p>{label}</p>
       <input
         type="file"
@@ -44,6 +45,12 @@ const UploadField = ({
         style={{ "font-size": 10 }}
         onChange={(e) => fileSelection(e)}
         ref={filestate}
+      />
+      <img
+        className="position-absolute top-0 start-0 p-1 w-100  h-75"
+        style={{ zIndex: "2"}}
+        src={values}
+        alt=""
       />
       {preview ? (
         <IoMdCloseCircle
@@ -59,7 +66,7 @@ const UploadField = ({
           alt=""
           className="position-absolute top-0 start-0 w-100 h-100 "
         />
-      ) : null}
+      ) :null}
       {!preview ? (
         <label
           htmlFor={name}
