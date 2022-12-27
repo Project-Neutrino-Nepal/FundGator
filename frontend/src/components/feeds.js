@@ -161,7 +161,6 @@ const Feeds = ({ feed }) => {
                       className="dropdown-menu dropdown-menu-dark text-small shadow"
                       aria-labelledby="dropdownUser1"
                     >
-<<<<<<< HEAD
                      
                     <li
                       className="dropdown-item"
@@ -178,9 +177,6 @@ const Feeds = ({ feed }) => {
 
                     {/* <li>
                       <Link
-=======
-                      <li
->>>>>>> db3e7b9cf37a20ca037f457314e05b0313de1d00
                         className="dropdown-item"
                         style={{ cursor: "pointer" }}
                         onClick={() => setShow(true)}
