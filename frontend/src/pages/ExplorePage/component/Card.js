@@ -39,7 +39,7 @@ const Card = ({
 
   return (
     <Wrapper className="ca" key={_id}>
-      <div className="cardy">
+      <div className="cardy shadow shadow-sm">
         <img src={image} alt="" />
 
         <div className="info-container">
