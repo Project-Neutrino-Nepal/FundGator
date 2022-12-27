@@ -41,7 +41,7 @@ function ResetPassword() {
         <form className=" container col-lg-8  bg-white  mt-5 " noValidate>
           <h1 className="fw-bolder pt-5">Don't Worry</h1>
           <p className=" text-black-50  fw-bold ">
-            We are here to help you recover your password. Enter he email
+            We are here to help you recover your password. Enter the email
             address you used when you joined and we'll send you instructions to
             reset your password.
           </p>
