@@ -326,4 +326,41 @@ router.get("/api/get-users", userAuth, async (req, res) => {
   return res.status(200).json(userExists);
 });
 
+/**
+ * @description To Get Other users profile by id in params
+ * @api /users/api/get-other-profiles
+ * @access PRIVATE
+ * @type GET
+ * */
+
+router.get("/api/get-other-profiles/:id", userAuth, async (req, res) => {
+  try {
+    let user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+    let profile = await Profile.findOne({ user: req.params.id });
+    if (!profile) {
+      return res.status(400).json({
+        success: false,
+        message: "No profile found.",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Profile fetched successfully.",
+      profile,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
 module.exports = router;

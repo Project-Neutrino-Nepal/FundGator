@@ -80,7 +80,6 @@ router.put(
     try {
       let { name } = req.params;
       let { file } = req;
-      console.log(file);
       if (file === undefined || file === null) {
         filename = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
       } else {
@@ -97,99 +96,6 @@ router.put(
         { name: name, user: req.user._id },
         {
           company_video: filename,
-        },
-        { new: true }
-      );
-
-      res.status(200).json({
-        success: true,
-        message: "Video uploaded successfully",
-        company,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({
-        success: false,
-        message: "Internal server error",
-      });
-    }
-  }
-);
-
-/**
- * @description To update company to add document of the company using company name as params
- * @api /company/api/multipleimages/:name
- * @access PRIVATE
- * @type PUT
- * */
-router.put(
-  "/api/multipleimages/:name",
-  userAuth,
-  uploadCompanyImage.fields([
-    { name: "registration_card", maxCount: 1 },
-    { name: "pan_card", maxCount: 1 },
-    { name: "citizenship_front", maxCount: 1 },
-    { name: "citizenship_back", maxCount: 1 },
-  ]),
-  async (req, res) => {
-    try {
-      let { name } = req.params;
-      let { body } = req;
-      let registration_card = body.registration_card;
-      let pan_card = body.pan_card;
-      let citizenship_front = body.citizenship_front;
-      let citizenship_back = body.citizenship_back;
-      let content = body.content;
-      console.log(
-        registration_card,
-        pan_card,
-        citizenship_front,
-        citizenship_back,
-        content
-      );
-      let file = req.files.registration_card[0];
-      let file1 = req.files.pan_card[0];
-      let file2 = req.files.citizenship_front[0];
-      let file3 = req.files.citizenship_back[0];
-
-      if (file === undefined || file === null) {
-        filename = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
-      } else {
-        filename = DOMAIN + "uploads/company-images/" + file.filename;
-      }
-      if (file1 === undefined || file1 === null) {
-        filename1 = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
-      } else {
-        filename1 = DOMAIN + "uploads/company-images/" + file1.filename;
-      }
-      if (file2 === undefined || file2 === null) {
-        filename2 = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
-      } else {
-        filename2 = DOMAIN + "uploads/company-images/" + file2.filename;
-      }
-      if (file3 === undefined || file3 === null) {
-        filename3 = DOMAIN + "uploads/assets/" + "default_companyVideo.mp4";
-      } else {
-        filename3 = DOMAIN + "uploads/company-images/" + file3.filename;
-      }
-
-      let company = await Company.findOne({ name: name, user: req.user._id });
-      if (!company) {
-        return res.status(400).json({
-          success: false,
-          message: "Company not found",
-        });
-      }
-
-      company = await Company.findOneAndUpdate(
-        { name: name, user: req.user._id },
-        {
-          registration_card: filename,
-          pan_card: filename1,
-          citizenship_front: filename2,
-          citizenship_back: filename3,
-
-          $set: body,
         },
         { new: true }
       );
@@ -228,7 +134,6 @@ router.put(
     try {
       let { name } = req.params;
       let { body } = req;
-      console.log(req.files.registration_card);
 
       let company = await Company.findOne({ name: name, user: req.user._id });
       if (!company) {
@@ -237,6 +142,10 @@ router.put(
           message: "Company not found",
         });
       }
+      let companyName = await Company.findOne({ name: name });
+
+      let companyId = companyName._id;
+      let reason = await Reason.findOne({ company: companyId });
 
       filesLength = JSON.stringify(req.files).length;
 
@@ -244,6 +153,7 @@ router.put(
         company = await Company.findOneAndUpdate(
           { name: name, user: req.user._id },
           {
+            reasons: reason._id,
             content: body.content,
           },
           { new: true }
@@ -262,6 +172,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
+              reasons: reason._id,
               registration_card: filename,
               content: body.content,
             },
@@ -279,6 +190,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
+              reasons: reason._id,
               pan_card: filename,
               content: body.content,
             },
@@ -295,6 +207,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
+              reasons: reason._id,
               citizenship_front: filename,
               content: body.content,
             },
@@ -313,6 +226,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
+              reasons: reason._id,
               citizenship_back: filename,
               content: body.content,
             },
@@ -333,6 +247,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
+              reasons: reason._id,
               registration_card: filename,
               pan_card: filename1,
               content: body.content,
@@ -354,6 +269,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
+              reasons: reason._id,
               registration_card: filename,
               citizenship_front: filename1,
               content: body.content,
@@ -375,6 +291,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
+              reasons: reason._id,
               registration_card: filename,
               citizenship_back: filename1,
               content: body.content,
@@ -396,6 +313,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
+              reasons: reason._id,
               pan_card: filename,
               citizenship_front: filename1,
               content: body.content,
@@ -417,6 +335,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
+              reasons: reason._id,
               pan_card: filename,
               citizenship_back: filename1,
               content: body.content,
@@ -438,6 +357,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
+              reasons: reason._id,
               citizenship_front: filename,
               citizenship_back: filename1,
               content: body.content,
@@ -465,6 +385,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
+              reasons: reason._id,
               registration_card: filename,
               pan_card: filename1,
               citizenship_front: filename2,
@@ -493,6 +414,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
+              reasons: reason._id,
               registration_card: filename,
               pan_card: filename1,
               citizenship_back: filename2,
@@ -521,6 +443,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
+              reasons: reason._id,
               registration_card: filename,
               citizenship_front: filename1,
               citizenship_back: filename2,
@@ -549,6 +472,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
+              reasons: reason._id,
               pan_card: filename,
               citizenship_front: filename1,
               citizenship_back: filename2,
@@ -574,6 +498,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
+              reasons: reason._id,
               registration_card: filename,
               pan_card: filename1,
               citizenship_front: filename2,
@@ -633,42 +558,6 @@ router.put("/api/update-company/:id", userAuth, async (req, res) => {
     });
   }
 });
-
-/**
- * @description To update Company content by company name
- * @api /company/api/update-companycontent/:id
- * @access PRIVATE
- * @type PUT
- */
-
-// router.put("/api/update-companycontent/:id", userAuth, async (req, res) => {
-//   try {
-//     let { body } = req;
-//     let company = await Company.findOne({ name: req.params.id });
-//     if (!company) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Company not found",
-//       });
-//     }
-//     company = await Company.findOneAndUpdate(
-//       { name: req.params.id },
-//       { ...body },
-//       { new: true }
-//     );
-//     return res.status(200).json({
-//       success: true,
-//       message: "Company Updated Successfully",
-//       company,
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     return res.status(500).json({
-//       success: false,
-//       message: "An error occurred.",
-//     });
-//   }
-// });
 
 /**
  * @description To update Company image with company name by the company owner
@@ -792,6 +681,36 @@ router.get("/api/get-my-companies", userAuth, async (req, res) => {
 router.get("/api/get-company/:name", userAuth, async (req, res) => {
   try {
     let company = await Company.findOne({ name: req.params.name });
+
+    if (!company) {
+      return res.status(400).json({
+        success: false,
+        message: "No Companies Found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Companies Retrieved Successfully",
+      company,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+/**
+ * @description To get  company by user id
+ * @api /company/api/get-company-by-user/:id
+ * @access PRIVATE
+ * @type GET
+ */
+
+router.get("/api/get-company-by-user/:id", userAuth, async (req, res) => {
+  try {
+    let company = await Company.find({ user: req.params.id });
 
     if (!company) {
       return res.status(400).json({
