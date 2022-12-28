@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-import { Card, Col, message, Row, Typography } from "antd";
+import { Card, Col, Row, Typography } from "antd";
 
 import Echart from "../components/chart/EChart";
 import LineChart from "../components/chart/LineChart";
@@ -96,7 +96,7 @@ function Home() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/company/api/get-fund/", config)
+      .get("http://localhost:5000/company/api/funds/", config)
       .then((res) => {
         setAmountInvested(res.data.totalFund);
         setFundsGoal(res.data.totalAmount);
@@ -133,24 +133,6 @@ function Home() {
       bnb: "bnb2",
     },
   ];
-
-  const uploadProps = {
-    name: "file",
-    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-    headers: {
-      authorization: "authorization-text",
-    },
-    onChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
 
   return (
     <>
