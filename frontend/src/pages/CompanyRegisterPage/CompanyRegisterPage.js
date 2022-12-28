@@ -369,13 +369,6 @@ const CompanyRegisterPage = () => {
         toast.error("please upload videos ");
       }
     }
-    // else if (index === 4) {
-    //   if (videoupload) {
-    //     setActive(index);
-    //   } else {
-    //     toast.error("please upload videos ");
-    //   }
-    // }
   };
 
   const onregistrationcard = () => {
