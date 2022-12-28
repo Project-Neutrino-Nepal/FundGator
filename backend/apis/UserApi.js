@@ -11,6 +11,7 @@ const RegisterValidations = require("../validators/user-validators");
 const validator = require("../middlewares/validator-middleware");
 const userAuth = require("../middlewares/auth-guard");
 const Validator = require("../middlewares/validator-middleware");
+const ContactUs = require("../models/contactUsModel");
 
 /**
  * @description To create a new User Account
@@ -456,6 +457,41 @@ router.post("/api/reset-password-now", async (req, res) => {
     return res.status(500).json({
       sucess: false,
       message: "Something went wrong.",
+    });
+  }
+});
+
+/**
+ * @description To post users message to the admin
+ * @api /users/api/contact-us
+ * @access Public
+ * @type POST
+ */
+
+router.post("/api/contact-us", async (req, res) => {
+  try {
+    let { body } = req;
+    if (!body) {
+      return res.status(400).json({
+        success: false,
+        message: "Please enter your message.",
+      });
+    }
+
+    let contact = new ContactUs({
+      ...body,
+    });
+    await contact.save();
+    if (contact) {
+      return res.status(200).json({
+        success: true,
+        message: "Your message is sent to the admin.",
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
     });
   }
 });

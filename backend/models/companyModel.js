@@ -68,8 +68,12 @@ const CompanySchema = new Schema(
       type: Number,
       default: 0,
     },
-    content: {
+    content: {  
       type: String,
+    },
+    date: {
+      type: Date,
+      default: Date.now,
     },
     investors: [
       {

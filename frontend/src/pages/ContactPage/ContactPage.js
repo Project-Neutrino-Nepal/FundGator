@@ -1,8 +1,85 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Wrapper from "./wrapper/ContactPage";
+
 const ContactPage = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+
+  const validate = () => {
+    if (
+      firstName === "" &&
+      lastName === "" &&
+      email === "" &&
+      title === "" &&
+      message === ""
+    ) {
+      toast.error("All fields are Required.");
+      return false;
+    }
+    if (firstName === "") {
+      toast.error("First Name is required");
+    }
+    if (lastName === "") {
+      toast.error("Last Name is required");
+    }
+    if (email === "") {
+      toast.error("Email is required");
+    } else if (!regex.test(email)) {
+      toast.error("Email is invalid");
+      return false;
+    }
+    if (title === "") {
+      toast.error("Title is required");
+    }
+    if (message === "") {
+      toast.error("Message is required");
+    }
+    return true;
+  };
+
+  // form submit
+
+  const ContactAdmin = async (e) => {
+    // stop the form from reloading the page
+    e.preventDefault();
+
+    const data = {
+      f_name: firstName,
+      l_name: lastName,
+      email: email,
+      title: title,
+      message: message,
+    };
+    if (validate()) {
+      try {
+        await axios
+          .post("http://localhost:5000/users/api/contact-us", data)
+          .then((res) => {
+            if (res.data.success) {
+              toast.success(res.data.message);
+              setTimeout(function () {
+                window.location.href = "/";
+              }, 2000);
+            } else {
+              toast.error(res.data.message);
+            }
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <Wrapper className="  w-100 d-block d-lg-flex gap-5 justify-content-between px-3 ps-md-5 px-md-0 ">
+      <ToastContainer />
       <section className="left-container container col-lg-4  d-flex flex-column justify-content-center aligin-center ">
         <h1>Contact us</h1>
         <p className="fw-bold fs-6 text-dark">
@@ -20,6 +97,7 @@ const ContactPage = () => {
                 id="validationTooltip01"
                 placeholder="John"
                 required
+                onChange={(e) => setFirstName(e.target.value)}
               />
               <div class="valid-feedback">Looks good!</div>
               <div id="validationTooltip01" class="invalid-feedback">
@@ -36,6 +114,7 @@ const ContactPage = () => {
                 id="validationTooltip02"
                 placeholder="Doe"
                 required
+                onChange={(e) => setLastName(e.target.value)}
               />
               <div id="validationTooltip02" class="invalid-feedback">
                 Enter Your Last Name.
@@ -52,6 +131,7 @@ const ContactPage = () => {
               id="validationTooltip03"
               placeholder="name@example.com"
               required
+              onChange={(e) => setEmail(e.target.value)}
             />
             <div id="validationTooltip03" class="invalid-feedback">
               Enter Your Email.
@@ -59,17 +139,18 @@ const ContactPage = () => {
           </div>
           <div className="mb-3">
             <label for="validationTooltip04" className="form-label">
-              PhoneNumber
+              Title
             </label>
             <input
-              type="number"
+              type="text"
               className="form-control rounded-0"
               id="validationTooltip04"
-              placeholder="xxxxxxxxxx"
+              placeholder="Account Re-activation"
               required
+              onChange={(e) => setTitle(e.target.value)}
             />
             <div id="validationTooltip04" class="invalid-feedback">
-              Enter Your Phone Number.
+              Enter Title
             </div>
           </div>
           <div class="mb-3">
@@ -86,15 +167,17 @@ const ContactPage = () => {
               rows="3"
               placeholder="Enter Message"
               required
+              onChange={(e) => setMessage(e.target.value)}
             ></textarea>
             <div id="exampleFormControlTextarea5" class="invalid-feedback">
-              Enter Message
+              Enter Message/Query
             </div>
           </div>
           <button
             className="btn btn-primary fw-bold w-100 rounded-2 bg-opacity-50"
             style={{ backgroundColor: "#0A4FA3" }}
             type="submit"
+            onClick={ContactAdmin}
           >
             Send Message
           </button>

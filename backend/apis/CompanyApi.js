@@ -1102,6 +1102,54 @@ router.get("/api/get-watchlist", userAuth, async (req, res) => {
 });
 
 /**
+ * @description To get sum of all funds  invested and amount asked by a company
+ * @api /company/api/funds
+ * @access Private
+ * @type GET
+ */
+
+router.get("/api/funds", userAuth, async (req, res) => {
+  try {
+    let company = await Company.find();
+    if (!company) {
+      return res.status(400).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+    let totalFund = 0;
+    company.forEach((company) => {
+      totalFund += company.fund_raised;
+    });
+
+    // get total amount from Reason Model
+    let reason = await Reason.find();
+    if (!reason) {
+      return res.status(400).json({
+        success: false,
+        message: "Reason not found",
+      });
+    }
+    let totalAmount = 0;
+    reason.forEach((reason) => {
+      totalAmount += reason.amount;
+    });
+    return res.status(200).json({
+      success: true,
+      message: "Fund Retrieved Successfully",
+      totalFund,
+      totalAmount,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
  * @description To get sum of all funds invested in a company
  * @api /company/api/get-fund/
  * @access Private
@@ -1176,6 +1224,49 @@ router.get("/api/get-fund-by-company", userAuth, async (req, res) => {
       success: true,
       message: "Portfolios Retrieved Successfully",
       portfolios,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To get all amount with date from Reason Model and fund raised by company from Company Model with date
+ * @api /company/api/get-fund-by-date
+ * @access Private
+ * @type GET
+ */
+
+router.get("/api/get-fund-by-date", async (req, res) => {
+  try {
+    // get all amount with date from Reason Model
+    let reason = await Reason.find().select("amount date");
+    if (!reason) {
+      return res.status(400).json({
+        success: false,
+        message: "Reason not found",
+      });
+    }
+    // get fund raised by company if fund_raised is greater than 0 from Company Model with date
+    let company = await Company.find({ fund_raised: { $gt: 0 } }).select(
+      "fund_raised date"
+    );
+    if (!company) {
+      return res.status(400).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Fund Retrieved Successfully",
+      reason,
+      company,
     });
   } catch (err) {
     console.log(err);

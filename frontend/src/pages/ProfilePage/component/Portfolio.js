@@ -80,7 +80,7 @@ const Portfolio = () => {
     <>
       <div className="m-5">
         <h1>Overall Portfolio</h1>
-        <Chart options={options} series={series} type="line" width="950" />
+        <Chart options={options} series={series} type="line" width="1150" />
       </div>
       <div className="m-5">
         <h1>Portfolio By Category</h1>
@@ -93,7 +93,7 @@ const Portfolio = () => {
           }}
           series={series2}
           type="bar"
-          width="950"
+          width="1150"
         />
       </div>
     </>

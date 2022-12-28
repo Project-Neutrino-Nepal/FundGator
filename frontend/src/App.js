@@ -69,7 +69,7 @@ function App() {
           }
         ></Route>
         <Route path="/" element={<LandingPage />}></Route>
-        <Route path="/contactus" element={<ContactPage />}></Route>
+        <Route path="/contact-us" element={<ContactPage />}></Route>
 
         <Route
           path="/welcome"
