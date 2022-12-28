@@ -115,7 +115,6 @@ router.put(
   }
 );
 
-
 /**
  * @description To update add document pages in company
  * @api /company/api/update-document/:name
@@ -143,12 +142,10 @@ router.put(
           message: "Company not found",
         });
       }
-      let companyName= await Company.findOne({name:name});
+      let companyName = await Company.findOne({ name: name });
 
-      let companyId=companyName._id;
-      let reason=await Reason.findOne({company:companyId})
-
-
+      let companyId = companyName._id;
+      let reason = await Reason.findOne({ company: companyId });
 
       filesLength = JSON.stringify(req.files).length;
 
@@ -156,7 +153,7 @@ router.put(
         company = await Company.findOneAndUpdate(
           { name: name, user: req.user._id },
           {
-            reasons:reason._id,
+            reasons: reason._id,
             content: body.content,
           },
           { new: true }
@@ -175,7 +172,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
-              reasons:reason._id,
+              reasons: reason._id,
               registration_card: filename,
               content: body.content,
             },
@@ -193,7 +190,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
-              reasons:reason._id,
+              reasons: reason._id,
               pan_card: filename,
               content: body.content,
             },
@@ -210,7 +207,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
-              reasons:reason._id,
+              reasons: reason._id,
               citizenship_front: filename,
               content: body.content,
             },
@@ -229,7 +226,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
-              reasons:reason._id,
+              reasons: reason._id,
               citizenship_back: filename,
               content: body.content,
             },
@@ -250,7 +247,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
-              reasons:reason._id,
+              reasons: reason._id,
               registration_card: filename,
               pan_card: filename1,
               content: body.content,
@@ -272,7 +269,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
-              reasons:reason._id,
+              reasons: reason._id,
               registration_card: filename,
               citizenship_front: filename1,
               content: body.content,
@@ -294,7 +291,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
-              reasons:reason._id,
+              reasons: reason._id,
               registration_card: filename,
               citizenship_back: filename1,
               content: body.content,
@@ -316,7 +313,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
-              reasons:reason._id,
+              reasons: reason._id,
               pan_card: filename,
               citizenship_front: filename1,
               content: body.content,
@@ -338,7 +335,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
-              reasons:reason._id,
+              reasons: reason._id,
               pan_card: filename,
               citizenship_back: filename1,
               content: body.content,
@@ -360,7 +357,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
-              reasons:reason._id,
+              reasons: reason._id,
               citizenship_front: filename,
               citizenship_back: filename1,
               content: body.content,
@@ -388,7 +385,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
-              reasons:reason._id,
+              reasons: reason._id,
               registration_card: filename,
               pan_card: filename1,
               citizenship_front: filename2,
@@ -417,7 +414,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
-              reasons:reason._id,
+              reasons: reason._id,
               registration_card: filename,
               pan_card: filename1,
               citizenship_back: filename2,
@@ -446,7 +443,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
-              reasons:reason._id,
+              reasons: reason._id,
               registration_card: filename,
               citizenship_front: filename1,
               citizenship_back: filename2,
@@ -475,7 +472,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
-              reasons:reason._id,
+              reasons: reason._id,
               pan_card: filename,
               citizenship_front: filename1,
               citizenship_back: filename2,
@@ -501,7 +498,7 @@ router.put(
           company = await Company.findOneAndUpdate(
             { name: name, user: req.user._id },
             {
-              reasons:reason._id,
+              reasons: reason._id,
               registration_card: filename,
               pan_card: filename1,
               citizenship_front: filename2,
@@ -684,6 +681,36 @@ router.get("/api/get-my-companies", userAuth, async (req, res) => {
 router.get("/api/get-company/:name", userAuth, async (req, res) => {
   try {
     let company = await Company.findOne({ name: req.params.name });
+
+    if (!company) {
+      return res.status(400).json({
+        success: false,
+        message: "No Companies Found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Companies Retrieved Successfully",
+      company,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+/**
+ * @description To get  company by user id
+ * @api /company/api/get-company-by-user/:id
+ * @access PRIVATE
+ * @type GET
+ */
+
+router.get("/api/get-company-by-user/:id", userAuth, async (req, res) => {
+  try {
+    let company = await Company.find({ user: req.params.id });
 
     if (!company) {
       return res.status(400).json({

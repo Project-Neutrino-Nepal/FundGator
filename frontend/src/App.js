@@ -45,6 +45,7 @@ import Portfolio from "./components/Portfolio";
 import ResetPassword from "./pages/resetPassword";
 
 import './css/style.css';
+import UsersProfilePage from "./pages/UsersProfilePage/UsersProfilePage";
 
 function App() {
   return (
@@ -114,6 +115,14 @@ function App() {
           element={
             <ProtectedRoute>
               <UserProfilePage />
+            </ProtectedRoute>
+          }
+        ></Route>
+        <Route
+          path="/profile/:id"
+          element={
+            <ProtectedRoute>
+              <UsersProfilePage />
             </ProtectedRoute>
           }
         ></Route>

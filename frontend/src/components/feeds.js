@@ -1,11 +1,10 @@
 import axios from "axios";
 import moment from "moment";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import "../css/feeds.css";
-import EditPost from "./Editpostcard";
 import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal.js";
 const Feeds = ({ feed, changemodel, modelvalue }) => {
   const [modalShow, setModalShow] = React.useState(false);
@@ -119,7 +118,12 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
         <div className="col-md-7">
           <div className="card">
             <div className="d-flex justify-content-between p-2 px-3">
-              <div className="d-flex flex-row align-items-center">
+              <div
+                className="d-flex flex-row align-items-center btn"
+                onClick={() => {
+                  window.location.href = `/profile/${feed.user}`;
+                }}
+              >
                 <img
                   src={feed.profile.avatar}
                   width={50}
