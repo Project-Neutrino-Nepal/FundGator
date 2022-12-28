@@ -31,7 +31,6 @@ const UsersProfilePage = () => {
     axios
       .get("http://localhost:5000/profile/api/get-other-profiles/" + id, config)
       .then((res) => {
-        console.log(res.data.profile);
         let program = res.data.profile;
         setName(program.legal_name);
         setEmail(program.email);

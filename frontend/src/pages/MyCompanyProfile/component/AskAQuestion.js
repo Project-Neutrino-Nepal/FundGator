@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import commentlst from "../utils/commentlst";
 import SingleComment from "./SingleComment";
 import Wrapper from "../wrapper/AskAQuestion";
-const AskQuestion = () => {
+const AskQuestion = ({user}) => {
   const [question, setQuestion] = useState("");
  const [questions, setQuestions] = useState([]);
  const [profile, setProfile] = useState({});
@@ -91,7 +91,9 @@ const AskQuestion = () => {
         <div className="comment-list">
           {questions.map((item,index) => (
             <div key={index}>
-            <SingleComment profile={profile} item={item} />
+            <SingleComment profile={profile} 
+            users={user}
+            item={item} />
 
             </div>
           ))}
