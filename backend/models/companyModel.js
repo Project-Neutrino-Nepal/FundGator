@@ -15,7 +15,6 @@ const CompanySchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "reason",
     },
-
     verified: {
       type: Boolean,
       default: false,
@@ -68,7 +67,7 @@ const CompanySchema = new Schema(
       type: Number,
       default: 0,
     },
-    content: {  
+    content: {
       type: String,
     },
     date: {

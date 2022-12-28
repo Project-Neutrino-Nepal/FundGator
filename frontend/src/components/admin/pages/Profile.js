@@ -8,11 +8,8 @@ import {
   Col,
   Descriptions,
   List,
-  message,
-  Radio,
   Row,
   Switch,
-  Upload,
 } from "antd";
 
 import {
@@ -24,7 +21,6 @@ import {
 
 import axios from "axios";
 import BgProfile from "../assets/images/bg-profile.jpg";
-import profilavatar from "../assets/images/face-1.jpg";
 import convesionImg5 from "../assets/images/face-2.jpg";
 import convesionImg from "../assets/images/face-3.jpg";
 import convesionImg2 from "../assets/images/face-4.jpg";
@@ -72,7 +68,7 @@ function Profile() {
 
         setPreview({ ...image, preview: program.avatar });
       });
-  },[]);
+  }, []);
 
   // fetching company data from api thoruogh userid
   useEffect(() => {
@@ -359,15 +355,14 @@ function Profile() {
                 <p>{p.disciption}</p>
                 <Row gutter={[6, 0]} className="card-footer">
                   <Col span={12}>
-                    <Button type="button">View Company</Button>
-                  </Col>
-                  <Col span={12} className="text-right">
-                    <Avatar.Group className="avatar-chips">
-                      <Avatar size="small" src={profilavatar} />
-                      <Avatar size="small" src={convesionImg} />
-                      <Avatar size="small" src={convesionImg2} />
-                      <Avatar size="small" src={convesionImg3} />
-                    </Avatar.Group>
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        window.location.href = `/company/${p._id}`;
+                      }}
+                    >
+                      View Company
+                    </Button>
                   </Col>
                 </Row>
               </Card>
