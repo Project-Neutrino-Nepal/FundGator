@@ -6,7 +6,7 @@ import { BsCardImage } from "react-icons/bs";
 import { IoCloseCircleSharp, IoDocumentTextSharp } from "react-icons/io5";
 import { RiVideoFill } from "react-icons/ri";
 //import Feeds from "../DetailsPage/../../../components/feeds"
-const EditPost = ({id}) => {
+const EditPost = React.memo(({ item, model }) => {
   const [name, setName] = useState("");
   const [image, setPreview] = useState({
     preview:
@@ -14,16 +14,25 @@ const EditPost = ({id}) => {
     file: "",
   });
   const [preview, setPreviews] = useState({
-    img: "",
-    vid: "",
+    img: null,
+    vid: null,
     doc: "",
   });
   const [values, setValue] = useState({
     img: "",
     vid: "",
     doc: "",
-    description: "",
+    description: null,
   });
+
+  // useEffect(() => {
+  //   setPreview({
+  //     img: item.image,
+  //     vid: item.video,
+  //     description: item.text,
+  //   });
+  // }, [item]);
+
   const handleChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       setValue({ ...values, [e.target.name]: e.target.files[0] });
@@ -40,8 +49,26 @@ const EditPost = ({id}) => {
     if (e.target.files && e.target.files[0]) {
       let file = e.target.files[0];
       let blobURL = URL.createObjectURL(file);
-      handleChange(e);
+      setValue({
+        ...values,
+        [e.target.name]: e.target.files[0],
+        vid: "",
+      });
+
       setPreviews({ ...preview, [e.target.name]: blobURL });
+      e.target.value = null;
+    }
+  };
+
+  const vfileSelection = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      let file = e.target.files[0];
+      let blobURL = URL.createObjectURL(file);
+      setValue({ ...values, [e.target.name]: e.target.files[0], img: null });
+
+      setPreviews({ ...preview, [e.target.name]: blobURL, img: "" });
+
+      e.target.value = null;
     }
   };
   const config = {
@@ -50,32 +77,7 @@ const EditPost = ({id}) => {
       Authorization: localStorage.getItem("token"),
     },
   };
-  let [post, setEditpost] = useState([]);
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/posts/api/get-post/" + id, config)
-      .then((res) => {
-        let post = res.data.post;
-        setEditpost(post);
-        console.log(post);
-        setValue((values) => ({
-          ...values,
-          text: post.text,
-          img: post.image,
-          vid: post.video,
-          doc: post.doc,
-        }));
-        setPreviews((preview) => ({
-          ...preview,
-          img: post.image,
-          vid: post.video,
-          doc: post.doc,
-        }));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [id]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -93,7 +95,7 @@ const EditPost = ({id}) => {
     }
     axios
       .put(
-        `http://localhost:5000/posts/api/update-post/${id}`,
+        `http://localhost:5000/posts/api/update-post/${item._id}`,
         formData,
         config
       )
@@ -107,13 +109,17 @@ const EditPost = ({id}) => {
         toast.error("Something went wrong");
       });
   };
+
+  if (model === "model show") {
+    return <div></div>;
+  }
   return (
     <>
       <ToastContainer />
       <div
-        className="modal fade"
+        className={model}
         id="exampleModal2"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
@@ -133,12 +139,14 @@ const EditPost = ({id}) => {
             <div className="modal-body">
               <div className="d-flex align-items-center gap-2">
                 <img
-                  src={image.preview}
+                  src={item?.profile?.avatar}
                   className="rounded rounded-5 img-circle"
                   alt=""
                   style={{ width: 40, height: 40 }}
                 />
-                <span className="text-dark fw-bold">{name}</span>
+                <span className="text-dark fw-bold">
+                  {item?.profile?.legal_name}
+                </span>
               </div>
               <div className="form-floating">
                 <textarea
@@ -148,14 +156,18 @@ const EditPost = ({id}) => {
                   style={{ height: 100 }}
                   name="description"
                   onChange={handleChange}
-                  defaultValue={values.text}
+                  defaultValue={values.text ?? item.text}
                 ></textarea>
                 <label for="floatingTextarea2">Enter Description</label>
               </div>
               <div className="d-flex gap-2">
-                <div className={preview.img ? "position-relative " : "d-none"}>
+                <div
+                  className={
+                    preview.img ?? item?.image ? "position-relative " : "d-none"
+                  }
+                >
                   <img
-                    src={preview.img}
+                    src={preview.img ?? item?.image}
                     alt="preview"
                     height={100}
                     width={80}
@@ -168,9 +180,13 @@ const EditPost = ({id}) => {
                     onClick={() => clearpreview("img")}
                   />
                 </div>
-                <div className={preview.vid ? "position-relative " : "d-none"}>
+                <div
+                  className={
+                    preview.vid ?? item?.video ? "position-relative " : "d-none"
+                  }
+                >
                   <video
-                    src={preview.vid}
+                    src={preview.vid ?? item?.video}
                     alt=""
                     height={100}
                     width={80}
@@ -208,7 +224,7 @@ const EditPost = ({id}) => {
                     accept="video/*"
                     name="vid"
                     id="vid"
-                    onChange={fileSelection}
+                    onChange={vfileSelection}
                   />
                   <input type="file" accept="image/*" name="doc" id="doc" />
                 </div>
@@ -225,5 +241,5 @@ const EditPost = ({id}) => {
       </div>
     </>
   );
-};
+});
 export default EditPost;
