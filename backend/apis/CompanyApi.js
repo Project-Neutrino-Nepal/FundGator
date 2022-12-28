@@ -710,10 +710,14 @@ router.get("/api/get-company/:name", userAuth, async (req, res) => {
 
 router.get("/api/get-company-by-user/:id", userAuth, async (req, res) => {
   try {
-    let company = await Company.find({ user: req.params.id });
+    // only find verified companies
+    let company = await Company.find({
+      user: req.params.id,
+      verified: true,
+    });
 
     if (!company) {
-      return res.status(400).json({
+      return res.status(400).json({ 
         success: false,
         message: "No Companies Found",
       });
