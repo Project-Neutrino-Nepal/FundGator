@@ -298,7 +298,7 @@ const CompanyRegisterPage = () => {
         console.log(formData);
         axios
           .put(
-            "http://localhost:5000/company/api/multipleimages/" +
+            "http://localhost:5000/company/api/update-document/" +
               formvalue.companyname,
             formData,
             config
