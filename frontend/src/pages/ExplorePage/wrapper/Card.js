@@ -10,9 +10,10 @@ const Wrapper = styled.div`
 
     & > img {
       height: 300px;
-      object-fit: cover;
+      object-fit: fill;
+      object-position: center;
       width: 100%;
-      height: 45%;
+      height: 100%;
       position: absolute;
       top: 0;
     }

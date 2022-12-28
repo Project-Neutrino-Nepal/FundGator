@@ -29,6 +29,7 @@ import {
   ProtectedRoute,
   UserProfilePage,
   WelcomePage,
+  ContactPage
 } from "./pages";
 import EditCompanyPage from "./pages/CompanyRegisterPage/EditCompanyPage";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
@@ -42,6 +43,7 @@ import Tag from "./components/admin/pages/Tag";
 import Editpost from "./components/Editpostcard";
 import Portfolio from "./components/Portfolio";
 import ResetPassword from "./pages/resetPassword";
+
 import './css/style.css';
 
 function App() {
@@ -67,6 +69,8 @@ function App() {
           }
         ></Route>
         <Route path="/" element={<LandingPage />}></Route>
+        <Route path="/contactus" element={<ContactPage />}></Route>
+
         <Route
           path="/welcome"
           element={
