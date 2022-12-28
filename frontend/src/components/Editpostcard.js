@@ -122,10 +122,12 @@ const EditPost = ({ id, show, onHide }) => {
         // size="lg"
         // aria-labelledby="contained-modal-title-vcenter"
         // centered
+        backdrop="static"
+        keyboard={false}
       >
         {/* <div className="modal-dialog">
         <div className="modal-content"> */}
-        <div className="modal-header" >
+        <div className="modal-header">
           <h5 className="modal-title" id="exampleModalLabel">
             Edit post
           </h5>
@@ -134,9 +136,10 @@ const EditPost = ({ id, show, onHide }) => {
             className="btn-close"
             data-bs-dismiss="modal"
             aria-label="Close"
+            onClick={onHide}
           ></button>
         </div>
-       
+
         <div className="modal-body">
           <div className="d-flex align-items-center gap-2">
             <img
@@ -202,9 +205,8 @@ const EditPost = ({ id, show, onHide }) => {
               </label>
             </div>
             {/* <div className="d-none"> */}
-            <div  className="d-none">
+            <div className="d-none">
               <input
-                
                 type="file"
                 accept="image/*"
                 name="img"
@@ -218,7 +220,6 @@ const EditPost = ({ id, show, onHide }) => {
                 id="vid"
                 onChange={fileSelection}
               />
-              
             </div>
             <button
               className="btn mt-2 bg-dark bg-opacity-10 rounded-pill  "
@@ -228,7 +229,7 @@ const EditPost = ({ id, show, onHide }) => {
             </button>
           </div>
         </div>
-         {/* </div> 
+        {/* </div> 
          </div>  */}
       </Modal>
     </>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "../css/homepage.css";
@@ -12,6 +12,8 @@ import { RiVideoFill } from "react-icons/ri";
 import { Outlet } from "react-router-dom";
 
 const Homepage = () => {
+  const im = useRef(null);
+  const vi = useRef(null);
   const [name, setName] = useState("");
   const [skills, setSkills] = useState("");
   const [image, setPreview] = useState({
@@ -50,8 +52,23 @@ const Homepage = () => {
     if (e.target.files && e.target.files[0]) {
       let file = e.target.files[0];
       let blobURL = URL.createObjectURL(file);
-      handleChange(e);
-      setPreviews({ ...preview, [e.target.name]: blobURL });
+      setValue({ ...values, [e.target.name]: e.target.files[0], vid: "" });
+
+      setPreviews({ ...preview, [e.target.name]: blobURL, vid: "" });
+
+      e.target.value = null;
+    }
+  };
+
+  const vfileSelection = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      let file = e.target.files[0];
+      let blobURL = URL.createObjectURL(file);
+      setValue({ ...values, [e.target.name]: e.target.files[0], img: null });
+
+      setPreviews({ ...preview, [e.target.name]: blobURL, img: "" });
+
+      e.target.value = null;
     }
   };
 
@@ -71,8 +88,7 @@ const Homepage = () => {
         setSkills(program.skills);
         setPreview({ ...image, preview: program.avatar });
       });
-  }
-  ,[config, image]);
+  }, [config, image]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -113,7 +129,7 @@ const Homepage = () => {
       axios
         .get("http://localhost:5000/posts/api/get-all-posts", config)
         .then((res) => {
-          console.log(res?.data?.posts)
+          console.log(res?.data?.posts);
           setFeeds(res.data.posts);
         });
     } catch (err) {
@@ -365,7 +381,7 @@ const Homepage = () => {
                     accept="video/*"
                     name="vid"
                     id="vid"
-                    onChange={fileSelection}
+                    onChange={vfileSelection}
                   />
                   <input type="file" accept="image/*" name="doc" id="doc" />
                 </div>

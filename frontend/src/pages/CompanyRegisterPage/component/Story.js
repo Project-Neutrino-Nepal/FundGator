@@ -4,7 +4,7 @@ import upload from "../../../assets/image/uploadpic.svg";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-const Story = ({ handleChange,values, imgpreview, vdpreview }) => {
+const Story = ({ handleChange, values, imgpreview, vdpreview }) => {
   const [image, setPreview] = useState(null);
   const [vpreview, setvPreview] = useState(null);
   const { id } = useParams();
@@ -41,16 +41,14 @@ const Story = ({ handleChange,values, imgpreview, vdpreview }) => {
     }
   };
 
-   // fetch data from company model
-   const[imageupload,setImageupload]=useState()
-   useEffect(() => {
+  // fetch data from company model
+  const [imageupload, setImageupload] = useState();
+  useEffect(() => {
     axios
       .get("http://localhost:5000/company/api/get-company/" + id, config)
-      .then((res) => {  
-        
+      .then((res) => {
         let company = res.data.company;
-        setImageupload(company.image)
-         
+        setImageupload(company.image);
       });
   }, []);
 
@@ -62,7 +60,6 @@ const Story = ({ handleChange,values, imgpreview, vdpreview }) => {
       setvPreview(blobURL);
     }
   };
-
 
   return (
     <Wrapper className="form-content">
@@ -94,7 +91,11 @@ const Story = ({ handleChange,values, imgpreview, vdpreview }) => {
       <label htmlFor="video-file" className="vfile btn btn-primary">
         upload video
       </label>
-      {vpreview ? <video src={vpreview} controls></video> : <video src={values.videoupload} controls></video>}
+      {vpreview ? (
+        <video src={vpreview} controls></video>
+      ) : values ? (
+        <video src={values.videoupload} controls></video>
+      ) : null}
 
       <input
         type="file"

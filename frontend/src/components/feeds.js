@@ -7,11 +7,12 @@ import { Link } from "react-router-dom";
 import "../css/feeds.css";
 import EditPost from "./Editpostcard";
 import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal.js";
-const Feeds = ({ feed }) => {
+const Feeds = ({ feed, changemodel, modelvalue }) => {
   const [modalShow, setModalShow] = React.useState(false);
   const [show, setShow] = useState(false);
   const [userId, setUserId] = useState("");
-
+  const currentuser = localStorage.getItem("userInfo");
+  const loginuser = currentuser ? JSON.parse(currentuser) : null;
   const config = {
     headers: {
       Authorization: localStorage.getItem("token"),
@@ -56,19 +57,9 @@ const Feeds = ({ feed }) => {
   // get current user id
   const currentUser = localStorage.getItem("id");
 
-  const getUser = async () => {
-    await axios
-      .get("http://localhost:5000/profile/api/my-profile", config)
-      .then((res) => {
-        let program = res.data.profile;
-        setUserId(program.user);
-      });
-  };
-
   useEffect(() => {
-    getUser();
     setIsLiked(feed.likes.includes(currentUser));
-  }, [currentUser, feed.likes, getUser]);
+  }, [currentUser, feed.likes]);
   // like handler to like and unlike post and update likes count and isLiked state
 
   const likeHandler = async () => {
@@ -146,7 +137,7 @@ const Feeds = ({ feed }) => {
               <div className="d-flex flex-row mt-1 ellipsis">
                 <small className="me-2">{time} &nbsp;</small>
 
-                {userId === feed.user && (
+                {loginuser.user._id === feed.user && (
                   <div className="dropdown">
                     <a
                       href="#"
@@ -161,21 +152,23 @@ const Feeds = ({ feed }) => {
                       className="dropdown-menu dropdown-menu-dark text-small shadow"
                       aria-labelledby="dropdownUser1"
                     >
-                     
-                    <li
-                      className="dropdown-item"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => setShow(true)}
-                    >
-                      Edit
-                      <EditPost
+                      <li
+                        className="dropdown-item"
+                        style={{ cursor: "pointer" }}
+                        // onClick={() => setShow(true)}
+                        onClick={() => modelvalue(feed)}
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal2"
+                      >
+                        Edit
+                        {/* <EditPost
                         show={show}
                         id={feed._id}
                         onHide={() => setShow(false)}
-                      />
-                    </li>
+                      /> */}
+                      </li>
 
-                    {/* <li>
+                      {/* <li>
                       <Link
                         className="dropdown-item"
                         style={{ cursor: "pointer" }}
@@ -314,6 +307,7 @@ const Feeds = ({ feed }) => {
                               src={comment.profile.avatar}
                               width={40}
                               className="rounded-image"
+                              alt=""
                             />
                           </div>
                           <div className="d-flex flex-column ms-2">
