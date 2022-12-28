@@ -23,13 +23,13 @@ const Homepage = () => {
   });
 
   const [preview, setPreviews] = useState({
-    img: "",
-    vid: "",
+    imge: "",
+    vide: "",
     doc: "",
   });
   const [values, setValue] = useState({
-    img: "",
-    vid: "",
+    imge: "",
+    vide: "",
     doc: "",
     description: "",
   });
@@ -52,9 +52,9 @@ const Homepage = () => {
     if (e.target.files && e.target.files[0]) {
       let file = e.target.files[0];
       let blobURL = URL.createObjectURL(file);
-      setValue({ ...values, [e.target.name]: e.target.files[0], vid: "" });
+      setValue({ ...values, [e.target.name]: e.target.files[0], vide: "" });
 
-      setPreviews({ ...preview, [e.target.name]: blobURL, vid: "" });
+      setPreviews({ ...preview, [e.target.name]: blobURL, vide: "" });
 
       e.target.value = null;
     }
@@ -64,9 +64,9 @@ const Homepage = () => {
     if (e.target.files && e.target.files[0]) {
       let file = e.target.files[0];
       let blobURL = URL.createObjectURL(file);
-      setValue({ ...values, [e.target.name]: e.target.files[0], img: null });
+      setValue({ ...values, [e.target.name]: e.target.files[0], imge:"" });
 
-      setPreviews({ ...preview, [e.target.name]: blobURL, img: "" });
+      setPreviews({ ...preview, [e.target.name]: blobURL, imge: "" });
 
       e.target.value = null;
     }
@@ -93,14 +93,14 @@ const Homepage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("img", values.img);
-    formData.append("vid", values.vid);
+    formData.append("img", values.imge);
+    formData.append("vid", values.vide);
     formData.append("description", values.description);
-    if (!values.img && !values.vid && !values.description) {
+    if (!values.imge && !values.vide && !values.description) {
       toast.error("You can't post empty post");
       return;
     }
-    if (values.img && values.vid) {
+    if (values.imge && values.vide) {
       toast.error("You can only upload one file at a time");
       return;
     }
@@ -326,9 +326,9 @@ const Homepage = () => {
               </div>
 
               <div className="d-flex gap-2">
-                <div className={preview.img ? "position-relative " : "d-none"}>
+                <div className={preview.imge ? "position-relative " : "d-none"}>
                   <img
-                    src={preview.img}
+                    src={preview.imge}
                     alt=""
                     height={100}
                     width={80}
@@ -338,13 +338,13 @@ const Homepage = () => {
                     className="position-absolute top-0 end-0 fs-3 bg-white rounded-circle shadow shadow-sm"
                     name="img"
                     style={{ transform: "translate(9px , -9px) " }}
-                    onClick={() => clearpreview("img")}
+                    onClick={() => clearpreview("imge")}
                   />
                 </div>
 
-                <div className={preview.vid ? "position-relative " : "d-none"}>
+                <div className={preview.vide ? "position-relative " : "d-none"}>
                   <video
-                    src={preview.vid}
+                    src={preview.vide}
                     alt=""
                     height={100}
                     width={80}
@@ -353,17 +353,17 @@ const Homepage = () => {
                   <IoCloseCircleSharp
                     className="position-absolute top-0 end-0 fs-3 bg-white rounded-circle shadow shadow-sm "
                     style={{ transform: "translate(9px , -9px) " }}
-                    onClick={() => clearpreview("vid")}
+                    onClick={() => clearpreview("vide")}
                   />
                 </div>
               </div>
 
               <div className="d-flex justify-content-between align-items-center w-100">
                 <div className="d-flex fs-5 gap-2">
-                  <label htmlFor="img" className="pe-auto ">
+                  <label htmlFor="imge" className="pe-auto ">
                     <BsCardImage />
                   </label>
-                  <label htmlFor="vid">
+                  <label htmlFor="vide">
                     <RiVideoFill />
                   </label>
                 </div>
@@ -372,15 +372,15 @@ const Homepage = () => {
                   <input
                     type="file"
                     accept="image/*"
-                    name="img"
-                    id="img"
+                    name="imge"
+                    id="imge"
                     onChange={fileSelection}
                   />
                   <input
                     type="file"
                     accept="video/*"
-                    name="vid"
-                    id="vid"
+                    name="vide"
+                    id="vide"
                     onChange={vfileSelection}
                   />
                   <input type="file" accept="image/*" name="doc" id="doc" />
