@@ -240,9 +240,9 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
             </div>
             <div>
               {feed.image ? (
-                <img src={feed.image} className="img-fluid" alt="" />
+                <img src={feed.image}className="w-100" style = {{objectFit: "cover"}}  alt="" />
               ) : (
-                <video src={feed.video} className="img-fluid" controls={true} />
+                <video src={feed.video} className="w-100" style = {{objectFit: "cover"}}  controls={true} />
               )}
             </div>
 
