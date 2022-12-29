@@ -53,6 +53,12 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState(feed.comments.length);
 
+  const [comment, setComment] = useState(feed.comments.reverse().slice(0, 4));
+
+  function handleShowMore() {
+    setComment(feed.comments.slice(0, comment.length + 6));
+  }
+
   // get current user id
   const currentUser = localStorage.getItem("id");
 
@@ -115,9 +121,9 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
   return (
     <>
       <div className="row d-flex align-items-center justify-content-center mb-2">
-        <div className="col-md-7">
-          <div className="card">
-            <div className="d-flex justify-content-between p-2 px-3">
+        <div className="col-md-6">
+          <div className="card col-md-11">
+            <div className="d-flex justify-content-between p-2 px-1">
               <div
                 className="d-flex flex-row align-items-center btn"
                 onClick={() => {
@@ -131,8 +137,8 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
                   className="rounded-circle"
                   alt=""
                 />
-                <div className="d-flex flex-column ms-2">
-                  <span className="font-weight-bold">
+                <div className="d-flex flex-column ">
+                  <span className="font-weight-bold ms-2">
                     {feed.profile.legal_name}
                   </span>
                   <small className="text-primary">{feed.profile.skills}</small>
@@ -215,8 +221,8 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
                 )}
               </div>
             </div>
-            <div className="p-2 ">
-              <p align="justify">
+            <div className="p-2 ms-2">
+              <p align="justify ">
                 {feed.text
                   ? feed.text.length > 300
                     ? feed.text.substring(0, 300) + " ...... Read more"
@@ -225,11 +231,14 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
                 <span className="btn btn-border-0 text-primary "></span>
               </p>
             </div>
+            <div>
             {feed.image ? (
-              <img src={feed.image} className="img-fluid" alt="" />
+              <img  src={feed.image} className="img-fluid"   alt="" />
             ) : (
               <video src={feed.video} className="img-fluid" controls={true} />
             )}
+            </div>
+            
 
             <div className="p-1">
               <span
@@ -274,7 +283,10 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
                     <Link
                       className="btn btn-border-none"
                       onClick={() => {
-                        console.log("comment");
+                        document
+                          .getElementById("comment")
+                          .classList.toggle("d-none");
+                        document.getElementById("comment_text").focus();
                       }}
                     >
                       <i className="fa fa-comment "></i> &nbsp; comment
@@ -300,8 +312,8 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
               </div>
 
               <hr />
-              <div className="comments">
-                {feed.comments.map((comment) => {
+              <div id="comment" className="comments ms-2 ">
+                {comment.map((comment) => {
                   return (
                     <div className="mb-2">
                       <div className="d-flex justify-content-between">
@@ -331,9 +343,20 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
                     </div>
                   );
                 })}
+                {comment.length < feed.comments.reverse().length && (
+                  <div className="d-flex justify-content-center ">
+                    <Link
+                      className="btn btn-border-none text-primary"
+                      onClick={handleShowMore}
+                    >
+                      View more...
+                    </Link>
+                  </div>
+                )}
 
                 <div className="comment-input">
                   <input
+                    id="comment_text"
                     type="text"
                     className="form-control"
                     onChange={(e) => setCommentText(e.target.value)}
