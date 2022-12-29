@@ -119,7 +119,7 @@ function App() {
           }
         ></Route>
         <Route
-          path="/profile/:id"
+          path="/profiles/:id"
           element={
             <ProtectedRoute>
               <UsersProfilePage />

@@ -121,7 +121,7 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
               <div
                 className="d-flex flex-row align-items-center btn"
                 onClick={() => {
-                  window.location.href = `/profile/${feed.user}`;
+                  window.location.href = `/profiles/${feed.user}`;
                 }}
               >
                 <img
