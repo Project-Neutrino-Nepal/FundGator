@@ -8,7 +8,7 @@ import {
 } from "react-icons/ai";
 import { FaPlay, FaShare } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import khalticonfig from "../../components/Khalti/KhaltiConfig";
 import {
@@ -38,7 +38,7 @@ const MyCompanyProfile = () => {
     setplay((play) => !play);
     console.log(videoRef);
   };
-
+  const [user, setUser] = useState("");
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [video, setVideo] = useState("");
@@ -72,6 +72,7 @@ const MyCompanyProfile = () => {
       .get("http://localhost:5000/company/api/company/" + id, config)
       .then((res) => {
         let company = res.data.company;
+        setUser(company.user);
         setName(company.name);
         setImage(company.image);
         setVideo(company.company_video);
@@ -102,34 +103,11 @@ const MyCompanyProfile = () => {
         setWebsite(reasons.companylink);
         setFund_goal(reasons.amount);
         setTags(reasons.tag);
-        console.log(reasons);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-
-  // watchlist handler
-  const watchlistHandler = () => {
-    if (!localStorage.getItem("token")) {
-      toast.error("Please login to add to watchlist");
-      return;
-    }
-    axios
-      .put("http://localhost:5000/company/api/watchlist/" + id, id, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        toast.success(res.data.message);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err.response.data.message);
-      });
-  };
 
   return (
     <Wrapper>
@@ -167,13 +145,17 @@ const MyCompanyProfile = () => {
             <FaPlay className={!play ? "icon" : "d-none"} onClick={onplay} />
           </div>
         </section>
-        <section className="two">
-          <div className="edit">
-            <Link to={`/company/edit/${name}`}>
-              <button className="btn btn-primary">Edit</button>
-            </Link>
-          </div>
-        </section>
+        {user._id === JSON.parse(localStorage.getItem("userInfo")).user._id ? (
+          <section className="two">
+            <div className="edit">
+              <Link to={`/company/edit/${name}`}>
+                <button className="btn btn-primary">Edit</button>
+              </Link>
+            </div>
+          </section>
+        ) : (
+          console.log("not same user")
+        )}
         <section className="three">
           <div className="links">
             <Link>{website}</Link>
@@ -238,17 +220,24 @@ const MyCompanyProfile = () => {
           ) : null}
           {activeindex === 3 ? <Update /> : null}
           {activeindex === 4 ? <WhatInvestorSay /> : null}
-          {activeindex === 5 ? <AskAQuestion /> : null}
+          {activeindex === 5 ? <AskAQuestion
+          user = {user}
+          
+           /> : null}
         </section>
       </div>
       <div className="right-container">
-        <section className="two">
-          <div className="edit">
-            <Link to={`/company/edit/${name}`}>
-              <button className="btn btn-primary">Edit</button>
-            </Link>
-          </div>
-        </section>
+        {user._id === JSON.parse(localStorage.getItem("userInfo")).user._id ? (
+          <section className="two">
+            <div className="edit">
+              <Link to={`/company/edit/${name}`}>
+                <button className="btn btn-primary">Edit</button>
+              </Link>
+            </div>
+          </section>
+        ) : (
+          console.log("not same user")
+        )}
       </div>
     </Wrapper>
   );

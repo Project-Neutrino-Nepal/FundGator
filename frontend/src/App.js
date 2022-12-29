@@ -45,6 +45,7 @@ import Portfolio from "./components/Portfolio";
 import ResetPassword from "./pages/resetPassword";
 
 import './css/style.css';
+import UsersProfilePage from "./pages/UsersProfilePage/UsersProfilePage";
 
 function App() {
   return (
@@ -69,7 +70,7 @@ function App() {
           }
         ></Route>
         <Route path="/" element={<LandingPage />}></Route>
-        <Route path="/contactus" element={<ContactPage />}></Route>
+        <Route path="/contact-us" element={<ContactPage />}></Route>
 
         <Route
           path="/welcome"
@@ -114,6 +115,14 @@ function App() {
           element={
             <ProtectedRoute>
               <UserProfilePage />
+            </ProtectedRoute>
+          }
+        ></Route>
+        <Route
+          path="/profile/:id"
+          element={
+            <ProtectedRoute>
+              <UsersProfilePage />
             </ProtectedRoute>
           }
         ></Route>

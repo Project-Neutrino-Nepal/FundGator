@@ -1,17 +1,17 @@
 import axios from "axios";
 import moment from "moment";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import "../css/feeds.css";
-import EditPost from "./Editpostcard";
 import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal.js";
-const Feeds = ({ feed }) => {
+const Feeds = ({ feed, changemodel, modelvalue }) => {
   const [modalShow, setModalShow] = React.useState(false);
   const [show, setShow] = useState(false);
   const [userId, setUserId] = useState("");
-
+  const currentuser = localStorage.getItem("userInfo");
+  const loginuser = currentuser ? JSON.parse(currentuser) : null;
   const config = {
     headers: {
       Authorization: localStorage.getItem("token"),
@@ -53,22 +53,18 @@ const Feeds = ({ feed }) => {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState(feed.comments.length);
 
+  const [comment, setComment] = useState(feed.comments.reverse().slice(0, 4));
+
+  function handleShowMore() {
+    setComment(feed.comments.slice(0, comment.length + 6));
+  }
+
   // get current user id
   const currentUser = localStorage.getItem("id");
 
-  const getUser = async () => {
-    await axios
-      .get("http://localhost:5000/profile/api/my-profile", config)
-      .then((res) => {
-        let program = res.data.profile;
-        setUserId(program.user);
-      });
-  };
-
   useEffect(() => {
-    getUser();
     setIsLiked(feed.likes.includes(currentUser));
-  }, [currentUser, feed.likes, getUser]);
+  }, [currentUser, feed.likes]);
   // like handler to like and unlike post and update likes count and isLiked state
 
   const likeHandler = async () => {
@@ -125,10 +121,15 @@ const Feeds = ({ feed }) => {
   return (
     <>
       <div className="row d-flex align-items-center justify-content-center mb-2">
-        <div className="col-md-7">
-          <div className="card">
-            <div className="d-flex justify-content-between p-2 px-3">
-              <div className="d-flex flex-row align-items-center">
+        <div className="col-md-6">
+          <div className="card col-md-11">
+            <div className="d-flex justify-content-between p-2 px-1">
+              <div
+                className="d-flex flex-row align-items-center btn"
+                onClick={() => {
+                  window.location.href = `/profile/${feed.user}`;
+                }}
+              >
                 <img
                   src={feed.profile.avatar}
                   width={50}
@@ -136,8 +137,8 @@ const Feeds = ({ feed }) => {
                   className="rounded-circle"
                   alt=""
                 />
-                <div className="d-flex flex-column ms-2">
-                  <span className="font-weight-bold">
+                <div className="d-flex flex-column ">
+                  <span className="font-weight-bold ms-2">
                     {feed.profile.legal_name}
                   </span>
                   <small className="text-primary">{feed.profile.skills}</small>
@@ -146,7 +147,7 @@ const Feeds = ({ feed }) => {
               <div className="d-flex flex-row mt-1 ellipsis">
                 <small className="me-2">{time} &nbsp;</small>
 
-                {userId === feed.user && (
+                {loginuser.user._id === feed.user && (
                   <div className="dropdown">
                     <a
                       href="#"
@@ -161,21 +162,23 @@ const Feeds = ({ feed }) => {
                       className="dropdown-menu dropdown-menu-dark text-small shadow"
                       aria-labelledby="dropdownUser1"
                     >
-                     
-                    <li
-                      className="dropdown-item"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => setShow(true)}
-                    >
-                      Edit
-                      <EditPost
+                      <li
+                        className="dropdown-item"
+                        style={{ cursor: "pointer" }}
+                        // onClick={() => setShow(true)}
+                        onClick={() => modelvalue(feed)}
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal2"
+                      >
+                        Edit
+                        {/* <EditPost
                         show={show}
                         id={feed._id}
                         onHide={() => setShow(false)}
-                      />
-                    </li>
+                      /> */}
+                      </li>
 
-                    {/* <li>
+                      {/* <li>
                       <Link
                         className="dropdown-item"
                         style={{ cursor: "pointer" }}
@@ -218,8 +221,8 @@ const Feeds = ({ feed }) => {
                 )}
               </div>
             </div>
-            <div className="p-2 ">
-              <p align="justify">
+            <div className="p-2 ms-2">
+              <p align="justify ">
                 {feed.text
                   ? feed.text.length > 300
                     ? feed.text.substring(0, 300) + " ...... Read more"
@@ -228,11 +231,14 @@ const Feeds = ({ feed }) => {
                 <span className="btn btn-border-0 text-primary "></span>
               </p>
             </div>
+            <div>
             {feed.image ? (
-              <img src={feed.image} className="img-fluid" alt="" />
+              <img  src={feed.image} className="img-fluid"   alt="" />
             ) : (
               <video src={feed.video} className="img-fluid" controls={true} />
             )}
+            </div>
+            
 
             <div className="p-1">
               <span
@@ -277,7 +283,10 @@ const Feeds = ({ feed }) => {
                     <Link
                       className="btn btn-border-none"
                       onClick={() => {
-                        console.log("comment");
+                        document
+                          .getElementById("comment")
+                          .classList.toggle("d-none");
+                        document.getElementById("comment_text").focus();
                       }}
                     >
                       <i className="fa fa-comment "></i> &nbsp; comment
@@ -303,8 +312,8 @@ const Feeds = ({ feed }) => {
               </div>
 
               <hr />
-              <div className="comments">
-                {feed.comments.map((comment) => {
+              <div id="comment" className="comments ms-2 ">
+                {comment.map((comment) => {
                   return (
                     <div className="mb-2">
                       <div className="d-flex justify-content-between">
@@ -314,6 +323,7 @@ const Feeds = ({ feed }) => {
                               src={comment.profile.avatar}
                               width={40}
                               className="rounded-image"
+                              alt=""
                             />
                           </div>
                           <div className="d-flex flex-column ms-2">
@@ -333,9 +343,20 @@ const Feeds = ({ feed }) => {
                     </div>
                   );
                 })}
+                {comment.length < feed.comments.reverse().length && (
+                  <div className="d-flex justify-content-center ">
+                    <Link
+                      className="btn btn-border-none text-primary"
+                      onClick={handleShowMore}
+                    >
+                      View more...
+                    </Link>
+                  </div>
+                )}
 
                 <div className="comment-input">
                   <input
+                    id="comment_text"
                     type="text"
                     className="form-control"
                     onChange={(e) => setCommentText(e.target.value)}

@@ -298,7 +298,7 @@ const CompanyRegisterPage = () => {
         console.log(formData);
         axios
           .put(
-            "http://localhost:5000/company/api/multipleimages/" +
+            "http://localhost:5000/company/api/update-document/" +
               formvalue.companyname,
             formData,
             config
@@ -369,13 +369,6 @@ const CompanyRegisterPage = () => {
         toast.error("please upload videos ");
       }
     }
-    // else if (index === 4) {
-    //   if (videoupload) {
-    //     setActive(index);
-    //   } else {
-    //     toast.error("please upload videos ");
-    //   }
-    // }
   };
 
   const onregistrationcard = () => {

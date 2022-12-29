@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Wrapper from "../wrapper/SingleComment";
 
-const SingleComment = ({ item, profile }) => {
+const SingleComment = ({ item, profile, users }) => {
   const [show, setShow] = useState(false);
   const [reply, setReply] = useState("");
 
@@ -51,7 +51,6 @@ const SingleComment = ({ item, profile }) => {
         console.log(res);
         toast.success("Reply posted successfully");
         setLoadReply(false);
-       
       })
       .catch((err) => {
         console.log(err);
@@ -64,21 +63,14 @@ const SingleComment = ({ item, profile }) => {
 
   const openReply = () => {
     setLoadReply(true);
-   
   };
-
-  
- 
 
   return (
     <Wrapper>
       <Wrapper>
         <div className="info">
           <div className="user-img">
-            <img
-              src={user.avatar}
-              alt=""
-            />
+            <img src={user.avatar} alt="" />
             <span>{user.name}</span>
             <div className="comment">
               <p
@@ -93,25 +85,23 @@ const SingleComment = ({ item, profile }) => {
               </p>
             </div>
           </div>
+          {
+            // if user is not the owner of the company, don't show the reply button
 
-          
+            users._id === item.user && (
+              <div className="option">
+                <BsThreeDots
+                  className="icon"
+                  onClick={() => setShow((show) => !show)}
+                />
 
-          
-
-          <div className="option">
-            <BsThreeDots
-              className="icon"
-              onClick={() => setShow((show) => !show)}
-            />
-
-            <div className={show ? "options" : "options active"}>
-              <span onClick={openReply}>reply</span>
-              
-            </div>
-          </div>
-          
+                <div className={show ? "options" : "options active"}>
+                  <span onClick={openReply}>reply</span>
+                </div>
+              </div>
+            )
+          }
         </div>
-  
 
         <section>
           <div
@@ -130,11 +120,11 @@ const SingleComment = ({ item, profile }) => {
                 margin: "0px 0px 0px 60px",
               }}
             >
+              &emsp; &emsp;
               {item.answer && `R: ` + item.answer}
             </p>
           </div>
         </section>
-        
 
         {loadReply && (
           <div
@@ -146,12 +136,11 @@ const SingleComment = ({ item, profile }) => {
               style={{
                 border: "1px solid #4F8BC3",
                 borderRadius: "12px",
-                width:'400px',
+                width: "400px",
                 padding: "5px 10px",
                 outline: "none",
-                boxShadow:'0px',
+                boxShadow: "0px",
                 marginRight: "20px",
-
               }}
               onChange={handleChange}
               value={reply}
@@ -159,24 +148,20 @@ const SingleComment = ({ item, profile }) => {
               placeholder="Reply"
             />
             <button
-
-            style={{
-               
-                background:'#4F8BC3',
+              style={{
+                background: "#4F8BC3",
                 borderRadius: "0px",
                 padding: "7px 12px",
                 outline: "none",
-                color:'#fff',
+                color: "#fff",
 
-                fontWeight:'500',
-                border:'none',
-                boxShadow:'0px',
-                
+                fontWeight: "500",
+                border: "none",
+                boxShadow: "0px",
               }}
-            
-            
-            
-            type="submit" onClick={handleReply}>
+              type="submit"
+              onClick={handleReply}
+            >
               Submit
             </button>
           </div>
