@@ -20,6 +20,7 @@ const SingleNotification = () => {
   useEffect(() => {
     //listens for the company list from the backend
     socket.on("sendMessage-admin1", (company) => {
+      console.log(company);
       setAddCompany(company);
     });
   

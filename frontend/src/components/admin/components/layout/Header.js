@@ -33,6 +33,7 @@ function Header({ name, subName, onPress }) {
   useEffect(() => {
     //listens for the company list from the backend
     socket.on("sendMessage-admin", (company) => {
+      console.log(company);
       setAddnotification(company);
     });
   });
