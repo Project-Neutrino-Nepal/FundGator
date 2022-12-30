@@ -29,7 +29,8 @@ import {
   ProtectedRoute,
   UserProfilePage,
   WelcomePage,
-  ContactPage
+  ContactPage,
+  ErrorPage
 } from "./pages";
 import EditCompanyPage from "./pages/CompanyRegisterPage/EditCompanyPage";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
@@ -272,6 +273,7 @@ function App() {
 
           {/* Add others routes of dashboard below */}
         </Route>
+        <Route path = "*" element = {<ErrorPage/>}/>
       </Routes>
     </>
   );

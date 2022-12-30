@@ -7,7 +7,7 @@ import {
   Progress,
   Row,
   Space,
-  Table
+  Table,
 } from "antd";
 
 import { Link } from "react-router-dom";
@@ -165,6 +165,8 @@ function CompanyAdmin() {
   }, []);
 
   const comapnyData = company.map((company) => {
+    console.log(company);
+
     return {
       key: company._id,
       profile: (
@@ -177,12 +179,12 @@ function CompanyAdmin() {
       name: company.name,
       age: company.budget,
       address: company.address,
-      fund_goal: company.fund_goal,
+      fund_goal: company.reasons.amount,
       status: company.verified ? "Verified" : "Not Verified",
       fund_raised: company.fund_raised,
       completion: (
-        <Progress
-          percent={(company.fund_raised / company.fund_goal) * 100}
+        <Progress 
+          percent={(company.fund_raised / company.reasons.amount) * 100}
           size="small"
           strokeColor="#4caf50"
         />

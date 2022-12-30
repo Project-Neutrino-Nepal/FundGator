@@ -87,7 +87,6 @@ const CompanyDetails = () => {
         setShort_pitch(company.content);
         setEmail(company.email);
         setPhone(company.phone);
-        setAddress(company.address);
         setFund_raised(company.fund_raised);
         setStatus(company.status);
         setID(company._id);
@@ -139,6 +138,7 @@ const CompanyDetails = () => {
         setLinkedin(reasons.linkedin);
         setWebsite(reasons.companylink);
         setFund_goal(reasons.amount);
+        setAddress(reasons.city);
         setTags(reasons.tag);
         console.log(reasons);
       })
@@ -173,7 +173,7 @@ const CompanyDetails = () => {
           <div className="header">
             <div className="info">
               <h3>Invest in {name}</h3>
-              <h1>
+              <h1 align="justify">
                 {short_pitch
                   ? short_pitch.length > 200
                     ? short_pitch.substring(0, 200) + "..."
