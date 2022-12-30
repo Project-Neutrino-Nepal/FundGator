@@ -717,7 +717,7 @@ router.get("/api/get-company-by-user/:id", userAuth, async (req, res) => {
     });
 
     if (!company) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
         message: "No Companies Found",
       });
@@ -756,6 +756,7 @@ router.get("/api/companies", async (req, res) => {
     let company = await Company.find({ verified: true })
       .populate("user")
       .populate("profile")
+      .populate("reasons")
       .exec();
     return res.status(200).json({
       success: true,
@@ -792,6 +793,7 @@ router.get("/api/all-companies", async (req, res) => {
 
       .populate("user")
       .populate("profile")
+      .populate("reasons")
       .exec();
     return res.status(200).json({
       success: true,

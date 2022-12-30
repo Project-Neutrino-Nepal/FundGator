@@ -80,7 +80,6 @@ const Details = () => {
         setShort_pitch(company.content);
         setEmail(company.email);
         setPhone(company.phone);
-        setAddress(company.address);
         setFund_raised(company.fund_raised);
         setStatus(company.status);
         setID(company._id);
@@ -110,6 +109,8 @@ const Details = () => {
         setLinkedin(reasons.linkedin);
         setWebsite(reasons.companylink);
         setFund_goal(reasons.amount);
+        setAddress(reasons.city);
+
         setTags(reasons.tag);
       })
       .catch((err) => {
