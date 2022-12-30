@@ -51,7 +51,7 @@ app.use("/question", questionRouter);
 app.use("/feedback", feedbackRouter);
 
 // --------------------------DEVELOPMENT------------------------------
-
+let companyList = [];
 const server = app.listen(process.env.PORT, () =>
   console.log(`Server started on PORT ${process.env.PORT}`)
 );
@@ -65,6 +65,14 @@ const io = require("socket.io")(server, {
 
 io.on("connection", (socket) => {
   console.log("Connected to socket.io");
+
+  socket.on("newCompany", (company) => {
+    companyList.unshift(company);
+    //sends the events back to the React app
+    socket.broadcast.emit("sendMessage-admin", companyList);
+    socket.broadcast.emit("sendMessage-admin1", companyList);
+  });
+
 
   socket.on("setup", (userData) => {
     socket.join(userData._id);
@@ -98,11 +106,31 @@ io.on("connection", (socket) => {
     console.log("User Disconnected");
     socket.leave(userData._id);
   });
-});
-// ------------for notification----------------
-io.on('connection', (socket) => {
-  console.log(`⚡: ${socket.id} user just connected!`);
-  socket.on('disconnect', () => {
-    console.log('🔥: A user disconnected');
+  // close the socket connection
+  socket.on("disconnect", () => {
+
+    console.log("user disconnected");
   });
 });
+// ------------for notification----------------
+// let companyList = [];
+// io.on("connection", (socket) => {
+//   console.log("Connected to socket.io");
+
+  
+//   socket.on("newCompany", (company) => {
+//     companyList.unshift(company);
+//     //sends the events back to the React app
+//     socket.broadcast.emit("sendMessage-admin", companyList);
+//   });
+
+
+
+// //  close the socket connection
+//   socket.on("disconnect", () => {
+
+//     console.log("user disconnected");
+//   });
+// });
+ 
+ 
