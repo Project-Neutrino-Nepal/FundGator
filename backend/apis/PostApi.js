@@ -300,8 +300,7 @@ router.put(
     const { body } = req;
     let image = "";
     let video = "";
-    let imagePath,
-      vidPath = "";
+    let imagePath,vidPath = "";
     if (req.files) {
       if (req.files.img == null) {
         imagePath = "";
@@ -324,6 +323,7 @@ router.put(
       } else {
         video = req.files.vid[0];
         vidPath = DOMAIN + "uploads/posts-images/" + video.filename;
+      
       }
     }
 
@@ -335,29 +335,97 @@ router.put(
         message: "Post not found",
       });
     }
+    console.log(post.user.toString(),req.user._id.toString())
     if (post.user.toString() !== req.user._id.toString()) {
       return res.status(400).json({ 
         success: false,
         message: "You are not authorized to update this post",
       });
     }
-    if (imagePath == "") {
-      imagePath = post.image;
+    console.log(imagePath,vidPath, body.description)
+
+    if (imagePath == "" && vidPath == "" && body.description !== "") {
+      post.text = body.description
     }
-    if (vidPath == "") {
-      vidPath = post.video;
+    if (imagePath == "" && body.description !== "" && vidPath !== "") {
+      post.image = imagePath;
+      post.video = vidPath
+      post.text=body.description
+      console.log("video path os-->",post.video)
     }
-    if (body.description == "") {
-      body.description = post.text;
+    else{
+      post.text = body.description
+      post.video=""
+      post.image = imagePath
     }
 
-    await post.updateOne({
-      $set: {
-        image: imagePath,
-        video: vidPath,
-        text: body.description,
-      },
-    });
+    // save image if imagepath , save video if vidpath, save text if description IF nothing then dont save and if any two save them 
+    //  if (imagePath == "" && vidPath == "" && body.description == "") {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Please select an image or video or write something",
+    //   });
+    // }
+    // if (imagePath == "" && vidPath == "") {
+    //   post.text = body.description
+    // }
+    // if (imagePath == "" && body.description == "") {
+    //   post.video = vidPath
+    // }
+    // if (vidPath == "" && body.description == "") {
+    //   post.image = imagePath
+    // }
+    // if (imagePath == "" && vidPath !== "" && body.description !== "") {
+
+    //   post.video = vidPath
+    //   post.text = body.description
+    // }
+    // if (imagePath !== "" && vidPath == "" && body.description !== "") {
+    //   post.image = imagePath
+    //   post.text = body.description
+    // }
+    // if (imagePath !== "" && vidPath !== "" && body.description == "") {
+    //   post.image = imagePath
+    //   post.video = vidPath
+    // }
+    // if (imagePath !== "" && vidPath !== "" && body.description !== "") {
+    //   post.image = imagePath
+    //   post.video = vidPath
+    //   post.text = body.description
+    // }
+
+
+    
+
+    
+
+    
+    
+
+    
+
+
+
+
+
+    
+
+
+
+
+    
+
+
+
+   
+
+    
+    
+
+    console.log(imagePath,vidPath, body.description)
+    
+
+    await post.save();
     return res.status(200).json({
       success: true,
       message: "Post updated successfully",
@@ -371,6 +439,29 @@ router.put(
     });
   }
 });
+
+    
+
+//     await post.updateOne({
+//       $set: {
+//         image: imagePath,
+//         video: vidPath,
+//         text: body.description,
+//       },
+//     });
+//     return res.status(200).json({
+//       success: true,
+//       message: "Post updated successfully",
+//       post,
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(500).json({
+//       success: false,
+//       message: "An error occurred.",
+//     });
+//   }
+// });
 
     
 
