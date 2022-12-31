@@ -1,6 +1,7 @@
 // requirements for express application
 const express = require("express");
 //const morgan = require("morgan");
+const mongoose = require('mongoose');
 require("dotenv").config();
 require("./Database/conf");
 const cors = require("cors");
@@ -50,6 +51,19 @@ app.use("/message", messageRouter);
 app.use("/question", questionRouter);
 app.use("/feedback", feedbackRouter);
 
+// -------------setup for notification document----------------
+
+const notificationSchema = new mongoose.Schema({
+  message: [],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  
+});
+
+const Notification = mongoose.model('Notification', notificationSchema);
+
 // --------------------------DEVELOPMENT------------------------------
 let companyList = [];
 const server = app.listen(process.env.PORT, () =>
@@ -68,11 +82,18 @@ io.on("connection", (socket) => {
 
   socket.on("newCompany", (company) => {
     companyList.unshift(company);
+    // Create new notification document
+    const notification = new Notification({ message: company });
+     // Save notification to database
+     notification.save((error, result) => {
+      if (error) throw error;
+      console.log('Notification saved to database');
+    });
     //sends the events back to the React app
-    socket.broadcast.emit("sendMessage-admin", companyList);
     socket.broadcast.emit("sendMessage-admin1", companyList);
-  });
 
+    socket.broadcast.emit("sendMessage-admin", companyList);
+  });
 
   socket.on("setup", (userData) => {
     socket.join(userData._id);
@@ -108,7 +129,6 @@ io.on("connection", (socket) => {
   });
   // close the socket connection
   socket.on("disconnect", () => {
-
     console.log("user disconnected");
   });
 });
@@ -117,14 +137,11 @@ io.on("connection", (socket) => {
 // io.on("connection", (socket) => {
 //   console.log("Connected to socket.io");
 
-  
 //   socket.on("newCompany", (company) => {
 //     companyList.unshift(company);
 //     //sends the events back to the React app
 //     socket.broadcast.emit("sendMessage-admin", companyList);
 //   });
-
-
 
 // //  close the socket connection
 //   socket.on("disconnect", () => {
@@ -132,5 +149,3 @@ io.on("connection", (socket) => {
 //     console.log("user disconnected");
 //   });
 // });
- 
- 

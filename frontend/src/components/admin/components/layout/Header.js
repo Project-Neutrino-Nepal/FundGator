@@ -1,23 +1,16 @@
 import { useEffect, useState } from "react";
 
 import {
-  Avatar,
-  Badge,
   Breadcrumb,
   Col,
-  Dropdown,
   Input,
-  List,
   Row,
 } from "antd";
 
 import { SearchOutlined } from "@ant-design/icons";
 
-import { NavLink } from "react-router-dom";
-import styled from "styled-components";
-import avtar from "../../assets/images/team-2.jpg";
+
 import { BsBellFill } from "react-icons/bs";
-import { Content } from "antd/lib/layout/layout";
 import SingleNotification from "./SingleNotification";
 import { io } from "socket.io-client";
 
@@ -27,7 +20,6 @@ function Header({ name, subName, onPress }) {
   useEffect(() => window.scrollTo(0, 0));
   const [shownotification, setnotification] = useState(false);
 
-  const [notlst, setnot] = useState([...Array(8)]);
   const [addNotification, setAddnotification] = useState([]);
 
   useEffect(() => {
