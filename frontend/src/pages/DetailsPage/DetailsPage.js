@@ -3,6 +3,7 @@ import KhaltiCheckout from "khalti-checkout-web";
 import React, { useEffect, useRef, useState } from "react";
 import {
   AiFillFacebook,
+  AiFillHeart,
   AiFillInstagram,
   AiFillTwitterSquare,
   AiOutlineHeart,
@@ -59,7 +60,29 @@ const Details = () => {
   const [tags, setTags] = useState([]);
   const [ID, setID] = useState("");
   const [investors, setInvestors] = useState([]);
+  const [iswatchlist, setIsWatchlist] = useState(false);
   const [isInvested, setIsInvested] = useState(false);
+
+  const removeWatchlist = () => {
+    try {
+      axios
+        .put(
+          `http://localhost:5000/company/api/remove-watchlist/${id}`,
+          {},
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          window.location.reload();
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const config = {
     headers: {
@@ -91,6 +114,14 @@ const Details = () => {
         ) {
           setIsInvested(true);
         }
+        if (
+          company.watchlist.includes(
+            JSON.parse(localStorage.getItem("userInfo")).user._id
+          )
+        ) {
+          setIsWatchlist(true);
+        }
+        console.log(company.watchlist);
       })
       .catch((err) => {
         console.log(err);
@@ -203,30 +234,64 @@ const Details = () => {
               <input type="number" placeholder="0" />
             </div>
           </div>
-          <button
-            className="btn-invest"
-            onClick={() =>
-              amount < 1000
-                ? toast.info("Minimum amount to invest is Rs.1000")
-                : checkout.show({
-                    amount: amount * 100,
-                    productIdentity: id,
-                    productName: name,
-                    productUrl: "http://localhost:3000/detail/" + id,
-                  })
-            }
-          >
-            Invest
-          </button>
-          <button
-            className="btn-bookmark"
-            onClick={() => {
-              watchlistHandler();
-            }}
-          >
-            <AiOutlineHeart />
-            <span>Watch for updates</span>
-          </button>
+          {isInvested ? (
+            <button
+              className="btn-invest"
+              onClick={() =>
+                amount > 200
+                  ? toast.info("Minimum amount to invest is Rs.1000")
+                  : checkout.show({
+                      amount: amount * 100,
+                      productIdentity: id,
+                      productName: name,
+                      productUrl: "http://localhost:3000/detail/" + id,
+                    })
+              }
+            >
+              Invest More
+            </button>
+          ) : (
+            <button
+              className="btn-invest"
+              onClick={() =>
+                amount > 200
+                  ? toast.info("Minimum amount to invest is Rs.1000")
+                  : checkout.show({
+                      amount: amount * 100,
+                      productIdentity: id,
+                      productName: name,
+                      productUrl: "http://localhost:3000/detail/" + id,
+                    })
+              }
+            >
+              Invest
+            </button>
+          )}
+          {iswatchlist ? (
+            <>
+              <button
+                className="btn-bookmark"
+                onClick={() => {
+                  removeWatchlist();
+                }}
+              >
+                <AiFillHeart color="red" />
+                <span>WatchListed</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                className="btn-bookmark"
+                onClick={() => {
+                  watchlistHandler();
+                }}
+              >
+                <AiOutlineHeart />
+                <span>Watch for updates</span>
+              </button>
+            </>
+          )}
         </section>
         <section className="three">
           <div className="links">
@@ -362,15 +427,31 @@ const Details = () => {
             </button>
           )}
 
-          <button
-            className="btn-bookmark"
-            onClick={() => {
-              watchlistHandler();
-            }}
-          >
-            <AiOutlineHeart />
-            <span>Watch for updates</span>
-          </button>
+          {iswatchlist ? (
+            <>
+              <button
+                className="btn-bookmark"
+                onClick={() => {
+                  removeWatchlist();
+                }}
+              >
+                <AiFillHeart color="red" />
+                <span>WatchListed</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                className="btn-bookmark"
+                onClick={() => {
+                  watchlistHandler();
+                }}
+              >
+                <AiOutlineHeart />
+                <span>Watch for updates</span>
+              </button>
+            </>
+          )}
         </section>
       </div>
     </Wrapper>
