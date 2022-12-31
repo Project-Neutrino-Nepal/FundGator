@@ -109,6 +109,7 @@ function InvestorAdmin() {
       .then((res) => {
         const profiles = res.data.profiles;
         setProfiles(profiles);
+        console.log(profiles)
       })
       .catch((err) => {
         console.log(err);

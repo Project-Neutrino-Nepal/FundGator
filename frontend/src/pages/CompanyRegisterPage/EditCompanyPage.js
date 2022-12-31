@@ -7,7 +7,12 @@ import upload from "../../assets/image/uploadpic.svg";
 import { BasicEdit, Story, Team, Visiblity } from "./component";
 import tabs from "./utils/tab";
 import Wrapper from "./wrapper/CompanyRegisterPage";
+import  { io } from "socket.io-client";
+const socket = io("http://localhost:5000");
+
+
 const parse = require("html-react-parser");
+
 
 const EditCompanyPage = () => {
   const { id } = useParams();
@@ -61,6 +66,7 @@ const EditCompanyPage = () => {
     citizenship_front: "",
     citizenship_back: "",
   };
+
  
   const navigate = useNavigate();
 
@@ -68,6 +74,9 @@ const EditCompanyPage = () => {
   const [values, setValue] = useState(formvalue);
 
   const videouploads = values.videoupload;
+  const image=values.imageupload;
+  const content=values.content;
+  const companyName=values.companyname;
 
   const config = {
     headers: {
@@ -241,10 +250,13 @@ const EditCompanyPage = () => {
             if (res.data.success) {
               toast.success(
                 "Company Updated Successfully",
-                setTimeout(() => {
-                  navigate("/homepage");
-                }, 1200)
+                // setTimeout(() => {
+                //   navigate("/homepage");
+                // }, 1200)
               );
+        socket.emit("newCompany", {companyName, image, content  });
+        console.log(companyName, image, content);
+
             }
           });
       } catch (error) {
@@ -259,7 +271,6 @@ const EditCompanyPage = () => {
       .get("http://localhost:5000/reason/api/get-reason/" + id, config)
       .then((res) => {
         let reasons = res.data.reasons;
-        console.log(reasons);
         setReasons(reasons);
         formvalue.reason0 = reasons.reason0;
         formvalue.reason1 = reasons.reason1;
@@ -279,7 +290,6 @@ const EditCompanyPage = () => {
         formvalue.category = reasons.category.name;
         const teamsdata = [];
         reasons.teams.map((item) => {
-          console.log(item);
           teamsdata.push({
             ...item,
 
