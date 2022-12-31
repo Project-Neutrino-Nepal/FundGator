@@ -236,20 +236,6 @@ const Homepage = () => {
           </li>
           <li>
             <Link
-              to="/homepage/two"
-              className={
-                window.location.pathname === "/homepage/two"
-                  ? "nav-link active"
-                  : "nav-link text-white"
-              }
-            >
-              <i className="fa fa-first-order" />
-
-              <span className="ms-2">By Fundgator</span>
-            </Link>
-          </li>
-          <li>
-            <Link
               to="/homepage/three"
               className={
                 window.location.pathname === "/homepage/three"

@@ -1135,6 +1135,40 @@ router.get("/api/get-watchlist", userAuth, async (req, res) => {
 });
 
 /**
+ * @description To Delete My Watchlist Companies (Clear Watchlist)
+ * @api /events/api/watchlist
+ * @access Private
+ * @type DELETE
+ * */
+
+router.delete("/api/clear-watchlist", userAuth, async (req, res) => {
+  try {
+    let watchlist = await Company.find({ watchlist: req.user._id });
+    if (!watchlist) {
+      return res.status(400).json({
+        success: false,
+        message: "No Companies in Watchlist",
+      });
+    }
+    let updatedCompany = await Company.updateMany(
+      { watchlist: req.user._id },
+      { $pull: { watchlist: req.user._id } }
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Watchlist Cleared Successfully",
+      updatedCompany,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
  * @description To get sum of all funds  invested and amount asked by a company
  * @api /company/api/funds
  * @access Private

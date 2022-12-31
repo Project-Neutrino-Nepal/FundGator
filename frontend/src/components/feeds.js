@@ -66,12 +66,12 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
     setComment(feed.comments.slice(0, comment.length + 6));
   }
 
-  // get current user id
-  const currentUser = localStorage.getItem("id");
-
   useEffect(() => {
-    setIsLiked(feed.likes.includes(currentUser));
-  }, [currentUser, feed.likes]);
+    setIsLiked(
+      feed.likes.includes(JSON.parse(localStorage.getItem("userInfo")).user._id)
+    );
+  }, [feed.likes]);
+
   // like handler to like and unlike post and update likes count and isLiked state
 
   const likeHandler = async () => {
@@ -85,9 +85,8 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
         })
         .then((res) => {
           let post = res.data.post;
-          // setLike(post.likes.length);
-          // setIsLiked(post.isLiked);
-          // console.log(post);
+          setLike(post.likes.length);
+          setIsLiked(post.isLiked);
         });
     } catch (err) {}
     if (isLiked) {
@@ -261,7 +260,7 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
                 className="fs-6 ms-2 "
                 style={{ textTransform: "capitalize" }}
               >
-                &nbsp;{likes} Likes &emsp;. {comments} comments &emsp;. 20
+                &nbsp;{likes} Likes &emsp;. {comments} comments &emsp;. 0
                 shares
               </span>
               <hr />
