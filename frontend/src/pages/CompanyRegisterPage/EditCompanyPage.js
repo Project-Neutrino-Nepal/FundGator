@@ -7,12 +7,10 @@ import upload from "../../assets/image/uploadpic.svg";
 import { BasicEdit, Story, Team, Visiblity } from "./component";
 import tabs from "./utils/tab";
 import Wrapper from "./wrapper/CompanyRegisterPage";
-import  { io } from "socket.io-client";
+import { io } from "socket.io-client";
 const socket = io("http://localhost:5000");
 
-
 const parse = require("html-react-parser");
-
 
 const EditCompanyPage = () => {
   const { id } = useParams();
@@ -67,16 +65,15 @@ const EditCompanyPage = () => {
     citizenship_back: "",
   };
 
- 
   const navigate = useNavigate();
 
   const [activeindex, setActive] = useState(1);
   const [values, setValue] = useState(formvalue);
 
   const videouploads = values.videoupload;
-  const image=values.imageupload;
-  const content=values.content;
-  const companyName=values.companyname;
+  const image = values.imageupload;
+  const content = values.content;
+  const companyName = values.companyname;
 
   const config = {
     headers: {
@@ -106,7 +103,6 @@ const EditCompanyPage = () => {
   const teamsdata = {
     teams: values.teams,
   };
-
 
   const setcontent = (content) => {
     setValue({ ...values, content: content });
@@ -248,15 +244,20 @@ const EditCompanyPage = () => {
           )
           .then((res) => {
             if (res.data.success) {
+              console.log(res.data);
               toast.success(
-                "Company Updated Successfully",
+                "Company Updated Successfully"
                 // setTimeout(() => {
                 //   navigate("/homepage");
                 // }, 1200)
               );
-        socket.emit("newCompany", {companyName, image, content  });
-        console.log(companyName, image, content);
-
+              const companyID = res.data.company._id;
+              socket.emit("newCompany", {
+                companyID,
+                companyName,
+                image,
+                content,
+              });
             }
           });
       } catch (error) {
@@ -313,7 +314,7 @@ const EditCompanyPage = () => {
   useEffect(() => {
     axios
       .get("http://localhost:5000/company/api/get-company/" + id, config)
-      .then((res) => {  
+      .then((res) => {
         console.log(res);
         let company = res.data.company;
         formvalue.content = company.content;
@@ -321,8 +322,8 @@ const EditCompanyPage = () => {
         formvalue.pan_card = company.pan_card;
         formvalue.citizenship_front = company.citizenship_front;
         formvalue.citizenship_back = company.citizenship_back;
-        formvalue.videoupload=company.company_video;
-        formvalue.imageupload=company.image;
+        formvalue.videoupload = company.company_video;
+        formvalue.imageupload = company.image;
       });
   }, []);
 

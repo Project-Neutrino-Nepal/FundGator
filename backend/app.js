@@ -1,7 +1,9 @@
 // requirements for express application
 const express = require("express");
+const router = express.Router();
 //const morgan = require("morgan");
-const mongoose = require('mongoose');
+const { model, Schema } = require("mongoose");
+
 require("dotenv").config();
 require("./Database/conf");
 const cors = require("cors");
@@ -23,6 +25,8 @@ const chatRouter = require("./apis/ChatApi");
 const messageRouter = require("./apis/MessageApi");
 const questionRouter = require("./apis/questionApi");
 const feedbackRouter = require("./apis/FeedbackApi");
+const notification = require("./apis/NotificationApi");
+const Notification = require("./models/notificationModel");
 
 // Import passport middleware
 require("./middlewares/passport-middleware");
@@ -50,19 +54,7 @@ app.use("/chat", chatRouter);
 app.use("/message", messageRouter);
 app.use("/question", questionRouter);
 app.use("/feedback", feedbackRouter);
-
-// -------------setup for notification document----------------
-
-const notificationSchema = new mongoose.Schema({
-  message: [],
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  
-});
-
-const Notification = mongoose.model('Notification', notificationSchema);
+app.use("/notification", notification);
 
 // --------------------------DEVELOPMENT------------------------------
 let companyList = [];
@@ -83,11 +75,14 @@ io.on("connection", (socket) => {
   socket.on("newCompany", (company) => {
     companyList.unshift(company);
     // Create new notification document
-    const notification = new Notification({ message: company });
-     // Save notification to database
-     notification.save((error, result) => {
+    const notification = new Notification({
+      company: company.companyID,
+    });
+
+    // Save notification to database
+    notification.save((error, result) => {
       if (error) throw error;
-      console.log('Notification saved to database');
+      console.log("Notification saved to database");
     });
     //sends the events back to the React app
     socket.broadcast.emit("sendMessage-admin1", companyList);
@@ -132,20 +127,4 @@ io.on("connection", (socket) => {
     console.log("user disconnected");
   });
 });
-// ------------for notification----------------
-// let companyList = [];
-// io.on("connection", (socket) => {
-//   console.log("Connected to socket.io");
-
-//   socket.on("newCompany", (company) => {
-//     companyList.unshift(company);
-//     //sends the events back to the React app
-//     socket.broadcast.emit("sendMessage-admin", companyList);
-//   });
-
-// //  close the socket connection
-//   socket.on("disconnect", () => {
-
-//     console.log("user disconnected");
-//   });
-// });
+ 

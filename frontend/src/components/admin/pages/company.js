@@ -165,7 +165,6 @@ function CompanyAdmin() {
   }, []);
 
   const comapnyData = company.map((company) => {
-    console.log(company);
 
     return {
       key: company._id,

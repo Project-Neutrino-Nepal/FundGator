@@ -240,9 +240,19 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
             </div>
             <div>
               {feed.image ? (
-                <img src={feed.image}className="w-100" style = {{objectFit: "cover"}}  alt="" />
+                <img
+                  src={feed.image}
+                  className="w-100"
+                  style={{ objectFit: "cover" }}
+                  alt=""
+                />
               ) : (
-                <video src={feed.video} className="w-100" style = {{objectFit: "cover"}}  controls={true} />
+                <video
+                  src={feed.video}
+                  className="w-100"
+                  style={{ objectFit: "cover" }}
+                  controls={true}
+                />
               )}
             </div>
 
@@ -289,12 +299,6 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
                     <Button
                       style={{ border: "none", background: "none" }}
                       className="btn text-dark"
-                      // onClick={() => {
-
-                      //   // document.getElementById("comment").classList.toggle("d-none");
-
-                      //   // document.getElementById("comment_text").focus();
-                      // }}
                       onClick={handleCommentClick}
                     >
                       <i className="fa fa-comment "></i> &nbsp; comment
@@ -369,7 +373,7 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
                 )}
 
                 {showInput ? (
-                  <div   className="comment-input">
+                  <div className="comment-input">
                     <input
                       id="comment_text"
                       type="text"

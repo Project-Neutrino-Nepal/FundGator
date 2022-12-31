@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
 
-import {
-  Breadcrumb,
-  Col,
-  Input,
-  Row,
-} from "antd";
-
-import { SearchOutlined } from "@ant-design/icons";
-
+import { Breadcrumb, Col, Row } from "antd";
 
 import { BsBellFill } from "react-icons/bs";
 import SingleNotification from "./SingleNotification";
@@ -16,11 +8,16 @@ import { io } from "socket.io-client";
 
 const socket = io("http://localhost:5000");
 
-function Header({ name, subName, onPress }) {
+function Header({ name }) {
   useEffect(() => window.scrollTo(0, 0));
   const [shownotification, setnotification] = useState(false);
 
   const [addNotification, setAddnotification] = useState([]);
+
+  const shownotificationHandler = () => {
+    setnotification(!shownotification);
+    setAddnotification([]);
+  };
 
   useEffect(() => {
     //listens for the company list from the backend
@@ -36,7 +33,6 @@ function Header({ name, subName, onPress }) {
         <Col span={24} md={6}>
           <Breadcrumb>
             <Breadcrumb.Item>
-              {/* <NavLink to="/">Pages</NavLink> */}
             </Breadcrumb.Item>
             <Breadcrumb.Item style={{ textTransform: "capitalize" }}>
               {name.replace("/", "/")}
@@ -47,15 +43,14 @@ function Header({ name, subName, onPress }) {
           <div className="position-relative">
             <div
               className=" position-relative"
-              onClick={() => setnotification(!shownotification)}
+              onClick={shownotificationHandler}
             >
               <BsBellFill />
-              
               {addNotification.length > 0 && (
                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-               {addNotification.length} <span className="visually-hidden">unread messages</span>
-              </span>
-                
+                  {addNotification.length}{" "}
+                  <span className="visually-hidden">unread messages</span>
+                </span>
               )}
             </div>
             <div
@@ -73,20 +68,10 @@ function Header({ name, subName, onPress }) {
                 minHeight: "70px",
               }}
             >
-              {addNotification.length > 0 ? (
-                  <SingleNotification />)
-               : (
-                <h4 className="w-100  text-center" width={500} height={200}>
-                  no notification
-                </h4>
-              )}
+            <SingleNotification />
+               
             </div>
           </div>
-          <Input
-            className="header-search"
-            placeholder="Type here..."
-            prefix={<SearchOutlined />}
-          />
         </Col>
       </Row>
     </>
