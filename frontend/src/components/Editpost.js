@@ -14,15 +14,15 @@ const EditPost = React.memo(({ item, model }) => {
     file: "",
   });
   const [preview, setPreviews] = useState({
-    img: null,
-    vid: null,
-    doc: "",
+    img: item.image,
+    vid: item.video,
+    description: item.text,
+   
   });
   const [values, setValue] = useState({
-    img: "",
-    vid: "",
-    doc: "",
-    description: null,
+    img: item.image,
+    vid: item.video,
+    description: item.text,
   });
 
   // useEffect(() => {
@@ -33,29 +33,39 @@ const EditPost = React.memo(({ item, model }) => {
   //   });
   // }, [item]);
 
+  // const handletextChange = (e) => {
+  //   if (e.target.files && e.target.files[0]) {
+  //     setValue({ ...values, [e.target.name]: e.target.files[0] });
+  //   } else {
+  //     setValue({ ...values, [e.target.name]: e.target.value });
+  //   }
+  // };
+
   const handleChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setValue({ ...values, [e.target.name]: e.target.files[0] });
-    } else {
-      setValue({ ...values, [e.target.name]: e.target.value });
-    }
+    // if (e.target.files && e.target.files[0]) {
+    //   setValue({ ...values, [e.target.name]: e.target.files[0] });
+    // } else {
+    //   setValue({ ...values, [e.target.name]: e.target.value });
+    // }
+    setValue({ ...values, description: e.target.value });
   };
   const clearpreview = (name) => {
     console.log(name);
     setValue({ ...values, [name]: "" });
     setPreviews({ ...preview, [name]: "" });
   };
+  //this is change after pull
   const fileSelection = (e) => {
     if (e.target.files && e.target.files[0]) {
       let file = e.target.files[0];
       let blobURL = URL.createObjectURL(file);
       setValue({
         ...values,
-        [e.target.name]: e.target.files[0],
-        vid: "",
+        img: e.target.files[0],
       });
+     // handleChange(e);
 
-      setPreviews({ ...preview, [e.target.name]: blobURL });
+      setPreviews({ ...preview, [e.target.name]: blobURL,});
       e.target.value = null;
     }
   };
@@ -64,11 +74,12 @@ const EditPost = React.memo(({ item, model }) => {
     if (e.target.files && e.target.files[0]) {
       let file = e.target.files[0];
       let blobURL = URL.createObjectURL(file);
-      setValue({ ...values, [e.target.name]: e.target.files[0], img: null });
+      setValue({ ...values, vid: e.target.files[0] });
+    //  handleChange(e);
 
       setPreviews({ ...preview, [e.target.name]: blobURL, img: "" });
 
-      e.target.value = null;
+       e.target.value = null;
     }
   };
   const config = {
@@ -84,7 +95,12 @@ const EditPost = React.memo(({ item, model }) => {
     formData.append("img", values.img);
     formData.append("vid", values.vid);
     // formData.append("doc", values.doc);
-    formData.append("description", values.description);
+    if(values.description == null){
+      values.description = item.text;
+    } else {
+    formData.append("description", values.description)
+    }
+    console.log("The desc -->",values.description);
     if (!values.img && !values.vid && !values.description) {
       toast.error("You can't post empty post");
       return;
@@ -102,7 +118,7 @@ const EditPost = React.memo(({ item, model }) => {
       .then((res) => {
         console.log("res", res);
         toast.success(res.data.message);
-        window.location.reload();
+        //window.location.reload();
         //redirect to home page
       })
       .catch((err) => {
@@ -150,13 +166,13 @@ const EditPost = React.memo(({ item, model }) => {
               </div>
               <div className="form-floating">
                 <textarea
+                  value={values.description ?? item.text}
                   className="form-control border-0"
                   placeholder="Leave a comment here"
                   id="floatingTextarea2"
                   style={{ height: 100 }}
                   name="description"
                   onChange={handleChange}
-                  defaultValue={values.text ?? item.text}
                 ></textarea>
                 <label for="floatingTextarea2">Enter Description</label>
               </div>
@@ -167,7 +183,7 @@ const EditPost = React.memo(({ item, model }) => {
                   }
                 >
                   <img
-                    src={preview.img ?? item?.image}
+                    src={preview?.img ?? item?.image}
                     alt="preview"
                     height={100}
                     width={80}
