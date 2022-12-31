@@ -5,6 +5,8 @@ import { toast, ToastContainer } from "react-toastify";
 import { Basic, Story, Team, Visiblity } from "./component";
 import tabs from "./utils/tab";
 import Wrapper from "./wrapper/CompanyRegisterPage";
+import socketIO from "socket.io-client";
+const socket = socketIO.connect("http://localhost:5000");
 
 const CompanyRegisterPage = () => {
   const { id } = useParams();
@@ -58,7 +60,6 @@ const CompanyRegisterPage = () => {
   };
 
   const navigate = useNavigate();
-
   const [activeindex, setActive] = useState(1);
   const [values, setValue] = useState(formvalue);
 
@@ -91,7 +92,6 @@ const CompanyRegisterPage = () => {
       authorization: localStorage.getItem("token"),
     },
   };
-  
 
   const data = {
     category: values.category,
@@ -116,6 +116,9 @@ const CompanyRegisterPage = () => {
   const teamsdata = {
     teams: values.teams,
   };
+  const companyName=values.companyname;
+   const image=values.imageupload;
+   const content=values.content;
 
   const setcontent = (content) => {
     setValue({ ...values, content: content });
@@ -311,6 +314,10 @@ const CompanyRegisterPage = () => {
                   window.location.href = `/profile`;
                 }, 1200)
               );
+               //sends the event details via Socket.io
+        socket.emit("newCompany", {companyName, image, content  });
+        console.log(companyName, image, content)
+        
             }
           });
       } catch (error) {

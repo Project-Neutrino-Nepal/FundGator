@@ -29,7 +29,7 @@ router.post(
       let { email } = req.body;
 
       // Check if the user exists with that email
-      user = await User.findOne({ email });
+      let user = await User.findOne({ email });
       if (user) {
         return res.status(400).json({
           success: false,
@@ -486,6 +486,45 @@ router.post("/api/contact-us", async (req, res) => {
       return res.status(200).json({
         success: true,
         message: "Your message is sent to the admin.",
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To Get all contact us messages by admin
+ * @api /users/api/contact-us
+ * @access Public
+ * @type Get
+ */
+
+router.get("/api/contact-us", userAuth, async (req, res) => {
+  try {
+    let user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+    if (user.admin === true) {
+      let contact = await ContactUs.find();
+      if (contact) {
+        return res.status(200).json({
+          success: true,
+          message: "All contact us messages.",
+          contact,
+        });
+      }
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: "You are not authorized",
       });
     }
   } catch (err) {

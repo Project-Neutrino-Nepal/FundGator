@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "../css/homepage.css";
@@ -64,7 +64,7 @@ const Homepage = () => {
     if (e.target.files && e.target.files[0]) {
       let file = e.target.files[0];
       let blobURL = URL.createObjectURL(file);
-      setValue({ ...values, [e.target.name]: e.target.files[0], imge:"" });
+      setValue({ ...values, [e.target.name]: e.target.files[0], imge: "" });
 
       setPreviews({ ...preview, [e.target.name]: blobURL, imge: "" });
 
@@ -175,8 +175,8 @@ const Homepage = () => {
                 {skills
                   ? skills.length > 20
                     ? skills.substring(0, 20) + "..."
-                    : "No skills added"
-                  : "No skills added"}
+                    : skills
+                  : skills}
               </p>
             </div>
           </a>

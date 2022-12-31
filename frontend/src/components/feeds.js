@@ -1,6 +1,6 @@
 import axios from "axios";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
@@ -16,6 +16,13 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
     headers: {
       Authorization: localStorage.getItem("token"),
     },
+  };
+  const [showInput, setShowInput] = useState(false);
+  const commentInputRef = useRef(null);
+
+  const handleCommentClick = () => {
+    setShowInput(true);
+    commentInputRef.current.focus();
   };
 
   let time = new Date(feed.date).toLocaleDateString();
@@ -53,7 +60,7 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState(feed.comments.length);
 
-  const [comment, setComment] = useState(feed.comments.reverse().slice(0, 4));
+  const [comment, setComment] = useState(feed.comments.reverse().slice(0, 2));
 
   function handleShowMore() {
     setComment(feed.comments.slice(0, comment.length + 6));
@@ -127,7 +134,7 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
               <div
                 className="d-flex flex-row align-items-center btn"
                 onClick={() => {
-                  window.location.href = `/profile/${feed.user}`;
+                  window.location.href = `/profiles/${feed.user}`;
                 }}
               >
                 <img
@@ -232,13 +239,12 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
               </p>
             </div>
             <div>
-            {feed.image ? (
-              <img  src={feed.image} className="img-fluid"   alt="" />
-            ) : (
-              <video src={feed.video} className="img-fluid" controls={true} />
-            )}
+              {feed.image ? (
+                <img src={feed.image}className="w-100" style = {{objectFit: "cover"}}  alt="" />
+              ) : (
+                <video src={feed.video} className="w-100" style = {{objectFit: "cover"}}  controls={true} />
+              )}
             </div>
-            
 
             <div className="p-1">
               <span
@@ -280,22 +286,30 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
 
                 <div className=" ">
                   <span>
-                    <Link
-                      className="btn btn-border-none"
-                      onClick={() => {
-                        document
-                          .getElementById("comment")
-                          .classList.toggle("d-none");
-                        document.getElementById("comment_text").focus();
-                      }}
+                    <Button
+                      style={{ border: "none", background: "none" }}
+                      className="btn text-dark"
+                      // onClick={() => {
+
+                      //   // document.getElementById("comment").classList.toggle("d-none");
+
+                      //   // document.getElementById("comment_text").focus();
+                      // }}
+                      onClick={handleCommentClick}
                     >
                       <i className="fa fa-comment "></i> &nbsp; comment
-                    </Link>
+                    </Button>
                   </span>
                 </div>
                 <div className=" ">
                   <span>
                     <Button
+                      style={{
+                        border: "none",
+                        outline: "none",
+                        background: "none",
+                        color: "black",
+                      }}
                       onClick={() => setModalShow(true)}
                       className="bg-none"
                     >
@@ -354,24 +368,27 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
                   </div>
                 )}
 
-                <div className="comment-input">
-                  <input
-                    id="comment_text"
-                    type="text"
-                    className="form-control"
-                    onChange={(e) => setCommentText(e.target.value)}
-                    value={commentText}
-                  />
-                  <div className="fonts">
-                    <Link
-                      onClick={() => {
-                        commentHandler();
-                      }}
-                    >
-                      <i className="fa fa-send-o"></i>
-                    </Link>
+                {showInput ? (
+                  <div   className="comment-input">
+                    <input
+                      id="comment_text"
+                      type="text"
+                      ref={commentInputRef}
+                      className="form-control"
+                      onChange={(e) => setCommentText(e.target.value)}
+                      value={commentText}
+                    />
+                    <div className="fonts">
+                      <Link
+                        onClick={() => {
+                          commentHandler();
+                        }}
+                      >
+                        <i className="fa fa-send-o"></i>
+                      </Link>
+                    </div>
                   </div>
-                </div>
+                ) : null}
               </div>
             </div>
           </div>

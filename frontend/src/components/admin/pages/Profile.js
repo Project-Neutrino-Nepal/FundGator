@@ -1,16 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import {
-  Avatar,
-  Button,
-  Card,
-  Col,
-  Descriptions,
-  List,
-  Row,
-  Switch,
-} from "antd";
+import { Avatar, Button, Card, Col, Descriptions, List, Row } from "antd";
 
 import {
   FacebookOutlined,
@@ -21,12 +12,6 @@ import {
 
 import axios from "axios";
 import BgProfile from "../assets/images/bg-profile.jpg";
-import convesionImg5 from "../assets/images/face-2.jpg";
-import convesionImg from "../assets/images/face-3.jpg";
-import convesionImg2 from "../assets/images/face-4.jpg";
-import convesionImg3 from "../assets/images/face-5.jpeg";
-import convesionImg4 from "../assets/images/face-6.jpeg";
-import project1 from "../assets/images/home-decor-1.jpeg";
 
 function Profile() {
   const [imageURL, setImageURL] = useState(false);
@@ -37,7 +22,7 @@ function Profile() {
   const [pan, setPan] = useState("");
   const [bio, setBio] = useState("");
   const [address, setAddress] = useState("");
-
+  const [contact, setContact] = useState([]);
   const [image, setPreview] = useState({
     preview:
       "https://www.grovenetworks.com/images/easyblog_shared/July_2018/7-4-18/totw_network_profile_400.jpg",
@@ -80,6 +65,16 @@ function Profile() {
       });
   });
 
+  // fetching company data from api thoruogh userid
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/users/api/contact-us", config)
+      .then((res) => {
+        let contacts = res.data.contact;
+        setContact(contacts);
+      });
+  });
+
   const getBase64 = (img, callback) => {
     const reader = new FileReader();
     reader.addEventListener("load", () => callback(reader.result));
@@ -118,43 +113,21 @@ function Profile() {
     navigate("/raise");
   };
 
-  const data = [
-    {
-      title: "Sophie B.",
-      avatar: convesionImg,
-      description: "Hi! I need more information…",
-    },
-    {
-      title: "Anne Marie",
-      avatar: convesionImg2,
-      description: "Awesome work, can you…",
-    },
-    {
-      title: "Ivan",
-      avatar: convesionImg3,
-      description: "About files I can…",
-    },
-    {
-      title: "Peterson",
-      avatar: convesionImg4,
-      description: "Have a great afternoon…",
-    },
-    {
-      title: "Nick Daniel",
-      avatar: convesionImg5,
-      description: "Hi! I need more information…",
-    },
-  ];
+  const data = contact.map((item) => {
+    return {
+      title:
+        "Name: " +
+        item.f_name +
+        " " +
+        item.l_name +
+        "  Emial: " +
+        item.email +
+        "  Title: " +
+        item.title,
 
-  const project = [
-    {
-      img: project1,
-      titlesub: "Project #1",
-      title: "Modern",
-      disciption:
-        "As Uber works through a huge amount of internal management turmoil.",
-    },
-  ];
+      description: item.message,
+    };
+  });
 
   return (
     <>
@@ -192,49 +165,6 @@ function Profile() {
       ></Card>
 
       <Row gutter={[24, 0]}>
-        <Col span={24} md={8} className="mb-24 ">
-          <Card
-            bordered={false}
-            className="header-solid h-full"
-            title={<h6 className="font-semibold m-0">Platform Settings</h6>}
-          >
-            <ul className="list settings-list">
-              <li>
-                <h6 className="list-header text-sm text-muted">ACCOUNT</h6>
-              </li>
-              <li>
-                <Switch defaultChecked />
-
-                <span>Email me when someone follows me</span>
-              </li>
-              <li>
-                <Switch />
-                <span>Email me when someone answers me</span>
-              </li>
-              <li>
-                <Switch defaultChecked />
-                <span>Email me when someone mentions me</span>
-              </li>
-              <li>
-                <h6 className="list-header text-sm text-muted m-0">
-                  APPLICATION
-                </h6>
-              </li>
-              <li>
-                <Switch defaultChecked />
-                <span>New launches and projects</span>
-              </li>
-              <li>
-                <Switch defaultChecked />
-                <span>Monthly product updates</span>
-              </li>
-              <li>
-                <Switch defaultChecked />
-                <span>Subscribe to newsletter</span>
-              </li>
-            </ul>
-          </Card>
-        </Col>
         <Col span={24} md={8} className="mb-24">
           <Card
             bordered={false}
@@ -305,10 +235,10 @@ function Profile() {
             </Descriptions>
           </Card>
         </Col>
-        <Col span={24} md={8} className="mb-24">
+        <Col span={24} md={15} className="mb-24">
           <Card
             bordered={false}
-            title={<p className="font-semibold m-0">Conversations</p>}
+            title={<p className="font-semibold m-0">Contact Us Messages</p>}
             className="header-solid h-full"
             bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
           >
@@ -318,11 +248,8 @@ function Profile() {
               split={false}
               className="conversations-list"
               renderItem={(item) => (
-                <List.Item actions={[<Button type="link">REPLY</Button>]}>
+                <List.Item actions={[<Button type="link">View More</Button>]}>
                   <List.Item.Meta
-                    avatar={
-                      <Avatar shape="square" size={48} src={item.avatar} />
-                    }
                     title={item.title}
                     description={item.description}
                   />
@@ -348,11 +275,20 @@ function Profile() {
               <Card
                 bordered={false}
                 className="card-project"
-                cover={<img alt="example" src={p.image} />}
+                cover={
+                  <div>
+                    <img
+                      alt="example"
+                      src={p.image}
+                      style={{
+                        objectFit: "contain",
+                      }}
+                    />
+                  </div>
+                }
               >
-                <div className="card-tag">{p.content}</div>
+                <div className="card-tag"></div>
                 <h5>{p.name}</h5>
-                <p>{p.disciption}</p>
                 <Row gutter={[6, 0]} className="card-footer">
                   <Col span={12}>
                     <Button

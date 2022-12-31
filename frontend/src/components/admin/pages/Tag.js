@@ -5,10 +5,10 @@ import { Link, useParams } from "react-router-dom";
 // Images
 import { SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import moment from "moment";
 
 const columns = [
   {
@@ -111,7 +111,7 @@ function Tag() {
       });
   });
 
-  const { id } = useParams();
+  let { id } = useParams();
   // get tags by id
   const [Tag, setTag] = useState();
   useEffect(() => {
@@ -133,11 +133,7 @@ function Tag() {
       name: TagName,
     };
     axios
-      .put(
-        "http://localhost:5000/admin/api/update-tags/" + id,
-        data,
-        config
-      )
+      .put("http://localhost:5000/admin/api/update-tags/" + id, data, config)
       .then((res) => {
         console.log(res);
         toast.success(

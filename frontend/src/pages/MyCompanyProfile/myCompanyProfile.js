@@ -5,10 +5,11 @@ import {
   AiFillFacebook,
   AiFillInstagram,
   AiFillTwitterSquare,
+  AiOutlineHeart,
 } from "react-icons/ai";
 import { FaPlay, FaShare } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import khalticonfig from "../../components/Khalti/KhaltiConfig";
 import {
@@ -58,6 +59,7 @@ const MyCompanyProfile = () => {
   const [tags, setTags] = useState([]);
   const [ID, setID] = useState("");
   const [investors, setInvestors] = useState([]);
+  const [isInvested, setIsInvested] = useState(false);
 
   const config = {
     headers: {
@@ -84,6 +86,13 @@ const MyCompanyProfile = () => {
         setStatus(company.status);
         setID(company._id);
         setInvestors(company.investors);
+        if (
+          company.investors.includes(
+            JSON.parse(localStorage.getItem("userInfo")).user._id
+          )
+        ) {
+          setIsInvested(true);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -108,6 +117,28 @@ const MyCompanyProfile = () => {
         console.log(err);
       });
   }, []);
+
+  // watchlist handler
+  const watchlistHandler = () => {
+    if (!localStorage.getItem("token")) {
+      toast.error("Please login to add to watchlist");
+      return;
+    }
+    axios
+      .put("http://localhost:5000/company/api/watchlist/" + id, id, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        toast.success(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data.message);
+      });
+  };
 
   return (
     <Wrapper>
@@ -145,22 +176,98 @@ const MyCompanyProfile = () => {
             <FaPlay className={!play ? "icon" : "d-none"} onClick={onplay} />
           </div>
         </section>
-        {user._id === JSON.parse(localStorage.getItem("userInfo")).user._id ? (
-          <section className="two">
-            <div className="edit">
-              <Link to={`/company/edit/${name}`}>
-                <button className="btn btn-primary">Edit</button>
-              </Link>
-            </div>
-          </section>
-        ) : (
-          console.log("not same user")
-        )}
+        <section className="two">
+          {user._id ===
+          JSON.parse(localStorage.getItem("userInfo")).user._id ? (
+            <section className="two">
+              <div className="edit">
+                <Link to={`/company/edit/${name}`}>
+                  <button className="btn btn-primary">Edit</button>
+                </Link>
+              </div>
+            </section>
+          ) : (
+            <>
+              <span>
+                {fund_goal - fund_raised < 10000 ? (
+                  <p className="text-danger">
+                    {fund_goal - fund_raised} Left to reach goal
+                  </p>
+                ) : (
+                  <p className="text-success">
+                    {fund_goal - fund_raised} Left to reach goal
+                  </p>
+                )}
+              </span>
+              <div className="line"></div>
+              <div className="price">
+                <p>Rs.{fund_goal}</p>
+                <p>Raised money from {investors.length} investor</p>
+              </div>
+              <div className="invest">
+                <div className="invest-info">
+                  <p>Invest</p>
+                  <p>min Rs.1000</p>
+                </div>
+                <div className="invest-input">
+                  Rs.
+                  <input
+                    type="number"
+                    placeholder="0"
+                    onChange={(e) => setAmount(e.target.value)}
+                  />
+                </div>
+              </div>
+              {isInvested ? (
+                <button
+                  className="btn-invest"
+                  onClick={() =>
+                    amount > 200
+                      ? toast.info("Minimum amount to invest is Rs.1000")
+                      : checkout.show({
+                          amount: amount * 100,
+                          productIdentity: id,
+                          productName: name,
+                          productUrl: "http://localhost:3000/detail/" + id,
+                        })
+                  }
+                >
+                  Invest More
+                </button>
+              ) : (
+                <button
+                  className="btn-invest"
+                  onClick={() =>
+                    amount > 200
+                      ? toast.info("Minimum amount to invest is Rs.1000")
+                      : checkout.show({
+                          amount: amount * 100,
+                          productIdentity: id,
+                          productName: name,
+                          productUrl: "http://localhost:3000/detail/" + id,
+                        })
+                  }
+                >
+                  Invest
+                </button>
+              )}
+              <button
+                className="btn-bookmark"
+                onClick={() => {
+                  watchlistHandler();
+                }}
+              >
+                <AiOutlineHeart />
+                <span>Watch for updates</span>
+              </button>
+            </>
+            
+          )}
+        </section>
         <section className="three">
           <div className="links">
             <Link>{website}</Link>
             <span>{address}</span>
-
             <Link
               className="icon"
               to={{
@@ -200,7 +307,6 @@ const MyCompanyProfile = () => {
             );
           })}
         </section>
-
         <section className="five">
           {activeindex === 1 ? (
             <Overview
@@ -220,10 +326,7 @@ const MyCompanyProfile = () => {
           ) : null}
           {activeindex === 3 ? <Update /> : null}
           {activeindex === 4 ? <WhatInvestorSay /> : null}
-          {activeindex === 5 ? <AskAQuestion
-          user = {user}
-          
-           /> : null}
+          {activeindex === 5 ? <AskAQuestion user={user} /> : null}
         </section>
       </div>
       <div className="right-container">
@@ -236,7 +339,82 @@ const MyCompanyProfile = () => {
             </div>
           </section>
         ) : (
-          console.log("not same user")
+          <div className="right-container">
+            <section className="two">
+              <span>
+                {fund_goal - fund_raised < 10000 ? (
+                  <p className="text-danger">
+                    {fund_goal - fund_raised} Left to reach goal
+                  </p>
+                ) : (
+                  <p className="text-success">
+                    {fund_goal - fund_raised} Left to reach goal
+                  </p>
+                )}
+              </span>
+              <div className="line"></div>
+              <div className="price">
+                <p>Rs.{fund_goal}</p>
+                <p>Raised money from {investors.length} investor</p>
+              </div>
+              <div className="invest">
+                <div className="invest-info">
+                  <p>Invest</p>
+                  <p>min Rs.1000</p>
+                </div>
+                <div className="invest-input">
+                  Rs.
+                  <input
+                    type="number"
+                    placeholder="0"
+                    onChange={(e) => setAmount(e.target.value)}
+                  />
+                </div>
+              </div>
+              {isInvested ? (
+                <button
+                  className="btn-invest"
+                  onClick={() =>
+                    amount > 200
+                      ? toast.info("Minimum amount to invest is Rs.1000")
+                      : checkout.show({
+                          amount: amount * 100,
+                          productIdentity: id,
+                          productName: name,
+                          productUrl: "http://localhost:3000/detail/" + id,
+                        })
+                  }
+                >
+                  Invest More
+                </button>
+              ) : (
+                <button
+                  className="btn-invest"
+                  onClick={() =>
+                    amount > 200
+                      ? toast.info("Minimum amount to invest is Rs.1000")
+                      : checkout.show({
+                          amount: amount * 100,
+                          productIdentity: id,
+                          productName: name,
+                          productUrl: "http://localhost:3000/detail/" + id,
+                        })
+                  }
+                >
+                  Invest
+                </button>
+              )}
+              <button
+                className="btn-bookmark"
+                onClick={() => {
+                  watchlistHandler();
+                }}
+              >
+                <AiOutlineHeart />
+                <span>Watch for updates</span>
+              </button>
+            </section>
+          </div>
         )}
       </div>
     </Wrapper>
