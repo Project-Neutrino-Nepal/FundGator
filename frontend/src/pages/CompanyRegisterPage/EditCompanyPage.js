@@ -244,7 +244,6 @@ const EditCompanyPage = () => {
           )
           .then((res) => {
             if (res.data.success) {
-              console.log(res.data);
               toast.success(
                 "Company Updated Successfully"
                 // setTimeout(() => {

@@ -116,9 +116,9 @@ const CompanyRegisterPage = () => {
   const teamsdata = {
     teams: values.teams,
   };
-  const companyName=values.companyname;
-   const image=values.imageupload;
-   const content=values.content;
+  const companyName = values.companyname;
+  const image = values.imageupload;
+  const content = values.content;
 
   const setcontent = (content) => {
     setValue({ ...values, content: content });
@@ -314,10 +314,11 @@ const CompanyRegisterPage = () => {
                   window.location.href = `/profile`;
                 }, 1200)
               );
-               //sends the event details via Socket.io
-        socket.emit("newCompany", {companyName, image, content  });
-        console.log(companyName, image, content)
-        
+              //sends the event details via Socket.io
+              const companyID = res.data.company._id;
+
+              socket.emit("newCompany", { companyName, image, companyID });
+              console.log(companyName, image, content);
             }
           });
       } catch (error) {
