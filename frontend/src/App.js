@@ -100,11 +100,13 @@ function App() {
         <Route
           path="/chats"
           element={
-            <ChatProvider>
-              <ChakraProvider>
-                <Chat />
-              </ChakraProvider>
-            </ChatProvider>
+            <ProtectedRoute>
+              <ChatProvider>
+                <ChakraProvider>
+                  <Chat />
+                </ChakraProvider>
+              </ChatProvider>
+            </ProtectedRoute>
           }
         />
 
@@ -273,7 +275,7 @@ function App() {
 
           {/* Add others routes of dashboard below */}
         </Route>
-        <Route path = "*" element = {<ErrorPage/>}/>
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </>
   );

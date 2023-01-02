@@ -6,6 +6,7 @@ import { io } from "socket.io-client";
 
 import "../css/nav-search.css";
 import SingleNotification from "./admin/components/layout/SingleNotification";
+import SingleSearch from "./SingleSearch";
 
 function Navbar() {
   const socket = io("http://localhost:5000");
@@ -46,6 +47,8 @@ function Navbar() {
 
       setLoading(false);
       setSearchResults(data);
+      // clear input field
+      query = "";
     } catch (error) {
       console.log(error);
     }
@@ -85,12 +88,16 @@ function Navbar() {
 
   // notification
   const [shownotification, setnotification] = useState(false);
+  const [showsearch, setsearch] = useState(false);
 
   const [addNotification, setAddnotification] = useState([]);
 
   const shownotificationHandler = () => {
     setnotification(!shownotification);
     setAddnotification([]);
+  };
+  const showSearchHandler = () => {
+    setsearch(!showsearch);
   };
 
   useEffect(() => {
@@ -251,56 +258,36 @@ function Navbar() {
                   aria-label="Search"
                   onChange={(e) => handleSearch(e.target.value)}
                 />
-
-                <button
-                  data-toggle="modal"
-                  data-target="#exampleModalSearch"
-                >
-                  Launch demo modal
-                </button>
               </form>
 
-              <div
-                class="modal fade"
-                id="exampleModalSearch"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
+              {/* New Bitton for Search */}
+              {/* <li className="nav-item"> */}
+              <button
+                className="btn btn-outline-success btn-sm"
+                onClick={showSearchHandler}
               >
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">
-                        Modal title
-                      </h5>
-                      <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">...</div>
-                    <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-dismiss="modal"
-                      >
-                        Close
-                      </button>
-                      <button type="button" class="btn btn-primary">
-                        Save changes
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                serach
+              </button>
 
-              {/* {loading && <DataBox data={searchResults} />} */}
+              <div
+                className={
+                  showsearch
+                    ? "position-absolute top-4 bg-white opacity-100"
+                    : "d-none"
+                }
+                aria-hidden="true"
+                style={{
+                  transform: "translateY(225px) translateX(350px)",
+                  zIndex: "2",
+                  width: "max-content",
+                  maxWidth: "500px",
+                  minWidth: "500px",
+                  minHeight: "70px",
+                }}
+              >
+                <SingleSearch data={searchResults} />
+              </div>
+              {/* </li> */}
 
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0 ">
                 <li className="nav-item me-3 mt-2 ">
@@ -312,6 +299,7 @@ function Navbar() {
                     Raise funding
                   </Link>
                 </li>
+
                 {/* badge for notification */}
                 <li className="nav-item me-3 mt-2">
                   <button
@@ -532,7 +520,7 @@ function Navbar() {
                         Settings
                       </Link>
                     </li>
-                    
+
                     <hr />
                     <li>
                       <a className="dropdown-item button " onClick={logout}>
@@ -550,15 +538,5 @@ function Navbar() {
     );
   }
 }
-
-const DataBox = ({ data }) => {
-  return (
-    <div>
-      {data.map((item) => (
-        <div key={item.id}>{item.name}</div>
-      ))}
-    </div>
-  );
-};
 
 export default Navbar;

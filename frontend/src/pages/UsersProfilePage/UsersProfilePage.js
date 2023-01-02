@@ -66,11 +66,13 @@ const UsersProfilePage = () => {
           className="profilepic"
         />
         <h2 className="text-white">{name}</h2>
+        <h6 className="text-white fs-6">{skills}</h6>
 
-        <Link to="Settings" className="btn-edit">
+        
+        <Link to="/profile/Settings" className="btn-edit btn-primary m-4 border-2">
           edit profile
         </Link>
-        <div className="info">
+        <div className="info m-4">
           <h4 className="text-white">Personal Information</h4>
           <div className="info-data ">
             <div className="data">
@@ -93,10 +95,7 @@ const UsersProfilePage = () => {
       </div>
 
       <div className="right-container">
-        <h1>interested in..</h1>
-        <p>{skills}</p>
-        <h1>My Companies</h1>
-        <div className="">
+        <h1>All Verified Companies</h1>
           <div className="d-flex flex-wrap   ">
             {companies.map((company) => (
               <Link to={`/company/${company._id}`}>
@@ -105,7 +104,6 @@ const UsersProfilePage = () => {
             ))}
           </div>
         </div>
-      </div>
     </Wrapper>
   );
 };
