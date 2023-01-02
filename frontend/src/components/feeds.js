@@ -260,8 +260,7 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
                 className="fs-6 ms-2 "
                 style={{ textTransform: "capitalize" }}
               >
-                &nbsp;{likes} Likes &emsp;. {comments} comments &emsp;. 0
-                shares
+                &nbsp;{likes} Likes &emsp;. {comments} comments &emsp;. 0 shares
               </span>
               <hr />
               <div className="d-flex flex-wrap justify-content-between align-items-center ms-2 me-2 ">
