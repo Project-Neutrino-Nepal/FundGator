@@ -23,14 +23,13 @@ function LineChart() {
           let fundRaised = res.data.company;
           // console.log(fundgoal);
           // console.log(fundRaised);
-          
+
           setFundGoal(fundgoal?.map((fundgoal) => fundgoal.amount));
           setFundRaised(
             fundRaised?.map((fundRaised) => fundRaised.fund_raised)
           );
-          // setDate(fundRaised?.map((fundRaised) => fundRaised.date));
+          setDate(fundRaised?.map((fundRaised) => fundRaised.date));
           // setDate1(fundgoal?.map((fundgoal) => fundgoal.date));
-
         });
     } catch (error) {
       console.log(error);
@@ -100,17 +99,7 @@ function LineChart() {
             ],
           },
         },
-        // categories: [
-        //   "Feb",
-        //   "Mar",
-        //   "Apr",
-        //   "May",
-        //   "Jun",
-        //   "Jul",
-        //   "Aug",
-        //   "Sep",
-        //   "Oct",
-        // ],
+        categories: date,
       },
 
       tooltip: {
@@ -127,15 +116,15 @@ function LineChart() {
     <>
       <div className="linechart">
         <div>
-          <Title level={5}>Active Users</Title>
+          <Title level={5}>Fund Raised</Title>
           <Paragraph className="lastweek">
             than last week <span className="bnb2">+30%</span>
           </Paragraph>
         </div>
         <div className="sales">
           <ul>
-            <li>{<MinusOutlined />} Traffic</li>
-            <li>{<MinusOutlined />} Sales</li>
+            <li>{<MinusOutlined color="#8c8c8c" />} FundGoal</li>
+            <li>{<MinusOutlined color="#8c8c8c" />} FundRaised</li>
           </ul>
         </div>
       </div>
