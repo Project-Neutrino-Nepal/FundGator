@@ -73,6 +73,7 @@ const Feed = () => {
     );
   }
   return (
+
     <div>
       {feeds.map((feed) => {
         return (
@@ -87,6 +88,8 @@ const Feed = () => {
       })}
       <EditPost clearvalue= {clearvalue} item={item} changemodel={changemodel} model={showmodal2} closemodel= {closemodel} />
     </div>
+
+   
   );
 };
 export default Feed;

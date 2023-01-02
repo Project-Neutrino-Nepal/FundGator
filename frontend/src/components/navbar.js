@@ -13,12 +13,43 @@ function Navbar() {
   const [name, setName] = useState("");
   const [companyID, SetCompanyID] = useState("");
   const [companyName, SetCompanyName] = useState("");
+  const [search, setSearch] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [image, setPreview] = useState({
     preview:
       "https://www.grovenetworks.com/images/easyblog_shared/July_2018/7-4-18/totw_network_profile_400.jpg",
     file: "",
   });
 
+  const handleSearch = async (query) => {
+    setSearch(query);
+
+    if (!query || query === "") {
+      setSearchResults([]);
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `http://localhost:5000/profile/api/get-users?search=${search}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      const data = await response.json();
+
+      setLoading(false);
+      setSearchResults(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const config = {
     headers: {
       Authorization: localStorage.getItem("token"),
@@ -209,21 +240,67 @@ function Navbar() {
                   </Link>
                 </li>
               </ul>
+
+              {/*  here risdcisdjfbvddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd */}
+
               <form className="d-flex" role="search">
                 <input
                   className="form-control me-2"
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
+                  onChange={(e) => handleSearch(e.target.value)}
                 />
 
                 <button
-                  className="btn btn-outline-success btn-sm"
-                  type="submit"
+                  data-toggle="modal"
+                  data-target="#exampleModalSearch"
                 >
-                  Search
+                  Launch demo modal
                 </button>
               </form>
+
+              <div
+                class="modal fade"
+                id="exampleModalSearch"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">
+                        Modal title
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">...</div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                      <button type="button" class="btn btn-primary">
+                        Save changes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* {loading && <DataBox data={searchResults} />} */}
 
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0 ">
                 <li className="nav-item me-3 mt-2 ">
@@ -473,5 +550,15 @@ function Navbar() {
     );
   }
 }
+
+const DataBox = ({ data }) => {
+  return (
+    <div>
+      {data.map((item) => (
+        <div key={item.id}>{item.name}</div>
+      ))}
+    </div>
+  );
+};
 
 export default Navbar;
