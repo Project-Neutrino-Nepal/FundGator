@@ -53,7 +53,6 @@ const socket = io("http://localhost:5000");
   const admin = localStorage.getItem("admin");
 
   // notification
-  useEffect(() => window.scrollTo(0, 0));
   const [shownotification, setnotification] = useState(false);
 
   const [addNotification, setAddnotification] = useState([]);

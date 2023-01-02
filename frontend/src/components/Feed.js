@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Feeds from "./feeds";
+import React, { useEffect, useState } from "react";
 import EditPost from "./Editpost";
+import Feeds from "./feeds";
+import Loading from "./loading";
 const Feed = () => {
   const config = {
     headers: {
@@ -49,9 +50,13 @@ const Feed = () => {
     } catch (err) {
       console.log(err);
     }
-  }, [config]);
+  }, [...feeds]);
   if (loading) {
-    return <div>...Loading</div>;
+    return (
+      <div className="d-flex justify-content-center align-items-center">
+        <Loading />
+      </div>
+    );
   }
   return (
     <div>
