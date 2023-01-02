@@ -1,13 +1,14 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { BsCardImage } from "react-icons/bs";
 import { IoCloseCircleSharp, IoDocumentTextSharp } from "react-icons/io5";
 import { RiVideoFill } from "react-icons/ri";
 //import Feeds from "../DetailsPage/../../../components/feeds"
-const EditPost = React.memo(({ item, model }) => {
+const EditPost = React.memo(({ item, model, clearvalue }) => {
   const [name, setName] = useState("");
+  const closebtn = useRef(null)
   const [image, setPreview] = useState({
     preview:
       "https://www.grovenetworks.com/images/easyblog_shared/July_2018/7-4-18/totw_network_profile_400.jpg",
@@ -53,6 +54,18 @@ const EditPost = React.memo(({ item, model }) => {
     console.log(name);
     setValue({ ...values, [name]: "" });
     setPreviews({ ...preview, [name]: "" });
+  };
+  const clearvalues = () => {
+    setValue({
+      img: "",
+      vid: "",
+      description: "",
+    });
+    setPreviews({
+      img: "",
+      vid: "",
+      description: "",
+    });
   };
   //this is change after pull
   const fileSelection = (e) => {
@@ -118,6 +131,7 @@ const EditPost = React.memo(({ item, model }) => {
       .then((res) => {
         console.log("res", res);
         toast.success(res.data.message);
+        closebtn.current.click()
         //window.location.reload();
         //redirect to home page
       })
@@ -150,6 +164,8 @@ const EditPost = React.memo(({ item, model }) => {
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
+                onClick={clearvalues}
+                ref={closebtn}
               ></button>
             </div>
             <div className="modal-body">

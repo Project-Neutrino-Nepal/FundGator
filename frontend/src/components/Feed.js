@@ -10,6 +10,7 @@ const Feed = () => {
     },
   };
   const [feeds, setFeeds] = useState([]);
+  const [model, setmodel] = useState("modal fade");
   const [loading, setloading] = useState(true);
   const [id, setId] = useState(null);
   const [item, setitem] = useState({
@@ -21,7 +22,16 @@ const Feed = () => {
 
   const [showmodal, setmodal] = useState("modal fade");
   const [showmodal2, setmodal2] = useState("modal fade");
-
+  const clearvalue = () => {
+    setitem({
+      _id: "",
+      img: "",
+      vid: "",
+      description: "",
+      
+    });
+    
+  };
   const idchange = (id) => {
     setId(id);
   };
@@ -29,6 +39,10 @@ const Feed = () => {
   const changemodel = (value) => {
     setmodal(value);
   };
+  const closemodel = () => {
+    setmodal2("modal fade");
+  };
+  
 
   const changemodel2 = (value) => {
     setmodal2(value);
@@ -71,7 +85,7 @@ const Feed = () => {
           />
         );
       })}
-      <EditPost item={item} changemodel={changemodel} model={showmodal2} />
+      <EditPost clearvalue= {clearvalue} item={item} changemodel={changemodel} model={showmodal2} closemodel= {closemodel} />
     </div>
   );
 };

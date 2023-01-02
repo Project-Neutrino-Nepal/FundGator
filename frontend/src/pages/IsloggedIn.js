@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 const IsloggedIn = ({ children }) => {
   const isadmin = localStorage.getItem("admin");
   if (isadmin) {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to="/homepage" />;
   }
   if (isadmin === false) {
     return <Navigate to="/homepage" />;
