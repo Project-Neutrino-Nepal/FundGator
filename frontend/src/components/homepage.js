@@ -1,5 +1,7 @@
 import axios from "axios";
+
 import React, { useEffect, useRef, useState } from "react";
+
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "../css/homepage.css";
@@ -11,9 +13,11 @@ import { RiVideoFill } from "react-icons/ri";
 
 import { Outlet } from "react-router-dom";
 
+
 const Homepage = () => {
   const im = useRef(null);
   const vi = useRef(null);
+  const close=useRef(null);
   const [name, setName] = useState("");
   const [skills, setSkills] = useState("");
   const [image, setPreview] = useState({
@@ -112,7 +116,8 @@ const Homepage = () => {
           toast.success(
             res.data.message,
             setTimeout(function () {
-              window.location.reload();
+              // window.location.reload();
+              close.current.click()
             }, 2000)
           );
         });
@@ -285,6 +290,7 @@ const Homepage = () => {
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
+                ref={close}
               ></button>
             </div>
             <div className="modal-body">

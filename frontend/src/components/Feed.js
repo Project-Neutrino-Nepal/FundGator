@@ -10,6 +10,7 @@ const Feed = () => {
     },
   };
   const [feeds, setFeeds] = useState([]);
+  const [model, setmodel] = useState("modal fade");
   const [loading, setloading] = useState(true);
   const [id, setId] = useState(null);
   const [item, setitem] = useState({
@@ -21,7 +22,16 @@ const Feed = () => {
 
   const [showmodal, setmodal] = useState("modal fade");
   const [showmodal2, setmodal2] = useState("modal fade");
-
+  const clearvalue = () => {
+    setitem({
+      _id: "",
+      img: "",
+      vid: "",
+      description: "",
+      
+    });
+    
+  };
   const idchange = (id) => {
     setId(id);
   };
@@ -29,6 +39,10 @@ const Feed = () => {
   const changemodel = (value) => {
     setmodal(value);
   };
+  const closemodel = () => {
+    setmodal2("modal fade");
+  };
+  
 
   const changemodel2 = (value) => {
     setmodal2(value);
@@ -59,34 +73,23 @@ const Feed = () => {
     );
   }
   return (
-    <>
-      <div className="d-flex col-md-12 justify-content-around ms-3">
-        <div  className="col-md-7">
-          {feeds.map((feed) => {
-            return (
-              <Feeds
-                key={feed._id}
-                feed={feed}
-                idchange={idchange}
-                changemodel={changemodel}
-                modelvalue={modelvalue}
-              />
-            );
-          })}
-          <EditPost item={item} changemodel={changemodel} model={showmodal2} />
-        </div>
-        <div className="card col-md-4 sticky-top  " style={{height:"600px",top:80}}>
-          <div className="card-body">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Card title</h5>
-                <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+
+    <div>
+      {feeds.map((feed) => {
+        return (
+          <Feeds
+            key={feed._id}
+            feed={feed}
+            idchange={idchange}
+            changemodel={changemodel}
+            modelvalue={modelvalue}
+          />
+        );
+      })}
+      <EditPost clearvalue= {clearvalue} item={item} changemodel={changemodel} model={showmodal2} closemodel= {closemodel} />
+    </div>
+
+   
   );
 };
 export default Feed;
