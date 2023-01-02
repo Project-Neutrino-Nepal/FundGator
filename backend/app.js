@@ -1,8 +1,6 @@
 // requirements for express application
 const express = require("express");
 const router = express.Router();
-//const morgan = require("morgan");
-const { model, Schema } = require("mongoose");
 
 require("dotenv").config();
 require("./Database/conf");
@@ -27,7 +25,6 @@ const questionRouter = require("./apis/questionApi");
 const feedbackRouter = require("./apis/FeedbackApi");
 const notification = require("./apis/NotificationApi");
 const Notification = require("./models/notificationModel");
-
 // Import passport middleware
 require("./middlewares/passport-middleware");
 // Initialize express application
@@ -58,6 +55,7 @@ app.use("/notification", notification);
 
 // --------------------------DEVELOPMENT------------------------------
 let companyList = [];
+let verifyList = [];
 const server = app.listen(process.env.PORT, () =>
   console.log(`Server started on PORT ${process.env.PORT}`)
 );
@@ -71,6 +69,10 @@ const io = require("socket.io")(server, {
 
 io.on("connection", (socket) => {
   console.log("Connected to socket.io");
+  socket.on("setup", (userData) => {
+    socket.join(userData._id);
+    socket.emit("connected");
+  });
 
   socket.on("newCompany", (company) => {
     companyList.unshift(company);
@@ -95,15 +97,19 @@ io.on("connection", (socket) => {
 
     const notification = new Notification({
       company: company.companyID,
-      user: company.user_id,
     });
+      // Save notification to database
+      notification.save((error, result) => {
+        if (error) throw error;
+        console.log("Notification saved to database");
+      });
+      //sends the events back to the React app
+      socket.broadcast.emit("sendMessage-investor1", verifyList);
+      socket.broadcast.emit("sendMessage-investor", verifyList);
 
   })
 
-  socket.on("setup", (userData) => {
-    socket.join(userData._id);
-    socket.emit("connected");
-  });
+ 
 
   socket.on("join chat", (room) => {
     socket.join(room);
@@ -133,8 +139,8 @@ io.on("connection", (socket) => {
     socket.leave(userData._id);
   });
   // close the socket connection
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
-  });
+  socket.disconnect(true);
 });
+
  
+

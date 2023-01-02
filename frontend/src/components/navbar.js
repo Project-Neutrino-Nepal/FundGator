@@ -8,7 +8,7 @@ import "../css/nav-search.css";
 import SingleNotification from "./admin/components/layout/SingleNotification";
 
 function Navbar() {
-const socket = io("http://localhost:5000");
+  const socket = io("http://localhost:5000");
 
   const [name, setName] = useState("");
   const [companyID, SetCompanyID] = useState("");
@@ -53,7 +53,6 @@ const socket = io("http://localhost:5000");
   const admin = localStorage.getItem("admin");
 
   // notification
-  useEffect(() => window.scrollTo(0, 0));
   const [shownotification, setnotification] = useState(false);
 
   const [addNotification, setAddnotification] = useState([]);
@@ -238,36 +237,36 @@ const socket = io("http://localhost:5000");
                 </li>
                 {/* badge for notification */}
                 <li className="nav-item me-3 mt-2">
-                  <button type="button" class="btn position-relative"
-                  onClick={shownotificationHandler}
+                  <button
+                    type="button"
+                    class="btn position-relative"
+                    onClick={shownotificationHandler}
                   >
                     <i className="fas fa-bell text-light" />
                     {addNotification.length > 0 && (
                       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                      {addNotification.length}
-                      <span class="visually-hidden">unread messages</span>
-                    </span>
+                        {addNotification.length}
+                        <span class="visually-hidden">unread messages</span>
+                      </span>
                     )}
-                    
                   </button>
                   <div
-              className={
-                shownotification
-                  ? "position-absolute top-4  bg-white shadow shadow-sm"
-                  : "d-none"
-              }
-              style={{
-                transform: "translateY(37px) translateX(-300px)",
-                zIndex: "2",
-                width: "max-content",
-                maxWidth: "500px",
-                minWidth: "500px",
-                minHeight: "70px",
-              }}
-            >
-            <SingleNotification />
-               
-            </div>
+                    className={
+                      shownotification
+                        ? "position-absolute top-4  bg-white shadow shadow-sm"
+                        : "d-none"
+                    }
+                    style={{
+                      transform: "translateY(37px) translateX(-300px)",
+                      zIndex: "2",
+                      width: "max-content",
+                      maxWidth: "500px",
+                      minWidth: "500px",
+                      minHeight: "70px",
+                    }}
+                  >
+                    <SingleNotification />
+                  </div>
                 </li>
 
                 <li className="nav-item me-2 fs-4">
@@ -456,23 +455,7 @@ const socket = io("http://localhost:5000");
                         Settings
                       </Link>
                     </li>
-                    <hr />
-                    <li>
-                      <h6 className="dropdown-item fw-semibold" href="#">
-                        COMPANY
-                      </h6>
-                    </li>
-                    <li>
-                      {/* {companies.map((company) => (
-                        <Link
-                          className="dropdown-item"
-                          aria-current="page"
-                          to={`/company/${company._id}`}
-                        >
-                          {company.name}
-                        </Link>
-                      ))} */}
-                    </li>
+                    
                     <hr />
                     <li>
                       <a className="dropdown-item button " onClick={logout}>
