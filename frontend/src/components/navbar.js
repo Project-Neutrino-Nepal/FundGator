@@ -453,22 +453,43 @@ function Navbar() {
                   </Link>
                 </li>
               </ul>
-              <form className="d-flex" role="search">
+                 <form className="d-flex" role="search">
                 <input
                   className="form-control me-2"
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
+                  onChange={(e) => handleSearch(e.target.value)}
                 />
-
-                <button
-                  className="btn btn-outline-success btn-sm"
-                  type="submit"
-                >
-                  Search
-                </button>
               </form>
 
+              {/* New Bitton for Search */}
+              {/* <li className="nav-item"> */}
+              <button
+                className="btn btn-outline-success btn-sm"
+                onClick={showSearchHandler}
+              >
+                serach
+              </button>
+
+              <div
+                className={
+                  showsearch
+                    ? "position-absolute top-4 bg-white opacity-100"
+                    : "d-none"
+                }
+                aria-hidden="true"
+                style={{
+                  transform: "translateY(225px) translateX(350px)",
+                  zIndex: "2",
+                  width: "max-content",
+                  maxWidth: "500px",
+                  minWidth: "500px",
+                  minHeight: "70px",
+                }}
+              >
+                <SingleSearch data={searchResults} />
+              </div>
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li className="nav-item me-2 fs-4">
                   <Link
