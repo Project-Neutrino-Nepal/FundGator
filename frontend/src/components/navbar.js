@@ -6,6 +6,7 @@ import { io } from "socket.io-client";
 
 import "../css/nav-search.css";
 import SingleNotification from "./admin/components/layout/SingleNotification";
+import SingleSearch from "./SingleSearch";
 
 function Navbar() {
   const socket = io("http://localhost:5000");
@@ -13,12 +14,45 @@ function Navbar() {
   const [name, setName] = useState("");
   const [companyID, SetCompanyID] = useState("");
   const [companyName, SetCompanyName] = useState("");
+  const [search, setSearch] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [image, setPreview] = useState({
     preview:
       "https://www.grovenetworks.com/images/easyblog_shared/July_2018/7-4-18/totw_network_profile_400.jpg",
     file: "",
   });
 
+  const handleSearch = async (query) => {
+    setSearch(query);
+
+    if (!query || query === "") {
+      setSearchResults([]);
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `http://localhost:5000/profile/api/get-users?search=${search}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      const data = await response.json();
+
+      setLoading(false);
+      setSearchResults(data);
+      // clear input field
+      query = "";
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const config = {
     headers: {
       Authorization: localStorage.getItem("token"),
@@ -54,12 +88,16 @@ function Navbar() {
 
   // notification
   const [shownotification, setnotification] = useState(false);
+  const [showsearch, setsearch] = useState(false);
 
   const [addNotification, setAddnotification] = useState([]);
 
   const shownotificationHandler = () => {
     setnotification(!shownotification);
     setAddnotification([]);
+  };
+  const showSearchHandler = () => {
+    setsearch(!showsearch);
   };
 
   useEffect(() => {
@@ -209,21 +247,47 @@ function Navbar() {
                   </Link>
                 </li>
               </ul>
+
+              {/*  here risdcisdjfbvddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd */}
+
               <form className="d-flex" role="search">
                 <input
                   className="form-control me-2"
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
+                  onChange={(e) => handleSearch(e.target.value)}
                 />
-
-                <button
-                  className="btn btn-outline-success btn-sm"
-                  type="submit"
-                >
-                  Search
-                </button>
               </form>
+
+              {/* New Bitton for Search */}
+              {/* <li className="nav-item"> */}
+              <button
+                className="btn btn-outline-success btn-sm"
+                onClick={showSearchHandler}
+              >
+                serach
+              </button>
+
+              <div
+                className={
+                  showsearch
+                    ? "position-absolute top-4 bg-white opacity-100"
+                    : "d-none"
+                }
+                aria-hidden="true"
+                style={{
+                  transform: "translateY(225px) translateX(350px)",
+                  zIndex: "2",
+                  width: "max-content",
+                  maxWidth: "500px",
+                  minWidth: "500px",
+                  minHeight: "70px",
+                }}
+              >
+                <SingleSearch data={searchResults} />
+              </div>
+              {/* </li> */}
 
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0 ">
                 <li className="nav-item me-3 mt-2 ">
@@ -235,6 +299,7 @@ function Navbar() {
                     Raise funding
                   </Link>
                 </li>
+
                 {/* badge for notification */}
                 <li className="nav-item me-3 mt-2">
                   <button
@@ -388,22 +453,43 @@ function Navbar() {
                   </Link>
                 </li>
               </ul>
-              <form className="d-flex" role="search">
+                 <form className="d-flex" role="search">
                 <input
                   className="form-control me-2"
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
+                  onChange={(e) => handleSearch(e.target.value)}
                 />
-
-                <button
-                  className="btn btn-outline-success btn-sm"
-                  type="submit"
-                >
-                  Search
-                </button>
               </form>
 
+              {/* New Bitton for Search */}
+              {/* <li className="nav-item"> */}
+              <button
+                className="btn btn-outline-success btn-sm"
+                onClick={showSearchHandler}
+              >
+                serach
+              </button>
+
+              <div
+                className={
+                  showsearch
+                    ? "position-absolute top-4 bg-white opacity-100"
+                    : "d-none"
+                }
+                aria-hidden="true"
+                style={{
+                  transform: "translateY(225px) translateX(350px)",
+                  zIndex: "2",
+                  width: "max-content",
+                  maxWidth: "500px",
+                  minWidth: "500px",
+                  minHeight: "70px",
+                }}
+              >
+                <SingleSearch data={searchResults} />
+              </div>
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li className="nav-item me-2 fs-4">
                   <Link
@@ -455,7 +541,7 @@ function Navbar() {
                         Settings
                       </Link>
                     </li>
-                    
+
                     <hr />
                     <li>
                       <a className="dropdown-item button " onClick={logout}>

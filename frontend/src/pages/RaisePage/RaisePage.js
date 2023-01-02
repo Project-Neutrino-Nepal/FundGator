@@ -15,7 +15,7 @@ const RaisePage = () => {
   const navigate = useNavigate();
 
   const createCompany = async (e) => {
-    e.preventDefault();
+   
     const data = { name };
     const config = {
       headers: {
@@ -47,8 +47,9 @@ const RaisePage = () => {
     <Wrapper id="createCompany">
       <ToastContainer />
       <section className="left-container ">
-        <h1>
-          Start Rasing money in <span>15 minutes</span>
+        <h1 className="display-1">
+
+          Start Rasing money 
         </h1>
         <p>
           We take the pain out of raising money. Raise $50K to $5M from

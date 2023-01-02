@@ -6,7 +6,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import "../css/feeds.css";
 import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal.js";
-const Feeds = ({ feed, changemodel, modelvalue }) => {
+const Feeds = ({ feed, changemodel,closemodel, modelvalue }) => {
   const [modalShow, setModalShow] = React.useState(false);
   const [show, setShow] = useState(false);
   const [userId, setUserId] = useState("");
@@ -127,6 +127,9 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
   return (
     <>
       <div className="row d-flex align-items-center justify-content-center mb-2">
+
+        <div className="col-md-6 col-10">
+
           <div className="card col-md-11">
             <div className="d-flex justify-content-between p-2 px-1">
               <div
@@ -139,6 +142,7 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
                   src={feed.profile.avatar}
                   width={50}
                   height={50}
+                 
                   className="rounded-circle"
                   alt=""
                 />
@@ -241,14 +245,16 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
                 <img
                   src={feed.image}
                   className="w-100"
-                  style={{ objectFit: "cover" }}
+                  style = {{objectFit: "contain"}}
+                  height={400}
                   alt=""
                 />
               ) : (
                 <video
                   src={feed.video}
                   className="w-100"
-                  style={{ objectFit: "cover" }}
+                  style = {{objectFit: "contain"}}
+                  height= {400}
                   controls={true}
                 />
               )}
@@ -259,8 +265,7 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
                 className="fs-6 ms-2 "
                 style={{ textTransform: "capitalize" }}
               >
-                &nbsp;{likes} Likes &emsp;. {comments} comments &emsp;. 0
-                shares
+                &nbsp;{likes} Likes &emsp;. {comments} comments &emsp;. 0 shares
               </span>
               <hr />
               <div className="d-flex flex-wrap justify-content-between align-items-center ms-2 me-2 ">
@@ -394,6 +399,7 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
               </div>
             </div>
           </div>
+        </div>
         </div>
     </>
   );

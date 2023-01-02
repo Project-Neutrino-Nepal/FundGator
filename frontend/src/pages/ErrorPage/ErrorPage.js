@@ -1,6 +1,6 @@
 import React from "react";
-import robot from "../../assets/image/robot.jpg";
-import bt from "../../assets/image/button.png";
+import robot from "../../assets/image/machine.png";
+import bt from "../../assets/image/btn.png";
 import { useNavigate } from "react-router-dom";
 const ErrorPage = () => {
   const navigate = useNavigate();
@@ -18,10 +18,10 @@ const ErrorPage = () => {
             This page doesn't exist or was removed!
           </p>
           <p className="fs-5 text-black-50">We suggest your back to home</p>
-          <img src={bt} alt="" role="button" onClick={() => navigate(-1)} />
+          <img src={bt} alt="" width={300} height ={70} style = {{objectFit:"contain"}} role="button" onClick={() => navigate(-1)} />
         </section>
         <section className="right-container col-lg-6 d-none d-md-flex">
-          <img src={robot} alt="" srcset="" />
+          <img src={robot} alt="" style = {{objectFit:"contain"}} srcset="" />
         </section>
       </div>
     </div>
