@@ -59,20 +59,34 @@ const Feed = () => {
     );
   }
   return (
-    <div>
-      {feeds.map((feed) => {
-        return (
-          <Feeds
-            key={feed._id}
-            feed={feed}
-            idchange={idchange}
-            changemodel={changemodel}
-            modelvalue={modelvalue}
-          />
-        );
-      })}
-      <EditPost item={item} changemodel={changemodel} model={showmodal2} />
-    </div>
+    <>
+      <div className="d-flex col-md-12 justify-content-around ms-3">
+        <div  className="col-md-7">
+          {feeds.map((feed) => {
+            return (
+              <Feeds
+                key={feed._id}
+                feed={feed}
+                idchange={idchange}
+                changemodel={changemodel}
+                modelvalue={modelvalue}
+              />
+            );
+          })}
+          <EditPost item={item} changemodel={changemodel} model={showmodal2} />
+        </div>
+        <div className="card col-md-4 sticky-top  " style={{height:"600px",top:80}}>
+          <div className="card-body">
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">Card title</h5>
+                <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 export default Feed;

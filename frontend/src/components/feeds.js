@@ -127,7 +127,6 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
   return (
     <>
       <div className="row d-flex align-items-center justify-content-center mb-2">
-        <div className="col-md-6">
           <div className="card col-md-11">
             <div className="d-flex justify-content-between p-2 px-1">
               <div
@@ -396,7 +395,6 @@ const Feeds = ({ feed, changemodel, modelvalue }) => {
             </div>
           </div>
         </div>
-      </div>
     </>
   );
 };

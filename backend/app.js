@@ -25,6 +25,7 @@ const questionRouter = require("./apis/questionApi");
 const feedbackRouter = require("./apis/FeedbackApi");
 const notification = require("./apis/NotificationApi");
 const Notification = require("./models/notificationModel");
+const VerifyNotification = require("./models/notificationModel");
 // Import passport middleware
 require("./middlewares/passport-middleware");
 // Initialize express application
@@ -95,7 +96,7 @@ io.on("connection", (socket) => {
   socket.on("verify-company",(company)=>{
     verifyList.unshift(company);
 
-    const notification = new Notification({
+    const notification = new VerifyNotification({
       company: company.companyID,
     });
       // Save notification to database
