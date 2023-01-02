@@ -532,23 +532,7 @@ function Navbar() {
                         Settings
                       </Link>
                     </li>
-                    <hr />
-                    <li>
-                      <h6 className="dropdown-item fw-semibold" href="#">
-                        COMPANY
-                      </h6>
-                    </li>
-                    <li>
-                      {/* {companies.map((company) => (
-                        <Link
-                          className="dropdown-item"
-                          aria-current="page"
-                          to={`/company/${company._id}`}
-                        >
-                          {company.name}
-                        </Link>
-                      ))} */}
-                    </li>
+                    
                     <hr />
                     <li>
                       <a className="dropdown-item button " onClick={logout}>

@@ -20,5 +20,31 @@ const NotificationSchema = new Schema(
   { timestamps: true }
 );
 
+const VerifyNotificationSchema = new Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+    },
+    company: {
+      type: Schema.Types.ObjectId,
+      ref: "company",
+    },
+
+    date: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+
+  { timestamps: true }
+);
+
+
 const Notification = model("notification", NotificationSchema);
-module.exports = Notification;
+const VerifyNotification = model("verifyNotification", VerifyNotificationSchema);
+// module.exports = Notification;
+module.exports = Notification, VerifyNotification;
+
+
+
