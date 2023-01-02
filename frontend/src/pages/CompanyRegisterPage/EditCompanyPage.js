@@ -207,7 +207,6 @@ const EditCompanyPage = () => {
       } else if (activeindex === 3) {
         const formData = new FormData();
         formData.append("company_video", videouploads);
-        console.log(formData);
 
         try {
           axios
@@ -234,7 +233,6 @@ const EditCompanyPage = () => {
         formData.append("citizenship_front", values.citizenship_front);
         formData.append("citizenship_back", values.citizenship_back);
         formData.append("content", values.content);
-        console.log(formData);
         axios
           .put(
             "http://localhost:5000/company/api/update-document/" +
@@ -245,17 +243,18 @@ const EditCompanyPage = () => {
           .then((res) => {
             if (res.data.success) {
               toast.success(
-                "Company Updated Successfully"
-                // setTimeout(() => {
-                //   navigate("/homepage");
-                // }, 1200)
+                "Company Updated Successfully",
+                setTimeout(() => {
+                  navigate("/homepage");
+                }, 1200)
               );
               const companyID = res.data.company._id;
+              const date=res.data.company.date;
               socket.emit("newCompany", {
                 companyID,
                 companyName,
                 image,
-                content,
+                date,
               });
             }
           });
@@ -314,7 +313,6 @@ const EditCompanyPage = () => {
     axios
       .get("http://localhost:5000/company/api/get-company/" + id, config)
       .then((res) => {
-        console.log(res);
         let company = res.data.company;
         formvalue.content = company.content;
         formvalue.registration_card = company.registration_card;

@@ -1,9 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
+import { io } from "socket.io-client";
+
 import "../css/nav-search.css";
+import SingleNotification from "./admin/components/layout/SingleNotification";
 
 function Navbar() {
+const socket = io("http://localhost:5000");
+
   const [name, setName] = useState("");
   const [companyID, SetCompanyID] = useState("");
   const [companyName, SetCompanyName] = useState("");
@@ -45,6 +51,25 @@ function Navbar() {
   });
 
   const admin = localStorage.getItem("admin");
+
+  // notification
+  useEffect(() => window.scrollTo(0, 0));
+  const [shownotification, setnotification] = useState(false);
+
+  const [addNotification, setAddnotification] = useState([]);
+
+  const shownotificationHandler = () => {
+    setnotification(!shownotification);
+    setAddnotification([]);
+  };
+
+  useEffect(() => {
+    //listens for the company list from the backend
+    socket.on("sendMessage-admin", (company) => {
+      console.log(company);
+      setAddnotification(company);
+    });
+  });
 
   const logout = async (e) => {
     localStorage.clear();
@@ -201,8 +226,8 @@ function Navbar() {
                 </button>
               </form>
 
-              <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li className="nav-item me-2">
+              <ul className="navbar-nav ms-auto mb-2 mb-lg-0 ">
+                <li className="nav-item me-3 mt-2 ">
                   <Link
                     className="nav-link active"
                     aria-current="page"
@@ -211,6 +236,40 @@ function Navbar() {
                     Raise funding
                   </Link>
                 </li>
+                {/* badge for notification */}
+                <li className="nav-item me-3 mt-2">
+                  <button type="button" class="btn position-relative"
+                  onClick={shownotificationHandler}
+                  >
+                    <i className="fas fa-bell text-light" />
+                    {addNotification.length > 0 && (
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      {addNotification.length}
+                      <span class="visually-hidden">unread messages</span>
+                    </span>
+                    )}
+                    
+                  </button>
+                  <div
+              className={
+                shownotification
+                  ? "position-absolute top-4  bg-white shadow shadow-sm"
+                  : "d-none"
+              }
+              style={{
+                transform: "translateY(37px) translateX(-300px)",
+                zIndex: "2",
+                width: "max-content",
+                maxWidth: "500px",
+                minWidth: "500px",
+                minHeight: "70px",
+              }}
+            >
+            <SingleNotification />
+               
+            </div>
+                </li>
+
                 <li className="nav-item me-2 fs-4">
                   <Link
                     className="nav-link active"

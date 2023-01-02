@@ -315,10 +315,12 @@ const CompanyRegisterPage = () => {
                 }, 1200)
               );
               //sends the event details via Socket.io
+              console.log(res.data.company);
               const companyID = res.data.company._id;
+              const date=res.data.company.date;
 
               socket.emit("newCompany", { companyName, image, companyID });
-              console.log(companyName, image, content);
+              console.log(companyName, image, date);
             }
           });
       } catch (error) {

@@ -8,7 +8,7 @@ import moment from "moment";
 
 const socket = io("http://localhost:5000");
 
-const SingleNotification = () => {
+const InvestorNotification = () => {
   const [shownotification, setnotification] = useState([]);
   const [addCompany, setAddCompany] = useState([]);
   useEffect(() => {
@@ -132,4 +132,4 @@ const SingleNotification = () => {
   );
 };
 
-export default SingleNotification;
+export default InvestorNotification;

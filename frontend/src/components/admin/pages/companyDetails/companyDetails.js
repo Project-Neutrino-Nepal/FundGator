@@ -16,6 +16,9 @@ import { Link, useParams } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { About, AskAQuestion, Detail, Overview } from "./component";
 import tabs from "./utils/tab";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:5000");
 const CompanyDetails = () => {
   const tab2 = [
     { id: 1, text: "OVERVIEW" },
@@ -102,8 +105,7 @@ const CompanyDetails = () => {
       });
   }, []);
 
-  // get reason details using id from params
-
+ 
   // Verify company by admin
   const admin = localStorage.getItem("admin");
 
@@ -116,8 +118,12 @@ const CompanyDetails = () => {
           config
         )
         .then((res) => {
-          console.log(res);
+          let companyName = res.data.updatedCompany.name;
+          let verified = res.data.updatedCompany.verified;
+          let user_id = res.data.updatedCompany.user;
+          let companyID = id;
           toast.success(res.data.message);
+          socket.emit("verify-company", { companyID, companyName, verified,user_id });
           window.location.replace("/dashboard/company_admin");
         })
         .catch((err) => {
@@ -140,7 +146,6 @@ const CompanyDetails = () => {
         setFund_goal(reasons.amount);
         setAddress(reasons.city);
         setTags(reasons.tag);
-        console.log(reasons);
       })
       .catch((err) => {
         console.log(err);
@@ -153,7 +158,12 @@ const CompanyDetails = () => {
       axios
         .put("http://localhost:5000/company/api/reject-company/" + id, config)
         .then((res) => {
+          let companyName = res.data.updatedCompany.name;
+          let verified = res.data.updatedCompany.verified;
+          let user_id = res.data.updatedCompany.user;
+          let companyID = id;
           toast.success(res.data.message);
+          socket.emit("unverify-company", { companyID, companyName, verified,user_id});
           window.location.replace("/dashboard/company_admin");
         })
         .catch((err) => {
@@ -180,9 +190,6 @@ const CompanyDetails = () => {
                     : short_pitch
                   : null}
               </h1>
-            </div>
-            <div className="share">
-              <FaShare />
             </div>
           </div>
           <div className="video-container">

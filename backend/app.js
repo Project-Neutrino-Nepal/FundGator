@@ -90,6 +90,16 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("sendMessage-admin", companyList);
   });
 
+  socket.on("verify-company",(company)=>{
+    verifyList.unshift(company);
+
+    const notification = new Notification({
+      company: company.companyID,
+      user: company.user_id,
+    });
+
+  })
+
   socket.on("setup", (userData) => {
     socket.join(userData._id);
     socket.emit("connected");
