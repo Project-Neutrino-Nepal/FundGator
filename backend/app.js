@@ -24,8 +24,9 @@ const messageRouter = require("./apis/MessageApi");
 const questionRouter = require("./apis/questionApi");
 const feedbackRouter = require("./apis/FeedbackApi");
 const notification = require("./apis/NotificationApi");
-const Notification = require("./models/notificationModel");
-const VerifyNotification = require("./models/notificationModel");
+const Notification = require("./models/notificationModel").Notification;
+const VerifyNotification =
+  require("./models/notificationModel").VerifyNotification;
 // Import passport middleware
 require("./middlewares/passport-middleware");
 // Initialize express application
@@ -64,6 +65,8 @@ const server = app.listen(process.env.PORT, () =>
 const io = require("socket.io")(server, {
   cors: {
     origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    transport: ["websocket", "polling"],
   },
   pingTimeout: 60 * 1000,
 });
@@ -76,11 +79,13 @@ io.on("connection", (socket) => {
   });
 
   socket.on("newCompany", (company) => {
+    console.log(company);
     companyList.unshift(company);
     // Create new notification document
     const notification = new Notification({
       company: company.companyID,
     });
+    console.log("companyList", companyList);
 
     // Save notification to database
     notification.save((error, result) => {
@@ -93,25 +98,19 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("sendMessage-admin", companyList);
   });
 
-  socket.on("verify-company",(company)=>{
-    console.log(company)
+  socket.on("verify-company", (company) => {
+    console.log(company);
     verifyList.unshift(company);
 
-    const notification = new VerifyNotification({
+    const verifynotification = new VerifyNotification({
       company: company.companyID,
     });
-      // Save notification to database
-      notification.save((error, result) => {
-        if (error) throw error;
-        console.log("Notification saved to database");
-      });
-      //sends the events back to the React app
-      socket.broadcast.emit("sendMessage-investor1", verifyList);
-      socket.broadcast.emit("sendMessage-investor", verifyList);
-
-  })
-
- 
+    // Save notification to database
+    verifynotification.save((error, result) => {
+      if (error) throw error;
+      console.log("Notification saved to database");
+    });
+  });
 
   socket.on("join chat", (room) => {
     socket.join(room);
@@ -140,13 +139,10 @@ io.on("connection", (socket) => {
     console.log("User Disconnected");
     socket.leave(userData._id);
   });
-  // close the socket connection
-  // socket.off("disconnect", () => {
+  // // close the socket connection
+  // socket.on("disconnect", () => {
   //   console.log("User Disconnected");
+
   // });
-  socket.disconnect(true);
+  // socket.disconnect(true);
 });
-  
-
- 
-

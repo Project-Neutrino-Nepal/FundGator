@@ -5,7 +5,6 @@ import { Breadcrumb, Col, Row } from "antd";
 import { BsBellFill } from "react-icons/bs";
 import SingleNotification from "./SingleNotification";
 import { io } from "socket.io-client";
-
 const socket = io("http://localhost:5000");
 
 function Header({ name }) {
@@ -20,11 +19,26 @@ function Header({ name }) {
   };
 
   useEffect(() => {
-    //listens for the company list from the backend
-    socket.on("sendMessage-admin", (company) => {
-      console.log(company);
-      setAddnotification(company);
+
+    socket.on("connect", () => {
+      console.log("connected");
+      socket.on("sendMessage-admin", data => {
+        console
+        .log(data);
+        setAddnotification(data);
     });
+    return () => {
+      socket.off("data");
+    };
+    });
+
+    // socket.on("sendMessage-admin", data => {
+    //   console.log(data);
+    //   setAddnotification(data);
+    // });
+    // return () => {
+    //   socket.off("data");
+    // };
   });
 
   return (
@@ -32,8 +46,7 @@ function Header({ name }) {
       <Row gutter={[24, 0]} style={{ marginTop: 50 }}>
         <Col span={24} md={6}>
           <Breadcrumb>
-            <Breadcrumb.Item>
-            </Breadcrumb.Item>
+            <Breadcrumb.Item></Breadcrumb.Item>
             <Breadcrumb.Item style={{ textTransform: "capitalize" }}>
               {name.replace("/", "/")}
             </Breadcrumb.Item>
@@ -68,8 +81,7 @@ function Header({ name }) {
                 minHeight: "70px",
               }}
             >
-            <SingleNotification />
-               
+              <SingleNotification />
             </div>
           </div>
         </Col>

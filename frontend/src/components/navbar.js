@@ -1,16 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-import { io } from "socket.io-client";
-
 import "../css/nav-search.css";
-import SingleNotification from "./admin/components/layout/SingleNotification";
+import InvestorNotification from "./InvestorNotification";
 import SingleSearch from "./SingleSearch";
 
 function Navbar() {
-  const socket = io("http://localhost:5000");
-
   const [name, setName] = useState("");
   const [companyID, SetCompanyID] = useState("");
   const [companyName, SetCompanyName] = useState("");
@@ -100,13 +95,7 @@ function Navbar() {
     setsearch(!showsearch);
   };
 
-  useEffect(() => {
-    //listens for the company list from the backend
-    socket.on("sendMessage-admin", (company) => {
-      console.log(company);
-      setAddnotification(company);
-    });
-  });
+   
 
   const logout = async (e) => {
     localStorage.clear();
@@ -330,7 +319,7 @@ function Navbar() {
                       minHeight: "70px",
                     }}
                   >
-                    <SingleNotification />
+                    <InvestorNotification/> 
                   </div>
                 </li>
 
@@ -453,7 +442,7 @@ function Navbar() {
                   </Link>
                 </li>
               </ul>
-                 <form className="d-flex" role="search">
+              <form className="d-flex" role="search">
                 <input
                   className="form-control me-2"
                   type="search"

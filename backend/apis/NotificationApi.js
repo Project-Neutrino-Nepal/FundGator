@@ -1,7 +1,7 @@
  const express = require("express");
 const router = express.Router();
 const userAuth = require("../middlewares/auth-guard");
-const Notification = require("../models/notificationModel");
+const Notification = require("../models/notificationModel").Notification;
 
 /**
  *  @description To get Notification    

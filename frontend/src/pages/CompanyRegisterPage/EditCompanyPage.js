@@ -8,7 +8,6 @@ import { BasicEdit, Story, Team, Visiblity } from "./component";
 import tabs from "./utils/tab";
 import Wrapper from "./wrapper/CompanyRegisterPage";
 import { io } from "socket.io-client";
-const socket = io("http://localhost:5000");
 
 const parse = require("html-react-parser");
 
@@ -243,18 +242,21 @@ const EditCompanyPage = () => {
           .then((res) => {
             if (res.data.success) {
               toast.success(
-                "Company Updated Successfully",
-                setTimeout(() => {
-                  navigate("/homepage");
-                }, 1200)
+                "Company Updated Successfully"
+                // setTimeout(() => {
+                //   navigate("/homepage");
+                // }, 1200)
               );
               const companyID = res.data.company._id;
-              const date=res.data.company.date;
-              socket.emit("newCompany", {
-                companyID,
-                companyName,
-                image,
-                date,
+              const date = res.data.company.date;
+              const socket = io("http://localhost:5000");
+              socket.on("connect", () => {
+                socket.emit("newCompany", {
+                  companyID,
+                  companyName,
+                  image,
+                  date,
+                });
               });
             }
           });

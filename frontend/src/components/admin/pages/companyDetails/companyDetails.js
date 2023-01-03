@@ -17,8 +17,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { About, AskAQuestion, Detail, Overview } from "./component";
 import tabs from "./utils/tab";
 import { io } from "socket.io-client";
-
 const socket = io("http://localhost:5000");
+
+
 const CompanyDetails = () => {
   const tab2 = [
     { id: 1, text: "OVERVIEW" },
@@ -105,7 +106,6 @@ const CompanyDetails = () => {
       });
   }, []);
 
- 
   // Verify company by admin
   const admin = localStorage.getItem("admin");
 
@@ -123,7 +123,14 @@ const CompanyDetails = () => {
           let user_id = res.data.updatedCompany.user;
           let companyID = id;
           toast.success(res.data.message);
-          socket.emit("verify-company", { companyID, companyName, verified,user_id });
+          socket.on("connect", () => {
+            socket.emit("verify-company", {
+              companyID,
+              companyName,
+              verified,
+              user_id,
+            });
+          });
           window.location.replace("/dashboard/company_admin");
         })
         .catch((err) => {
@@ -163,7 +170,15 @@ const CompanyDetails = () => {
           let user_id = res.data.updatedCompany.user;
           let companyID = id;
           toast.success(res.data.message);
-          socket.emit("unverify-company", { companyID, companyName, verified,user_id});
+
+          socket.on("connect", () => {
+            socket.emit("verify-company", {
+              companyID,
+              companyName,
+              verified,
+              user_id,
+            });
+          });
           window.location.replace("/dashboard/company_admin");
         })
         .catch((err) => {

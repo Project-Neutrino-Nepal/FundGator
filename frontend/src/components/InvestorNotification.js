@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Wrapper from "../wrapper/Header";
-import { io } from "socket.io-client";
 import axios from "axios";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
 import moment from "moment";
-
-const socket = io("http://localhost:5000");
+import Wrapper from "./admin/components/wrapper/Header";
 
 const InvestorNotification = () => {
   const [shownotification, setnotification] = useState([]);
@@ -33,16 +30,6 @@ const InvestorNotification = () => {
     // hide the load more button
     document.getElementById("loadmore").style.display = "none";
   };
-
-  useEffect(() => {
-    //listens for the company list from the backend through socket io
-    socket.on("sendMessage-investor1", (company) => {
-      console.log(company);
-      setAddCompany(company);
-    });
-  });
-
-  // get notification from backend through api
 
   return (
     <Wrapper
@@ -73,13 +60,10 @@ const InvestorNotification = () => {
               >
                 <p style={{ zIndex: "1" }}>
                   {" "}
-                  <Link
-                    to={`/dashboard/company-details/${company.companyID}`}
-                  >
+                  <Link to={`/dashboard/company-details/${company.companyID}`}>
                     <i className="fa-solid fa-eye text-info"></i>
                   </Link>
                   &emsp; <small> {moment(company.date).fromNow()}</small>
-                 
                 </p>
               </div>
             </div>

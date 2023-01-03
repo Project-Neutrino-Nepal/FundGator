@@ -42,9 +42,9 @@ const VerifyNotificationSchema = new Schema(
 
 
 const Notification = model("notification", NotificationSchema);
-const VerifyNotification = model("verifyNotification", VerifyNotificationSchema);
+const VerifyNotification = model("verifynotification", VerifyNotificationSchema);
 // module.exports = Notification;
-module.exports = Notification, VerifyNotification;
+module.exports = {Notification, VerifyNotification};
 
 
 
