@@ -25,8 +25,6 @@ const questionRouter = require("./apis/questionApi");
 const feedbackRouter = require("./apis/FeedbackApi");
 const notification = require("./apis/NotificationApi");
 const Notification = require("./models/notificationModel").Notification;
-const VerifyNotification =
-  require("./models/notificationModel").VerifyNotification;
 // Import passport middleware
 require("./middlewares/passport-middleware");
 // Initialize express application
@@ -57,7 +55,6 @@ app.use("/notification", notification);
 
 // --------------------------DEVELOPMENT------------------------------
 let companyList = [];
-let verifyList = [];
 const server = app.listen(process.env.PORT, () =>
   console.log(`Server started on PORT ${process.env.PORT}`)
 );
@@ -65,8 +62,8 @@ const server = app.listen(process.env.PORT, () =>
 const io = require("socket.io")(server, {
   cors: {
     origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-    transport: ["websocket", "polling"],
+    // methods: ["GET", "POST"],
+    // transport: ["websocket", "polling"],
   },
   pingTimeout: 60 * 1000,
 });
@@ -96,20 +93,6 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("sendMessage-admin1", companyList);
 
     socket.broadcast.emit("sendMessage-admin", companyList);
-  });
-
-  socket.on("verify-company", (company) => {
-    console.log(company);
-    verifyList.unshift(company);
-
-    const verifynotification = new VerifyNotification({
-      company: company.companyID,
-    });
-    // Save notification to database
-    verifynotification.save((error, result) => {
-      if (error) throw error;
-      console.log("Notification saved to database");
-    });
   });
 
   socket.on("join chat", (room) => {
@@ -146,3 +129,5 @@ io.on("connection", (socket) => {
   // });
   // socket.disconnect(true);
 });
+
+ 

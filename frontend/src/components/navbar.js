@@ -84,7 +84,7 @@ function Navbar() {
 
   const admin = localStorage.getItem("admin");
 
-  // notification
+  // .....................notification..........................................
   const [shownotification, setnotification] = useState(false);
 
   const [addNotification, setAddnotification] = useState([]);
@@ -93,12 +93,26 @@ function Navbar() {
     setnotification(!shownotification);
     setAddnotification([]);
   };
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/notification/api/get-verifynotification")
+      .then((res) => {
+        console.log(res.data.verifynotification);
+        let data = res.data.verifynotification;
+        setAddnotification(data);
+      });
+  }, []);
+
+
+  // .....................search..........................................
   const showSearchHandler = () => {
     setsearch(!showsearch);
   };
 
-   
 
+   
+// ............................. Logout function ...............................................
   const logout = async (e) => {
     localStorage.clear();
     sessionStorage.clear();
