@@ -13,11 +13,10 @@ import { RiVideoFill } from "react-icons/ri";
 
 import { Outlet } from "react-router-dom";
 
-
 const Homepage = () => {
   const im = useRef(null);
   const vi = useRef(null);
-  const close=useRef(null);
+  const close = useRef(null);
   const [name, setName] = useState("");
   const [skills, setSkills] = useState("");
   const [image, setPreview] = useState({
@@ -76,6 +75,20 @@ const Homepage = () => {
     }
   };
 
+  const clearallvalue = () => {
+    setValue({
+      imge: "",
+      vide: "",
+      doc: "",
+      description: "",
+    });
+    setPreviews({
+      imge: "",
+      vide: "",
+      doc: "",
+    });
+  };
+
   const config = {
     headers: {
       Authorization: localStorage.getItem("token"),
@@ -117,7 +130,7 @@ const Homepage = () => {
             res.data.message,
             setTimeout(function () {
               // window.location.reload();
-              close.current.click()
+              close.current.click();
             }, 2000)
           );
         });
@@ -291,6 +304,7 @@ const Homepage = () => {
                 data-bs-dismiss="modal"
                 aria-label="Close"
                 ref={close}
+                onClick={clearallvalue}
               ></button>
             </div>
             <div className="modal-body">
