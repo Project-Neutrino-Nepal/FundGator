@@ -6,7 +6,8 @@ import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import "../css/feeds.css";
 import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal.js";
-const Feeds = ({ feed, changemodel,closemodel, modelvalue }) => {
+import { toast } from "react-toastify";
+const Feeds = ({ feed, changemodel, closemodel, modelvalue }) => {
   const [modalShow, setModalShow] = React.useState(false);
   const [show, setShow] = useState(false);
   const [userId, setUserId] = useState("");
@@ -124,12 +125,24 @@ const Feeds = ({ feed, changemodel,closemodel, modelvalue }) => {
     setComments(comments + 1);
   };
 
+  const ondelete = async () => {
+    try {
+      await axios
+        .delete(`http://localhost:5000/posts/api/delete/${feed._id}`, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => toast.success("post deleted"));
+    } catch (e) {
+      toast.error("something went wrong");
+    }
+  };
+
   return (
     <>
       <div className="row d-flex align-items-center justify-content-center mb-2">
-
         <div className="col-md-6 col-10">
-
           <div className="card col-md-11">
             <div className="d-flex justify-content-between p-2 px-1">
               <div
@@ -142,7 +155,6 @@ const Feeds = ({ feed, changemodel,closemodel, modelvalue }) => {
                   src={feed.profile.avatar}
                   width={50}
                   height={50}
-                 
                   className="rounded-circle"
                   alt=""
                 />
@@ -216,14 +228,8 @@ const Feeds = ({ feed, changemodel,closemodel, modelvalue }) => {
                         </Link>
                       </li> */}
 
-                      <li>
-                        <Link
-                          className="dropdown-item"
-                          aria-current="page"
-                          to="deletepost"
-                        >
-                          Delete
-                        </Link>
+                      <li className="dropdown-item" onClick={ondelete}>
+                        Delete
                       </li>
                     </ul>
                   </div>
@@ -245,7 +251,7 @@ const Feeds = ({ feed, changemodel,closemodel, modelvalue }) => {
                 <img
                   src={feed.image}
                   className="w-100"
-                  style = {{objectFit: "contain"}}
+                  style={{ objectFit: "contain" }}
                   height={400}
                   alt=""
                 />
@@ -253,8 +259,8 @@ const Feeds = ({ feed, changemodel,closemodel, modelvalue }) => {
                 <video
                   src={feed.video}
                   className="w-100"
-                  style = {{objectFit: "contain"}}
-                  height= {400}
+                  style={{ objectFit: "contain" }}
+                  height={400}
                   controls={true}
                 />
               )}
@@ -400,7 +406,7 @@ const Feeds = ({ feed, changemodel,closemodel, modelvalue }) => {
             </div>
           </div>
         </div>
-        </div>
+      </div>
     </>
   );
 };

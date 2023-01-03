@@ -1,7 +1,10 @@
+import moment from "moment";
 import React from "react";
+import { Link } from "react-router-dom";
 import Wrapper from "./admin/components/wrapper/Header";
 
 function SingleSearch({ data }) {
+  let search = data;
   console.log(data);
   return (
     <Wrapper
@@ -9,26 +12,46 @@ function SingleSearch({ data }) {
       style={{ height: "400px", overflowY: "scroll" }}
     >
       <div>
-        {data.map((data) => {
-          return (
-            <>
-              <div
-                class="card border border-dark btn m-1"
-                onClick={() => {
-                  window.location.href = `/profiles/${data._id}`;
-                }}
-              >
-                <div class="card-body">
-                  <h4>{data.name}</h4>
-                  <p>{data.email}</p>
-                </div>
-              </div>
-            </>
-          );
-        })}
+        {search
+          ? search.map((data) => {
+              return (
+                <>
+                  <Link
+                  to={`/profiles/${data.user._id}`}
+
+                  >
+                    <div
+                      id="shownotification"
+                      className="d-flex shadow-sm aligin-items-center w-100 gap-2 notify-items m-1"
+                    >
+                      <img
+                        src={data.avatar}
+                        alt=""
+                        srcset=""
+                        width={70}
+                        height={70}
+                      />
+                      <p>
+                        {data.name} <br />
+                        {data.email}
+                      </p>
+                      <div
+                        className="position-relative notify-edit mt-4  d-flex flex-column text-nowrap ms-4 ps-2"
+                        width={70}
+                      ></div>
+                    </div>
+                  </Link>
+                </>
+              );
+            })
+          : null}
       </div>
     </Wrapper>
   );
 }
 
 export default SingleSearch;
+
+//  <Link to={`/profiles/${data.user._id}`}>
+//    <i className="fa-solid fa-eye text-info"></i>
+//  </Link>;

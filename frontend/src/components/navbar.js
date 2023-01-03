@@ -1,7 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../css/nav-search.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../css/nav-search.css"; 
 import InvestorNotification from "./InvestorNotification";
 import SingleSearch from "./SingleSearch";
 
@@ -10,6 +12,7 @@ function Navbar() {
   const [companyID, SetCompanyID] = useState("");
   const [companyName, SetCompanyName] = useState("");
   const [search, setSearch] = useState("");
+  const [showsearch, setsearch] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [image, setPreview] = useState({
@@ -20,6 +23,7 @@ function Navbar() {
 
   const handleSearch = async (query) => {
     setSearch(query);
+    console.log(query);
 
     if (!query || query === "") {
       setSearchResults([]);
@@ -30,7 +34,7 @@ function Navbar() {
       setLoading(true);
 
       const response = await fetch(
-        `http://localhost:5000/profile/api/get-users?search=${search}`,
+        `http://localhost:5000/profile/api/profiles?search=${search}`,
         {
           method: "GET",
           headers: {
@@ -38,14 +42,13 @@ function Navbar() {
           },
         }
       );
-      const data = await response.json();
 
+      const data = await response.json();
       setLoading(false);
       setSearchResults(data);
-      // clear input field
-      query = "";
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      return toast.error("Something went wrong");
     }
   };
   const config = {
@@ -83,7 +86,6 @@ function Navbar() {
 
   // notification
   const [shownotification, setnotification] = useState(false);
-  const [showsearch, setsearch] = useState(false);
 
   const [addNotification, setAddnotification] = useState([]);
 
@@ -106,6 +108,8 @@ function Navbar() {
   if (localStorage.getItem("token") === null) {
     return (
       <>
+        <ToastContainer />
+
         <nav
           className="navbar navbar-expand-lg navbar-dark  navbar-fixed-top"
           style={{ backgroundColor: "#0a4fa3" }}
@@ -140,21 +144,6 @@ function Navbar() {
                   </Link>
                 </li>
               </ul>
-              <form className="d-flex" role="search">
-                <input
-                  className="form-control me-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-
-                <button
-                  className="btn btn-outline-success btn-sm"
-                  type="submit"
-                >
-                  Search
-                </button>
-              </form>
 
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li className="nav-item me-2">
@@ -202,6 +191,8 @@ function Navbar() {
   } else if (localStorage.getItem("token") && admin === "false") {
     return (
       <>
+        <ToastContainer />
+
         <nav
           className="navbar navbar-expand-lg  navbar-dark fixed-top mb-5"
           style={{ backgroundColor: "#0a4fa3" }}
@@ -237,8 +228,6 @@ function Navbar() {
                 </li>
               </ul>
 
-              {/*  here risdcisdjfbvddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd */}
-
               <form className="d-flex" role="search">
                 <input
                   className="form-control me-2"
@@ -246,11 +235,11 @@ function Navbar() {
                   placeholder="Search"
                   aria-label="Search"
                   onChange={(e) => handleSearch(e.target.value)}
+
+                  
                 />
               </form>
 
-              {/* New Bitton for Search */}
-              {/* <li className="nav-item"> */}
               <button
                 className="btn btn-outline-success btn-sm"
                 onClick={showSearchHandler}
@@ -408,6 +397,8 @@ function Navbar() {
   } else if (localStorage.getItem("token") && admin === "true") {
     return (
       <>
+        <ToastContainer />
+
         <nav
           className="navbar navbar-expand-lg  navbar-dark fixed-top mb-5"
           style={{ backgroundColor: "#0a4fa3" }}
@@ -448,12 +439,10 @@ function Navbar() {
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
-                  onChange={(e) => handleSearch(e.target.value)}
+                  // onChange={(e) => handleSearch(e.target.value)}
                 />
               </form>
 
-              {/* New Bitton for Search */}
-              {/* <li className="nav-item"> */}
               <button
                 className="btn btn-outline-success btn-sm"
                 onClick={showSearchHandler}
