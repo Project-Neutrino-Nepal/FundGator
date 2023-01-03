@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Avatar, Button, Card, Col, Descriptions, List, Row } from "antd";
 
@@ -170,7 +170,7 @@ function Profile() {
             bordered={false}
             title={<h6 className="font-semibold m-0">Profile Information</h6>}
             className="header-solid h-full card-profile-information"
-            extra={<Button type="link">{pencil}</Button>}
+            extra={<Link to="/profile/Settings">{pencil}</Link>}
             bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
           >
             <p className="text-dark">
@@ -248,10 +248,29 @@ function Profile() {
               split={false}
               className="conversations-list"
               renderItem={(item) => (
-                <List.Item actions={[<Button type="link">View More</Button>]}>
+                <List.Item
+                  actions={
+                    item.description.length > 100
+                      ? [
+                          <Button
+                            type="primary"
+                            onClick={() => {
+                              // navigate("/profile/Settings");
+                            }}
+                          >
+                            Read More
+                          </Button>,
+                        ]
+                      : null
+                  }
+                >
                   <List.Item.Meta
                     title={item.title}
-                    description={item.description}
+                    description={
+                      item.description.length > 100
+                        ? item.description.substring(0, 100) + "..."
+                        : item.description
+                    }
                   />
                 </List.Item>
               )}

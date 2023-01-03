@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { io } from "socket.io-client";
 
-import "../css/nav-search.css"; 
+import "../css/nav-search.css";
 import SingleNotification from "./admin/components/layout/SingleNotification";
 import SingleSearch from "./SingleSearch";
 
@@ -246,8 +246,6 @@ function Navbar() {
                   placeholder="Search"
                   aria-label="Search"
                   onChange={(e) => handleSearch(e.target.value)}
-
-                  
                 />
               </form>
 
@@ -255,7 +253,7 @@ function Navbar() {
                 className="btn btn-outline-success btn-sm"
                 onClick={showSearchHandler}
               >
-                serach
+                Search
               </button>
 
               <div
@@ -271,7 +269,6 @@ function Navbar() {
                   width: "max-content",
                   maxWidth: "500px",
                   minWidth: "500px",
-                  minHeight: "70px",
                 }}
               >
                 <SingleSearch data={searchResults} />
@@ -458,7 +455,7 @@ function Navbar() {
                 className="btn btn-outline-success btn-sm"
                 onClick={showSearchHandler}
               >
-                serach
+                Search
               </button>
 
               <div

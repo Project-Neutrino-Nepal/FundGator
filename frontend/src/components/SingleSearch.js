@@ -5,7 +5,9 @@ import Wrapper from "./admin/components/wrapper/Header";
 
 function SingleSearch({ data }) {
   let search = data;
-  console.log(data);
+  if (
+    data.length > 0
+  )
   return (
     <Wrapper
       className="notify rounded-2"
@@ -51,7 +53,3 @@ function SingleSearch({ data }) {
 }
 
 export default SingleSearch;
-
-//  <Link to={`/profiles/${data.user._id}`}>
-//    <i className="fa-solid fa-eye text-info"></i>
-//  </Link>;

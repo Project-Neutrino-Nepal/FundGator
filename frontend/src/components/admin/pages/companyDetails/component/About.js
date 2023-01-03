@@ -6,6 +6,7 @@ const About = ({ company }) => {
     registration: company.Reg,
     pancard: company.Pan,
   };
+  console.log(option);
   const [previews, setPreview] = useState(option);
   const [modalimg, setModal] = useState({
     title: "",
