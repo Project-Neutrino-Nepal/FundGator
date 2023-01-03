@@ -94,6 +94,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("verify-company",(company)=>{
+    console.log(company)
     verifyList.unshift(company);
 
     const notification = new VerifyNotification({
@@ -140,8 +141,12 @@ io.on("connection", (socket) => {
     socket.leave(userData._id);
   });
   // close the socket connection
+  // socket.off("disconnect", () => {
+  //   console.log("User Disconnected");
+  // });
   socket.disconnect(true);
 });
+  
 
  
 

@@ -36,7 +36,7 @@ const InvestorNotification = () => {
 
   useEffect(() => {
     //listens for the company list from the backend through socket io
-    socket.on("sendMessage-admin1", (company) => {
+    socket.on("sendMessage-investor1", (company) => {
       console.log(company);
       setAddCompany(company);
     });
