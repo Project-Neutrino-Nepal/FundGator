@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -30,6 +30,16 @@ const Signin = () => {
     }
     return true;
   };
+
+  // useEffect(() => {
+  //   const accessToken = new URL(window.location.href).searchParams.get(
+  //     "access_token"
+  //   );
+  //   if (accessToken) {
+  //     localStorage.setItem("token", `Bearer ${accessToken}`);
+  //     window.location.href = "/homepage";
+  //   }
+  // }, []);
 
   // form submit
 
@@ -94,7 +104,13 @@ const Signin = () => {
             </p>
             <div className="d-flex justify-content-center flex-wrap  social-btn text-center">
               <div>
-                <a href="#" className="btn btn-primary btn-lg ms-2 me-2">
+                <a
+                  className="btn btn-primary btn-lg ms-2 me-2"
+                  onClick={() => {
+                    window.location.href =
+                      "http://localhost:5000/auth/linkedIn";
+                  }}
+                >
                   <i className="fa-brands fa-linkedin-in" />
                   LinkedIn
                 </a>

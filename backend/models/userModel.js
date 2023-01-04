@@ -18,7 +18,6 @@ const UserSchema = new Schema(
     },
     password: {
       type: String,
-      required: true,
     },
     admin: {
       type: Boolean,
@@ -28,6 +27,10 @@ const UserSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    linkedinId: {
+      type: String,
+      required: false,
+    },
     // only admin can change the status
     status: {
       type: Boolean,
@@ -36,6 +39,10 @@ const UserSchema = new Schema(
     verified: {
       type: Boolean,
       default: false,
+    },
+    token: {
+      type: String,
+      required: false,
     },
     verificationCode: {
       type: String,

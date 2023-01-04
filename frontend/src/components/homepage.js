@@ -2,20 +2,17 @@ import axios from "axios";
 
 import React, { useEffect, useRef, useState } from "react";
 
+import { BsCardImage } from "react-icons/bs";
+import { IoCloseCircleSharp } from "react-icons/io5";
+import { RiVideoFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "../css/homepage.css";
 import Basenav from "./basenav";
 
-import { BsCardImage } from "react-icons/bs";
-import { IoCloseCircleSharp } from "react-icons/io5";
-import { RiVideoFill } from "react-icons/ri";
-
 import { Outlet } from "react-router-dom";
 
 const Homepage = () => {
-  const im = useRef(null);
-  const vi = useRef(null);
   const close = useRef(null);
   const [name, setName] = useState("");
   const [skills, setSkills] = useState("");
@@ -88,6 +85,16 @@ const Homepage = () => {
       doc: "",
     });
   };
+
+  // useEffect(() => {
+  //   const accessToken = new URL(window.location.href).searchParams.get(
+  //     "access_token"
+  //   );
+  //   if (accessToken) {
+  //     console.log(accessToken);
+  //     localStorage.setItem("token", `Bearer ${accessToken}`);
+  //   }
+  // }, []);
 
   const config = {
     headers: {

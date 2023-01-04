@@ -76,11 +76,10 @@ const Details = () => {
           }
         )
         .then((res) => {
-          console.log(res);
-          window.location.reload();
+          toast.success(res.data.message);
         });
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -121,10 +120,9 @@ const Details = () => {
         ) {
           setIsWatchlist(true);
         }
-        console.log(company.watchlist);
       })
       .catch((err) => {
-        console.log(err);
+        toast.error(err.response.data.message);
       });
   }, []);
 
@@ -145,7 +143,7 @@ const Details = () => {
         setTags(reasons.tag);
       })
       .catch((err) => {
-        console.log(err);
+        toast.error(err.response.data.message);
       });
   }, []);
 
@@ -162,11 +160,9 @@ const Details = () => {
         },
       })
       .then((res) => {
-        console.log(res);
         toast.success(res.data.message);
       })
       .catch((err) => {
-        console.log(err);
         toast.error(err.response.data.message);
       });
   };
