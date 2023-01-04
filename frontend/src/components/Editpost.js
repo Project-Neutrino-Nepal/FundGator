@@ -132,7 +132,7 @@ const EditPost = React.memo(({ item, model, clearvalue }) => {
         console.log("res", res);
         toast.success(res.data.message);
         closebtn.current.click()
-        //window.location.reload();
+        window.location.reload();
         //redirect to home page
       })
       .catch((err) => {

@@ -351,7 +351,7 @@ const Details = () => {
               }}
             />
           ) : null}
-          {activeindex === 3 ? <Update /> : null}
+          {/* {activeindex === 3 ? <Update /> : null} */}
           {activeindex === 4 ? <WhatInvestorSay /> : null}
           {activeindex === 5 ? <AskAQuestion /> : null}
         </section>

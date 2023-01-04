@@ -144,7 +144,10 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
-        <Route path="/explore" element={<ExplorePage />}></Route>
+        <Route path="/explore" element={<FooterLayout></FooterLayout>}> 
+        <Route index element={<ExplorePage />}/>
+        
+        </Route>
         <Route
           path="/detail/:id"
           element={
@@ -201,7 +204,7 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route path="" element={<Home />} />
+          <Route index  element={<Home />} />
 
           {/* There is no need of tables for now */}
           {/* <Route path="/dashboard/tables" element={<Tables />} /> */}

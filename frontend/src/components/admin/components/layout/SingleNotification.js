@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 
 const socket = io("http://localhost:5000");
-
 const SingleNotification = () => {
   const [shownotification, setnotification] = useState([]);
   const [addCompany, setAddCompany] = useState([]);
@@ -35,14 +34,28 @@ const SingleNotification = () => {
   };
 
   useEffect(() => {
-    //listens for the company list from the backend through socket io
-    socket.on("sendMessage-admin1", (company) => {
-      console.log(company);
-      setAddCompany(company);
-    });
-  });
 
-  // get notification from backend through api
+    socket.on("connect", () => {
+      console.log("connected");
+      socket.on("sendMessage-admin1", data => {
+        console.log(data);
+        setAddCompany(data);
+      });
+      return () => {
+        socket.off("data");
+      };
+    });
+
+    // //listens for the company list from the backend through socket io
+    // socket.on("sendMessage-admin1", data => {
+    //   console.log(data);
+    //   setAddCompany(data);
+    // });
+
+    // return () => {
+    //   socket.off("data");
+    // };
+  });
 
   return (
     <Wrapper
@@ -73,13 +86,10 @@ const SingleNotification = () => {
               >
                 <p style={{ zIndex: "1" }}>
                   {" "}
-                  <Link
-                    to={`/dashboard/company-details/${company.companyID}`}
-                  >
+                  <Link to={`/dashboard/company-details/${company.companyID}`}>
                     <i className="fa-solid fa-eye text-info"></i>
                   </Link>
                   &emsp; <small> {moment(company.date).fromNow()}</small>
-                 
                 </p>
               </div>
             </div>

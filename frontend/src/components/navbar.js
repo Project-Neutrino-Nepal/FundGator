@@ -3,16 +3,11 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import { io } from "socket.io-client";
-
 import "../css/nav-search.css";
-import SingleNotification from "./admin/components/layout/SingleNotification";
+import InvestorNotification from "./InvestorNotification";
 import SingleSearch from "./SingleSearch";
 
 function Navbar() {
-  const socket = io("http://localhost:5000");
-
   const [name, setName] = useState("");
   const [companyID, SetCompanyID] = useState("");
   const [companyName, SetCompanyName] = useState("");
@@ -89,27 +84,45 @@ function Navbar() {
 
   const admin = localStorage.getItem("admin");
 
-  // notification
+  // .....................notification..........................................
+
   const [shownotification, setnotification] = useState(false);
 
   const [addNotification, setAddnotification] = useState([]);
 
   const shownotificationHandler = () => {
     setnotification(!shownotification);
-    setAddnotification([]);
+    axios
+      .put(
+        "http://localhost:5000/notification/api/update-verifynotification",
+        {},
+        config
+      )
+      .then((res) => {
+        console.log(res.data);
+        setAddnotification([]);
+      });
   };
+
+  useEffect(() => {
+    axios
+      .get(
+        "http://localhost:5000/notification/api/get-unread-verifynotification",
+        config
+      )
+      .then((res) => {
+        console.log(res.data.verifynotification);
+        let data = res.data.verifynotification;
+        setAddnotification(data);
+      });
+  }, []);
+
+  // .....................search..........................................
   const showSearchHandler = () => {
     setsearch(!showsearch);
   };
 
-  useEffect(() => {
-    //listens for the company list from the backend
-    socket.on("sendMessage-admin", (company) => {
-      console.log(company);
-      setAddnotification(company);
-    });
-  });
-
+  // ............................. Logout function ...............................................
   const logout = async (e) => {
     localStorage.clear();
     sessionStorage.clear();
@@ -316,7 +329,7 @@ function Navbar() {
                       minHeight: "70px",
                     }}
                   >
-                    <SingleNotification />
+                    <InvestorNotification />
                   </div>
                 </li>
 

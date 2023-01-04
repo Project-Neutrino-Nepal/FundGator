@@ -17,8 +17,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { About, AskAQuestion, Detail, Overview } from "./component";
 import tabs from "./utils/tab";
 import { io } from "socket.io-client";
-
 const socket = io("http://localhost:5000");
+
 const CompanyDetails = () => {
   const tab2 = [
     { id: 1, text: "OVERVIEW" },
@@ -105,7 +105,6 @@ const CompanyDetails = () => {
       });
   }, []);
 
- 
   // Verify company by admin
   const admin = localStorage.getItem("admin");
 
@@ -119,12 +118,27 @@ const CompanyDetails = () => {
         )
         .then((res) => {
           let companyName = res.data.updatedCompany.name;
-          let verified = res.data.updatedCompany.verified;
           let user_id = res.data.updatedCompany.user;
+
           let companyID = id;
+
           toast.success(res.data.message);
-          socket.emit("verify-company", { companyID, companyName, verified,user_id });
-          window.location.replace("/dashboard/company_admin");
+
+          const data = {
+            company: companyID,
+            user: user_id,
+          };
+          axios
+            .post(
+              "http://localhost:5000/notification/api/verify-notification/",
+              data
+            )
+            .then((res) => {
+              window.location.replace("/dashboard/company_admin");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         })
         .catch((err) => {
           toast.error(err.response.data.message);
@@ -159,12 +173,27 @@ const CompanyDetails = () => {
         .put("http://localhost:5000/company/api/reject-company/" + id, config)
         .then((res) => {
           let companyName = res.data.updatedCompany.name;
-          let verified = res.data.updatedCompany.verified;
           let user_id = res.data.updatedCompany.user;
+
           let companyID = id;
+
           toast.success(res.data.message);
-          socket.emit("unverify-company", { companyID, companyName, verified,user_id});
-          window.location.replace("/dashboard/company_admin");
+
+          const data = {
+            company: companyID,
+            user: user_id,
+          };
+          axios
+            .post(
+              "http://localhost:5000/notification/api/verify-notification/",
+              data
+            )
+            .then((res) => {
+              window.location.replace("/dashboard/company_admin");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         })
         .catch((err) => {
           toast.error(err.response.data.message);
@@ -194,7 +223,7 @@ const CompanyDetails = () => {
           </div>
           <div className="video-container">
             <video
-              autoPlay
+              
               ref={videoRef}
               onClick={onplay}
               loop

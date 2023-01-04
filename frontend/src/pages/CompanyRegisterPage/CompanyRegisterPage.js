@@ -5,9 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { Basic, Story, Team, Visiblity } from "./component";
 import tabs from "./utils/tab";
 import Wrapper from "./wrapper/CompanyRegisterPage";
-import socketIO from "socket.io-client";
-const socket = socketIO.connect("http://localhost:5000");
-
+import {io} from "socket.io-client";
 const CompanyRegisterPage = () => {
   const { id } = useParams();
   const formvalue = {
@@ -315,12 +313,17 @@ const CompanyRegisterPage = () => {
                 }, 1200)
               );
               //sends the event details via Socket.io
-              console.log(res.data.company);
               const companyID = res.data.company._id;
-              const date=res.data.company.date;
-
-              socket.emit("newCompany", { companyName, image, companyID });
-              console.log(companyName, image, date);
+              const date = res.data.company.date;
+              const socket = io("http://localhost:5000");
+              socket.on("connect", () => {
+                socket.emit("newCompany", {
+                  companyID,
+                  companyName,
+                  image,
+                  date,
+                });
+              });
             }
           });
       } catch (error) {

@@ -31,7 +31,7 @@ const Profile = require("./models/profileModel");
 const User = require("./models/userModel");
 const LINKEDIN_KEY = process.env.CLIENT_ID;
 const LINKEDIN_SECRET = process.env.CLIENT_SECERT;
-
+const Notification = require("./models/notificationModel").Notification;
 // Import passport middleware
 require("./middlewares/passport-middleware");
 // Initialize express application
@@ -140,32 +140,31 @@ app.get(
 );
 // --------------------------DEVELOPMENT------------------------------
 let companyList = [];
-let verifyList = [];
 const server = app.listen(process.env.PORT, () =>
   console.log(`Server started on PORT ${process.env.PORT}`)
 );
-
 const io = require("socket.io")(server, {
   cors: {
     origin: "http://localhost:3000",
+    // methods: ["GET", "POST"],
+    // transport: ["websocket", "polling"],
   },
   pingTimeout: 60 * 1000,
 });
-
 io.on("connection", (socket) => {
   console.log("Connected to socket.io");
   socket.on("setup", (userData) => {
     socket.join(userData._id);
     socket.emit("connected");
   });
-
   socket.on("newCompany", (company) => {
+    console.log(company);
     companyList.unshift(company);
     // Create new notification document
     const notification = new Notification({
       company: company.companyID,
     });
-
+    console.log("companyList", companyList);
     // Save notification to database
     notification.save((error, result) => {
       if (error) throw error;
@@ -173,41 +172,17 @@ io.on("connection", (socket) => {
     });
     //sends the events back to the React app
     socket.broadcast.emit("sendMessage-admin1", companyList);
-
     socket.broadcast.emit("sendMessage-admin", companyList);
   });
-
-  socket.on("verify-company", (company) => {
-    console.log(company);
-    verifyList.unshift(company);
-
-    const notification = new VerifyNotification({
-      company: company.companyID,
-    });
-    // Save notification to database
-    notification.save((error, result) => {
-      if (error) throw error;
-      console.log("Notification saved to database");
-    });
-    //sends the events back to the React app
-    socket.broadcast.emit("sendMessage-investor1", verifyList);
-    socket.broadcast.emit("sendMessage-investor", verifyList);
-  });
-
   socket.on("join chat", (room) => {
     socket.join(room);
     console.log("User joined room " + room);
   });
-
   socket.on("typing", (room) => socket.in(room).emit("typing"));
-
   socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
-
   socket.on("new message", (newMessageRecieved) => {
     let chat = newMessageRecieved.chat[0]; // Change it to object
-
     if (!chat.users) return console.log("chat.users not defined");
-
     chat.users.forEach((user) => {
       if (user._id === newMessageRecieved.sender._id) {
         return;
@@ -216,14 +191,13 @@ io.on("connection", (socket) => {
       }
     });
   });
-
   socket.off("setup", () => {
     console.log("User Disconnected");
     socket.leave(userData._id);
   });
-  // close the socket connection
-  // socket.off("disconnect", () => {
+  // // close the socket connection
+  // socket.on("disconnect", () => {
   //   console.log("User Disconnected");
   // });
-  socket.disconnect(true);
+  // socket.disconnect(true);
 });
