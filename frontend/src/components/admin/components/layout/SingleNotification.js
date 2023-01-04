@@ -32,10 +32,9 @@ const SingleNotification = () => {
   };
 
   useEffect(() => {
-
     socket.on("connect", () => {
       console.log("connected");
-      socket.on("sendMessage-admin1", data => {
+      socket.on("sendMessage-admin1", (data) => {
         console.log(data);
         setAddCompany(data);
       });
@@ -43,10 +42,9 @@ const SingleNotification = () => {
         socket.off("data");
       };
     });
-
-     
   });
 
+  
   return (
     <Wrapper
       className="notify w-100 p-2  rounded-2"

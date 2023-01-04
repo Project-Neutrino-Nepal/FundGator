@@ -206,6 +206,27 @@ const Feed = () => {
     );
   }
 
+  const feedbackHandler = (e) => {
+    try {
+      axios
+        .post(
+          "http://localhost:5000/admin/api/send-message",
+          {
+            message: message,
+          },
+          config
+        )
+        .then((res) => {
+          setMessage("");
+
+          toast.success(res.data.message);
+          console.log(res);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       <ToastContainer />
@@ -266,7 +287,7 @@ const Feed = () => {
                   Connect to Admin For Any Queries
                 </h5>
                 <div className="m-2">
-                  <input
+                  <textarea
                     style={{
                       width: "100%",
                       height: "100px",
@@ -282,21 +303,7 @@ const Feed = () => {
                   <button
                     type="button"
                     className="btn btn-primary mt-4 align-content-end"
-                    onClick={() => {
-                      axios
-                        .post(
-                          "http://localhost:5000/admin/api/send-message",
-                          {
-                            message: message,
-                          },
-                          config
-                        )
-                        .then((res) => {
-                          setMessage("");
-                          toast.success(res.data.message);
-                          console.log(res);
-                        });
-                    }}
+                    onClick={feedbackHandler}
                   >
                     Send Message
                   </button>
