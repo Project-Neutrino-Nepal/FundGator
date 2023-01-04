@@ -35,12 +35,12 @@ const VerifyNotificationSchema = new Schema(
       type: Date,
       default: Date.now,
     },
-     readBy: [
+    readBy: [
       {
         type: Schema.Types.ObjectId,
         ref: "user",
       },
-     ]
+    ],
   },
 
   { timestamps: true }

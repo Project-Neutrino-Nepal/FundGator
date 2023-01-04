@@ -1,15 +1,50 @@
 import { Col, Row, Typography } from "antd";
+import axios from "axios";
+import moment from "moment";
+import { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
 function EChart() {
   const { Title, Paragraph } = Typography;
+   // get data from backend
+   const [fundGoal, setFundGoal] = useState([]);
+   const [fundRaised, setFundRaised] = useState([]);
+   const [date, setDate] = useState([]);
+ 
+ 
+   useEffect(() => {
+     try {
+       axios
+         .get("http://localhost:5000/company/api/get-fund-by-date")
+         .then((res) => {
+           let fundgoal = res.data.reason;
+           let fundRaised = res.data.company;
+ 
+           setFundGoal(fundgoal?.map((fundgoal) => fundgoal.amount));
+           setFundRaised(
+             fundRaised?.map((fundRaised) => fundRaised.fund_raised)
+           );
+           setDate(fundRaised?.map((fundRaised) => fundRaised.date));
+           // setDate1(fundgoal?.map((fundgoal) => fundgoal.date));
+         });
+     } catch (error) {
+       console.log(error);
+     }
+   }, []);
+ 
 
   const eChart = {
     series: [
       {
-        name: "Sales",
-        data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
+        name: "Total FundGoal",
+        data: fundGoal,
         color: "#fff",
+      },
+      {
+        name: "Total Fund Raised",
+        data: fundRaised,
+        color: "#fff",
+
       },
     ],
 
@@ -44,17 +79,7 @@ function EChart() {
         strokeDashArray: 2,
       },
       xaxis: {
-        categories: [
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-        ],
+        categories: [moment(date).format("MMM Do YY")],
         labels: {
           show: true,
           align: "right",
@@ -62,6 +87,8 @@ function EChart() {
           maxWidth: 160,
           style: {
             colors: [
+              "#fff",
+              "#fff",
               "#fff",
               "#fff",
               "#fff",
@@ -94,6 +121,8 @@ function EChart() {
               "#fff",
               "#fff",
               "#fff",
+              "#fff",
+              "#fff",
             ],
           },
         },
@@ -102,32 +131,14 @@ function EChart() {
       tooltip: {
         y: {
           formatter: function (val) {
-            return "$ " + val + " thousands";
+            return "Rs. " + val + " thousands";
           },
         },
       },
     },
   };
 
-  const items = [
-    {
-      Title: "3,6K",
-      user: "Users",
-    },
-    {
-      Title: "2m",
-      user: "Clicks",
-    },
-    {
-      Title: "$772",
-      user: "Sales",
-    },
-    {
-      Title: "82",
-      user: "Items",
-    },
-  ];
-
+   
   return (
     <>
       <div id="chart">
@@ -139,26 +150,7 @@ function EChart() {
           height={220}
         />
       </div>
-      <div className="chart-vistior">
-        <Title level={5}>Active Users</Title>
-        <Paragraph className="lastweek">
-          than last week <span className="bnb2">+30%</span>
-        </Paragraph>
-        <Paragraph className="lastweek">
-          We have created multiple options for you to put together and customise
-          into pixel perfect pages.
-        </Paragraph>
-        <Row gutter>
-          {items.map((v, index) => (
-            <Col xs={6} xl={6} sm={6} md={6} key={index}>
-              <div className="chart-visitor-count">
-                <Title level={4}>{v.Title}</Title>
-                <span>{v.user}</span>
-              </div>
-            </Col>
-          ))}
-        </Row>
-      </div>
+       
     </>
   );
 }

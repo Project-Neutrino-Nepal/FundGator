@@ -7,7 +7,9 @@ import Wrapper from "./admin/components/wrapper/Header";
 
 const InvestorNotification = () => {
   const [shownotification, setnotification] = useState([]);
-  const [addCompany, setAddCompany] = useState([]);
+  
+
+   
   useEffect(() => {
     axios
       .get("http://localhost:5000/notification/api/get-verifynotification")
@@ -18,6 +20,7 @@ const InvestorNotification = () => {
       });
   }, []);
 
+  // ?sort=updatedAt:desc
   return (
     <Wrapper
       className="notify w-100 p-2 rounded-2"
@@ -26,7 +29,7 @@ const InvestorNotification = () => {
       {shownotification.map((company) => (
         <div
           id="shownotification"
-          className="d-flex shadow-sm aligin-items-center w-100 gap-2 notify-items m-1"
+          className="d-flex shdow-sm border border-sm aligin-items-center w-100 gap-2 notify-items m-1"
         >
           <img
             src={company.company.image}
@@ -35,10 +38,20 @@ const InvestorNotification = () => {
             width={70}
             height={70}
           />
-          <p>
-            {company.company.name} <br />
-            has been verified by the admin, please explore the company!
-          </p>
+
+          {company.company.verified === true ? (
+            <p>
+              <span className="fs-6 fw-semibold">{company.company.name}</span>{" "}
+              <br />
+              has been verified, please explore the company!
+            </p>
+          ) : (
+            <p>
+              <span className="fs-6 fw-semibold">{company.company.name}</span>{" "}
+              <br />
+              has been rejected, please explore the company!
+            </p>
+          )}
           <div
             className="position-relative notify-edit mt-4  d-flex flex-column text-nowrap ms-4 ps-2"
             width={70}
@@ -48,14 +61,14 @@ const InvestorNotification = () => {
               <Link to={`/dashboard/company-details/${company.company._id}`}>
                 <i className="fa-solid fa-eye text-info"></i>
               </Link>
-              &emsp; {moment(company.company.date).fromNow()}
+              &emsp; {moment(company.company.updatedAt).fromNow()}
             </p>
           </div>
         </div>
       ))}
 
       {shownotification.length === 0 && (
-        <div className="d-flex aligin-items-center w-100 gap-2 notify-items ">
+        <div className="d-flex aligin-items-center w-100 gap-2 notify-items justify-content-center ">
           <p>No Notification</p>
         </div>
       )}
