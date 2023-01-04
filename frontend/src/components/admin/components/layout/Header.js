@@ -31,14 +31,6 @@ function Header({ name }) {
       socket.off("data");
     };
     });
-
-    // socket.on("sendMessage-admin", data => {
-    //   console.log(data);
-    //   setAddnotification(data);
-    // });
-    // return () => {
-    //   socket.off("data");
-    // };
   });
 
   return (

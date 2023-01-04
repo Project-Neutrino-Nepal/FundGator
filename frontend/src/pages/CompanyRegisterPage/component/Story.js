@@ -78,7 +78,14 @@ const Story = ({ handleChange, values, imgpreview, vdpreview }) => {
           onChange={onuploadimg}
           accept="image/*"
         />
-        <img src={imageupload} className="preview-img" alt="" />
+
+        {imageupload ? (
+          <img
+            src={image ? image : imageupload ? imageupload : upload}
+            className="preview-img"
+            alt=""
+          />
+        ) : null}
       </label>
 
       <h5>Upload a 1-2 minute video</h5>
