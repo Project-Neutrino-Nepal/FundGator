@@ -6,7 +6,9 @@ const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
 const Portfolio = require("../models/portfolioModel");
 const Reason = require("../models/reasonModel");
-const Notification = require("../models/notificationModel");
+const Notification = require("../models/notificationModel").Notification;
+const VerifyNotification =
+  require("../models/notificationModel").VerifyNotification;
 const Question = require("../models/questionsModel");
 const Feedback = require("../models/feedbackModel");
 
@@ -649,6 +651,7 @@ router.delete("/api/delete-company/:id", userAuth, async (req, res) => {
     await Feedback.deleteMany({ company: company._id });
     await Question.deleteMany({ company: company._id });
     await Notification.deleteMany({ company: company._id });
+    await VerifyNotification.deleteMany({ company: company._id });
     await Reason.deleteMany({ company: company._id });
     await Portfolio.deleteMany({ company: company._id });
     await company.deleteOne();
