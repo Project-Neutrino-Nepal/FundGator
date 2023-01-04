@@ -193,7 +193,7 @@ const ProfilePage = () => {
         {activeindex === 1 ? <Portfolio /> : null}
         {activeindex === 2 ? <Watchlist /> : null}
         {activeindex === 3 ? <Settings /> : null}
-        {activeindex === 4 ? <Notification /> : null}
+        {/* {activeindex === 4 ? <Notification /> : null} */}
       </section>
     </Wrapper>
   );
