@@ -116,7 +116,12 @@ const Homepage = () => {
     if (!values.imge && !values.vide && !values.description) {
       toast.error("You can't post empty post");
       return;
+    } if (!values.imge && !values.vide){
+      toast.error("File must be selected");
+      return;
+
     }
+    
     if (values.imge && values.vide) {
       toast.error("You can only upload one file at a time");
       return;
