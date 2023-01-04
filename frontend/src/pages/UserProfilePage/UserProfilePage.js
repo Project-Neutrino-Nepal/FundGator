@@ -93,7 +93,7 @@ const UserProfilePage = () => {
       </div>
 
       <div className="right-container">
-        <h1>interested in..</h1>
+        <h1>Interested in..</h1>
         <p>{skills}</p>
         <h1>My Companies</h1>
         <div className="">

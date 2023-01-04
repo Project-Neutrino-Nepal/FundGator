@@ -83,7 +83,7 @@ const Portfolio = () => {
         <Chart options={options} series={series} type="line" width="1150" />
       </div>
       <div className="m-5">
-        <h1>Portfolio By Category</h1>
+        <h1>Portfolio By Company</h1>
         <Chart
           // change bg color of bar chart for each company
 
