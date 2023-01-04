@@ -58,10 +58,10 @@ const Feed = () => {
   };
 
   const onsuccess = (value, index) => {
-    const { image, video, text } = value;
+    const { video, text } = value;
     let newfeed = feeds;
-    if (image) {
-      newfeed[index].image = image;
+    if (value.image) {
+      newfeed[index].image = value.image;
       newfeed[index].video = "";
       newfeed[index].text = text;
       setFeeds(newfeed);
@@ -220,6 +220,7 @@ const Feed = () => {
                 idchange={idchange}
                 changemodel={changemodel}
                 modelvalue={modelvalue}
+                deleteitem={deleteitem}
               />
             );
           })}

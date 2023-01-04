@@ -25,9 +25,7 @@ const EditPost = ({
       Authorization: localStorage.getItem("token"),
     },
   };
-
   const closebtn = useRef(null);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -43,7 +41,10 @@ const EditPost = ({
       toast.error("You can only upload one file at a time");
       return;
     }
-
+    if (!preview.img && !preview.vid) {
+      toast.error("Please upload the file");
+      return;
+    }
     axios
       .put(
         `http://localhost:5000/posts/api/update-post/${item._id}`,
@@ -55,16 +56,14 @@ const EditPost = ({
         toast.success(res.data.message);
         onsuccess(res.data.post, index);
         closebtn.current.click();
-
         // window.location.reload();
         //redirect to home page
       })
       .catch((err) => {
-        toast.error("Something went wrong");
-        console.log(err);
+        closebtn.current.click();
+       
       });
   };
-
   if (model === "model show") {
     return <div></div>;
   }
