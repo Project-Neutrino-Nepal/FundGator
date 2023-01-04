@@ -85,18 +85,25 @@ function Navbar() {
   const admin = localStorage.getItem("admin");
 
   // .....................notification..........................................
+  
   const [shownotification, setnotification] = useState(false);
 
   const [addNotification, setAddnotification] = useState([]);
 
   const shownotificationHandler = () => {
     setnotification(!shownotification);
-    setAddnotification([]);
+    axios.put("http://localhost:5000/notification/api/update-verifynotification", {},config)
+    .then((res) => {
+      console.log(res.data);
+      setAddnotification([]);
+    });
+
+
   };
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/notification/api/get-verifynotification")
+      .get("http://localhost:5000/notification/api/get-unread-verifynotification", config)
       .then((res) => {
         console.log(res.data.verifynotification);
         let data = res.data.verifynotification;
