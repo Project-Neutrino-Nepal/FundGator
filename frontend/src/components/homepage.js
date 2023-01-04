@@ -297,7 +297,7 @@ const Homepage = () => {
           return <Feeds key={feed._id} feed={feed} />;
         })} */}
       </div>
-      <div
+      {/* <div
         className="modal fade"
         id="exampleModal"
         tabIndex="-1"
@@ -413,7 +413,7 @@ const Homepage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

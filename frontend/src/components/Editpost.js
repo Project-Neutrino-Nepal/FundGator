@@ -1,100 +1,24 @@
 import axios from "axios";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { BsCardImage } from "react-icons/bs";
 import { IoCloseCircleSharp, IoDocumentTextSharp } from "react-icons/io5";
 import { RiVideoFill } from "react-icons/ri";
 //import Feeds from "../DetailsPage/../../../components/feeds"
-const EditPost = React.memo(({ item, model, clearvalue }) => {
-  const [name, setName] = useState("");
-  const closebtn = useRef(null)
-  const [image, setPreview] = useState({
-    preview:
-      "https://www.grovenetworks.com/images/easyblog_shared/July_2018/7-4-18/totw_network_profile_400.jpg",
-    file: "",
-  });
-  const [preview, setPreviews] = useState({
-    img: item.image,
-    vid: item.video,
-    description: item.text,
-   
-  });
-  const [values, setValue] = useState({
-    img: item.image,
-    vid: item.video,
-    description: item.text,
-  });
-
-  // useEffect(() => {
-  //   setPreview({
-  //     img: item.image,
-  //     vid: item.video,
-  //     description: item.text,
-  //   });
-  // }, [item]);
-
-  // const handletextChange = (e) => {
-  //   if (e.target.files && e.target.files[0]) {
-  //     setValue({ ...values, [e.target.name]: e.target.files[0] });
-  //   } else {
-  //     setValue({ ...values, [e.target.name]: e.target.value });
-  //   }
-  // };
-
-  const handleChange = (e) => {
-    // if (e.target.files && e.target.files[0]) {
-    //   setValue({ ...values, [e.target.name]: e.target.files[0] });
-    // } else {
-    //   setValue({ ...values, [e.target.name]: e.target.value });
-    // }
-    setValue({ ...values, description: e.target.value });
-  };
-  const clearpreview = (name) => {
-    console.log(name);
-    setValue({ ...values, [name]: "" });
-    setPreviews({ ...preview, [name]: "" });
-  };
-  const clearvalues = () => {
-    setValue({
-      img: "",
-      vid: "",
-      description: "",
-    });
-    setPreviews({
-      img: "",
-      vid: "",
-      description: "",
-    });
-  };
-  //this is change after pull
-  const fileSelection = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      let file = e.target.files[0];
-      let blobURL = URL.createObjectURL(file);
-      setValue({
-        ...values,
-        img: e.target.files[0],
-      });
-     // handleChange(e);
-
-      setPreviews({ ...preview, [e.target.name]: blobURL,});
-      e.target.value = null;
-    }
-  };
-
-  const vfileSelection = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      let file = e.target.files[0];
-      let blobURL = URL.createObjectURL(file);
-      setValue({ ...values, vid: e.target.files[0] });
-    //  handleChange(e);
-
-      setPreviews({ ...preview, [e.target.name]: blobURL, img: "" });
-
-       e.target.value = null;
-    }
-  };
+const EditPost = ({
+  item,
+  model,
+  index,
+  onsuccess,
+  values,
+  preview,
+  handleChange,
+  clearpreview,
+  fileSelection,
+  vfileSelection,
+  clearall,
+}) => {
   const config = {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -102,18 +26,15 @@ const EditPost = React.memo(({ item, model, clearvalue }) => {
     },
   };
 
+  const closebtn = useRef(null);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("img", values.img);
     formData.append("vid", values.vid);
     // formData.append("doc", values.doc);
-    if(values.description == null){
-      values.description = item.text;
-    } else {
-    formData.append("description", values.description)
-    }
-    console.log("The desc -->",values.description);
+    formData.append("description", values.description);
     if (!values.img && !values.vid && !values.description) {
       toast.error("You can't post empty post");
       return;
@@ -122,6 +43,7 @@ const EditPost = React.memo(({ item, model, clearvalue }) => {
       toast.error("You can only upload one file at a time");
       return;
     }
+
     axios
       .put(
         `http://localhost:5000/posts/api/update-post/${item._id}`,
@@ -131,12 +53,15 @@ const EditPost = React.memo(({ item, model, clearvalue }) => {
       .then((res) => {
         console.log("res", res);
         toast.success(res.data.message);
-        closebtn.current.click()
-        window.location.reload();
+        onsuccess(res.data.post, index);
+        closebtn.current.click();
+
+        // window.location.reload();
         //redirect to home page
       })
       .catch((err) => {
         toast.error("Something went wrong");
+        console.log(err);
       });
   };
 
@@ -164,7 +89,7 @@ const EditPost = React.memo(({ item, model, clearvalue }) => {
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-                onClick={clearvalues}
+                onClick={() => clearall()}
                 ref={closebtn}
               ></button>
             </div>
@@ -182,24 +107,20 @@ const EditPost = React.memo(({ item, model, clearvalue }) => {
               </div>
               <div className="form-floating">
                 <textarea
-                  value={values.description ?? item.text}
                   className="form-control border-0"
                   placeholder="Leave a comment here"
                   id="floatingTextarea2"
                   style={{ height: 100 }}
                   name="description"
                   onChange={handleChange}
+                  value={values?.description}
                 ></textarea>
                 <label for="floatingTextarea2">Enter Description</label>
               </div>
               <div className="d-flex gap-2">
-                <div
-                  className={
-                    preview.img ?? item?.image ? "position-relative " : "d-none"
-                  }
-                >
+                <div className={preview?.img ? "position-relative " : "d-none"}>
                   <img
-                    src={preview?.img ?? item?.image}
+                    src={preview?.img}
                     alt="preview"
                     height={100}
                     width={80}
@@ -212,13 +133,9 @@ const EditPost = React.memo(({ item, model, clearvalue }) => {
                     onClick={() => clearpreview("img")}
                   />
                 </div>
-                <div
-                  className={
-                    preview.vid ?? item?.video ? "position-relative " : "d-none"
-                  }
-                >
+                <div className={preview?.vid ? "position-relative " : "d-none"}>
                   <video
-                    src={preview.vid ?? item?.video}
+                    src={preview?.vid}
                     alt=""
                     height={100}
                     width={80}
@@ -273,5 +190,5 @@ const EditPost = React.memo(({ item, model, clearvalue }) => {
       </div>
     </>
   );
-});
+};
 export default EditPost;
