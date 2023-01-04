@@ -38,7 +38,7 @@ const Wrapper = styled.div`
     }
 
     & > .carousel-container {
-      margin-bottom: 50px;
+      padding-bottom: 50px;
 
       & > .title {
         display: flex;

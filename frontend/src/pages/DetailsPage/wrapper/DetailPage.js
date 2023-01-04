@@ -56,12 +56,12 @@ const Wrapper = styled.div`
 
     & > .two {
       & > span {
-        color: #FE6655;
+        color: #0A4FA3;
         font-weight: bold;
       }
       & > .line {
-        background-color: #FE6655;
-        color: #FE6655;
+        background-color: #0A4FA3;
+        color: #0A4FA3;
         height: 3px;
         width: 100%;
       }
@@ -116,7 +116,7 @@ const Wrapper = styled.div`
         width: 100%;
         padding: 10px;
         margin-top: 10px;
-        background-color: #FE6655;
+        background-color: #0A4FA3;
         color: white;
         border: none;
         font-weight: bold;
@@ -250,12 +250,12 @@ const Wrapper = styled.div`
         -webkit-box-shadow: 1px 3px 5px 1px rgba(135, 158, 158, 0.75);
         -moz-box-shadow: 1px 3px 5px 1px rgba(135, 158, 158, 0.75);
         & > span {
-          color: #FE6655;
+          color: #0A4FA3;
           font-weight: bold;
         }
         & > .line {
-          background-color: #FE6655;
-          color: #FE6655;
+          background-color: #0A4FA3;
+          color: #0A4FA3;
           height: 3px;
           width: 100%;
         }
@@ -311,7 +311,7 @@ const Wrapper = styled.div`
           width: 100%;
           padding: 10px;
           margin-top: 10px;
-          background-color: #FE6655;
+          background-color: #0A4FA3;
           color: white;
           border: none;
           font-weight: bold;

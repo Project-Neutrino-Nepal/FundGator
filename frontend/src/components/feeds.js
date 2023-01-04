@@ -7,7 +7,14 @@ import { Link } from "react-router-dom";
 import "../css/feeds.css";
 import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal.js";
 import { toast } from "react-toastify";
-const Feeds = ({ feed, changemodel, closemodel, modelvalue }) => {
+const Feeds = ({
+  feed,
+  changemodel,
+  closemodel,
+  modelvalue,
+  index,
+  deleteitem,
+}) => {
   const [modalShow, setModalShow] = React.useState(false);
   const [show, setShow] = useState(false);
   const [userId, setUserId] = useState("");
@@ -133,7 +140,10 @@ const Feeds = ({ feed, changemodel, closemodel, modelvalue }) => {
             Authorization: localStorage.getItem("token"),
           },
         })
-        .then((res) => toast.success("post deleted"));
+        .then((res) => {
+          toast.success("post deleted");
+          deleteitem(feed._id);
+        });
     } catch (e) {
       toast.error("something went wrong");
     }
@@ -142,7 +152,6 @@ const Feeds = ({ feed, changemodel, closemodel, modelvalue }) => {
   return (
     <>
       <div className="row d-flex align-items-center justify-content-center mb-2">
-        <div className="col-md-6 col-10">
           <div className="card col-md-11">
             <div className="d-flex justify-content-between p-2 px-1">
               <div
@@ -187,7 +196,7 @@ const Feeds = ({ feed, changemodel, closemodel, modelvalue }) => {
                         className="dropdown-item"
                         style={{ cursor: "pointer" }}
                         // onClick={() => setShow(true)}
-                        onClick={() => modelvalue(feed)}
+                        onClick={() => modelvalue(feed, index)}
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal2"
                       >
@@ -406,7 +415,6 @@ const Feeds = ({ feed, changemodel, closemodel, modelvalue }) => {
             </div>
           </div>
         </div>
-      </div>
     </>
   );
 };

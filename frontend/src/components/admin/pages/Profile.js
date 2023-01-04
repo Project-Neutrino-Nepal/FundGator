@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Avatar, Button, Card, Col, Descriptions, List, Row } from "antd";
 
@@ -75,6 +75,17 @@ function Profile() {
       });
   });
 
+  // fetching users message from api
+  const [messages, setMessages] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/admin/api/get-message", config)
+      .then((res) => {
+        let message = res.data.messages;
+        setMessages(message);
+      });
+  });
+
   const getBase64 = (img, callback) => {
     const reader = new FileReader();
     reader.addEventListener("load", () => callback(reader.result));
@@ -129,6 +140,14 @@ function Profile() {
     };
   });
 
+  const message = messages.map((item) => {
+    return {
+      title: "Name: " + item.profile.name + "  Emial: " + item.profile.email,
+      avatar: item.profile.avatar,
+      description: item.message,
+    };
+  });
+
   return (
     <>
       <div
@@ -170,7 +189,7 @@ function Profile() {
             bordered={false}
             title={<h6 className="font-semibold m-0">Profile Information</h6>}
             className="header-solid h-full card-profile-information"
-            extra={<Button type="link">{pencil}</Button>}
+            extra={<Link to="/profile/Settings">{pencil}</Link>}
             bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
           >
             <p className="text-dark">
@@ -235,7 +254,50 @@ function Profile() {
             </Descriptions>
           </Card>
         </Col>
-        <Col span={24} md={15} className="mb-24">
+        <Col span={24} md={8} className="mb-24">
+          <Card
+            bordered={false}
+            title={<p className="font-semibold m-0">User Message</p>}
+            className="header-solid h-full"
+            bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
+          >
+            <List
+              itemLayout="horizontal"
+              dataSource={message}
+              split={false}
+              className="conversations-list"
+              renderItem={(item) => (
+                <List.Item
+                  actions={
+                    item.description.length > 100
+                      ? [
+                          <Button
+                            type="primary"
+                            onClick={() => {
+                              // navigate("/profile/Settings");
+                            }}
+                          >
+                            Read More
+                          </Button>,
+                        ]
+                      : null
+                  }
+                >
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.avatar} />}
+                    title={item.title}
+                    description={
+                      item.description.length > 100
+                        ? item.description.substring(0, 100) + "..."
+                        : item.description
+                    }
+                  />
+                </List.Item>
+              )}
+            />
+          </Card>
+        </Col>
+        <Col span={24} md={8} className="mb-24">
           <Card
             bordered={false}
             title={<p className="font-semibold m-0">Contact Us Messages</p>}
@@ -248,10 +310,29 @@ function Profile() {
               split={false}
               className="conversations-list"
               renderItem={(item) => (
-                <List.Item actions={[<Button type="link">View More</Button>]}>
+                <List.Item
+                  actions={
+                    item.description.length > 100
+                      ? [
+                          <Button
+                            type="primary"
+                            onClick={() => {
+                              // navigate("/profile/Settings");
+                            }}
+                          >
+                            Read More
+                          </Button>,
+                        ]
+                      : null
+                  }
+                >
                   <List.Item.Meta
                     title={item.title}
-                    description={item.description}
+                    description={
+                      item.description.length > 100
+                        ? item.description.substring(0, 100) + "..."
+                        : item.description
+                    }
                   />
                 </List.Item>
               )}

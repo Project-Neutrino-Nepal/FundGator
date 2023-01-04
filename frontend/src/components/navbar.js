@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../css/nav-search.css"; 
+import "../css/nav-search.css";
 import InvestorNotification from "./InvestorNotification";
 import SingleSearch from "./SingleSearch";
 
 function Navbar() {
   const [name, setName] = useState("");
+  const [skills, setSkills] = useState("");
   const [companyID, SetCompanyID] = useState("");
   const [companyName, SetCompanyName] = useState("");
   const [search, setSearch] = useState("");
@@ -64,6 +65,7 @@ function Navbar() {
       .then((res) => {
         let program = res.data.profile;
         setName(program.legal_name);
+        setSkills(program.skills);
         setPreview({ ...image, preview: program.avatar });
       });
   });
@@ -85,25 +87,31 @@ function Navbar() {
   const admin = localStorage.getItem("admin");
 
   // .....................notification..........................................
-  
+
   const [shownotification, setnotification] = useState(false);
 
   const [addNotification, setAddnotification] = useState([]);
 
   const shownotificationHandler = () => {
     setnotification(!shownotification);
-    axios.put("http://localhost:5000/notification/api/update-verifynotification", {},config)
-    .then((res) => {
-      console.log(res.data);
-      setAddnotification([]);
-    });
-
-
+    axios
+      .put(
+        "http://localhost:5000/notification/api/update-verifynotification",
+        {},
+        config
+      )
+      .then((res) => {
+        console.log(res.data);
+        setAddnotification([]);
+      });
   };
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/notification/api/get-unread-verifynotification", config)
+      .get(
+        "http://localhost:5000/notification/api/get-unread-verifynotification",
+        config
+      )
       .then((res) => {
         console.log(res.data.verifynotification);
         let data = res.data.verifynotification;
@@ -111,15 +119,12 @@ function Navbar() {
       });
   }, []);
 
-
   // .....................search..........................................
   const showSearchHandler = () => {
     setsearch(!showsearch);
   };
 
-
-   
-// ............................. Logout function ...............................................
+  // ............................. Logout function ...............................................
   const logout = async (e) => {
     localStorage.clear();
     sessionStorage.clear();
@@ -256,8 +261,6 @@ function Navbar() {
                   placeholder="Search"
                   aria-label="Search"
                   onChange={(e) => handleSearch(e.target.value)}
-
-                  
                 />
               </form>
 
@@ -265,7 +268,7 @@ function Navbar() {
                 className="btn btn-outline-success btn-sm"
                 onClick={showSearchHandler}
               >
-                serach
+                Search
               </button>
 
               <div
@@ -281,7 +284,6 @@ function Navbar() {
                   width: "max-content",
                   maxWidth: "500px",
                   minWidth: "500px",
-                  minHeight: "70px",
                 }}
               >
                 <SingleSearch data={searchResults} />
@@ -329,7 +331,7 @@ function Navbar() {
                       minHeight: "70px",
                     }}
                   >
-                    <InvestorNotification/> 
+                    <InvestorNotification />
                   </div>
                 </li>
 
@@ -360,9 +362,9 @@ function Navbar() {
                       name={name}
                       className="rounded-circle me-2 ms-3 border border-grey border-2"
                     />
-
                     <strong>{name} </strong>
                   </a>
+
                   <ul
                     className="dropdown-menu dropdown-menu-dark text-small shadow"
                     aria-labelledby="dropdownUser1"
@@ -468,7 +470,7 @@ function Navbar() {
                 className="btn btn-outline-success btn-sm"
                 onClick={showSearchHandler}
               >
-                serach
+                Search
               </button>
 
               <div

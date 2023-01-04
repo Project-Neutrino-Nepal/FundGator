@@ -2,11 +2,16 @@ const express = require("express");
 const router = express.Router();
 const Company = require("../models/companyModel");
 const userAuth = require("../middlewares/auth-guard");
-const { find } = require("../models/companyModel");
 const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
 const Portfolio = require("../models/portfolioModel");
 const Reason = require("../models/reasonModel");
+const Notification = require("../models/notificationModel").Notification;
+const VerifyNotification =
+  require("../models/notificationModel").VerifyNotification;
+const Question = require("../models/questionsModel");
+const Feedback = require("../models/feedbackModel");
+
 const uploadCompanyVideo =
   require("../middlewares/uploader").uploadCompanyVideo;
 const uploadCompanyImage =
@@ -630,6 +635,25 @@ router.delete("/api/delete-company/:id", userAuth, async (req, res) => {
         message: "Company not found",
       });
     }
+    if (company.user.toString() !== req.user._id.toString()) {
+      return res.status(400).json({
+        success: false,
+        message: "You are not authorized to delete this company",
+      });
+    }
+    // if company is verified then dont delete
+    if (company.verified === true) {
+      return res.status(400).json({
+        success: false,
+        message: "You cannot delete a verified company. Contact Admin",
+      });
+    }
+    await Feedback.deleteMany({ company: company._id });
+    await Question.deleteMany({ company: company._id });
+    await Notification.deleteMany({ company: company._id });
+    await VerifyNotification.deleteMany({ company: company._id });
+    await Reason.deleteMany({ company: company._id });
+    await Portfolio.deleteMany({ company: company._id });
     await company.deleteOne();
     return res.status(200).json({
       success: true,

@@ -147,6 +147,7 @@ const ProfilePage = () => {
             return (
               <span
                 className={activeindex === item.id ? "tabs active" : "d-none"}
+                style = {{ color:activeindex === item.id ? "white" : "black"}}
                 key={item.id}
               >
                 {item.text}
@@ -162,6 +163,7 @@ const ProfilePage = () => {
               <Link
                 to={`/profile/${item.text}`}
                 className={activeindex === item.id ? "tabs active" : "tabs"}
+                style = {{ color:activeindex === item.id ? "white" : "black"}}
                 key={item.id}
                 onClick={() => closedropdown(item.text, item.id)}
               >
@@ -191,7 +193,7 @@ const ProfilePage = () => {
         {activeindex === 1 ? <Portfolio /> : null}
         {activeindex === 2 ? <Watchlist /> : null}
         {activeindex === 3 ? <Settings /> : null}
-        {activeindex === 4 ? <Notification /> : null}
+        {/* {activeindex === 4 ? <Notification /> : null} */}
       </section>
     </Wrapper>
   );

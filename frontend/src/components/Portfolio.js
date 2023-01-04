@@ -68,7 +68,7 @@ const Portfolio = () => {
                       :&nbsp;{new Date(portfolio.date).toLocaleDateString()}
                     </span>
                   </p>
-                  <div className="d-flex flex-nowrap justify-content-center ">
+                  {/* <div className="d-flex flex-nowrap justify-content-center ">
                     <div
                       className="btn btn-success m-2"
                       style={{ backgroundColor: "green" }}
@@ -76,7 +76,7 @@ const Portfolio = () => {
                       Withdraw
                     </div>
                     <div className="btn btn-primary m-2 ">Re Invest</div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

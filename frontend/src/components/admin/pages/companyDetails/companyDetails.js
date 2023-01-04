@@ -221,7 +221,7 @@ const CompanyDetails = () => {
           </div>
           <div className="video-container">
             <video
-              autoPlay
+              
               ref={videoRef}
               onClick={onplay}
               loop

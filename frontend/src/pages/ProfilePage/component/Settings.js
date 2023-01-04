@@ -311,7 +311,7 @@ function Settings() {
             >
               <label htmlFor="">PAN Card Front</label>
               <Card className="border border-2">
-                <img src={imageFront} alt="front" />
+                <img height = {350} style={{objectFit:"contain"}}src={imageFront} alt="front" />
               </Card>
             </div>
             <div
@@ -320,7 +320,7 @@ function Settings() {
             >
               <label htmlFor="">PAN Card Back</label>
               <Card className="border border-2">
-                <img src={imageBack} alt="Back" />
+                <img height = {350} style={{objectFit:"contain"}} src={imageBack} alt="Back" />
               </Card>
             </div>
           </div>

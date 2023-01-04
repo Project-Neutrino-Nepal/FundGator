@@ -19,6 +19,7 @@ import Signin from "./components/singin";
 import WatchList from "./components/Watchlists";
 import {
   CompanyRegisterPage,
+  ContactPage,
   Details,
   ExplorePage,
   FooterLayout,
@@ -29,8 +30,6 @@ import {
   ProtectedRoute,
   UserProfilePage,
   WelcomePage,
-  ContactPage,
-  ErrorPage
 } from "./pages";
 import EditCompanyPage from "./pages/CompanyRegisterPage/EditCompanyPage";
 import MyCompanyProfile from "./pages/MyCompanyProfile/myCompanyProfile";
@@ -45,7 +44,7 @@ import Editpost from "./components/Editpostcard";
 import Portfolio from "./components/Portfolio";
 import ResetPassword from "./pages/resetPassword";
 
-import './css/style.css';
+import "./css/style.css";
 import UsersProfilePage from "./pages/UsersProfilePage/UsersProfilePage";
 
 function App() {
@@ -84,9 +83,9 @@ function App() {
         <Route
           path="/homepage"
           element={
-            <ProtectedRoute>
-              <Homepage />
-            </ProtectedRoute>
+            // <ProtectedRoute>
+            <Homepage />
+            // </ProtectedRoute>
           }
         >
           <Route index element={<Feed />} />
@@ -145,7 +144,10 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
-        <Route path="/explore" element={<ExplorePage />}></Route>
+        <Route path="/explore" element={<FooterLayout></FooterLayout>}> 
+        <Route index element={<ExplorePage />}/>
+        
+        </Route>
         <Route
           path="/detail/:id"
           element={
@@ -202,7 +204,7 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route path="" element={<Home />} />
+          <Route index  element={<Home />} />
 
           {/* There is no need of tables for now */}
           {/* <Route path="/dashboard/tables" element={<Tables />} /> */}
@@ -275,7 +277,7 @@ function App() {
 
           {/* Add others routes of dashboard below */}
         </Route>
-        <Route path="*" element={<ErrorPage />} />
+        {/* <Route path="" element={<ErrorPage />} /> */}
       </Routes>
     </>
   );

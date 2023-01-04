@@ -124,7 +124,7 @@ function Sidenav({ color }) {
             <span
               className="icon"
               style={{
-                background: page === "dashboard" ? color : "",
+                background: window.location.pathname === "/dashboard" ? color : "",
               }}
             >
               {dashboard}
@@ -151,7 +151,7 @@ function Sidenav({ color }) {
             <span
               className="icon"
               style={{
-                background: page === "tables" ? color : "",
+                background: window.location.pathname === "tables" ? color : "",
               }}
             >
               {company}
@@ -160,12 +160,12 @@ function Sidenav({ color }) {
           </NavLink>
         </Menu.Item>
 
-        <Menu.Item key="3">
+        <Menu.Item key="4">
           <NavLink to="/dashboard/profile">
             <span
               className="icon"
               style={{
-                background: page === "profile" ? color : "",
+                background: window.location.pathname === "profile" ? color : "",
               }}
             >
               {profile}
@@ -174,12 +174,12 @@ function Sidenav({ color }) {
           </NavLink>
         </Menu.Item>
 
-        <Menu.Item key="4">
+        <Menu.Item key="5">
           <NavLink to="/dashboard/categoryPage">
             <span
               className="icon"
               style={{
-                background: page === "profile" ? color : "",
+                background: window.location.pathname === "profile" ? color : "",
               }}
             >
               {category}
@@ -187,12 +187,12 @@ function Sidenav({ color }) {
             <span className="label">Category</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="5">
+        <Menu.Item key="6">
           <NavLink to="/dashboard/tagPage">
             <span
               className="icon"
               style={{
-                background: page === "profile" ? color : "",
+                background: window.location.pathname === "profile" ? color : "",
               }}
             >
               {category}

@@ -66,13 +66,13 @@ const UsersProfilePage = () => {
           className="profilepic"
         />
         <h2 className="text-white">{name}</h2>
-        <h6 className="text-white fs-6">{skills}</h6>
+        <p>{skills}</p>
 
-        
-        <Link to="/profile/Settings" className="btn-edit btn-primary m-4 border-2">
+
+        <Link to="/profile/Settings" className="btn-edit m-2 border mb-3">
           edit profile
         </Link>
-        <div className="info m-4">
+        <div className="info">
           <h4 className="text-white">Personal Information</h4>
           <div className="info-data ">
             <div className="data">
@@ -96,14 +96,12 @@ const UsersProfilePage = () => {
 
       <div className="right-container">
         <h1>All Verified Companies</h1>
-          <div className="d-flex flex-wrap   ">
-            {companies.map((company) => (
-              <Link to={`/company/${company._id}`}>
-                <Company key={company._id} company={company} />
-              </Link>
-            ))}
-          </div>
+        <div className="d-flex flex-wrap   ">
+          {companies.map((company) => (
+            <Company key={company._id} company={company} />
+          ))}
         </div>
+      </div>
     </Wrapper>
   );
 };

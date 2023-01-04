@@ -2,20 +2,17 @@ import axios from "axios";
 
 import React, { useEffect, useRef, useState } from "react";
 
+import { BsCardImage } from "react-icons/bs";
+import { IoCloseCircleSharp } from "react-icons/io5";
+import { RiVideoFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "../css/homepage.css";
 import Basenav from "./basenav";
 
-import { BsCardImage } from "react-icons/bs";
-import { IoCloseCircleSharp } from "react-icons/io5";
-import { RiVideoFill } from "react-icons/ri";
-
 import { Outlet } from "react-router-dom";
 
 const Homepage = () => {
-  const im = useRef(null);
-  const vi = useRef(null);
   const close = useRef(null);
   const [name, setName] = useState("");
   const [skills, setSkills] = useState("");
@@ -89,6 +86,16 @@ const Homepage = () => {
     });
   };
 
+  // useEffect(() => {
+  //   const accessToken = new URL(window.location.href).searchParams.get(
+  //     "access_token"
+  //   );
+  //   if (accessToken) {
+  //     console.log(accessToken);
+  //     localStorage.setItem("token", `Bearer ${accessToken}`);
+  //   }
+  // }, []);
+
   const config = {
     headers: {
       Authorization: localStorage.getItem("token"),
@@ -116,7 +123,12 @@ const Homepage = () => {
     if (!values.imge && !values.vide && !values.description) {
       toast.error("You can't post empty post");
       return;
+    } if (!values.imge && !values.vide){
+      toast.error("File must be selected");
+      return;
+
     }
+    
     if (values.imge && values.vide) {
       toast.error("You can only upload one file at a time");
       return;
@@ -285,7 +297,7 @@ const Homepage = () => {
           return <Feeds key={feed._id} feed={feed} />;
         })} */}
       </div>
-      <div
+      {/* <div
         className="modal fade"
         id="exampleModal"
         tabIndex="-1"
@@ -401,7 +413,7 @@ const Homepage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

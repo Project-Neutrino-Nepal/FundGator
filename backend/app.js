@@ -1,6 +1,5 @@
 // requirements for express application
 const express = require("express");
-const router = express.Router();
 
 require("dotenv").config();
 require("./Database/conf");
@@ -8,7 +7,6 @@ const cors = require("cors");
 const join = require("path").join;
 const bodyParser = require("body-parser");
 const json = bodyParser.json;
-const passport = require("passport");
 const userRouter = require("./apis/UserApi");
 const profileRouter = require("./apis/ProfileApi");
 const companyRouter = require("./apis/CompanyApi");
@@ -24,16 +22,40 @@ const messageRouter = require("./apis/MessageApi");
 const questionRouter = require("./apis/questionApi");
 const feedbackRouter = require("./apis/FeedbackApi");
 const notification = require("./apis/NotificationApi");
+const VerifyNotification = require("./models/notificationModel");
+const LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
+const session = require("express-session");
+const passport = require("passport");
+const Profile = require("./models/profileModel");
+const User = require("./models/userModel");
+const LINKEDIN_KEY = process.env.CLIENT_ID;
+const LINKEDIN_SECRET = process.env.CLIENT_SECERT;
 const Notification = require("./models/notificationModel").Notification;
 // Import passport middleware
 require("./middlewares/passport-middleware");
 // Initialize express application
 const app = express();
+
 // Apply Application Middlewares
 app.use(cors());
 app.use(json());
 //app.use(morgan("dev"));
 app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.urlencoded({ extended: false }));
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
+app.use(session({ secret: "SESSION_SECRET" }));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use("/uploads", express.static(__dirname + "/uploads")); // so please use this code to fetch images form the server
@@ -53,12 +75,73 @@ app.use("/question", questionRouter);
 app.use("/feedback", feedbackRouter);
 app.use("/notification", notification);
 
+// fro Linked In Auth
+
+passport.use(
+  new LinkedInStrategy(
+    {
+      clientID: LINKEDIN_KEY,
+      clientSecret: LINKEDIN_SECRET,
+      callbackURL: "http://localhost:5000/auth/linkedin/callback",
+      scope: ["r_emailaddress", "r_liteprofile"],
+    },
+    (accessToken, refreshToken, profile, done) => {
+      profile.accessToken = accessToken;
+
+      process.nextTick(() => {
+        // use user model to find user in database or create new user
+        User.findOne({ linkedinId: profile.id }, (err, user) => {
+          if (err) return done(err);
+          if (user) {
+            return done(null, user);
+          } else {
+            const newUser = new User();
+            newUser.linkedinId = profile.id;
+            newUser.token = accessToken;
+            newUser.name = profile.displayName;
+            newUser.email = profile.emails[0].value;
+            newUser.save((err) => {
+              if (err) throw err;
+              // if user is successfully created, return then create profile
+              let newProfile = new Profile();
+              newProfile.user = newUser._id;
+              newProfile.name = profile.displayName;
+              newProfile.email = profile.emails[0].value;
+              newProfile.save((err) => {
+                if (err) throw err;
+              });
+
+              return done(null, newUser);
+            });
+          }
+        });
+
+        return done(null, profile);
+      });
+    }
+  )
+);
+
+app.get(
+  "/auth/linkedin",
+  passport.authenticate("linkedin", { state: "SOME STATE" })
+);
+
+app.get(
+  "/auth/linkedin/callback",
+  passport.authenticate("linkedin", {
+    failureRedirect: "http://localhost:3000/signin",
+  }),
+  function (req, res) {
+    // Successful authentication, store the access token in the local storage and redirect home.
+    res.redirect(`http://localhost:3000/homepage`);
+  }
+);
 // --------------------------DEVELOPMENT------------------------------
 let companyList = [];
 const server = app.listen(process.env.PORT, () =>
   console.log(`Server started on PORT ${process.env.PORT}`)
 );
-
 const io = require("socket.io")(server, {
   cors: {
     origin: "http://localhost:3000",
@@ -67,14 +150,12 @@ const io = require("socket.io")(server, {
   },
   pingTimeout: 60 * 1000,
 });
-
 io.on("connection", (socket) => {
   console.log("Connected to socket.io");
   socket.on("setup", (userData) => {
     socket.join(userData._id);
     socket.emit("connected");
   });
-
   socket.on("newCompany", (company) => {
     console.log(company);
     companyList.unshift(company);
@@ -83,7 +164,6 @@ io.on("connection", (socket) => {
       company: company.companyID,
     });
     console.log("companyList", companyList);
-
     // Save notification to database
     notification.save((error, result) => {
       if (error) throw error;
@@ -91,24 +171,17 @@ io.on("connection", (socket) => {
     });
     //sends the events back to the React app
     socket.broadcast.emit("sendMessage-admin1", companyList);
-
     socket.broadcast.emit("sendMessage-admin", companyList);
   });
-
   socket.on("join chat", (room) => {
     socket.join(room);
     console.log("User joined room " + room);
   });
-
   socket.on("typing", (room) => socket.in(room).emit("typing"));
-
   socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
-
   socket.on("new message", (newMessageRecieved) => {
     let chat = newMessageRecieved.chat[0]; // Change it to object
-
     if (!chat.users) return console.log("chat.users not defined");
-
     chat.users.forEach((user) => {
       if (user._id === newMessageRecieved.sender._id) {
         return;
@@ -117,7 +190,6 @@ io.on("connection", (socket) => {
       }
     });
   });
-
   socket.off("setup", () => {
     console.log("User Disconnected");
     socket.leave(userData._id);
@@ -125,9 +197,6 @@ io.on("connection", (socket) => {
   // // close the socket connection
   // socket.on("disconnect", () => {
   //   console.log("User Disconnected");
-
   // });
   // socket.disconnect(true);
 });
-
- 
