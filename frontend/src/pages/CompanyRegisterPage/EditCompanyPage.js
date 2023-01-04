@@ -242,10 +242,10 @@ const EditCompanyPage = () => {
           .then((res) => {
             if (res.data.success) {
               toast.success(
-                "Company Updated Successfully"
-                // setTimeout(() => {
-                //   navigate("/homepage");
-                // }, 1200)
+                "Company Updated Successfully",
+                setTimeout(() => {
+                  navigate("/homepage");
+                }, 1200)
               );
               const companyID = res.data.company._id;
               const date = res.data.company.date;
