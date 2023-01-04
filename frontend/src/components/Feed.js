@@ -1,12 +1,16 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Chart from "react-apexcharts";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AddPost from "./AddPost";
 import EditPost from "./Editpost";
 import Feeds from "./feeds";
 import Loading from "./loading";
+
 const Feed = () => {
+  const [company, setCompany] = useState([]);
+  const [amount, setAmount] = useState([]);
   const config = {
     headers: {
       Authorization: localStorage.getItem("token"),
@@ -149,6 +153,39 @@ const Feed = () => {
     setFeeds([...feeds, value]);
   };
 
+  // get data from backend
+  useEffect(() => {
+    try {
+      axios
+        .get("http://localhost:5000/company/api/get-fund-by-company", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          let portfolios = res.data.portfolios;
+          setAmount(portfolios?.map((portfolios) => portfolios.amount));
+          setCompany(portfolios?.map((portfolios) => portfolios.company.name));
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  const series2 = [
+    {
+      name: "Investment Rs.",
+      data: amount,
+    },
+  ];
+  const options2 = {
+    chart: { id: "bar-chart" },
+    xaxis: {
+      categories: company,
+    },
+  };
+
   useEffect(() => {
     try {
       axios
@@ -168,6 +205,7 @@ const Feed = () => {
       </div>
     );
   }
+
   return (
     <>
       <ToastContainer />
@@ -209,11 +247,31 @@ const Feed = () => {
           <div className="card-body">
             <div className="card">
               <div className="card-body">
+                <div className="m-2">
+                  <h4>Portfolio By Company</h4>
+                  <Chart
+                    // change bg color of bar chart for each company
+
+                    options={{
+                      ...options2,
+                      colors: "#a103fc",
+                    }}
+                    series={series2}
+                    type="bar"
+                    width="350"
+                  />
+                </div>
                 <h5 className="card-title muted">
                   Connect to Admin For Any Queries
                 </h5>
-                <div className="d-flex justify-content-end">
+                <div className="m-2">
                   <input
+                    style={{
+                      width: "100%",
+                      height: "100px",
+                      border: "1px solid black",
+                      borderRadius: "5px",
+                    }}
                     type="text"
                     name="message"
                     id="message"
@@ -222,7 +280,7 @@ const Feed = () => {
 
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-primary mt-4 align-content-end"
                     onClick={() => {
                       axios
                         .post(
@@ -239,7 +297,7 @@ const Feed = () => {
                         });
                     }}
                   >
-                    Send
+                    Send Message
                   </button>
                 </div>
               </div>

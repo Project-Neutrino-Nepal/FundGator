@@ -17,12 +17,10 @@ const Company = ({ company }) => {
           },
         })
         .then((res) => {
-          toast.success(res.data.message);
-          toast.success(company.name + " has been deleted");
+            toast.success(company.name + " has been deleted");
         });
     } catch (err) {
-      console.log(err);
-      toast.error("Something went wrong");
+      toast.error(err.response.data.msg)
     }
   };
 
