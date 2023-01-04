@@ -41,6 +41,10 @@ const EditPost = ({
       toast.error("You can only upload one file at a time");
       return;
     }
+    if (!preview.img && !preview.vid) {
+      toast.error("Please upload the file");
+      return;
+    }
     axios
       .put(
         `http://localhost:5000/posts/api/update-post/${item._id}`,
