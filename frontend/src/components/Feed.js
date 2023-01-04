@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import EditPost from "./Editpost";
 import Feeds from "./feeds";
 import Loading from "./loading";
@@ -9,6 +11,7 @@ const Feed = () => {
       Authorization: localStorage.getItem("token"),
     },
   };
+  const [message, setMessage] = useState("");
   const [feeds, setFeeds] = useState([]);
   const [model, setmodel] = useState("modal fade");
   const [loading, setloading] = useState(true);
@@ -28,9 +31,7 @@ const Feed = () => {
       img: "",
       vid: "",
       description: "",
-      
     });
-    
   };
   const idchange = (id) => {
     setId(id);
@@ -42,7 +43,6 @@ const Feed = () => {
   const closemodel = () => {
     setmodal2("modal fade");
   };
-  
 
   const changemodel2 = (value) => {
     setmodal2(value);
@@ -65,6 +65,9 @@ const Feed = () => {
       console.log(err);
     }
   }, [...feeds]);
+
+  // on click of send button
+
   if (loading) {
     return (
       <div className="d-flex justify-content-center align-items-center">
@@ -74,6 +77,8 @@ const Feed = () => {
   }
   return (
     <>
+      <ToastContainer />
+
       <div className="d-flex col-md-12 justify-content-around ms-3">
         <div className="col-md-7">
           {feeds.map((feed) => {
@@ -96,8 +101,38 @@ const Feed = () => {
           <div className="card-body">
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title">Card title</h5>
-                <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                <h5 className="card-title muted">
+                  Connect to Admin For Any Queries
+                </h5>
+                <div className="d-flex justify-content-end">
+                  <input
+                    type="text"
+                    name="message"
+                    id="message"
+                    onChange={(e) => setMessage(e.target.value)}
+                  />
+
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => {
+                      axios
+                        .post(
+                          "http://localhost:5000/admin/api/send-message",
+                          {
+                            message: message,
+                          },
+                          config
+                        )
+                        .then((res) => {
+                          toast.success(res.data.message);
+                          console.log(res);
+                        });
+                    }}
+                  >
+                    Send
+                  </button>
+                </div>
               </div>
             </div>
           </div>

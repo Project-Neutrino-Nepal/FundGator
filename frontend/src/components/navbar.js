@@ -9,6 +9,7 @@ import SingleSearch from "./SingleSearch";
 
 function Navbar() {
   const [name, setName] = useState("");
+  const [skills, setSkills] = useState("");
   const [companyID, SetCompanyID] = useState("");
   const [companyName, SetCompanyName] = useState("");
   const [search, setSearch] = useState("");
@@ -64,6 +65,7 @@ function Navbar() {
       .then((res) => {
         let program = res.data.profile;
         setName(program.legal_name);
+        setSkills(program.skills);
         setPreview({ ...image, preview: program.avatar });
       });
   });
@@ -360,9 +362,9 @@ function Navbar() {
                       name={name}
                       className="rounded-circle me-2 ms-3 border border-grey border-2"
                     />
-
                     <strong>{name} </strong>
                   </a>
+
                   <ul
                     className="dropdown-menu dropdown-menu-dark text-small shadow"
                     aria-labelledby="dropdownUser1"

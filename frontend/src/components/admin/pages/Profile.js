@@ -75,6 +75,17 @@ function Profile() {
       });
   });
 
+  // fetching users message from api
+  const [messages, setMessages] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/admin/api/get-message", config)
+      .then((res) => {
+        let message = res.data.messages;
+        setMessages(message);
+      });
+  });
+
   const getBase64 = (img, callback) => {
     const reader = new FileReader();
     reader.addEventListener("load", () => callback(reader.result));
@@ -125,6 +136,14 @@ function Profile() {
         "  Title: " +
         item.title,
 
+      description: item.message,
+    };
+  });
+
+  const message = messages.map((item) => {
+    return {
+      title: "Name: " + item.profile.name + "  Emial: " + item.profile.email,
+      avatar: item.profile.avatar,
       description: item.message,
     };
   });
@@ -235,7 +254,50 @@ function Profile() {
             </Descriptions>
           </Card>
         </Col>
-        <Col span={24} md={15} className="mb-24">
+        <Col span={24} md={8} className="mb-24">
+          <Card
+            bordered={false}
+            title={<p className="font-semibold m-0">User Message</p>}
+            className="header-solid h-full"
+            bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
+          >
+            <List
+              itemLayout="horizontal"
+              dataSource={message}
+              split={false}
+              className="conversations-list"
+              renderItem={(item) => (
+                <List.Item
+                  actions={
+                    item.description.length > 100
+                      ? [
+                          <Button
+                            type="primary"
+                            onClick={() => {
+                              // navigate("/profile/Settings");
+                            }}
+                          >
+                            Read More
+                          </Button>,
+                        ]
+                      : null
+                  }
+                >
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.avatar} />}
+                    title={item.title}
+                    description={
+                      item.description.length > 100
+                        ? item.description.substring(0, 100) + "..."
+                        : item.description
+                    }
+                  />
+                </List.Item>
+              )}
+            />
+          </Card>
+        </Col>
+        <Col span={24} md={8} className="mb-24">
           <Card
             bordered={false}
             title={<p className="font-semibold m-0">Contact Us Messages</p>}

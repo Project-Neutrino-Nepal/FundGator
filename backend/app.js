@@ -22,7 +22,6 @@ const messageRouter = require("./apis/MessageApi");
 const questionRouter = require("./apis/questionApi");
 const feedbackRouter = require("./apis/FeedbackApi");
 const notification = require("./apis/NotificationApi");
-const Notification = require("./models/notificationModel");
 const VerifyNotification = require("./models/notificationModel");
 const LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
 const session = require("express-session");
