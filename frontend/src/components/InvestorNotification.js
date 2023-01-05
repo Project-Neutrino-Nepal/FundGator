@@ -58,7 +58,7 @@ const InvestorNotification = () => {
           >
             <p style={{ zIndex: "1" }}>
               {" "}
-              <Link to={`/dashboard/company-details/${company.company._id}`}>
+              <Link to={`/company/${company.company._id}`}>
                 <i className="fa-solid fa-eye text-info"></i>
               </Link>
               &emsp; {moment(company.company.updatedAt).fromNow()}
