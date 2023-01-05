@@ -133,6 +133,70 @@ router.post("/api/login", LoginValidations, validator, async (req, res) => {
 });
 
 /**
+ * @description To login a User from google
+ * @api /users/api/google-login
+ * @access PUBLIC
+ * @type POST
+ */
+
+router.post("/api/google-login", async (req, res) => {
+  try {
+    let { email, name, googleId, avatar } = req.body;
+    let user = await User.findOne({
+      $or: [{ email }, { googleId }],
+    });
+    if (!user) {
+      user = new User({
+        email,
+        name,
+        googleId,
+        verified: true,
+      });
+      await user.save();
+      // create profile for the user
+      const profile = new Profile({
+        user: user._id,
+        email: user.email,
+        name: user.name,
+        avatar: avatar,
+      });
+      await profile.save();
+    } else if (user.googleId != googleId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized access.",
+      });
+    } else if (user.status != true) {
+      return res.status(401).json({
+        success: false,
+        message:
+          "Your account is suspended, Please contact Admin to Reactivate your Account.",
+      });
+    } else if (user.verified != true) {
+      return res.status(401).json({
+        success: false,
+        message:
+          "Unauthorized access. Please verify your account email has been sent.",
+      });
+    }
+
+    let token = await user.generateJWT();
+    return res.status(200).json({
+      success: true,
+      user: user.getUserInfo(),
+      token: `Bearer ${token}`,
+      message: "Hurray! You are now logged in.",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
  * @description To verify a new user's account via email
  * @api /users/verify-now/:verificationCode
  * @access PUBLIC <Only Via email>

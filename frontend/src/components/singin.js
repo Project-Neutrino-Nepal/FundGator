@@ -1,4 +1,5 @@
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -30,31 +31,56 @@ const Signin = () => {
     }
     return true;
   };
+  // login with linkedIn
 
-  // useEffect(() => {
-  //   const accessToken = new URL(window.location.href).searchParams.get(
-  //     "access_token"
-  //   );
-  //   if (accessToken) {
-  //     localStorage.setItem("token", `Bearer ${accessToken}`);
-  //     window.location.href = "/homepage";
-  //   }
-  // }, []);
+  // login with google
+
+  function heandelLogin(response) {
+    if (response.credential) {
+      console.log(response.credential);
+      var userObject = jwt_decode(response.credential);
+      console.log(userObject);
+      LoginUser(userObject);
+    }
+  }
+
+  useEffect(() => {
+    /* global google */
+    google.accounts.id.initialize({
+      client_id:
+        "333233854581-6m8c1bgpvs06pvs668dn8lcl636ljre5.apps.googleusercontent.com",
+      callback: heandelLogin,
+    });
+    google.accounts.id.prompt((notification) => {
+      if (notification.isNotDisplayed()) {
+        console.log("Login with Google is not available");
+      }
+    });
+
+    // button click
+    google.accounts.id.renderButton(document.getElementById("googleButton"), {
+      theme: "filled_blue",
+      width: 250,
+      height: 50,
+      longtitle: true,
+      type: "standard",
+    });
+  }, []);
 
   // form submit
 
-  const LoginUser = async (e) => {
-    // stop the form from reloading the page
-    e.preventDefault();
-
-    const data = {
-      email: email,
-      password: password,
-    };
-    if (validate()) {
+  const LoginUser = async (userObject) => {
+    console.log(userObject, "userObject");
+    if (userObject) {
+      const data = {
+        email: userObject.email,
+        name: userObject.name,
+        googleId: userObject.sub,
+        avatar: userObject.picture,
+      };
       try {
         await axios
-          .post("http://localhost:5000/users/api/login", data)
+          .post("http://localhost:5000/users/api/google-login", data)
           .then((res) => {
             if (res.data.success) {
               localStorage.setItem("token", res.data.token);
@@ -89,6 +115,50 @@ const Signin = () => {
       } catch (error) {
         toast.error(error.response.data.message);
       }
+    } else {
+      const data = {
+        email: email,
+        password: password,
+      };
+      if (validate()) {
+        try {
+          await axios
+            .post("http://localhost:5000/users/api/login", data)
+            .then((res) => {
+              if (res.data.success) {
+                localStorage.setItem("token", res.data.token);
+                localStorage.setItem("admin", res.data.user.admin);
+                localStorage.setItem("userInfo", JSON.stringify(res.data));
+
+                toast.success(
+                  res.data.message,
+                  setTimeout(function () {
+                    if (res.data.user.admin === true) {
+                      if (res.data.user.isFirstTime === true) {
+                        window.location.href = "/welcome";
+                        localStorage.setItem("token", res.data.token);
+                      } else {
+                        window.location.href = "/dashboard";
+                        localStorage.setItem("token", res.data.token);
+                        localStorage.setItem("id", res.data.user._id);
+                        localStorage.setItem("admin", res.data.user.admin);
+                      }
+                    } else {
+                      if (res.data.user.isFirstTime === true) {
+                        window.location.href = "/welcome";
+                        localStorage.setItem("token", res.data.token);
+                      } else {
+                        window.location.href = "/homepage";
+                      }
+                    }
+                  }, 2000)
+                );
+              }
+            });
+        } catch (error) {
+          toast.error(error.response.data.message);
+        }
+      }
     }
   };
 
@@ -115,13 +185,7 @@ const Signin = () => {
                   LinkedIn
                 </a>
               </div>
-              <div>
-                {" "}
-                <a href="#" className="btn btn-danger btn-lg ms-2 me-2">
-                  <i className="fa-brands fa-google" />
-                  Google
-                </a>
-              </div>
+              <div id="googleButton"></div>
             </div>
             <div className="or-seperator">
               <b>or</b>
