@@ -71,7 +71,6 @@ const EditCompanyPage = () => {
 
   const videouploads = values.videoupload;
   const image = values.imageupload;
-  const content = values.content;
   const companyName = values.companyname;
 
   const config = {
@@ -247,17 +246,17 @@ const EditCompanyPage = () => {
                   navigate("/homepage");
                 }, 1200)
               );
-              const companyID = res.data.company._id;
-              const date = res.data.company.date;
-              const socket = io("http://localhost:5000");
-              socket.on("connect", () => {
-                socket.emit("newCompany", {
-                  companyID,
-                  companyName,
-                  image,
-                  date,
-                });
-              });
+              // const companyID = res.data.company._id;
+              // const date = res.data.company.date;
+              // const socket = io("http://localhost:5000");
+              // socket.on("connect", () => {
+              //   socket.emit("newCompany", {
+              //     companyID,
+              //     companyName,
+              //     image,
+              //     date,
+              //   });
+              // });
             }
           });
       } catch (error) {

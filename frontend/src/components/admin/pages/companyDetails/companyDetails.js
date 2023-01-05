@@ -16,8 +16,6 @@ import { Link, useParams } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { About, AskAQuestion, Detail, Overview } from "./component";
 import tabs from "./utils/tab";
-import { io } from "socket.io-client";
-const socket = io("http://localhost:5000");
 
 const CompanyDetails = () => {
   const tab2 = [
@@ -117,7 +115,7 @@ const CompanyDetails = () => {
           config
         )
         .then((res) => {
-          let companyName = res.data.updatedCompany.name;
+          console.log(res.data);
           let user_id = res.data.updatedCompany.user;
 
           let companyID = id;

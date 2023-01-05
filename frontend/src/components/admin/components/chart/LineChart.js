@@ -21,8 +21,6 @@ function LineChart() {
         .then((res) => {
           let fundgoal = res.data.reason;
           let fundRaised = res.data.company;
-          // console.log(fundgoal);
-          // console.log(fundRaised);
 
           setFundGoal(fundgoal?.map((fundgoal) => fundgoal.amount));
           setFundRaised(

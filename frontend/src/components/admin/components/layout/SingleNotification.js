@@ -5,7 +5,6 @@ import axios from "axios";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
 import moment from "moment";
-
 const socket = io("http://localhost:5000");
 const SingleNotification = () => {
   const [shownotification, setnotification] = useState([]);
@@ -14,7 +13,6 @@ const SingleNotification = () => {
     axios
       .get("http://localhost:5000/notification/api/get-notification")
       .then((res) => {
-        console.log(res.data.notification);
         let data = res.data.notification;
         setnotification(data);
       });
@@ -34,10 +32,9 @@ const SingleNotification = () => {
   };
 
   useEffect(() => {
-
     socket.on("connect", () => {
       console.log("connected");
-      socket.on("sendMessage-admin1", data => {
+      socket.on("sendMessage-admin1", (data) => {
         console.log(data);
         setAddCompany(data);
       });
@@ -45,21 +42,12 @@ const SingleNotification = () => {
         socket.off("data");
       };
     });
-
-    // //listens for the company list from the backend through socket io
-    // socket.on("sendMessage-admin1", data => {
-    //   console.log(data);
-    //   setAddCompany(data);
-    // });
-
-    // return () => {
-    //   socket.off("data");
-    // };
   });
 
+  
   return (
     <Wrapper
-      className="notify w-100 p-2 rounded-2"
+      className="notify w-100 p-2  rounded-2"
       style={{ height: "400px", overflowY: "scroll" }}
     >
       {/* if addCompany then map add company else map setnotificaton */}
@@ -67,7 +55,7 @@ const SingleNotification = () => {
         ? addCompany.map((company) => (
             <div
               id="addcompany"
-              className="d-flex shadow-sm aligin-items-center w-100 gap-2 notify-items m-1"
+              className="d-flex shadow-sm border border-2 aligin-items-center w-100 gap-2 notify-items m-1"
             >
               <img
                 src={company.image}

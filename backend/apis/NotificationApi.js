@@ -121,7 +121,9 @@ router.get("/api/get-verifynotification", async (req, res) => {
   try {
     let verifynotification = await VerifyNotification.find()
       .populate("company")
-      .exec();
+      .sort({ createdAt: -1 })
+      .exec()
+      ;
     if (!verifynotification) {
       return res.status(400).json({
         success: false,
@@ -151,7 +153,10 @@ router.get("/api/get-verifynotification", async (req, res) => {
 
 router.get("/api/get-notification", async (req, res) => {
   try {
-    let notification = await Notification.find().populate("company").exec();
+    let notification = await Notification.find().
+    populate("company")
+    .sort({ createdAt: -1 })
+    .exec();
     if (!notification) {
       return res.status(400).json({
         success: false,

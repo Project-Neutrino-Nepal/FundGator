@@ -19,17 +19,15 @@ function Header({ name }) {
   };
 
   useEffect(() => {
-
     socket.on("connect", () => {
       console.log("connected");
-      socket.on("sendMessage-admin", data => {
-        console
-        .log(data);
+      socket.on("sendMessage-admin", (data) => {
+        console.log(data);
         setAddnotification(data);
-    });
-    return () => {
-      socket.off("data");
-    };
+      });
+      return () => {
+        socket.off("data");
+      };
     });
   });
 
