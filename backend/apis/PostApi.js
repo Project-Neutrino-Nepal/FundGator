@@ -289,6 +289,17 @@ router.put("/api/comment-post/:id", userAuth, async (req, res) => {
 
 //to update posts
 
+router.delete("/api/delete/:id", userAuth, async (req, res) => {
+  const post = await Post.findById(req.params.id);
+  if(!post){
+  return res.status(400).json({ success: false, message: "something went wrong" });
+
+
+  }
+  await post.remove();
+  return res.status(200).json({ success: true,message:"post deleted" });
+});
+
 router.put(
   "/api/update-post/:id",
   userAuth,
@@ -327,100 +338,152 @@ router.put(
       }
     }
 
-  try {
-    let post = await Post.findById({_id:req.params.id});
-    if (!post) {
-      return res.status(400).json({
-        success: false,
-        message: "Post not found",
-      });
-    }
-    if (post.user.toString() !== req.user._id.toString()) {
-      return res.status(400).json({ 
-        success: false,
-        message: "You are not authorized to update this post",
-      });
-    }
-    if (imagePath == "") {
-      imagePath = post.image;
-    }
-    if (vidPath == "") {
-      vidPath = post.video;
-    }
-    if (body.description == "") {
-      body.description = post.text;
-    }
+    try {
+      let post = await Post.findById({ _id: req.params.id });
+      if (!post) {
+        return res.status(400).json({
+          success: false,
+          message: "Post not found",
+        });
+      }
+      console.log(post.user.toString(), req.user._id.toString());
+      if (post.user.toString() !== req.user._id.toString()) {
+        return res.status(400).json({
+          success: false,
+          message: "You are not authorized to update this post",
+        });
+      }
+      console.log(imagePath, vidPath, body.description);
 
-    await post.updateOne({
-      $set: {
-        image: imagePath,
-        video: vidPath,
-        text: body.description,
-      },
-    });
-    return res.status(200).json({
-      success: true,
-      message: "Post updated successfully",
-      post,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({
-      success: false,
-      message: "An error occurred.",
-    });
+      if (imagePath == "" && vidPath == "" && body.description !== "") {
+        post.text = body.description;
+      }
+      if (imagePath == "" && body.description !== "" && vidPath !== "") {
+        post.image = imagePath;
+        post.video = vidPath;
+        post.text = body.description;
+        console.log("video path os-->", post.video);
+      } else {
+        post.text = body.description;
+        post.video = "";
+        post.image = imagePath;
+      }
+
+      // save image if imagepath , save video if vidpath, save text if description IF nothing then dont save and if any two save them
+      //  if (imagePath == "" && vidPath == "" && body.description == "") {
+      //   return res.status(400).json({
+      //     success: false,
+      //     message: "Please select an image or video or write something",
+      //   });
+      // }
+      // if (imagePath == "" && vidPath == "") {
+      //   post.text = body.description
+      // }
+      // if (imagePath == "" && body.description == "") {
+      //   post.video = vidPath
+      // }
+      // if (vidPath == "" && body.description == "") {
+      //   post.image = imagePath
+      // }
+      // if (imagePath == "" && vidPath !== "" && body.description !== "") {
+
+      //   post.video = vidPath
+      //   post.text = body.description
+      // }
+      // if (imagePath !== "" && vidPath == "" && body.description !== "") {
+      //   post.image = imagePath
+      //   post.text = body.description
+      // }
+      // if (imagePath !== "" && vidPath !== "" && body.description == "") {
+      //   post.image = imagePath
+      //   post.video = vidPath
+      // }
+      // if (imagePath !== "" && vidPath !== "" && body.description !== "") {
+      //   post.image = imagePath
+      //   post.video = vidPath
+      //   post.text = body.description
+      // }
+
+      console.log(imagePath, vidPath, body.description);
+
+      await post.save();
+      return res.status(200).json({
+        success: true,
+        message: "Post updated successfully",
+        post,
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred.",
+      });
+    }
   }
-});
+);
 
-    
+//     await post.updateOne({
+//       $set: {
+//         image: imagePath,
+//         video: vidPath,
+//         text: body.description,
+//       },
+//     });
+//     return res.status(200).json({
+//       success: true,
+//       message: "Post updated successfully",
+//       post,
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(500).json({
+//       success: false,
+//       message: "An error occurred.",
+//     });
+//   }
+// });
 
-    // let { image, video, text } = req.body;
-    // if (image) {
-    //   post.image = imagePath;
-    // }
-    // if (video) {
-    //   post.video = vidPath;
-    // }
-    // if(text) {
-    //   post.text = body.description;
-    // }
-    
+// let { image, video, text } = req.body;
+// if (image) {
+//   post.image = imagePath;
+// }
+// if (video) {
+//   post.video = vidPath;
+// }
+// if(text) {
+//   post.text = body.description;
+// }
 
+// await post.updateOne({
+//   $set: {
+//     image: imagePath,
+//     video: vidPath,
+//     text: body.description,
 
+//    }
 
-    // await post.updateOne({ 
-    //   $set: { 
-    //     image: imagePath,
-    //     video: vidPath,
-    //     text: body.description,
+// });
+//   return res.status(200).json({
+//     success: true,
+//     message: "Post updated successfully",
+//     post,
+//   });
 
-    //    }
-  
-    // });
-    //   return res.status(200).json({
-    //     success: true,
-    //     message: "Post updated successfully",
-    //     post,
-    //   });
+// await post.save();
+// return res.status(200).json({
+//   success: true,
+//   message: "Post updated successfully",
+//   post,
+// });
 
-    // await post.save();
-    // return res.status(200).json({
-    //   success: true,
-    //   message: "Post updated successfully",
-    //   post,
-    // });
+// } catch (err) {
+//   console.log(err);
+//   return res.status(500).json({
+//     success: false,
 
-  // } catch (err) {
-  //   console.log(err);
-  //   return res.status(500).json({
-  //     success: false,
-
-  //     message: "An error occurred.",
-  //   });
-  // }
+//     message: "An error occurred.",
+//   });
+// }
 //});
-
-
-
 
 module.exports = router;

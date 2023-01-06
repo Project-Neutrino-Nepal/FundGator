@@ -1,18 +1,57 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../css/nav-search.css";
+import InvestorNotification from "./InvestorNotification";
+import SingleSearch from "./SingleSearch";
 
 function Navbar() {
   const [name, setName] = useState("");
+  const [skills, setSkills] = useState("");
   const [companyID, SetCompanyID] = useState("");
   const [companyName, SetCompanyName] = useState("");
+  const [search, setSearch] = useState("");
+  const [showsearch, setsearch] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [image, setPreview] = useState({
     preview:
       "https://www.grovenetworks.com/images/easyblog_shared/July_2018/7-4-18/totw_network_profile_400.jpg",
     file: "",
   });
 
+  const handleSearch = async (query) => {
+    setSearch(query);
+    console.log(query);
+
+    if (!query || query === "") {
+      setSearchResults([]);
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `http://localhost:5000/profile/api/profiles?search=${search}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+
+      const data = await response.json();
+      setLoading(false);
+      setSearchResults(data);
+    } catch (error) {
+      setLoading(false);
+      return toast.error("Something went wrong");
+    }
+  };
   const config = {
     headers: {
       Authorization: localStorage.getItem("token"),
@@ -26,6 +65,7 @@ function Navbar() {
       .then((res) => {
         let program = res.data.profile;
         setName(program.legal_name);
+        setSkills(program.skills);
         setPreview({ ...image, preview: program.avatar });
       });
   });
@@ -46,6 +86,45 @@ function Navbar() {
 
   const admin = localStorage.getItem("admin");
 
+  // .....................notification..........................................
+
+  const [shownotification, setnotification] = useState(false);
+
+  const [addNotification, setAddnotification] = useState([]);
+
+  const shownotificationHandler = () => {
+    setnotification(!shownotification);
+    axios
+      .put(
+        "http://localhost:5000/notification/api/update-verifynotification",
+        {},
+        config
+      )
+      .then((res) => {
+        console.log(res.data);
+        setAddnotification([]);
+      });
+  };
+
+  useEffect(() => {
+    axios
+      .get(
+        "http://localhost:5000/notification/api/get-unread-verifynotification",
+        config
+      )
+      .then((res) => {
+        console.log(res.data.verifynotification);
+        let data = res.data.verifynotification;
+        setAddnotification(data);
+      });
+  }, []);
+
+  // .....................search..........................................
+  const showSearchHandler = () => {
+    setsearch(!showsearch);
+  };
+
+  // ............................. Logout function ...............................................
   const logout = async (e) => {
     localStorage.clear();
     sessionStorage.clear();
@@ -55,6 +134,8 @@ function Navbar() {
   if (localStorage.getItem("token") === null) {
     return (
       <>
+        <ToastContainer />
+
         <nav
           className="navbar navbar-expand-lg navbar-dark  navbar-fixed-top"
           style={{ backgroundColor: "#0a4fa3" }}
@@ -89,28 +170,13 @@ function Navbar() {
                   </Link>
                 </li>
               </ul>
-              <form className="d-flex" role="search">
-                <input
-                  className="form-control me-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-
-                <button
-                  className="btn btn-outline-success btn-sm"
-                  type="submit"
-                >
-                  Search
-                </button>
-              </form>
 
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li className="nav-item me-2">
                   <Link
                     className="nav-link active"
                     aria-current="page"
-                    to="contactus"
+                    to="contact-us"
                   >
                     Contact Us
                   </Link>
@@ -119,16 +185,7 @@ function Navbar() {
                   <Link
                     className="nav-link active"
                     aria-current="page"
-                    to="comProfile"
-                  >
-                    Raise funding
-                  </Link>
-                </li>
-                <li className="nav-item me-2">
-                  <Link
-                    className="nav-link active"
-                    aria-current="page"
-                    to="overview"
+                    to="/#two"
                   >
                     FAQ
                   </Link>
@@ -160,6 +217,8 @@ function Navbar() {
   } else if (localStorage.getItem("token") && admin === "false") {
     return (
       <>
+        <ToastContainer />
+
         <nav
           className="navbar navbar-expand-lg  navbar-dark fixed-top mb-5"
           style={{ backgroundColor: "#0a4fa3" }}
@@ -194,24 +253,45 @@ function Navbar() {
                   </Link>
                 </li>
               </ul>
+
               <form className="d-flex" role="search">
                 <input
                   className="form-control me-2"
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
+                  onChange={(e) => handleSearch(e.target.value)}
                 />
-
-                <button
-                  className="btn btn-outline-success btn-sm"
-                  type="submit"
-                >
-                  Search
-                </button>
               </form>
 
-              <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li className="nav-item me-2">
+              <button
+                className="btn btn-outline-success btn-sm"
+                onClick={showSearchHandler}
+              >
+                Search
+              </button>
+
+              <div
+                className={
+                  showsearch
+                    ? "position-absolute top-4 bg-white opacity-100"
+                    : "d-none"
+                }
+                aria-hidden="true"
+                style={{
+                  transform: "translateY(225px) translateX(350px)",
+                  zIndex: "2",
+                  width: "max-content",
+                  maxWidth: "500px",
+                  minWidth: "500px",
+                }}
+              >
+                <SingleSearch data={searchResults} />
+              </div>
+              {/* </li> */}
+
+              <ul className="navbar-nav ms-auto mb-2 mb-lg-0 ">
+                <li className="nav-item me-3 mt-2 ">
                   <Link
                     className="nav-link active"
                     aria-current="page"
@@ -220,6 +300,41 @@ function Navbar() {
                     Raise funding
                   </Link>
                 </li>
+
+                {/* badge for notification */}
+                <li className="nav-item me-3 mt-2">
+                  <button
+                    type="button"
+                    class="btn position-relative"
+                    onClick={shownotificationHandler}
+                  >
+                    <i className="fas fa-bell text-light" />
+                    {addNotification.length > 0 && (
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {addNotification.length}
+                        <span class="visually-hidden">unread messages</span>
+                      </span>
+                    )}
+                  </button>
+                  <div
+                    className={
+                      shownotification
+                        ? "position-absolute top-4  bg-white shadow shadow-sm"
+                        : "d-none"
+                    }
+                    style={{
+                      transform: "translateY(37px) translateX(-300px)",
+                      zIndex: "2",
+                      width: "max-content",
+                      maxWidth: "500px",
+                      minWidth: "500px",
+                      minHeight: "70px",
+                    }}
+                  >
+                    <InvestorNotification />
+                  </div>
+                </li>
+
                 <li className="nav-item me-2 fs-4">
                   <Link
                     className="nav-link active"
@@ -247,9 +362,9 @@ function Navbar() {
                       name={name}
                       className="rounded-circle me-2 ms-3 border border-grey border-2"
                     />
-
                     <strong>{name} </strong>
                   </a>
+
                   <ul
                     className="dropdown-menu dropdown-menu-dark text-small shadow"
                     aria-labelledby="dropdownUser1"
@@ -305,6 +420,8 @@ function Navbar() {
   } else if (localStorage.getItem("token") && admin === "true") {
     return (
       <>
+        <ToastContainer />
+
         <nav
           className="navbar navbar-expand-lg  navbar-dark fixed-top mb-5"
           style={{ backgroundColor: "#0a4fa3" }}
@@ -345,22 +462,36 @@ function Navbar() {
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
+                  // onChange={(e) => handleSearch(e.target.value)}
                 />
-
-                <button
-                  className="btn btn-outline-success btn-sm"
-                  type="submit"
-                >
-                  Search
-                </button>
               </form>
 
+              <button
+                className="btn btn-outline-success btn-sm"
+                onClick={showSearchHandler}
+              >
+                Search
+              </button>
+
+              <div
+                className={
+                  showsearch
+                    ? "position-absolute top-4 bg-white opacity-100"
+                    : "d-none"
+                }
+                aria-hidden="true"
+                style={{
+                  transform: "translateY(225px) translateX(350px)",
+                  zIndex: "2",
+                  width: "max-content",
+                  maxWidth: "500px",
+                  minWidth: "500px",
+                  minHeight: "70px",
+                }}
+              >
+                <SingleSearch data={searchResults} />
+              </div>
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li className="nav-item me-2">
-                  <Link className="nav-link active" aria-current="page" to="#">
-                    Raise funding
-                  </Link>
-                </li>
                 <li className="nav-item me-2 fs-4">
                   <Link
                     className="nav-link active"
@@ -411,23 +542,7 @@ function Navbar() {
                         Settings
                       </Link>
                     </li>
-                    <hr />
-                    <li>
-                      <h6 className="dropdown-item fw-semibold" href="#">
-                        COMPANY
-                      </h6>
-                    </li>
-                    <li>
-                      {/* {companies.map((company) => (
-                        <Link
-                          className="dropdown-item"
-                          aria-current="page"
-                          to={`/company/${company._id}`}
-                        >
-                          {company.name}
-                        </Link>
-                      ))} */}
-                    </li>
+
                     <hr />
                     <li>
                       <a className="dropdown-item button " onClick={logout}>

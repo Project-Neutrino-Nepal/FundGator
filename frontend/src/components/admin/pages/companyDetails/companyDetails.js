@@ -16,6 +16,7 @@ import { Link, useParams } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { About, AskAQuestion, Detail, Overview } from "./component";
 import tabs from "./utils/tab";
+
 const CompanyDetails = () => {
   const tab2 = [
     { id: 1, text: "OVERVIEW" },
@@ -87,7 +88,6 @@ const CompanyDetails = () => {
         setShort_pitch(company.content);
         setEmail(company.email);
         setPhone(company.phone);
-        setAddress(company.address);
         setFund_raised(company.fund_raised);
         setStatus(company.status);
         setID(company._id);
@@ -103,8 +103,6 @@ const CompanyDetails = () => {
       });
   }, []);
 
-  // get reason details using id from params
-
   // Verify company by admin
   const admin = localStorage.getItem("admin");
 
@@ -117,9 +115,28 @@ const CompanyDetails = () => {
           config
         )
         .then((res) => {
-          console.log(res);
+          console.log(res.data);
+          let user_id = res.data.updatedCompany.user;
+
+          let companyID = id;
+
           toast.success(res.data.message);
-          window.location.replace("/dashboard/company_admin");
+
+          const data = {
+            company: companyID,
+            user: user_id,
+          };
+          axios
+            .post(
+              "http://localhost:5000/notification/api/verify-notification/",
+              data
+            )
+            .then((res) => {
+              window.location.replace("/dashboard/company_admin");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         })
         .catch((err) => {
           toast.error(err.response.data.message);
@@ -139,8 +156,8 @@ const CompanyDetails = () => {
         setLinkedin(reasons.linkedin);
         setWebsite(reasons.companylink);
         setFund_goal(reasons.amount);
+        setAddress(reasons.city);
         setTags(reasons.tag);
-        console.log(reasons);
       })
       .catch((err) => {
         console.log(err);
@@ -153,8 +170,28 @@ const CompanyDetails = () => {
       axios
         .put("http://localhost:5000/company/api/reject-company/" + id, config)
         .then((res) => {
+          let companyName = res.data.updatedCompany.name;
+          let user_id = res.data.updatedCompany.user;
+
+          let companyID = id;
+
           toast.success(res.data.message);
-          window.location.replace("/dashboard/company_admin");
+
+          const data = {
+            company: companyID,
+            user: user_id,
+          };
+          axios
+            .post(
+              "http://localhost:5000/notification/api/verify-notification/",
+              data
+            )
+            .then((res) => {
+              window.location.replace("/dashboard/company_admin");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         })
         .catch((err) => {
           toast.error(err.response.data.message);
@@ -173,7 +210,7 @@ const CompanyDetails = () => {
           <div className="header">
             <div className="info">
               <h3>Invest in {name}</h3>
-              <h1>
+              <h1 align="justify">
                 {short_pitch
                   ? short_pitch.length > 200
                     ? short_pitch.substring(0, 200) + "..."
@@ -181,13 +218,10 @@ const CompanyDetails = () => {
                   : null}
               </h1>
             </div>
-            <div className="share">
-              <FaShare />
-            </div>
           </div>
           <div className="video-container">
             <video
-              autoPlay
+              
               ref={videoRef}
               onClick={onplay}
               loop

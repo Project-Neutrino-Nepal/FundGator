@@ -7,6 +7,8 @@ import upload from "../../assets/image/uploadpic.svg";
 import { BasicEdit, Story, Team, Visiblity } from "./component";
 import tabs from "./utils/tab";
 import Wrapper from "./wrapper/CompanyRegisterPage";
+import { io } from "socket.io-client";
+
 const parse = require("html-react-parser");
 
 const EditCompanyPage = () => {
@@ -61,13 +63,15 @@ const EditCompanyPage = () => {
     citizenship_front: "",
     citizenship_back: "",
   };
- 
+
   const navigate = useNavigate();
 
   const [activeindex, setActive] = useState(1);
   const [values, setValue] = useState(formvalue);
 
   const videouploads = values.videoupload;
+  const image = values.imageupload;
+  const companyName = values.companyname;
 
   const config = {
     headers: {
@@ -97,7 +101,6 @@ const EditCompanyPage = () => {
   const teamsdata = {
     teams: values.teams,
   };
-
 
   const setcontent = (content) => {
     setValue({ ...values, content: content });
@@ -202,7 +205,6 @@ const EditCompanyPage = () => {
       } else if (activeindex === 3) {
         const formData = new FormData();
         formData.append("company_video", videouploads);
-        console.log(formData);
 
         try {
           axios
@@ -229,7 +231,6 @@ const EditCompanyPage = () => {
         formData.append("citizenship_front", values.citizenship_front);
         formData.append("citizenship_back", values.citizenship_back);
         formData.append("content", values.content);
-        console.log(formData);
         axios
           .put(
             "http://localhost:5000/company/api/update-document/" +
@@ -245,6 +246,17 @@ const EditCompanyPage = () => {
                   navigate("/homepage");
                 }, 1200)
               );
+              // const companyID = res.data.company._id;
+              // const date = res.data.company.date;
+              // const socket = io("http://localhost:5000");
+              // socket.on("connect", () => {
+              //   socket.emit("newCompany", {
+              //     companyID,
+              //     companyName,
+              //     image,
+              //     date,
+              //   });
+              // });
             }
           });
       } catch (error) {
@@ -259,7 +271,6 @@ const EditCompanyPage = () => {
       .get("http://localhost:5000/reason/api/get-reason/" + id, config)
       .then((res) => {
         let reasons = res.data.reasons;
-        console.log(reasons);
         setReasons(reasons);
         formvalue.reason0 = reasons.reason0;
         formvalue.reason1 = reasons.reason1;
@@ -279,7 +290,6 @@ const EditCompanyPage = () => {
         formvalue.category = reasons.category.name;
         const teamsdata = [];
         reasons.teams.map((item) => {
-          console.log(item);
           teamsdata.push({
             ...item,
 
@@ -303,16 +313,15 @@ const EditCompanyPage = () => {
   useEffect(() => {
     axios
       .get("http://localhost:5000/company/api/get-company/" + id, config)
-      .then((res) => {  
-        console.log(res);
+      .then((res) => {
         let company = res.data.company;
         formvalue.content = company.content;
         formvalue.registration_card = company.registration_card;
         formvalue.pan_card = company.pan_card;
         formvalue.citizenship_front = company.citizenship_front;
         formvalue.citizenship_back = company.citizenship_back;
-        formvalue.videoupload=company.company_video;
-        formvalue.imageupload=company.image;
+        formvalue.videoupload = company.company_video;
+        formvalue.imageupload = company.image;
       });
   }, []);
 

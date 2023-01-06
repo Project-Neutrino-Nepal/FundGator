@@ -11,6 +11,8 @@ const RegisterValidations = require("../validators/user-validators");
 const validator = require("../middlewares/validator-middleware");
 const userAuth = require("../middlewares/auth-guard");
 const Validator = require("../middlewares/validator-middleware");
+const ContactUs = require("../models/contactUsModel");
+const axios = require("axios");
 
 /**
  * @description To create a new User Account
@@ -28,7 +30,7 @@ router.post(
       let { email } = req.body;
 
       // Check if the user exists with that email
-      user = await User.findOne({ email });
+      let user = await User.findOne({ email });
       if (user) {
         return res.status(400).json({
           success: false,
@@ -124,6 +126,159 @@ router.post("/api/login", LoginValidations, validator, async (req, res) => {
       message: "Hurray! You are now logged in.",
     });
   } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To login a User from google
+ * @api /users/api/google-login
+ * @access PUBLIC
+ * @type POST
+ */
+
+router.post("/api/google-login", async (req, res) => {
+  try {
+    let { email, name, googleId, avatar } = req.body;
+    let user = await User.findOne({
+      $or: [{ email }, { googleId }],
+    });
+    if (!user) {
+      user = new User({
+        email,
+        name,
+        googleId,
+        verified: true,
+      });
+      await user.save();
+      // create profile for the user
+      const profile = new Profile({
+        user: user._id,
+        email: user.email,
+        name: user.name,
+        avatar: avatar,
+      });
+      await profile.save();
+    } else if (user.googleId != googleId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized access.",
+      });
+    } else if (user.status != true) {
+      return res.status(401).json({
+        success: false,
+        message:
+          "Your account is suspended, Please contact Admin to Reactivate your Account.",
+      });
+    } else if (user.verified != true) {
+      return res.status(401).json({
+        success: false,
+        message:
+          "Unauthorized access. Please verify your account email has been sent.",
+      });
+    }
+
+    let token = await user.generateJWT();
+    return res.status(200).json({
+      success: true,
+      user: user.getUserInfo(),
+      token: `Bearer ${token}`,
+      message: "Hurray! You are now logged in.",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To get access token from linkedin
+ * @api /users/api/linkedin-access-token?code=123
+ * @access PUBLIC
+ * @type Get
+ */
+
+router.get("/api/linkedin-access-token", async (req, res) => {
+  try {
+    let { code } = req.query;
+    let { CLIENT_ID, CLIENT_SECERT } = process.env;
+    console.log(code);
+    console.log(CLIENT_ID);
+    console.log(CLIENT_SECERT);
+
+    let { data } = await axios.post(
+      // get access token from linkedin
+      `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&code=${code}&redirect_uri=http://localhost:3000/signin&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECERT}`
+    );
+    // get user data from linkedin
+    let { data: userData } = await axios.get(
+      // get user data from linkedin
+      `https://api.linkedin.com/v2/me?projection=(id,email,firstName,lastName,profilePicture(displayImage~:playableStreams))`,
+      {
+        headers: {
+          Authorization: `Bearer ${data.access_token}`,
+        },
+      }
+    );
+    let { id, firstName, lastName, profilePicture } = userData;
+    let email = `${firstName.localized[Object.keys(firstName.localized)[0]]}.${
+      lastName.localized[Object.keys(lastName.localized)[0]]
+    }@linkedin.com`;
+    let avatar =
+      profilePicture["displayImage~"].elements[0].identifiers[0].identifier;
+    let user = await User.findOne({
+      $or: [{ email }, { linkedinId: id }],
+    });
+    if (!user) {
+      user = new User({
+        email,
+        name: `${firstName.localized[Object.keys(firstName.localized)[0]]} ${
+          lastName.localized[Object.keys(lastName.localized)[0]]
+        }`,
+        linkedinId: id,
+        verified: true,
+      });
+      await user.save();
+      // create profile for the user
+      const profile = new Profile({
+        user: user._id,
+        email: user.email,
+        name: user.name,
+        avatar: avatar,
+      });
+      await profile.save();
+    } else if (user.linkedinId != id) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized access.",
+      });
+    } else if (user.status != true) {
+      return res.status(401).json({
+        success: false,
+        message:
+          "Your account is suspended, Please contact Admin to Reactivate your Account.",
+      });
+    } else if (user.verified != true) {
+      return res.status(401).json({
+        success: false,
+        message:
+          "Unauthorized access. Please verify your account email has been sent.",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      user: user.getUserInfo(),
+      message: "Hurray! You are now logged in.",
+      token: `Bearer ${await user.generateJWT()}`,
+    });
+  } catch (err) {
+    console.log(err);
     return res.status(500).json({
       success: false,
       message: "An error occurred.",
@@ -456,6 +611,80 @@ router.post("/api/reset-password-now", async (req, res) => {
     return res.status(500).json({
       sucess: false,
       message: "Something went wrong.",
+    });
+  }
+});
+
+/**
+ * @description To post users message to the admin
+ * @api /users/api/contact-us
+ * @access Public
+ * @type POST
+ */
+
+router.post("/api/contact-us", async (req, res) => {
+  try {
+    let { body } = req;
+    if (!body) {
+      return res.status(400).json({
+        success: false,
+        message: "Please enter your message.",
+      });
+    }
+
+    let contact = new ContactUs({
+      ...body,
+    });
+    await contact.save();
+    if (contact) {
+      return res.status(200).json({
+        success: true,
+        message: "Your message is sent to the admin.",
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
+});
+
+/**
+ * @description To Get all contact us messages by admin
+ * @api /users/api/contact-us
+ * @access Public
+ * @type Get
+ */
+
+router.get("/api/contact-us", userAuth, async (req, res) => {
+  try {
+    let user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+    if (user.admin === true) {
+      let contact = await ContactUs.find();
+      if (contact) {
+        return res.status(200).json({
+          success: true,
+          message: "All contact us messages.",
+          contact,
+        });
+      }
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: "You are not authorized",
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
     });
   }
 });

@@ -11,6 +11,7 @@ import PaymentPage from "./PaymentPage/PaymentPage"
 import ProtectedRoute from "./ProtectedRoute";
 import IsloggedIn from "./IsloggedIn"
 import ContactPage from "./ContactPage/ContactPage"
+import ErrorPage from "./ErrorPage/ErrorPage"
 export {
   LandingPage,
   ProfilePage,
@@ -24,6 +25,7 @@ export {
   PaymentPage,
   ProtectedRoute,
   IsloggedIn,
-  ContactPage
+  ContactPage,
+  ErrorPage
 };
 

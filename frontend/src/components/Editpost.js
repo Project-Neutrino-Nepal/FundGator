@@ -1,81 +1,31 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { BsCardImage } from "react-icons/bs";
 import { IoCloseCircleSharp, IoDocumentTextSharp } from "react-icons/io5";
 import { RiVideoFill } from "react-icons/ri";
 //import Feeds from "../DetailsPage/../../../components/feeds"
-const EditPost = ({id}) => {
-  const [name, setName] = useState("");
-  const [image, setPreview] = useState({
-    preview:
-      "https://www.grovenetworks.com/images/easyblog_shared/July_2018/7-4-18/totw_network_profile_400.jpg",
-    file: "",
-  });
-  const [preview, setPreviews] = useState({
-    img: "",
-    vid: "",
-    doc: "",
-  });
-  const [values, setValue] = useState({
-    img: "",
-    vid: "",
-    doc: "",
-    description: "",
-  });
-  const handleChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setValue({ ...values, [e.target.name]: e.target.files[0] });
-    } else {
-      setValue({ ...values, [e.target.name]: e.target.value });
-    }
-  };
-  const clearpreview = (name) => {
-    console.log(name);
-    setValue({ ...values, [name]: "" });
-    setPreviews({ ...preview, [name]: "" });
-  };
-  const fileSelection = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      let file = e.target.files[0];
-      let blobURL = URL.createObjectURL(file);
-      handleChange(e);
-      setPreviews({ ...preview, [e.target.name]: blobURL });
-    }
-  };
+const EditPost = ({
+  item,
+  model,
+  index,
+  onsuccess,
+  values,
+  preview,
+  handleChange,
+  clearpreview,
+  fileSelection,
+  vfileSelection,
+  clearall,
+}) => {
   const config = {
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: localStorage.getItem("token"),
     },
   };
-  let [post, setEditpost] = useState([]);
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/posts/api/get-post/" + id, config)
-      .then((res) => {
-        let post = res.data.post;
-        setEditpost(post);
-        console.log(post);
-        setValue((values) => ({
-          ...values,
-          text: post.text,
-          img: post.image,
-          vid: post.video,
-          doc: post.doc,
-        }));
-        setPreviews((preview) => ({
-          ...preview,
-          img: post.image,
-          vid: post.video,
-          doc: post.doc,
-        }));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [id]);
+  const closebtn = useRef(null);
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -91,29 +41,39 @@ const EditPost = ({id}) => {
       toast.error("You can only upload one file at a time");
       return;
     }
+    if (!preview.img && !preview.vid) {
+      toast.error("Please upload the file");
+      return;
+    }
     axios
       .put(
-        `http://localhost:5000/posts/api/update-post/${id}`,
+        `http://localhost:5000/posts/api/update-post/${item._id}`,
         formData,
         config
       )
       .then((res) => {
         console.log("res", res);
         toast.success(res.data.message);
-        window.location.reload();
+        onsuccess(res.data.post, index);
+        closebtn.current.click();
+        // window.location.reload();
         //redirect to home page
       })
       .catch((err) => {
-        toast.error("Something went wrong");
+        closebtn.current.click();
+       
       });
   };
+  if (model === "model show") {
+    return <div></div>;
+  }
   return (
     <>
       <ToastContainer />
       <div
-        className="modal fade"
+        className={model}
         id="exampleModal2"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
@@ -128,17 +88,21 @@ const EditPost = ({id}) => {
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
+                onClick={() => clearall()}
+                ref={closebtn}
               ></button>
             </div>
             <div className="modal-body">
               <div className="d-flex align-items-center gap-2">
                 <img
-                  src={image.preview}
+                  src={item?.profile?.avatar}
                   className="rounded rounded-5 img-circle"
                   alt=""
                   style={{ width: 40, height: 40 }}
                 />
-                <span className="text-dark fw-bold">{name}</span>
+                <span className="text-dark fw-bold">
+                  {item?.profile?.legal_name}
+                </span>
               </div>
               <div className="form-floating">
                 <textarea
@@ -148,14 +112,14 @@ const EditPost = ({id}) => {
                   style={{ height: 100 }}
                   name="description"
                   onChange={handleChange}
-                  defaultValue={values.text}
+                  value={values?.description}
                 ></textarea>
                 <label for="floatingTextarea2">Enter Description</label>
               </div>
               <div className="d-flex gap-2">
-                <div className={preview.img ? "position-relative " : "d-none"}>
+                <div className={preview?.img ? "position-relative " : "d-none"}>
                   <img
-                    src={preview.img}
+                    src={preview?.img}
                     alt="preview"
                     height={100}
                     width={80}
@@ -168,9 +132,9 @@ const EditPost = ({id}) => {
                     onClick={() => clearpreview("img")}
                   />
                 </div>
-                <div className={preview.vid ? "position-relative " : "d-none"}>
+                <div className={preview?.vid ? "position-relative " : "d-none"}>
                   <video
-                    src={preview.vid}
+                    src={preview?.vid}
                     alt=""
                     height={100}
                     width={80}
@@ -208,7 +172,7 @@ const EditPost = ({id}) => {
                     accept="video/*"
                     name="vid"
                     id="vid"
-                    onChange={fileSelection}
+                    onChange={vfileSelection}
                   />
                   <input type="file" accept="image/*" name="doc" id="doc" />
                 </div>

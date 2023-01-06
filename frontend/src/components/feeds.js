@@ -1,21 +1,36 @@
 import axios from "axios";
 import moment from "moment";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import "../css/feeds.css";
-import EditPost from "./Editpostcard";
 import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal.js";
-const Feeds = ({ feed }) => {
+const Feeds = ({
+  feed,
+  changemodel,
+  closemodel,
+  modelvalue,
+  index,
+  deleteitem,
+}) => {
   const [modalShow, setModalShow] = React.useState(false);
   const [show, setShow] = useState(false);
   const [userId, setUserId] = useState("");
-
+  const currentuser = localStorage.getItem("userInfo");
+  const loginuser = currentuser ? JSON.parse(currentuser) : null;
   const config = {
     headers: {
       Authorization: localStorage.getItem("token"),
     },
+  };
+  const [showInput, setShowInput] = useState(false);
+  const commentInputRef = useRef(null);
+
+  const handleCommentClick = () => {
+    setShowInput(true);
+    commentInputRef.current.focus();
   };
 
   let time = new Date(feed.date).toLocaleDateString();
@@ -53,22 +68,18 @@ const Feeds = ({ feed }) => {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState(feed.comments.length);
 
-  // get current user id
-  const currentUser = localStorage.getItem("id");
+  const [comment, setComment] = useState(feed.comments.reverse().slice(0, 2));
 
-  const getUser = async () => {
-    await axios
-      .get("http://localhost:5000/profile/api/my-profile", config)
-      .then((res) => {
-        let program = res.data.profile;
-        setUserId(program.user);
-      });
-  };
+  function handleShowMore() {
+    setComment(feed.comments.slice(0, comment.length + 6));
+  }
 
   useEffect(() => {
-    getUser();
-    setIsLiked(feed.likes.includes(currentUser));
-  }, [currentUser, feed.likes, getUser]);
+    setIsLiked(
+      feed.likes.includes(JSON.parse(localStorage.getItem("userInfo")).user._id)
+    );
+  }, [feed.likes]);
+
   // like handler to like and unlike post and update likes count and isLiked state
 
   const likeHandler = async () => {
@@ -82,9 +93,8 @@ const Feeds = ({ feed }) => {
         })
         .then((res) => {
           let post = res.data.post;
-          // setLike(post.likes.length);
-          // setIsLiked(post.isLiked);
-          // console.log(post);
+          setLike(post.likes.length);
+          setIsLiked(post.isLiked);
         });
     } catch (err) {}
     if (isLiked) {
@@ -122,57 +132,80 @@ const Feeds = ({ feed }) => {
     setComments(comments + 1);
   };
 
+  const ondelete = async () => {
+    try {
+      await axios
+        .delete(`http://localhost:5000/posts/api/delete/${feed._id}`, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          toast.success("post deleted");
+          deleteitem(feed._id);
+        });
+    } catch (e) {
+      toast.error("something went wrong");
+    }
+  };
+
   return (
     <>
       <div className="row d-flex align-items-center justify-content-center mb-2">
-        <div className="col-md-7">
-          <div className="card">
-            <div className="d-flex justify-content-between p-2 px-3">
-              <div className="d-flex flex-row align-items-center">
-                <img
-                  src={feed.profile.avatar}
-                  width={50}
-                  height={50}
-                  className="rounded-circle"
-                  alt=""
-                />
-                <div className="d-flex flex-column ms-2">
-                  <span className="font-weight-bold">
-                    {feed.profile.legal_name}
-                  </span>
-                  <small className="text-primary">{feed.profile.skills}</small>
-                </div>
+        <div className="card col-md-11">
+          <div className="d-flex justify-content-between p-2 px-1">
+            <div
+              className="d-flex flex-row align-items-center btn"
+              onClick={() => {
+                window.location.href = `/profiles/${feed.user}`;
+              }}
+            >
+              <img
+                src={feed.profile.avatar}
+                width={50}
+                height={50}
+                className="rounded-circle"
+                alt=""
+              />
+              <div className="d-flex flex-column ">
+                <span className="font-weight-bold ms-2">
+                  {feed.profile.legal_name}
+                </span>
+                <small className="text-primary">{feed.profile.skills}</small>
               </div>
-              <div className="d-flex flex-row mt-1 ellipsis">
-                <small className="me-2">{time} &nbsp;</small>
+            </div>
+            <div className="d-flex flex-row mt-1 ellipsis">
+              <small className="me-2">{time} &nbsp;</small>
 
-                {userId === feed.user && (
-                  <div className="dropdown">
-                    <a
-                      href="#"
-                      className="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                      id="dropdownUser1"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <BsThreeDots size={20} color="#111" />
-                    </a>
-                    <ul
-                      className="dropdown-menu dropdown-menu-dark text-small shadow"
-                      aria-labelledby="dropdownUser1"
-                    >
-                     
+              {loginuser.user._id === feed.user && (
+                <div className="dropdown">
+                  <a
+                    href="#"
+                    className="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                    id="dropdownUser1"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <BsThreeDots size={20} color="#111" />
+                  </a>
+                  <ul
+                    className="dropdown-menu dropdown-menu-dark text-small shadow"
+                    aria-labelledby="dropdownUser1"
+                  >
                     <li
                       className="dropdown-item"
                       style={{ cursor: "pointer" }}
-                      onClick={() => setShow(true)}
+                      // onClick={() => setShow(true)}
+                      onClick={() => modelvalue(feed, index)}
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal2"
                     >
                       Edit
-                      <EditPost
+                      {/* <EditPost
                         show={show}
                         id={feed._id}
                         onHide={() => setShow(false)}
-                      />
+                      /> */}
                     </li>
 
                     {/* <li>
@@ -204,139 +237,163 @@ const Feeds = ({ feed }) => {
                         </Link>
                       </li> */}
 
-                      <li>
-                        <Link
-                          className="dropdown-item"
-                          aria-current="page"
-                          to="deletepost"
-                        >
-                          Delete
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="p-2 ">
-              <p align="justify">
-                {feed.text
-                  ? feed.text.length > 300
-                    ? feed.text.substring(0, 300) + " ...... Read more"
-                    : feed.text
-                  : ""}
-                <span className="btn btn-border-0 text-primary "></span>
-              </p>
-            </div>
-            {feed.image ? (
-              <img src={feed.image} className="img-fluid" alt="" />
-            ) : (
-              <video src={feed.video} className="img-fluid" controls={true} />
-            )}
-
-            <div className="p-1">
-              <span
-                className="fs-6 ms-2 "
-                style={{ textTransform: "capitalize" }}
-              >
-                &nbsp;{likes} Likes &emsp;. {comments} comments &emsp;. 20
-                shares
-              </span>
-              <hr />
-              <div className="d-flex flex-wrap justify-content-between align-items-center ms-2 me-2 ">
-                <div className=" align-items-center">
-                  <span>
-                    {isLiked ||
-                    feed.likes.includes(
-                      JSON.parse(localStorage.getItem("userInfo")).user._id
-                    ) ? (
-                      <Link
-                        className="btn btn-border-none text-primary bg-light"
-                        onClick={() => {
-                          likeHandler();
-                        }}
-                      >
-                        <i className="fa fa-thumbs-up text-primary"></i> &nbsp;
-                        Liked
-                      </Link>
-                    ) : (
-                      <Link
-                        className="btn btn-border-none"
-                        onClick={() => {
-                          likeHandler();
-                        }}
-                      >
-                        <i className="fa fa-thumbs-up"></i> &nbsp; Like
-                      </Link>
-                    )}
-                  </span>
+                    <li className="dropdown-item" onClick={ondelete}>
+                      Delete
+                    </li>
+                  </ul>
                 </div>
+              )}
+            </div>
+          </div>
+          <div className="p-2 ms-2">
+            <p align="justify ">
+              {feed.text
+                ? feed.text.length > 300
+                  ? feed.text.substring(0, 300) + " ...... Read more"
+                  : feed.text
+                : ""}
+              <span className="btn btn-border-0 text-primary "></span>
+            </p>
+          </div>
+          <div>
+            {feed.image ? (
+              <img
+                src={feed.image}
+                className="w-100"
+                style={{ objectFit: "contain" }}
+                height={400}
+                alt=""
+              />
+            ) : (
+              <video
+                src={feed.video}
+                className="w-100"
+                style={{ objectFit: "contain" }}
+                height={400}
+                controls={true}
+              />
+            )}
+          </div>
 
-                <div className=" ">
-                  <span>
+          <div className="p-1">
+            <span
+              className="fs-6 ms-2 "
+              style={{ textTransform: "capitalize" }}
+            >
+              &nbsp;{likes} Likes &emsp;. {comments} comments &emsp;. 0 shares
+            </span>
+            <hr />
+            <div className="d-flex flex-wrap justify-content-between align-items-center ms-2 me-2 ">
+              <div className=" align-items-center">
+                <span>
+                  {isLiked ||
+                  feed.likes.includes(
+                    JSON.parse(localStorage.getItem("userInfo")).user._id
+                  ) ? (
+                    <Link
+                      className="btn btn-border-none text-primary bg-light"
+                      onClick={() => {
+                        likeHandler();
+                      }}
+                    >
+                      <i className="fa fa-thumbs-up text-primary"></i> &nbsp;
+                      Liked
+                    </Link>
+                  ) : (
                     <Link
                       className="btn btn-border-none"
                       onClick={() => {
-                        console.log("comment");
+                        likeHandler();
                       }}
                     >
-                      <i className="fa fa-comment "></i> &nbsp; comment
+                      <i className="fa fa-thumbs-up"></i> &nbsp; Like
                     </Link>
-                  </span>
-                </div>
-                <div className=" ">
-                  <span>
-                    <Button
-                      onClick={() => setModalShow(true)}
-                      className="bg-none"
-                    >
-                      <i className="fa fa-share  "></i>&nbsp; Share
-                    </Button>
-
-                    <MyVerticallyCenteredModal
-                      show={modalShow}
-                      feed={feed}
-                      onHide={() => setModalShow(false)}
-                    />
-                  </span>
-                </div>
+                  )}
+                </span>
               </div>
 
-              <hr />
-              <div className="comments">
-                {feed.comments.map((comment) => {
-                  return (
-                    <div className="mb-2">
-                      <div className="d-flex justify-content-between">
-                        <div className="d-flex">
-                          <div>
-                            <img
-                              src={comment.profile.avatar}
-                              width={40}
-                              className="rounded-image"
-                            />
-                          </div>
-                          <div className="d-flex flex-column ms-2">
-                            <span className="name">
-                              {comment.profile.legal_name}
-                            </span>
-                            <small className="comment-text">
-                              {comment.text}
-                            </small>
-                          </div>
-                        </div>
+              <div className=" ">
+                <span>
+                  <Button
+                    style={{ border: "none", background: "none" }}
+                    className="btn text-dark"
+                    onClick={handleCommentClick}
+                  >
+                    <i className="fa fa-comment "></i> &nbsp; comment
+                  </Button>
+                </span>
+              </div>
+              <div className=" ">
+                <span>
+                  <Button
+                    style={{
+                      border: "none",
+                      outline: "none",
+                      background: "none",
+                      color: "black",
+                    }}
+                    onClick={() => setModalShow(true)}
+                    className="bg-none"
+                  >
+                    <i className="fa fa-share  "></i>&nbsp; Share
+                  </Button>
 
-                        <div className="d-flex flex-row status">
-                          <small>{moment(comment.date).fromNow()}</small>
+                  <MyVerticallyCenteredModal
+                    show={modalShow}
+                    feed={feed}
+                    onHide={() => setModalShow(false)}
+                  />
+                </span>
+              </div>
+            </div>
+
+            <hr />
+            <div id="comment" className="comments ms-2 ">
+              {comment.map((comment) => {
+                return (
+                  <div className="mb-2">
+                    <div className="d-flex justify-content-between">
+                      <div className="d-flex">
+                        <div>
+                          <img
+                            src={comment.profile.avatar}
+                            width={40}
+                            className="rounded-image"
+                            alt=""
+                          />
+                        </div>
+                        <div className="d-flex flex-column ms-2">
+                          <span className="name">
+                            {comment.profile.legal_name}
+                          </span>
+                          <small className="comment-text">{comment.text}</small>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
 
+                      <div className="d-flex flex-row status">
+                        <small>{moment(comment.date).fromNow()}</small>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+              {comment.length < feed.comments.reverse().length && (
+                <div className="d-flex justify-content-center ">
+                  <Link
+                    className="btn btn-border-none text-primary"
+                    onClick={handleShowMore}
+                  >
+                    View more...
+                  </Link>
+                </div>
+              )}
+
+              {showInput ? (
                 <div className="comment-input">
                   <input
+                    id="comment_text"
                     type="text"
+                    ref={commentInputRef}
                     className="form-control"
                     onChange={(e) => setCommentText(e.target.value)}
                     value={commentText}
@@ -351,7 +408,7 @@ const Feeds = ({ feed }) => {
                     </Link>
                   </div>
                 </div>
-              </div>
+              ) : null}
             </div>
           </div>
         </div>

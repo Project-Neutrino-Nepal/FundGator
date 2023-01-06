@@ -65,6 +65,10 @@ const ReasonSchema = new Schema({
   amount: {
     type: Number,
   },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
   teams: [
     {
       image: {

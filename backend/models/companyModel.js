@@ -15,7 +15,6 @@ const CompanySchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "reason",
     },
-
     verified: {
       type: Boolean,
       default: false,
@@ -70,6 +69,10 @@ const CompanySchema = new Schema(
     },
     content: {
       type: String,
+    },
+    date: {
+      type: Date,
+      default: Date.now,
     },
     investors: [
       {

@@ -12,10 +12,10 @@ const Wrapper = styled.div`
 
     & > h1 {
       color: #16263d;
-      font-size: 51px;
+      font-size: 81px;
       font-weight: bold;
-      width: 340px;
-      line-height: 65px;
+      width: 440px;
+      line-height: 85px;
 
       & > span {
         color: #eb503f;
@@ -60,7 +60,7 @@ const Wrapper = styled.div`
         width: 100%;
         height: 100%;
         border: none;
-        background-color: #eb503f;
+        background-color: #0A4FA3;
         color: white;
         font-weight: bold;
       }

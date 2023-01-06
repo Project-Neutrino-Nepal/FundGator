@@ -5,7 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { Basic, Story, Team, Visiblity } from "./component";
 import tabs from "./utils/tab";
 import Wrapper from "./wrapper/CompanyRegisterPage";
-
+import {io} from "socket.io-client";
 const CompanyRegisterPage = () => {
   const { id } = useParams();
   const formvalue = {
@@ -58,7 +58,6 @@ const CompanyRegisterPage = () => {
   };
 
   const navigate = useNavigate();
-
   const [activeindex, setActive] = useState(1);
   const [values, setValue] = useState(formvalue);
 
@@ -91,7 +90,6 @@ const CompanyRegisterPage = () => {
       authorization: localStorage.getItem("token"),
     },
   };
-  
 
   const data = {
     category: values.category,
@@ -116,6 +114,9 @@ const CompanyRegisterPage = () => {
   const teamsdata = {
     teams: values.teams,
   };
+  const companyName = values.companyname;
+  const image = values.imageupload;
+  const content = values.content;
 
   const setcontent = (content) => {
     setValue({ ...values, content: content });
@@ -298,7 +299,7 @@ const CompanyRegisterPage = () => {
         console.log(formData);
         axios
           .put(
-            "http://localhost:5000/company/api/multipleimages/" +
+            "http://localhost:5000/company/api/update-document/" +
               formvalue.companyname,
             formData,
             config
@@ -311,6 +312,18 @@ const CompanyRegisterPage = () => {
                   window.location.href = `/profile`;
                 }, 1200)
               );
+              //sends the event details via Socket.io
+              const companyID = res.data.company._id;
+              const date = res.data.company.date;
+              const socket = io("http://localhost:5000");
+              socket.on("connect", () => {
+                socket.emit("newCompany", {
+                  companyID,
+                  companyName,
+                  image,
+                  date,
+                });
+              });
             }
           });
       } catch (error) {
@@ -369,13 +382,6 @@ const CompanyRegisterPage = () => {
         toast.error("please upload videos ");
       }
     }
-    // else if (index === 4) {
-    //   if (videoupload) {
-    //     setActive(index);
-    //   } else {
-    //     toast.error("please upload videos ");
-    //   }
-    // }
   };
 
   const onregistrationcard = () => {

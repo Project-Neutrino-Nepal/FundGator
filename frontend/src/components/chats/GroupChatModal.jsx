@@ -161,6 +161,8 @@ const GroupChatModal = ({ children }) => {
     setSelectedUsers([...selectedUsers, userToAdd]);
   };
 
+ 
+
   return (
     <>
       <span onClick={onOpen}>{children}</span>

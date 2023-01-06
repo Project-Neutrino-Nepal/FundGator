@@ -303,7 +303,7 @@ router.get("/api/get-profile/:id", userAuth, async (req, res) => {
 
 /**
  * @description To Get or Search All users
- * @api /users/api/get-users
+ * @api /profiles/api/get-users
  * @access PRIVATE
  * @type GET
  * */
@@ -324,6 +324,68 @@ router.get("/api/get-users", userAuth, async (req, res) => {
     .exec();
 
   return res.status(200).json(userExists);
+});
+
+/**
+ * @description To Get or Search All profiles by name or email
+ * @api /profiles/api/get-profiles
+ * @access PRIVATE
+ * @type GET
+ * */
+
+router.get("/api/profiles", userAuth, async (req, res) => {
+  const keyword = req.query.search;
+
+  let profile = await Profile.find({
+    $and: [
+      {
+        $or: [
+          { name: { $regex: keyword, $options: "i" } },
+          { email: { $regex: keyword, $options: "i" } },
+        ],
+      },
+      { user: { $ne: req.user._id } },
+    ],
+  }).populate("user", ["name", "email"]);
+
+  return res.status(200).json(profile);
+});
+
+/**
+ * @description To Get Other users profile by id in params
+ * @api /profiles/api/get-other-profiles
+ * @access PRIVATE
+ * @type GET
+ * */
+
+router.get("/api/get-other-profiles/:id", userAuth, async (req, res) => {
+  try {
+    let user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+    let profile = await Profile.findOne({ user: req.params.id });
+    if (!profile) {
+      return res.status(400).json({
+        success: false,
+        message: "No profile found.",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Profile fetched successfully.",
+      profile,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred.",
+    });
+  }
 });
 
 module.exports = router;
