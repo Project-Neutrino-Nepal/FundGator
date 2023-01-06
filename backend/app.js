@@ -77,66 +77,6 @@ app.use("/notification", notification);
 
 // fro Linked In Auth
 
-passport.use(
-  new LinkedInStrategy(
-    {
-      clientID: LINKEDIN_KEY,
-      clientSecret: LINKEDIN_SECRET,
-      callbackURL: "http://localhost:5000/auth/linkedin/callback",
-      scope: ["r_emailaddress", "r_liteprofile"],
-    },
-    (accessToken, refreshToken, profile, done) => {
-      profile.accessToken = accessToken;
-
-      process.nextTick(() => {
-        // use user model to find user in database or create new user
-        User.findOne({ linkedinId: profile.id }, (err, user) => {
-          if (err) return done(err);
-          if (user) {
-            return done(null, user);
-          } else {
-            const newUser = new User();
-            newUser.linkedinId = profile.id;
-            newUser.token = accessToken;
-            newUser.name = profile.displayName;
-            newUser.email = profile.emails[0].value;
-            newUser.save((err) => {
-              if (err) throw err;
-              // if user is successfully created, return then create profile
-              let newProfile = new Profile();
-              newProfile.user = newUser._id;
-              newProfile.name = profile.displayName;
-              newProfile.email = profile.emails[0].value;
-              newProfile.save((err) => {
-                if (err) throw err;
-              });
-
-              return done(null, newUser);
-            });
-          }
-        });
-
-        return done(null, profile);
-      });
-    }
-  )
-);
-
-app.get(
-  "/auth/linkedin",
-  passport.authenticate("linkedin", { state: "SOME STATE" })
-);
-
-app.get(
-  "/auth/linkedin/callback",
-  passport.authenticate("linkedin", {
-    failureRedirect: "http://localhost:3000/signin",
-  }),
-  function (req, res) {
-    // Successful authentication, store the access token in the local storage and redirect home.
-    res.redirect(`http://localhost:3000/homepage`);
-  }
-);
 // --------------------------DEVELOPMENT------------------------------
 let companyList = [];
 const server = app.listen(process.env.PORT, () =>

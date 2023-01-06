@@ -83,9 +83,9 @@ function App() {
         <Route
           path="/homepage"
           element={
-            // <ProtectedRoute>
+            <ProtectedRoute>
             <Homepage />
-            // </ProtectedRoute>
+            </ProtectedRoute>
           }
         >
           <Route index element={<Feed />} />
@@ -144,9 +144,8 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
-        <Route path="/explore" element={<FooterLayout></FooterLayout>}> 
-        <Route index element={<ExplorePage />}/>
-        
+        <Route path="/explore" element={<FooterLayout></FooterLayout>}>
+          <Route index element={<ExplorePage />} />
         </Route>
         <Route
           path="/detail/:id"
@@ -204,7 +203,7 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route index  element={<Home />} />
+          <Route index element={<Home />} />
 
           {/* There is no need of tables for now */}
           {/* <Route path="/dashboard/tables" element={<Tables />} /> */}
