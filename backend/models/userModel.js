@@ -31,6 +31,10 @@ const UserSchema = new Schema(
       type: String,
       required: false,
     },
+    googleId: {
+      type: String,
+      required: false,
+    },
     // only admin can change the status
     status: {
       type: Boolean,
